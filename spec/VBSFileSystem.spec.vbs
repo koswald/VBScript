@@ -23,7 +23,7 @@ With New TestingFramework
 
         .it "should resolve a relative path that starts with ../"
 
-            fs.SetRelativePath "C:\Windows"
+            fs.SetReferencePath "C:\Windows"
                     
             .AssertEqual fs.resolve("../System32"), "C:\System32"
 

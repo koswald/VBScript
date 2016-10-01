@@ -2,7 +2,7 @@
 Class VBSFileSystem
 
     Private oVBSNatives, oVBSEnvironment
-    Private relativePath, savedCurrentDirectory, savedRelativePath
+    Private referencePath, savedCurrentDirectory, savedReferencePath
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next
@@ -12,8 +12,8 @@ Class VBSFileSystem
         Set oVBSNatives = New VBSNatives
         Set oVBSEnvironment = New VBSEnvironment
 
-        SetRelativePath(defaultRelativePath)
-        SaveRelativePath
+        SetReferencePath(defaultReferencePath)
+        SaveReferencePath
     End Sub
 
     Property Get n : Set n = oVBSNatives : End Property
@@ -29,15 +29,13 @@ Class VBSFileSystem
     Property Get SBaseName : SBaseName = fso.GetBaseName(SName) : End Property 'script name without filename extension
     Property Get SFolderName : SFolderName = Parent(SFullName) : End Property 'script's folder
 
-    Property Get env : Set env = oVBSEnvironment : End Property
-
     Property Get m : Set m = oVBSMessages : End Property
     Property Get msgs : Set msgs = m : End Property
 
     'Function MakeFolder
     'Parameter: a path
     'Returns False if the folder could not be created.
-    'Remark Create a folder, and its parent, grandparent, etc.
+    'Remark Create a folder, and if necessary create also its parent, grandparent, etc.
     Function MakeFolder(sFolder)
         MakeFolder = True
 
@@ -59,33 +57,23 @@ Class VBSFileSystem
 
     Private Sub SaveCurrentDirectory : savedCurrentDirectory = sh.CurrentDirectory : End Sub
     Private Sub RestoreCurrentDirectory : sh.CurrentDirectory = savedCurrentDirectory : End Sub
-    Private Property Get defaultRelativePath : defaultRelativePath = Parent(WScript.ScriptFullName) : End Property
+    Private Property Get defaultReferencePath : defaultReferencePath = Parent(WScript.ScriptFullName) : End Property
+    Private Sub SaveReferencePath : savedReferencePath = referencePath : End Sub
+    Private Sub RestoreReferencePath : referencePath = savedReferencePath : End Sub
 
-    'Method SetRelativePath
+    'Method SetReferencePath
     'Parameter: a path
     'Remark: Call this method, if desired, before calling the property Resolve in order specify the base path against which relative paths should be referenced from. By default, the reference path is the parent folder of the calling script.
-    Sub SetRelativePath(newPath) : relativePath = newPath : End Sub
-    Property Get GetRelativePath : GetRelativePath = relativePath : End Property
-
-    '''Method SaveRelativePath
-    '''Remark: Save the current relative path in order to be restored later with RestoreRelativePath
-    Private Sub SaveRelativePath
-        savedRelativePath = relativePath
-    End Sub
-
-    '''Method RestoreRelativePath
-    '''Remark: Restore the relative path to the saved value or its initial value if it wasn't saved.
-    Private Sub RestoreRelativePath
-        relativePath = savedRelativePath
-    End Sub
+    Sub SetReferencePath(newPath) : referencePath = newPath : End Sub
+    Property Get GetReferencePath : GetReferencePath = referencePath : End Property
 
     'Property Resolve
     'Returns a resolved path
     'Parameter: a relative path
-    'Remark: Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but can aslo be set with SetRelativePath. See also property ResolveTo.
+    'Remark: Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changes with SetReferencePath. See also property ResolveTo.
     Function Resolve(path)
         SaveCurrentDirectory
-        sh.CurrentDirectory = relativePath 'in case the path is relative, set the reference folder for .GetAbsolutePathName
+        sh.CurrentDirectory = referencePath 'in case the path is relative, set the reference folder for .GetAbsolutePathName
         Resolve = fso.GetAbsolutePathName(Expand(path))
         RestoreCurrentDirectory
     End Function
@@ -93,12 +81,12 @@ Class VBSFileSystem
     'Property ResolveTo
     'Returns a resolved path
     'Parameter: relativePath, absolutePath
-    'Remark: Resolves the specified relative path (e.g. "../lib/WMI.vbs"), relative to the specified absolute path to another absolute path (e.g. "C:\Users\user42\lib\WMI.vbs")
-    Function ResolveTo(aRelativePath, anAbsolutePath)
-        SaveRelativePath
-        SetRelativePath Expand(anAbsolutePath) 'in case the path is relative, set the reference folder for .GetAbsolutePathName
-        ResolveTo = Resolve(aRelativePath)
-        RestoreRelativePath
+    'Remark: Resolves the specified relative path, e.g. "../lib/WMI.vbs", relative to the specified absolute path, and returns the resolved absolute path, e.g. "C:\Users\user42\lib\WMI.vbs". Environment variables are allowed.
+    Function ResolveTo(relativePath, absolutePath)
+        SaveReferencePath
+        SetReferencePath Expand(absolutePath) 'in case the path is relative, set the reference folder for .GetAbsolutePathName
+        ResolveTo = Resolve(relativePath)
+        RestoreReferencePath
     End Function
 
     'Property Expand
@@ -106,5 +94,12 @@ Class VBSFileSystem
     'Parameter: a string
     'Remark: Expands environment strings. E.g. %WinDir% => C:\Windows
     Property Get Expand(str) : Expand = sh.ExpandEnvironmentStrings(str) : End Property
+
+    'Method Elevate
+    'Parameters: command, arguments, folder
+    'Remarks: Runs the specified command with elevated privileges, with the specified arguments and working folder
+    Sub Elevate(cmd, args_, workingFolder)
+        n.sa.ShellExecute fs.Expand(cmd), fs.Expand(args_), fs.Expand(workingFolder), "runas"
+    End Sub
 
 End Class

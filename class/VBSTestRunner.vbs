@@ -46,7 +46,7 @@ Class VBSTestRunner
     'Parameter a folder
     'Remark Specifies the folder containing the test files. Can be a relative path, relative to the calling script.
     Sub SetSpecFolder(newSpecFolder)
-        specFolder = fs.ResolveTo(newSpecFolder, fs.SFolderName)
+        specFolder = fs.Resolve(newSpecFolder)
     End Sub
 
     'Method SetSpecPattern

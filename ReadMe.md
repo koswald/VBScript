@@ -5,7 +5,7 @@ This project has a number facets:
 - An automatic documentation generator
 - A lightweight unit-testing framework
 - A logger
-- Classes that manage their own dependencies 
+- Classes that manage their own dependencies
 - Computer administration utilities
 
 ##### Requirements
@@ -18,4 +18,4 @@ Clone the repo and double-click the Setup.vbs file. This will register the requi
 
 ##### Examples
 
-The scripts in the examples folder include a test runner and a runner for the DocGenerator.
+The scripts in the examples folder include a test runner and an example for using the DocGenerator.

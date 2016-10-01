@@ -15,7 +15,7 @@
 '' ''    gen.SetDocName = "doc.html"
 '' ''    gen.SetScriptFolder = "../class"
 '' ''    gen.SetDocFolder = ".."
-'' 
+''
 '' ''    gen.Generate
 '' ''    gen.View
 '
@@ -48,7 +48,7 @@
 Class DocGenerator
 
     Private outputStreamer, inputStreamer, docFile
-    Private thisFolder, File, fs, indentUnit, indent_
+    Private File, fs, indentUnit, indent_
     Private script, doc 'input and output text streams
     Private re
     Private methodPattern, propertyPattern, parametersPattern, returnsPattern, remarksPattern
@@ -73,9 +73,6 @@ Class DocGenerator
         'prepare output streamer
 
         Set outputStreamer = New TextStreamer
-        Set fs = outputStreamer.fs
-        thisFolder = fs.Parent(fs.SFullName)
-        fs.SetRelativePath thisFolder
         outputStreamer.SetForWriting
 
         'prepare input streamer
@@ -85,6 +82,7 @@ Class DocGenerator
 
         'more initialization
 
+        Set fs = outputStreamer.fs
         Set re = New RegExp
         re.IgnoreCase = True
         InitializeLiterals

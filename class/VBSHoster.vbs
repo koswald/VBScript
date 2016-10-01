@@ -29,7 +29,7 @@ Class VBSHoster
 
     Sub EnsureCScriptHost
         If Not "cscript.exe" = LCase(Right(WScript.FullName,11)) Then
-            HostMeWithCScript 
+            HostMeWithCScript
 
             'notify the user that something kinda weird is going on and how to fix it
 

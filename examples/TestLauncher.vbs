@@ -1,24 +1,36 @@
 
 'Launch the test runner
 
-With CreateObject("includer")
-	Execute(.read("VBSTestRunner"))
-	Execute(.read("VBSHoster"))
-End With
+Main
 
-'restart this script, if necessary, hosted with cscript.exe; if restarting, opens in a new window
+Sub Main
 
-With New VBSHoster
-    .EnsureCScriptHost
-End With
+    With CreateObject("includer")
+        ExecuteGlobal(.read("VBSTestRunner"))
+        ExecuteGlobal(.read("VBSHoster"))
+    End With
 
-Dim testRunner : Set testRunner = New VBSTestRunner
+    'restart this script, if necessary, hosted with cscript.exe
+    'if restarting, opens in a new window
 
-With WScript.Arguments
-    If .Count Then
-        testRunner.SetSpecFile .item(0) 'spec file is a file or a relative path/file, relative to the spec folder
-    End If
-End With
+    With New VBSHoster
+        .EnsureCScriptHost
+    End With
 
-testRunner.SetSpecFolder "../spec" 'spec folder contains the test files; path is relative to this script
-testRunner.Run
+    Dim testRunner : Set testRunner = New VBSTestRunner
+
+    With WScript.Arguments
+        If .Count Then
+
+            'spec file is a file or a relative path/file, relative to the spec folder
+
+            testRunner.SetSpecFile .item(0)
+        End If
+    End With
+
+    'the spec folder contains the test files; path is relative to this script
+
+    testRunner.SetSpecFolder "../spec"
+    testRunner.Run
+
+End Sub
