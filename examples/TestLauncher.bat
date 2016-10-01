@@ -1,0 +1,1 @@
+@CScript //nologo TestLauncher.vbs

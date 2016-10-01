@@ -1,0 +1,29 @@
+body {
+    font-family: "arial";
+    padding-top: 1em;
+    padding-left: 1em;
+}
+.detail {
+    display: none;
+}
+.heading:hover {
+    text-decoration: underline;
+    cursor: default; /* c. becomes neither a pointer nor a text selector*/
+
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+fieldset {
+    margin-bottom: 1em;
+}
+code, pre {
+    font-size: large;
+}
+pre {
+    margin-top: 0em;
+    margin-bottom: 0em;
+}

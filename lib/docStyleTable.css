@@ -1,0 +1,28 @@
+
+
+
+table, th, td {
+	border-collapse: collapse;
+	padding: 5px;
+}
+td, th {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+table, tr {
+	border: 1px solid #bbb;
+}
+table tr:nth-child(odd) {
+	background-color: #dddfdd; /* #f5fafa */
+/*	color: blue; */
+}
+table tr:nth-child(even) {
+	background-color: #eeefee;/* #ffffff */
+/*	color: green; */
+}
+th { /* over-ride default */
+	text-align: left;
+}
+table th:hover {
+  cursor: default; /*pointer;*/
+}

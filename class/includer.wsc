@@ -1,0 +1,150 @@
+<?component error="true"?> <!-- <?component error="true"?> helpfully allows line numbers to display on error messages -->
+
+<scriptlet> <!--                    includer.wsc
+
+    Purpose
+
+        A dependency management tool, primarily intended to be used in a class file, 
+        to allow the class to manage its own dependencies.
+        Can be used in a .wsf or .vbs script.
+
+    How it works
+
+        The Read method returns the contents of a .vbs class file -- or any other text file.
+
+    Usage example
+
+        With CreateObject("includer")
+            ExecuteGlobal(.read("WMIUtility.vbs")) '.vbs may be omitted
+            ExecuteGlobal(.read("VBSNatives"))
+        End With
+
+        Or just Execute(.read ... if the statement already has global scope
+
+        Relative paths may be used and are relative to this scriptlet's location
+
+    Setup
+
+        In a cmd.exe window with elevated privileges, type 
+
+            regsvr32 C:\absolute\path\to\this\script\includer.wsc
+ -->
+    <registration
+        description="VBScript includer scriptlet by Karl Oswald"
+        progid="includer"
+        classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
+    </registration>
+
+    <public>
+        <method name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
+        <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
+        <property name="c" /> <!-- get text stream constants, iForReading, iForAppending, iForWriting, bCreateNew, bDontCreateNew, plus SetFormat parameters as above -->
+        <property name="Version" internalname="sVersion" />
+        <property name="UUID" internalname="sWscID" />
+    </public>
+
+    <script language="VBScript" src="StreamConstants.vbs" />
+    <script language="VBScript" src="RegistryUtility.vbs" />
+    <script language="VBScript" src="VBSNatives.vbs" />
+    <script language="VBScript">
+
+        Option Explicit 'Require the declaration of variables
+
+        Const sVersion = "0.0.0"
+        Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid above
+
+        Dim n : Set n = New VBSNatives 'objects native to VBScript; used here: WScript.Shell, Scripting.FileSystemObject
+        Dim oStreamConstants : Set oStreamConstants = New StreamConstants
+        Function c : Set c = oStreamConstants : End Function
+        Dim r : Set r = New RegistryUtility
+        Dim savedCurrentDirectory
+
+        'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
+
+        Dim subKey : subKey = "Software\Classes\CLSID\" & sWscID & "\ScriptletURL"
+        Dim thisFile : thisFile = r.GetStringValue(r.HKLM, subKey, "") 'get path to this scriptlet from the registry
+        thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
+        Dim relativePath : relativePath = n.fso.GetParentFolderName(thisFile)
+
+        Dim StreamFormat
+        SetFormat c.tbAscii 
+        Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
+        
+        'Return the contents of a file
+        
+        Function Read(file)
+            
+            'Expect Ascii and Unicode file formats to be mixed together in the script library...
+            
+            'Read the requested file and attempt to execute it, then check
+            'if there was an error; if so, try another stream format, e.g. Unicode.
+            'Executing well-encapsulated code here should have little impact, 
+            'and the calling script will still need to do an Execute or ExecuteGlobal.
+            
+            On Error Resume Next
+                Read = PrivateRead(file)
+                Execute(Read)
+                If Err Then 
+                    ToggleFormat 
+                Else
+                    Exit Function
+                End If
+            Err.Clear
+                Read = PrivateRead(file)
+                Execute(Read)
+                If Err Then 
+                    ToggleFormat 
+                Else 
+                    Exit Function
+                End If
+            Err.Clear
+                Read = PrivateRead(file)
+            On Error Goto 0
+        End Function
+        
+        Sub ToggleFormat
+            If StreamFormat = c.tbAscii Then
+                SetFormat c.tbUnicode 
+            ElseIf StreamFormat = c.tbUnicode Then
+                SetFormat c.tbSystemDefault
+            ElseIf StreamFormat = c.tbSystemDefault Then
+                SetFormat c.tbAscii
+            End If
+        End Sub
+
+        'return the contents of a file
+
+        Private Function PrivateRead(file)
+            file = Resolve(file)
+            If Not n.fso.FileExists(file) Then
+                file = file & ".vbs" 'add the .vbs file extension and try again
+                If Not n.fso.FileExists(file) Then
+                    Read = "MsgBox ""Couldn't find file "" & """ & file & """, vbExclamation"
+                    Exit Function
+                End If
+            End If
+            Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
+            PrivateRead = stream.ReadAll
+            stream.Close
+            Set stream = Nothing
+        End Function
+
+        'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
+
+        Private Function Resolve(path)
+        
+            SaveCurrentDirectory
+            
+            'in case the path is relative, set the reference folder for .GetAbsolutePathName
+            n.sh.CurrentDirectory = relativePath 
+
+            Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
+            
+            RestoreCurrentDirectory
+        End Function
+
+        Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
+        Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
+        
+    </script>
+</scriptlet>
