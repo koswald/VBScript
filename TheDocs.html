@@ -148,6 +148,7 @@
          <div class="detail">
             <p>Math functions not provided with VBScript</p>
             <p>The native math functions are Sin, Cos, Tan, Atn, Log</p>
+            Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>
             <table>
                <tr>
                   <th>Routine type</th>
@@ -656,7 +657,7 @@
       <div>
          <h4 class="heading" id=9>ValidFileName</h4>
          <div class="detail">
-            <p>Provides for removing characters in a string that are not suitable for use in a Windows&reg file name.</p>
+            <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg file name.</p>
             <p>Example of well-formed comments in a script without a Class statement:</p>
             <p>A line starting with '''' (four single quotes) separates the general comments at the beginning of the script from the rest of the script</p>
             <p>Usage Example</p>
@@ -1167,7 +1168,7 @@
                   <td>SetSpecFile</td>
                   <td>a single file name / relative path</td>
                   <td>N/A</td>
-                  <td>Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder.</td>
+                  <td>Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -1225,7 +1226,7 @@
                   <td>EnsureInteger</td>
                   <td>an integer candidate</td>
                   <td>N/A</td>
-                  <td>Raises an error if the parameter is not a boolean</td>
+                  <td>Raises an error if the parameter is not an integer</td>
                </tr>
                <tr>
                   <td>Property</td>

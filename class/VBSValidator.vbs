@@ -2,7 +2,7 @@
 'A simple, working example of how validation can be accomplished.
 
 Class VBSValidator
-    
+
     'Function IsBoolean
     'Parameter a boolean candidate
     'Returns a boolean
@@ -19,7 +19,7 @@ Class VBSValidator
     'Parameter a boolean candidate
     'Remark: Raises an error if the parameter is not a boolean
     Sub EnsureBoolean(pBool)
-        If Not IsBoolean(pBool) Then 
+        If Not IsBoolean(pBool) Then
             Err.Raise 1, GetClassName, WScript.ScriptName & ": " & CStr(pBool) & ErrDescrBool
         End If
     End Sub
@@ -29,18 +29,18 @@ Class VBSValidator
     'Returns a boolean
     'Remark: Returns True if the parameter is an integer subtype; False if not.
     Function IsInteger(pInt)
-        If vbInteger = VarType(pInt) Then 
-            IsInteger = True 
-        Else 
+        If vbInteger = VarType(pInt) Then
+            IsInteger = True
+        Else
             IsInteger = False
         End If
     End Function
 
     'Method EnsureInteger
     'Parameter: an integer candidate
-    'Remark: Raises an error if the parameter is not a boolean
+    'Remark: Raises an error if the parameter is not an integer
     Sub EnsureInteger(pInt)
-        If Not IsInteger(pInt) Then 
+        If Not IsInteger(pInt) Then
             Err.Raise 1, GetClassName, WScript.ScriptName & ": " & CStr(pInt) & ErrDescrInt
         End If
     End Sub
@@ -54,7 +54,7 @@ Class VBSValidator
     'Returns a string
     'Remark:                                 " is not an integer." Useful for verifying Err.Description in a unit test.
     Property Get ErrDescrInt : ErrDescrInt = " is not an integer." : End Property
-       
+
     'Property GetClassName
     'Returns the class name
     'Remark:                                   "VBSValidator". Useful for verifying Err.Source in a unit test.

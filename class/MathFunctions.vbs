@@ -3,6 +3,8 @@
 
 'The native math functions are Sin, Cos, Tan, Atn, Log
 
+'Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>
+
 Class MathFunctions
 
     'Property Sec
@@ -153,3 +155,4 @@ Class MathFunctions
     End Function
 
 End Class
+
