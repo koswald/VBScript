@@ -1,5 +1,5 @@
 
-'Provides for removing characters in a string that are not suitable for use in a Windows&reg file name.
+'Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg file name.
 
 'Example of well-formed comments in a script without a Class statement:
 'A line starting with '''' (four single quotes) separates the general comments at the beginning of the script from the rest of the script

@@ -1190,7 +1190,7 @@
       <div>
          <h4 class="heading" id=18>VBSValidator</h4>
          <div class="detail">
-            <p>An example of how validation might be accomplished.</p>
+            <p>A simple, working example of how validation can be accomplished.</p>
             <table>
                <tr>
                   <th>Routine type</th>
@@ -1247,6 +1247,92 @@
                   <td>None</td>
                   <td>the class name</td>
                   <td>"VBSValidator". Useful for verifying Err.Source in a unit test.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=19>WMIUtility</h4>
+         <div class="detail">
+            <p>Examples of the Windows Management Instrumentation object</p>
+            <table>
+               <tr>
+                  <th>Routine type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>TerminateProcessById</td>
+                  <td>process id</td>
+                  <td>a boolean</td>
+                  <td>Terminates any Windows&reg process with the specified id. Returns True if the process was found, False if not.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>TerminateProcessByIdAndName</td>
+                  <td>id, name</td>
+                  <td>a boolean</td>
+                  <td>Terminates a process with the specified id and name. Returns True if the process was found, False if not.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetProcessIDsByName</td>
+                  <td>a process name</td>
+                  <td>a boolean</td>
+                  <td>Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. E.g. notepad.exe.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetProcessesWithNamesLike</td>
+                  <td>a string like jav%</td>
+                  <td>an array of process names</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>partitions</td>
+                  <td>None</td>
+                  <td>a collection</td>
+                  <td>Returns a collection of partition objects, each with the following methods: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>disks</td>
+                  <td>None</td>
+                  <td>a collection</td>
+                  <td>Returns a collection of disk objects, each with these methods: FileSystem, DeviceID</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>cpu</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Returns an object with these methods: Architecture, Description</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>os</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>pc</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Bios</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Returns a BIOS object with this method: Version</td>
                </tr>
             </table>
          </div>
