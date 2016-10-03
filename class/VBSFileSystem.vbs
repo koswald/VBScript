@@ -70,7 +70,7 @@ Class VBSFileSystem
     'Property Resolve
     'Returns a resolved path
     'Parameter: a relative path
-    'Remark: Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changes with SetReferencePath. See also property ResolveTo.
+    'Remark: Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changed with SetReferencePath. See also property ResolveTo.
     Function Resolve(path)
         SaveCurrentDirectory
         sh.CurrentDirectory = referencePath 'in case the path is relative, set the reference folder for .GetAbsolutePathName

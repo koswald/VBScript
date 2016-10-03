@@ -12,7 +12,8 @@
 ''    Dim n : Set n = New VBSNatives
 ''    MsgBox n.shell.SpecialFolders(sp.Desktop)
 '
-
+'Here is the list: AllUsersDesktop, AllUsersStartMenu, AllUsersPrograms, AllUsersStartup, Desktop, Favorites, Fonts, MyDocuments, NetHood, PrintHood, Programs, Recent, SendTo, StartMenu, Startup, Templates
+'
 Class SpecialFolders 'use as a kind of enum with WScript.Shell.SpecialFolders
 
     'Property GetList
@@ -25,6 +26,10 @@ Class SpecialFolders 'use as a kind of enum with WScript.Shell.SpecialFolders
         "NetHood, PrintHood, Programs, Recent, SendTo, StartMenu, " & _
         "Startup, Templates"
     End Property
+
+    'Property GetArray
+    'Returns an array of strings
+    'Remark: Returns an array of all the special folders
 
     Property Get GetArray : GetArray = Split(GetList, ", ") : End Property
 

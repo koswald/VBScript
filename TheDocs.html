@@ -276,6 +276,8 @@
             <pre>    Dim n : Set n = New VBSNatives</pre>
             <pre>    MsgBox n.shell.SpecialFolders(sp.Desktop)</pre>
             <p></p>
+            <p>Here is the list: AllUsersDesktop, AllUsersStartMenu, AllUsersPrograms, AllUsersStartup, Desktop, Favorites, Fonts, MyDocuments, NetHood, PrintHood, Programs, Recent, SendTo, StartMenu, Startup, Templates</p>
+            <p></p>
             <table>
                <tr>
                   <th>Routine type</th>
@@ -290,6 +292,13 @@
                   <td>None</td>
                   <td>a string</td>
                   <td>Gets a list of all the properties. Comma + space delimited.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetArray</td>
+                  <td>None</td>
+                  <td>an array of strings</td>
+                  <td>Returns an array of all the special folders</td>
                </tr>
             </table>
          </div>
@@ -711,7 +720,7 @@
                   <td>Resolve</td>
                   <td>a relative path</td>
                   <td>a resolved path</td>
-                  <td>Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changes with SetReferencePath. See also property ResolveTo.</td>
+                  <td>Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changed with SetReferencePath. See also property ResolveTo.</td>
                </tr>
                <tr>
                   <td>Property</td>
