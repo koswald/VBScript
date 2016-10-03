@@ -1,34 +1,50 @@
-<?component error="true"?> <!-- <?component error="true"?> helpfully allows line numbers to display on error messages -->
 
-<scriptlet> <!--                    includer.wsc
+<?component error="true"?> <!-- <?component error="true"?> allows line numbers to display on error -->
 
-    Purpose
+<scriptlet> <!--                   
 
-        A dependency management tool, primarily intended to be used in a class file, 
-        to allow the class to manage its own dependencies.
-        Can be used in a .wsf or .vbs script.
+' Windows&reg Script Component <code> Includer.wsc </code>
+'
+'    <h5> Purpose </h5>
 
-    How it works
+'        A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies.
+'        Can be used in a .wsf or .vbs script.
+'
+'    <h5> How it works </h5>
+'
+'        The Read method returns the contents of a .vbs class file -- or any other text file.
+'
+'    <h5> Usage example </h5>
+'
+''        With CreateObject("includer")
+''            ExecuteGlobal(.read("WMIUtility.vbs")) '.vbs may be omitted
+''            ExecuteGlobal(.read("VBSNatives"))
+''        End With
+'
+'        Or just <code> Execute(.read ... </code> if the statement already has global scope
+'
+'        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:
+'
+''        With CreateObject("includer") : On Error Resume Next
+''            ExecuteGlobal(.read("WMIUtility"))
+''            ExecuteGlobal(.read("VBSNatives"))
+''        End With : On Error Goto 0
+'
+'        Relative paths may be used and are relative to this scriptlet's location
 
-        The Read method returns the contents of a .vbs class file -- or any other text file.
-
-    Usage example
-
-        With CreateObject("includer")
-            ExecuteGlobal(.read("WMIUtility.vbs")) '.vbs may be omitted
-            ExecuteGlobal(.read("VBSNatives"))
-        End With
-
-        Or just Execute(.read ... if the statement already has global scope
-
-        Relative paths may be used and are relative to this scriptlet's location
-
-    Setup
-
-        In a cmd.exe window with elevated privileges, type 
-
-            regsvr32 C:\absolute\path\to\this\script\includer.wsc
- -->
+'
+'    <h5> Registration </h5>
+'
+'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc </code> and selecting Register probably will not work.
+'
+'        Instead, 
+'        1) run the Setup.vbs in the project folder, or
+'        2) run the following command in a command window with elevated privileges
+'
+''            regsvr32 &ltabsolute\path\to\the\file&gt\includer.wsc
+'           
+'''' 
+-->
     <registration
         description="VBScript includer scriptlet by Karl Oswald"
         progid="includer"
@@ -53,24 +69,33 @@
         Const sVersion = "0.0.0"
         Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid above
 
-        Dim n : Set n = New VBSNatives 'objects native to VBScript; used here: WScript.Shell, Scripting.FileSystemObject
-        Dim oStreamConstants : Set oStreamConstants = New StreamConstants
+        Dim n, oStreamConstants, StreamFormat
+        Dim relativePath, savedCurrentDirectory
+        
+        InitializeMembers
+        
         Function c : Set c = oStreamConstants : End Function
-        Dim r : Set r = New RegistryUtility
-        Dim savedCurrentDirectory
-
-        'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
-
-        Dim subKey : subKey = "Software\Classes\CLSID\" & sWscID & "\ScriptletURL"
-        Dim thisFile : thisFile = r.GetStringValue(r.HKLM, subKey, "") 'get path to this scriptlet from the registry
-        thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
-        Dim relativePath : relativePath = n.fso.GetParentFolderName(thisFile)
-
-        Dim StreamFormat
-        SetFormat c.tbAscii 
+        
         Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
         
+        Private Sub InitializeMembers
+            Set n = New VBSNatives 'objects native to VBScript
+            Set oStreamConstants = New StreamConstants
+            Dim reg : Set reg = New RegistryUtility
+
+            'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
+
+            Dim subKey : subKey = "Software\Classes\CLSID\" & sWscID & "\ScriptletURL"
+            Dim thisFile : thisFile = reg.GetStringValue(reg.HKLM, subKey, "") 'get path to this scriptlet from the registry
+            thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
+            relativePath = n.fso.GetParentFolderName(thisFile)
+            SetFormat c.tbAscii 
+        End Sub
+        
+        'Function Read
+        'Parameter: a file
         'Return the contents of a file
+        'Remark: The file may be specified as a relative path, relative to the folder where this .wsc file resides. The file name extension may be omitted for .vbs files.
         
         Function Read(file)
             
@@ -78,7 +103,7 @@
             
             'Read the requested file and attempt to execute it, then check
             'if there was an error; if so, try another stream format, e.g. Unicode.
-            'Executing well-encapsulated code here should have little impact, 
+            'Executing well-encapsulated trusted code here should have little impact, 
             'and the calling script will still need to do an Execute or ExecuteGlobal.
             
             On Error Resume Next
@@ -102,7 +127,7 @@
             On Error Goto 0
         End Function
         
-        Sub ToggleFormat
+        Private Sub ToggleFormat
             If StreamFormat = c.tbAscii Then
                 SetFormat c.tbUnicode 
             ElseIf StreamFormat = c.tbUnicode Then
@@ -132,19 +157,15 @@
         'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
 
         Private Function Resolve(path)
-        
             SaveCurrentDirectory
+            n.sh.CurrentDirectory = relativePath  'set the reference folder relative paths
             
-            'in case the path is relative, set the reference folder for .GetAbsolutePathName
-            n.sh.CurrentDirectory = relativePath 
-
             Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
-            
             RestoreCurrentDirectory
         End Function
 
-        Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
-        Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
+        Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
+        Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
         
     </script>
 </scriptlet>
