@@ -3,7 +3,7 @@
 
 'Auto-generate script documentation based on well-formed comments
 
-''' The Following Examples are Best Viewed in the Documentation Itself
+''' The Following Examples are Best Viewed in the Documentation Itself (in a browser)
 
 '<h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
 
@@ -15,6 +15,7 @@
 '' ''    Dim gen : Set gen = New DocGenerator
 '' ''    gen.SetTitle = "Karl's VBScript documentation"
 '' ''    gen.SetDocName = "doc.html"
+'' ''    gen.SetFilesToDocument(".*\.(vbs|wsf|wsc)")
 '' ''    gen.SetScriptFolder = "../class"
 '' ''    gen.SetDocFolder = ".."
 ''
