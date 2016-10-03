@@ -118,5 +118,8 @@ Class TestingFramework
 
     Sub Class_Terminate
         ShowPendingResult
+'        MsgBox "TestingFramework.vbs :: Class_Terminate" _
+'            , vbInformation _
+'            , WScript.ScriptName
     End Sub
 End Class
