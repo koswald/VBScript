@@ -1,4 +1,6 @@
 
+'DocGenerator class (DocGenerator.vbs)
+
 'Auto-generate script documentation based on well-formed comments
 
 ''' The Following Examples are Best Viewed in the Documentation Itself

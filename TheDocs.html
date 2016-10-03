@@ -13,6 +13,7 @@
       <div>
          <h4 class="heading" id=0>DocGenerator</h4>
          <div class="detail">
+            <p>DocGenerator class (DocGenerator.vbs)</p>
             <p>Auto-generate script documentation based on well-formed comments</p>
             <h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
             <pre> 'Usage Example</pre>
@@ -108,7 +109,67 @@
       </div>
 
       <div>
-         <h4 class="heading" id=1>MathConstants</h4>
+         <h4 class="heading" id=1>Includer</h4>
+         <div class="detail">
+             Windows&reg Script Component <code> Includer.wsc </code>
+            <p></p>
+                <h5> Purpose </h5>
+            <p>        A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies.</p>
+            <p>        Can be used in a .wsf or .vbs script.</p>
+            <p></p>
+                <h5> How it works </h5>
+            <p></p>
+            <p>        The Read method returns the contents of a .vbs class file -- or any other text file.</p>
+            <p></p>
+                <h5> Usage example </h5>
+            <p></p>
+            <pre>        With CreateObject("includer")</pre>
+            <pre>            ExecuteGlobal(.read("WMIUtility.vbs")) '.vbs may be omitted</pre>
+            <pre>            ExecuteGlobal(.read("VBSNatives"))</pre>
+            <pre>        End With</pre>
+            <p></p>
+                    Or just <code> Execute(.read ... </code> if the statement already has global scope
+            <p></p>
+            <p>        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:</p>
+            <p></p>
+            <pre>        With CreateObject("includer") : On Error Resume Next</pre>
+            <pre>            ExecuteGlobal(.read("WMIUtility"))</pre>
+            <pre>            ExecuteGlobal(.read("VBSNatives"))</pre>
+            <pre>        End With : On Error Goto 0</pre>
+            <p></p>
+            <p>        Relative paths may be used and are relative to this scriptlet's location</p>
+            <p></p>
+                <h5> Registration </h5>
+            <p></p>
+                    Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc </code> and selecting Register probably will not work.
+            <p></p>
+            <p>        Instead, </p>
+            <p>        1) run the Setup.vbs in the project folder, or</p>
+            <p>        2) run the following command in a command window with elevated privileges</p>
+            <p></p>
+            <pre>            regsvr32 &ltabsolute\path\to\the\file&gt\includer.wsc</pre>
+            <p>           </p>
+            <table>
+               <tr>
+                  <th>Routine type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Read</td>
+                  <td>a file</td>
+                  <td>the contents of a file</td>
+                  <td>The file may be specified as a relative path, relative to the folder where this .wsc file resides. The file name extension may be omitted for .vbs files.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=2>MathConstants</h4>
          <div class="detail">
             <table>
                <tr>
@@ -144,14 +205,14 @@
       </div>
 
       <div>
-         <h4 class="heading" id=2>RegExFunctions</h4>
+         <h4 class="heading" id=3>RegExFunctions</h4>
          <div class="detail">
             <p>Regular Expression functions - work in progress</p>
          </div>
       </div>
 
       <div>
-         <h4 class="heading" id=3>RegistryUtility</h4>
+         <h4 class="heading" id=4>RegistryUtility</h4>
          <div class="detail">
             <p>Provides functions relating to the Windows&reg; registry</p>
             Official StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx">here</a>
@@ -204,7 +265,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=4>ShellConstants</h4>
+         <h4 class="heading" id=5>ShellConstants</h4>
          <div class="detail">
             <p>Constants for use with WScript.Shell.Run</p>
             <table>
@@ -262,7 +323,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=5>SpecialFolders</h4>
+         <h4 class="heading" id=6>SpecialFolders</h4>
          <div class="detail">
             <p>A kind of enum for use with WScript.Shell.SpecialFolders</p>
             <p>Usage example</p>
@@ -305,7 +366,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=6>TestingFramework</h4>
+         <h4 class="heading" id=7>TestingFramework</h4>
          <div class="detail">
             <p>A lightweight VBScript testing framework, using VBScript</p>
             <p>Usage example</p>
@@ -383,7 +444,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=7>TextStreamer</h4>
+         <h4 class="heading" id=8>TextStreamer</h4>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
             <h5> Methods for use with the text stream returned by the Open method: </h5>
@@ -499,7 +560,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=8>ValidFileName</h4>
+         <h4 class="heading" id=9>ValidFileName</h4>
          <div class="detail">
             <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg file name.</p>
             <p>Example of well-formed comments in a script without a Class statement:</p>
@@ -532,7 +593,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=9>VBSArguments</h4>
+         <h4 class="heading" id=10>VBSArguments</h4>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments</p>
             <table>
@@ -555,7 +616,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=10>VBSEnvironment</h4>
+         <h4 class="heading" id=11>VBSEnvironment</h4>
          <div class="detail">
             <table>
                <tr>
@@ -640,7 +701,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=11>VBSExtracter</h4>
+         <h4 class="heading" id=12>VBSExtracter</h4>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <table>
@@ -684,7 +745,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=12>VBSFileSystem</h4>
+         <h4 class="heading" id=13>VBSFileSystem</h4>
          <div class="detail">
             <table>
                <tr>
@@ -748,7 +809,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=13>VBSHoster</h4>
+         <h4 class="heading" id=14>VBSHoster</h4>
          <div class="detail">
             <table>
                <tr>
@@ -791,7 +852,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=14>VBSLogger</h4>
+         <h4 class="heading" id=15>VBSLogger</h4>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
             <fieldset> <legend> Instantiation </legend>
@@ -906,7 +967,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=15>VBSNatives</h4>
+         <h4 class="heading" id=16>VBSNatives</h4>
          <div class="detail">
             <p>Wrap objects native to WScript/Windows</p>
             <table>
@@ -978,7 +1039,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=16>VBSTestRunner</h4>
+         <h4 class="heading" id=17>VBSTestRunner</h4>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -1040,7 +1101,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=17>VBSValidator</h4>
+         <h4 class="heading" id=18>VBSValidator</h4>
          <div class="detail">
             <p>A simple, working example of how validation can be accomplished.</p>
             <table>
@@ -1105,7 +1166,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=18>WMIUtility</h4>
+         <h4 class="heading" id=19>WMIUtility</h4>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object</p>
             <table>

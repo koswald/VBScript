@@ -22,6 +22,7 @@ fieldset {
 }
 code, pre {
     font-size: large;
+    background-color: beige;
 }
 pre {
     margin-top: 0em;
