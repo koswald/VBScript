@@ -7,7 +7,7 @@
 ''        ExecuteGlobal(.read("SpecialFolders"))
 ''        ExecuteGlobal(.read("VBSNatives"))
 ''    End With
-'
+'' 
 ''    Dim sp : Set sp = New SpecialFolders
 ''    Dim n : Set n = New VBSNatives
 ''    MsgBox n.shell.SpecialFolders(sp.Desktop)

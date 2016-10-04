@@ -1,6 +1,4 @@
 
-'DocGenerator class (DocGenerator.vbs)
-
 'Auto-generate script documentation based on well-formed comments
 
 ''' The Following Examples are Best Viewed in the Documentation Itself (in a browser)
@@ -8,21 +6,22 @@
 '<h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
 
 '' 'Usage Example
-'' '
+'' '' 
 '' ''    With CreateObject("includer")
 '' ''        ExecuteGlobal(.read("DocGenerator"))
 '' ''    End With
-'' ''    Dim gen : Set gen = New DocGenerator
-'' '
-'' ''    gen.SetTitle = "Karl's VBScript documentation"
-'' ''    gen.SetDocName = "doc.html"
-'' ''    gen.SetFilesToDocument(".*\.(vbs|wsf|wsc)")
-'' ''    gen.SetScriptFolder = "../class"
-'' ''    gen.SetDocFolder = ".."
-'' '
-'' ''    gen.Generate
-'' ''    gen.View
-'' '
+'' ''
+'' ''    With New DocGenerator
+'' ''        .SetTitle = "Karl's VBScript documentation"
+'' ''        .SetDocName = "doc.html"
+'' ''        .SetFilesToDocument(".*\.(vbs|wsf|wsc)")
+'' ''        .SetScriptFolder = "../class"
+'' ''        .SetDocFolder = ".."
+'' ''
+'' ''        .Generate
+'' ''        .View
+'' ''    End With
+'
 '<h5> Example of well-formed comments before a Sub statement </h5>
 
 '' 'Method: SubName
@@ -41,6 +40,7 @@
 '-- lines without html will be wrapped with p tags <br />
 '-- lines with html will not be wrapped with p tags <br />
 '-- use a single quote by itself for an empty line <br />
+'-- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
 'Use two single quotes for code: the text will be wrapped with pre tags <br />
 'Use three single quotes for remarks that should not appear in the documentation <br />
 

@@ -26,6 +26,10 @@ With New TestingFramework
 
         .AssertEqual userEnv(varName), varValue
 
+    .it "should collapse a the user variable"
+
+        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
+
     .it "should remove a user variable"
 
         env.RemoveUserVar varName
@@ -46,14 +50,6 @@ With New TestingFramework
         env.RemoveProcessVar varName
 
         .AssertEqual proEnv(varName), ""
-
-    .it "should collapse a system variable"
-
-        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%UserProfile%\Dropbox")), "%drop%"
-
-    .it "should collapse a the user variable"
-
-        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%UserProfile%\Google Drive\g")), "%g%"
 
     .it "should expand an environment variable"
 

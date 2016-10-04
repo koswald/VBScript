@@ -6,7 +6,7 @@
 ''    With CreateObject("includer")
 ''        ExecuteGlobal(.read("VBSTestRunner"))
 ''    End With
-''
+'' 
 ''    With New VBSTestRunner
 ''        .SetSpecFolder "../spec"
 ''        .Run

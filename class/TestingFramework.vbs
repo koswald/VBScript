@@ -7,32 +7,28 @@
 ''        Execute(.read("VBSValidator")) 'ExecuteGlobal if this code is wrapped in a function, class, etc.
 ''        Execute(.read("TestingFramework"))
 ''    End With
-'
+'' 
 ''    Dim val : Set val = New VBSValidator 'Class Under Test
-'
+'' 
 ''    With New TestingFramework
-'
+'' 
 ''        .describe "VBSValidator class"
-'
+'' 
 ''        .it "should return False when IsBoolean is given a string"
-'
+'' 
 ''            .AssertEqual val.IsBoolean("sdfjke"), False
-'
+'' 
 ''        .it "should raise an error when EnsureBoolean is given a string"
-'
+'' 
 ''            Dim nonBool : nonBool = "a string"
-'
 ''            On Error Resume Next
-'
 ''                val.EnsureBoolean(nonBool)
-'
+'' 
 ''                .AssertErrorRaised
-'
+'' 
 ''                Dim errDescr : errDescr = Err.Description 'capture the error information
 ''                Dim errSrc : errSrc = Err.Source
-'
 ''            On Error Goto 0
-'
 ''    End With
 '
 
@@ -118,5 +114,8 @@ Class TestingFramework
 
     Sub Class_Terminate
         ShowPendingResult
+'        MsgBox "TestingFramework.vbs :: Class_Terminate" _
+'            , vbInformation _
+'            , WScript.ScriptName
     End Sub
 End Class

@@ -1,4 +1,6 @@
 
+'Test the VBSFileSystem class
+
 With CreateObject("includer")
     Execute(.read("VBSFileSystem"))
     Execute(.read("VBSNatives"))
@@ -34,11 +36,13 @@ With New TestingFramework
         .it "should make a folder"
 
             Dim folder : folder = sh.ExpandEnvironmentStrings("%temp%\" & fso.GetTempName)
+            Dim errMsg : errMsg = "Folder " & folder & " was not expected to exist."
+            If fso.FolderExists(folder) Then Err.Raise 1, WScript.ScriptName, errMsg
 
-            If fso.FolderExists(folder) Then Err.Raise 1, WScript.ScriptName, "Folder " & folder & " was not expected to exist because the name should be random."
             fs.MakeFolder(folder)
 
-            .AssertEqual True, fso.FolderExists(folder)
+            .AssertEqual fso.FolderExists(folder), True
+
             fso.DeleteFolder(folder)
 
 End With
