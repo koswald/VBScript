@@ -22,4 +22,4 @@ The scripts in the examples folder include a test runner and an example for usin
 
 ---
 
-See the [wiki](wiki)
+See the [wiki](../../wiki)
