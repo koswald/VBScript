@@ -1,4 +1,6 @@
 
+'Test the VBSArrays class
+
 With CreateObject("includer")
     Execute(.read("VBSArrays"))
     Execute(.read("TestingFramework"))

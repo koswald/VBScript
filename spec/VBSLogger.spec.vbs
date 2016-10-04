@@ -17,28 +17,26 @@ With New TestingFramework
 
     .it "should create a log folder"
 
-        'set the path create the log folder with a unique name
+        'set a custom log folder
 
-        Dim tempName : tempName = fs.fso.GetTempName
-        Dim testLogFolder : testLogFolder = "%UserProfile%\Desktop\" & tempName
-        log.SetLogFolder testLogFolder 'set the path and create the folder
+        Dim testLogFolder : testLogFolder = "%UserProfile%\Desktop\" & fs.fso.GetTempName
+        log.SetLogFolder testLogFolder
 
-        .AssertEqual True, fs.fso.FolderExists(fs.Expand(testLogFolder))
+        .AssertEqual fs.fso.FolderExists(fs.Expand(testLogFolder)), True
 
     .it "should expand environment variables in the log folder name"
 
         .AssertEqual log.GetLogFolder, fs.Expand(testLogFolder)
 
-
     .it "should create a log file name with date-stamped name"
 
-        Dim testDate : testDate = "September 21, 2000"
+        log.UpdateLogFilePath("September 21, 2000")
 
-        log.UpdateLogFilePath(testDate)
-        Dim expectedFileName : expectedFileName = "2000-09-21-Thu.txt"
+        .AssertEqual fs.fso.GetFileName(log.GetLogFilePath), "2000-09-21-Thu.txt"
 
-        .AssertEqual expectedFileName, fs.fso.GetFileName(log.GetLogFilePath)
 
-    fs.fso.DeleteFolder(fs.Expand(testLogFolder)) 'delete the temp folder
+    'delete the temp folder
+
+    fs.fso.DeleteFolder(fs.Expand(testLogFolder)) 
 
 End With
