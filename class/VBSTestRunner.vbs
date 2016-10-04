@@ -14,14 +14,12 @@
 '
 Class VBSTestRunner
 
-    Private syntax
     Private passing, failing, erring
     Private regex
     Private specFolder, fs, specPattern, specFile
     Private searchingSubfolders, specFileExists
 
     Sub Class_Initialize
-        syntax = "cscript TestRunner.vbs <specfile> | -regex <pattern> [-subfolders]"
         passing = 0
         failing = 0
         erring = 0
