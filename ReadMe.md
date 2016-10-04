@@ -19,3 +19,7 @@ Clone the repo and double-click the Setup.vbs file. This will register the requi
 ##### Examples
 
 The scripts in the examples folder include a test runner and an example for using the DocGenerator.
+
+---
+
+See the [[ wiki | wiki ]]
