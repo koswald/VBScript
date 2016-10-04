@@ -21,7 +21,7 @@
 ''            ExecuteGlobal(.read("VBSNatives"))
 ''        End With
 '
-'        Or just <code> Execute(.read ... </code> if the statement already has global scope
+'        Or just <code> Execute(.read("VBSNatives"))</code> if the statement already has global scope
 '
 '        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:
 '

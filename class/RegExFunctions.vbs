@@ -16,11 +16,22 @@ Class RegExFunctions
         SetTestString(vbNull)
     End Sub
 
+    '''Property re
+    '''Returns a reference to a RegExp object instance
+
+    Private Property Get re : Set re = oRE : End Property
+
+    'Method SetPattern
+    'Parameter: a regex pattern
+    'Remark: Sets the pattern of the RegExp object instance
+
     Sub SetPattern(pPattern) : oRE.pattern = pPattern : End Sub
+
+
+
     Sub SetTestString(pString) : testString = pString : End Sub
     Sub SetIgnoreCase(pBool) : oRE.IgnoreCase = v.EnsureBoolean(pBool, class_ & ".SetIgnoreCase") : End Sub
     Sub SetGlobal(pBool) : oRE.Global = v.EnsureBoolean(pBool, class_ & ".SetGlobal") : End Sub
-    Property Get re : Set re = oRE : End Property
 
     Property Get GetSubMatches
         Dim oMatch, oMatches

@@ -17,20 +17,21 @@
             <p>Auto-generate script documentation based on well-formed comments</p>
             <h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
             <pre> 'Usage Example</pre>
-            <p></p>
+            <pre> '</pre>
             <pre> ''    With CreateObject("includer")</pre>
             <pre> ''        ExecuteGlobal(.read("DocGenerator"))</pre>
             <pre> ''    End With</pre>
             <pre> ''    Dim gen : Set gen = New DocGenerator</pre>
+            <pre> '</pre>
             <pre> ''    gen.SetTitle = "Karl's VBScript documentation"</pre>
             <pre> ''    gen.SetDocName = "doc.html"</pre>
             <pre> ''    gen.SetFilesToDocument(".*\.(vbs|wsf|wsc)")</pre>
             <pre> ''    gen.SetScriptFolder = "../class"</pre>
             <pre> ''    gen.SetDocFolder = ".."</pre>
-            <pre></pre>
+            <pre> '</pre>
             <pre> ''    gen.Generate</pre>
             <pre> ''    gen.View</pre>
-            <p></p>
+            <pre> '</pre>
             <h5> Example of well-formed comments before a Sub statement </h5>
             <pre> 'Method: SubName</pre>
             <pre> 'Parameters: varName, varTyep</pre>
@@ -110,7 +111,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=1>includer</h4>
+         <h4 class="heading" id=1>Includer</h4>
          <div class="detail">
              Windows&reg Script Component <code> Includer.wsc </code>
             <p></p>
@@ -129,7 +130,7 @@
             <pre>            ExecuteGlobal(.read("VBSNatives"))</pre>
             <pre>        End With</pre>
             <p></p>
-                    Or just <code> Execute(.read ... </code> if the statement already has global scope
+                    Or just <code> Execute(.read("VBSNatives"))</code> if the statement already has global scope
             <p></p>
             <p>        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:</p>
             <p></p>
