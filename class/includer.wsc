@@ -1,14 +1,9 @@
 
 <?component error="true"?> <!-- <?component error="true"?> allows line numbers to display on error -->
 
-<scriptlet> <!--                   
+<scriptlet> <!--
 
-' Windows&reg Script Component <code> Includer.wsc </code>
-'
-'    <h5> Purpose </h5>
-
-'        A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies.
-'        Can be used in a .wsf or .vbs script.
+'A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies. Can be used in a .wsf or .vbs script.
 '
 '    <h5> How it works </h5>
 '
@@ -35,15 +30,15 @@
 '
 '    <h5> Registration </h5>
 '
-'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc </code> and selecting Register probably will not work.
+'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc</code> and selecting Register probably will not work.
 '
-'        Instead, 
+'        Instead,
 '        1) run the Setup.vbs in the project folder, or
 '        2) run the following command in a command window with elevated privileges
 '
 ''            regsvr32 &ltabsolute\path\to\the\file&gt\includer.wsc
-'           
-'''' 
+'
+''''
 -->
     <registration
         description="VBScript includer scriptlet by Karl Oswald"

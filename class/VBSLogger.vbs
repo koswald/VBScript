@@ -11,7 +11,7 @@
 '</fieldset>
 '<fieldset> <legend> Usage method one </legend>
 ''
-''    log "test two"
+''    log "test one"
 ''
 'This way has the advantage that the log doesn't remain open, allowing other scripts to write to the log.
 '</fieldset>
@@ -19,7 +19,7 @@
 '<fieldset> <legend> Usage method two </legend>
 ''
 ''    log.Open
-''    log.Write "test one"
+''    log.Write "test two"
 ''    log.Close
 ''
 'This way has the advantage that the name of the calling script is not written on each line of the log.
@@ -68,7 +68,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method SetLogFolder
     'Parameter: a folder path
-    'Remark: Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed.
+    'Remark: Optional. Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed. See GetDefaultLogFolder.
     Sub SetLogFolder(newLogFolder) 'set the log folder; create it if necesssary
         logFolder = fs.Expand(newLogFolder)
         If Not fs.MakeFolder(logFolder) Then Err.Raise 1, "VBSLogger.SetLogFolder", "Failed to create log folder " & logFolder
@@ -123,7 +123,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method SetViewer
     'Parameter: a filespec
-    'Remark: Customize the program that the View method uses to view log files
+    'Remark: Optional. Customize the program that the View method uses to view log files. Default: Notepad.
     Sub SetViewer(newViewer) : viewer = newViewer : End Sub
 
     'Method ViewFolder
@@ -146,7 +146,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Property GetLogFilePath
     'Returns a filespec
-    'Remark: Retreives the filespec for the log file.
+    'Remark: Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt
     Property Get GetLogFilePath : GetLogFilePath = logFile : End Property
 
     Sub Class_Terminate 'event fires when the logger instance goes out of scope or is Set to Nothing

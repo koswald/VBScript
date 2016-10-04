@@ -13,23 +13,24 @@
       <div>
          <h4 class="heading" id=0>DocGenerator</h4>
          <div class="detail">
-            <p>DocGenerator class (DocGenerator.vbs)</p>
             <p>Auto-generate script documentation based on well-formed comments</p>
             <h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
             <pre> 'Usage Example</pre>
-            <p></p>
+            <pre> '' </pre>
             <pre> ''    With CreateObject("includer")</pre>
             <pre> ''        ExecuteGlobal(.read("DocGenerator"))</pre>
             <pre> ''    End With</pre>
-            <pre> ''    Dim gen : Set gen = New DocGenerator</pre>
-            <pre> ''    gen.SetTitle = "Karl's VBScript documentation"</pre>
-            <pre> ''    gen.SetDocName = "doc.html"</pre>
-            <pre> ''    gen.SetFilesToDocument(".*\.(vbs|wsf|wsc)")</pre>
-            <pre> ''    gen.SetScriptFolder = "../class"</pre>
-            <pre> ''    gen.SetDocFolder = ".."</pre>
-            <pre></pre>
-            <pre> ''    gen.Generate</pre>
-            <pre> ''    gen.View</pre>
+            <pre> ''</pre>
+            <pre> ''    With New DocGenerator</pre>
+            <pre> ''        .SetTitle = "Karl's VBScript documentation"</pre>
+            <pre> ''        .SetDocName = "doc.html"</pre>
+            <pre> ''        .SetFilesToDocument(".*\.(vbs|wsf|wsc)")</pre>
+            <pre> ''        .SetScriptFolder = "../class"</pre>
+            <pre> ''        .SetDocFolder = ".."</pre>
+            <pre> ''</pre>
+            <pre> ''        .Generate</pre>
+            <pre> ''        .View</pre>
+            <pre> ''    End With</pre>
             <p></p>
             <h5> Example of well-formed comments before a Sub statement </h5>
             <pre> 'Method: SubName</pre>
@@ -44,6 +45,7 @@
             -- lines without html will be wrapped with p tags <br />
             -- lines with html will not be wrapped with p tags <br />
             -- use a single quote by itself for an empty line <br />
+            -- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
             Use two single quotes for code: the text will be wrapped with pre tags <br />
             Use three single quotes for remarks that should not appear in the documentation <br />
             <h5> Notes for when the script doesn't not contain a Class statement </h5>
@@ -110,13 +112,9 @@
       </div>
 
       <div>
-         <h4 class="heading" id=1>includer</h4>
+         <h4 class="heading" id=1>Includer</h4>
          <div class="detail">
-             Windows&reg Script Component <code> Includer.wsc </code>
-            <p></p>
-                <h5> Purpose </h5>
-            <p>        A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies.</p>
-            <p>        Can be used in a .wsf or .vbs script.</p>
+            <p>A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies. Can be used in a .wsf or .vbs script.</p>
             <p></p>
                 <h5> How it works </h5>
             <p></p>
@@ -142,14 +140,14 @@
             <p></p>
                 <h5> Registration </h5>
             <p></p>
-                    Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc </code> and selecting Register probably will not work.
+                    Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc</code> and selecting Register probably will not work.
             <p></p>
-            <p>        Instead, </p>
+            <p>        Instead,</p>
             <p>        1) run the Setup.vbs in the project folder, or</p>
             <p>        2) run the following command in a command window with elevated privileges</p>
             <p></p>
             <pre>            regsvr32 &ltabsolute\path\to\the\file&gt\includer.wsc</pre>
-            <p>           </p>
+            <p></p>
             <table>
                <tr>
                   <th>Routine type</th>
@@ -333,7 +331,7 @@
             <pre>        ExecuteGlobal(.read("SpecialFolders"))</pre>
             <pre>        ExecuteGlobal(.read("VBSNatives"))</pre>
             <pre>    End With</pre>
-            <p></p>
+            <pre> </pre>
             <pre>    Dim sp : Set sp = New SpecialFolders</pre>
             <pre>    Dim n : Set n = New VBSNatives</pre>
             <pre>    MsgBox n.shell.SpecialFolders(sp.Desktop)</pre>
@@ -376,32 +374,28 @@
             <pre>        Execute(.read("VBSValidator")) 'ExecuteGlobal if this code is wrapped in a function, class, etc.</pre>
             <pre>        Execute(.read("TestingFramework"))</pre>
             <pre>    End With</pre>
-            <p></p>
+            <pre> </pre>
             <pre>    Dim val : Set val = New VBSValidator 'Class Under Test</pre>
-            <p></p>
+            <pre> </pre>
             <pre>    With New TestingFramework</pre>
-            <p></p>
+            <pre> </pre>
             <pre>        .describe "VBSValidator class"</pre>
-            <p></p>
+            <pre> </pre>
             <pre>        .it "should return False when IsBoolean is given a string"</pre>
-            <p></p>
+            <pre> </pre>
             <pre>            .AssertEqual val.IsBoolean("sdfjke"), False</pre>
-            <p></p>
+            <pre> </pre>
             <pre>        .it "should raise an error when EnsureBoolean is given a string"</pre>
-            <p></p>
+            <pre> </pre>
             <pre>            Dim nonBool : nonBool = "a string"</pre>
-            <p></p>
             <pre>            On Error Resume Next</pre>
-            <p></p>
             <pre>                val.EnsureBoolean(nonBool)</pre>
-            <p></p>
+            <pre> </pre>
             <pre>                .AssertErrorRaised</pre>
-            <p></p>
+            <pre> </pre>
             <pre>                Dim errDescr : errDescr = Err.Description 'capture the error information</pre>
             <pre>                Dim errSrc : errSrc = Err.Source</pre>
-            <p></p>
             <pre>            On Error Goto 0</pre>
-            <p></p>
             <pre>    End With</pre>
             <p></p>
             <table>
@@ -866,14 +860,14 @@
             </fieldset>
             <fieldset> <legend> Usage method one </legend>
             <pre></pre>
-            <pre>    log "test two"</pre>
+            <pre>    log "test one"</pre>
             <pre></pre>
             <p>This way has the advantage that the log doesn't remain open, allowing other scripts to write to the log.</p>
             </fieldset>
             <fieldset> <legend> Usage method two </legend>
             <pre></pre>
             <pre>    log.Open</pre>
-            <pre>    log.Write "test one"</pre>
+            <pre>    log.Write "test two"</pre>
             <pre>    log.Close</pre>
             <pre></pre>
             <p>This way has the advantage that the name of the calling script is not written on each line of the log.</p>
@@ -898,7 +892,7 @@
                   <td>SetLogFolder</td>
                   <td>a folder path</td>
                   <td>N/A</td>
-                  <td>Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed.</td>
+                  <td>Optional. Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed. See GetDefaultLogFolder.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -933,7 +927,7 @@
                   <td>SetViewer</td>
                   <td>a filespec</td>
                   <td>N/A</td>
-                  <td>Customize the program that the View method uses to view log files</td>
+                  <td>Optional. Customize the program that the View method uses to view log files. Default: Notepad.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -961,7 +955,7 @@
                   <td>GetLogFilePath</td>
                   <td>None</td>
                   <td>a filespec</td>
-                  <td>Retreives the filespec for the log file.</td>
+                  <td>Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt</td>
                </tr>
             </table>
          </div>
@@ -1048,7 +1042,7 @@
             <pre>    With CreateObject("includer")</pre>
             <pre>        ExecuteGlobal(.read("VBSTestRunner"))</pre>
             <pre>    End With</pre>
-            <pre></pre>
+            <pre> </pre>
             <pre>    With New VBSTestRunner</pre>
             <pre>        .SetSpecFolder "../spec"</pre>
             <pre>        .Run</pre>

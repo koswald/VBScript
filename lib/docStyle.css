@@ -3,13 +3,15 @@ body {
     padding-top: 1em;
     padding-left: 1em;
 }
+h5 {
+    font-style: italic;
+}
 .detail {
     display: none;
 }
 .heading:hover {
     text-decoration: underline;
-    cursor: default; /* c. becomes neither a pointer nor a text selector*/
-
+    cursor: default; /* c. becomes neither a pointer nor a text selector */
 }
 a {
     text-decoration: none;
