@@ -65,10 +65,8 @@ Class TestingFramework
 
     Private Sub ShowPendingResult
         If Not resultPending Then Exit Sub
-        If pass = result Then
-            WriteLine result & T & spec
-        ElseIf fail = result Then
-            WriteLine result & T & spec
+        WriteLine result & T & spec
+        If fail = result Then
             If Len(explanation) Then WriteLine "========> " & explanation
         End If
         SetResultPending False

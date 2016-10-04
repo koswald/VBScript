@@ -10,10 +10,11 @@ Sub Main
         ExecuteGlobal(.read("VBSHoster"))
     End With
 
-    'restart this script, if necessary, hosted with cscript.exe
-    'if restarting, opens in a new window
-
     With New VBSHoster
+
+        'restart this script, if necessary, hosted with cscript.exe
+        'if restarting, opens in a new window
+
         .EnsureCScriptHost
     End With
 
@@ -22,7 +23,8 @@ Sub Main
     With WScript.Arguments
         If .Count Then
 
-            'spec file is a file or a relative path/file, relative to the spec folder
+            'if it is desired to run just a single test file, pass it in on the 
+            'command line, using a relative path, relative to the spec folder
 
             testRunner.SetSpecFile .item(0)
         End If
