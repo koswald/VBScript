@@ -24,9 +24,28 @@ Class VBSFileSystem
     Property Get args : Set args = a : End Property
     Property Get a : Set a = n.a : End Property
 
+    'Property SName
+    'Returns a file name
+    'Remark: Returns the name of the calling script, including file name extension
+
     Property Get SName : SName = WScript.ScriptName : End Property 'script name; i.e. the name of the calling script
+
+    'Property SFullName
+    'Returns a filespec
+    'Remark: Returns the filespec of the calling script
+
     Property Get SFullName : SFullName = WScript.ScriptFullName : End Property 'script filespec (with path)
+
+    'Property SBaseName
+    'Returns a file name, no extension
+    'Remark: Returns the name of the calling script, without the file name extension.
+
     Property Get SBaseName : SBaseName = fso.GetBaseName(SName) : End Property 'script name without filename extension
+
+    'Property SFolderName
+    'Returns a folder
+    'Remark: Returns the parent folder of the calling script.
+
     Property Get SFolderName : SFolderName = Parent(SFullName) : End Property 'script's folder
 
     Property Get m : Set m = oVBSMessages : End Property
@@ -34,8 +53,9 @@ Class VBSFileSystem
 
     'Function MakeFolder
     'Parameter: a path
-    'Returns False if the folder could not be created.
-    'Remark Create a folder, and if necessary create also its parent, grandparent, etc.
+    'Returns a boolean
+    'Remark: Create a folder, and if necessary create also its parent, grandparent, etc. Returns False if the folder could not be created.
+
     Function MakeFolder(sFolder)
         MakeFolder = True
 
@@ -47,9 +67,10 @@ Class VBSFileSystem
     End Function
 
     'Property Parent
-    'Parameter: a string representing a folder or file or registry key
-    'Returns the parent of the folder or file or registry key, or removes a trailing backslash
-    'Remark: The parent need not exist.
+    'Parameter: a folder, file, or registry key
+    'Returns the item's parent
+    'Remark: Returns the parent of the folder or file or registry key, or removes a trailing backslash. The parent need not exist.
+
     Function Parent(string)
         If 0 = InStr(string, "\") Then Parent = "" : Exit Function
         Parent = Left(string, InStrRev(string, "\") - 1)
@@ -64,6 +85,7 @@ Class VBSFileSystem
     'Method SetReferencePath
     'Parameter: a path
     'Remark: Call this method, if desired, before calling the property Resolve in order specify the base path against which relative paths should be referenced from. By default, the reference path is the parent folder of the calling script.
+
     Sub SetReferencePath(newPath) : referencePath = newPath : End Sub
     Property Get GetReferencePath : GetReferencePath = referencePath : End Property
 
@@ -71,6 +93,7 @@ Class VBSFileSystem
     'Returns a resolved path
     'Parameter: a relative path
     'Remark: Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changed with SetReferencePath. See also property ResolveTo.
+
     Function Resolve(path)
         SaveCurrentDirectory
         sh.CurrentDirectory = referencePath 'in case the path is relative, set the reference folder for .GetAbsolutePathName
@@ -82,6 +105,7 @@ Class VBSFileSystem
     'Returns a resolved path
     'Parameter: relativePath, absolutePath
     'Remark: Resolves the specified relative path, e.g. "../lib/WMI.vbs", relative to the specified absolute path, and returns the resolved absolute path, e.g. "C:\Users\user42\lib\WMI.vbs". Environment variables are allowed.
+
     Function ResolveTo(relativePath, absolutePath)
         SaveReferencePath
         SetReferencePath Expand(absolutePath) 'in case the path is relative, set the reference folder for .GetAbsolutePathName
@@ -93,11 +117,13 @@ Class VBSFileSystem
     'Returns an expanded string
     'Parameter: a string
     'Remark: Expands environment strings. E.g. %WinDir% => C:\Windows
+
     Property Get Expand(str) : Expand = sh.ExpandEnvironmentStrings(str) : End Property
 
     'Method Elevate
     'Parameters: command, arguments, folder
     'Remarks: Runs the specified command with elevated privileges, with the specified arguments and working folder
+
     Sub Elevate(cmd, args_, workingFolder)
         n.sa.ShellExecute fs.Expand(cmd), fs.Expand(args_), fs.Expand(workingFolder), "runas"
     End Sub

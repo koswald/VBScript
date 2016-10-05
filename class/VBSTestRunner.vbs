@@ -42,7 +42,7 @@ Class VBSTestRunner
 
     'Method SetSpecFolder
     'Parameter a folder
-    'Remark Specifies the folder containing the test files. Can be a relative path, relative to the calling script.
+    'Remark: Optional. Specifies the folder containing the test files. Can be a relative path, relative to the calling script. Default is the parent folder of the calling script.
 
     Sub SetSpecFolder(newSpecFolder)
         specFolder = fs.Resolve(newSpecFolder)
@@ -50,7 +50,7 @@ Class VBSTestRunner
 
     'Method SetSpecPattern
     'Parameter a regular expression
-    'Remark Specifies which file types to run. Default is .*\.spec\.vbs
+    'Remark Optional. Specifies which file types to run. Default is .*\.spec\.vbs
 
     Sub SetSpecPattern(newSpecPattern)
         specPattern = newSpecPattern
@@ -58,7 +58,7 @@ Class VBSTestRunner
 
     'Method SetSpecFile
     'Parameter: a single file name / relative path
-    'Remark Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run.
+    'Remark Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run. See SetSpecPattern.
 
     Sub SetSpecFile(newSpecFile)
         specFile = newSpecFile
@@ -66,7 +66,7 @@ Class VBSTestRunner
 
     'Method SetSearchSubfolders
     'Parameter: a boolean
-    'Remark: Specifies whether to search subfolders for test files. True or False.
+    'Remark: Optional. Specifies whether to search subfolders for test files. True or False. Default is False.
 
     Sub SetSearchSubfolders(newSearchingSubfolders)
         searchingSubfolders = newSearchingSubfolders
@@ -75,7 +75,7 @@ Class VBSTestRunner
     Private Sub ValidateSettings
         Dim msg
 
-        msg = "An existing spec folder must be set using SetSpecFolder. A relative path is fine, relative to the calling script's folder, " & fs.Parent(fs.SFullName)
+        msg = "An existing spec folder must be set using SetSpecFolder. A relative path is fine, relative to the calling script's folder, " & fs.SFolderName
 
         If Not fs.fso.FolderExists(specFolder) Then Err.Raise 1, fs.SName, msg
 
