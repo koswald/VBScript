@@ -67,8 +67,8 @@ Class RegExFunctions
 
     'Property GetSubMatches
     'Returns an object
-    'Remark: Returns the RegExp SubMatches object for the specified pattern and test string. The matches can be accessed with a For Each loop. See general usage comments. You must handle errors in case there are no matches.
-    'TODO: This is unwieldy. It would be better to return an array of strings, because a zero-length array could be more easily handled.
+    'Remark: Returns the RegExp SubMatches object for the specified pattern and test string. The matches can be accessed with a For Each loop. See general usage comments. Work in progress. You must handle errors in case there are no matches.
+    'TODO: This is unwieldy. It would be better to return an array of strings, because a zero-length array could be more easily handled (?).
 
     Property Get GetSubMatches
         On Error Resume Next
@@ -84,6 +84,10 @@ Class RegExFunctions
         If vbNull = oRE.pattern Then Err.Raise 2, funct, "RegEx pattern was not set: use SetPattern()"
         If vbNull = testString Then Err.Raise 3, funct, "RegEx test string was not set: use SetTestString()"
     End Sub
+
+    'Function FirstMatch
+    'Returns a string
+    'Remark: Regarding the string specified by SetTestString, returns the first substring in the string that matches the regex pattern specified by SetPattern.
 
     Function FirstMatch
         EnsureInitialized

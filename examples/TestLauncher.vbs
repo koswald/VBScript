@@ -1,10 +1,9 @@
 
 'Launch the test runner
 
+Option Explicit
 Main
-
 Sub Main
-
     With CreateObject("includer")
         ExecuteGlobal(.read("VBSTestRunner"))
         ExecuteGlobal(.read("VBSHoster"))
@@ -30,9 +29,12 @@ Sub Main
         End If
     End With
 
-    'the spec folder contains the test files; path is relative to this script
+    'specify the folder containing the tests; path is relative to this script
 
     testRunner.SetSpecFolder "../spec"
+
+    'run the tests
+
     testRunner.Run
 
 End Sub

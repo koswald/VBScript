@@ -36,7 +36,7 @@
 '        1) run the Setup.vbs in the project folder, or
 '        2) run the following command in a command window with elevated privileges
 '
-''            regsvr32 &ltabsolute\path\to\the\file&gt\includer.wsc
+''            regsvr32 &lt;absolute\path\to\the\file&gt;\includer.wsc
 '
 ''''
 -->
@@ -66,13 +66,13 @@
 
         Dim n, oStreamConstants, StreamFormat
         Dim relativePath, savedCurrentDirectory
-        
+
         InitializeMembers
-        
+
         Function c : Set c = oStreamConstants : End Function
-        
+
         Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
-        
+
         Private Sub InitializeMembers
             Set n = New VBSNatives 'objects native to VBScript
             Set oStreamConstants = New StreamConstants
@@ -84,47 +84,47 @@
             Dim thisFile : thisFile = reg.GetStringValue(reg.HKLM, subKey, "") 'get path to this scriptlet from the registry
             thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
             relativePath = n.fso.GetParentFolderName(thisFile)
-            SetFormat c.tbAscii 
+            SetFormat c.tbAscii
         End Sub
-        
+
         'Function Read
         'Parameter: a file
-        'Return the contents of a file
+        'Return the file contents
         'Remark: The file may be specified as a relative path, relative to the folder where this .wsc file resides. The file name extension may be omitted for .vbs files.
-        
+
         Function Read(file)
-            
+
             'Expect Ascii and Unicode file formats to be mixed together in the script library...
-            
+
             'Read the requested file and attempt to execute it, then check
             'if there was an error; if so, try another stream format, e.g. Unicode.
-            'Executing well-encapsulated trusted code here should have little impact, 
+            'Executing well-encapsulated trusted code here should have little impact,
             'and the calling script will still need to do an Execute or ExecuteGlobal.
-            
+
             On Error Resume Next
                 Read = PrivateRead(file)
                 Execute(Read)
-                If Err Then 
-                    ToggleFormat 
+                If Err Then
+                    ToggleFormat
                 Else
                     Exit Function
                 End If
             Err.Clear
                 Read = PrivateRead(file)
                 Execute(Read)
-                If Err Then 
-                    ToggleFormat 
-                Else 
+                If Err Then
+                    ToggleFormat
+                Else
                     Exit Function
                 End If
             Err.Clear
                 Read = PrivateRead(file)
             On Error Goto 0
         End Function
-        
+
         Private Sub ToggleFormat
             If StreamFormat = c.tbAscii Then
-                SetFormat c.tbUnicode 
+                SetFormat c.tbUnicode
             ElseIf StreamFormat = c.tbUnicode Then
                 SetFormat c.tbSystemDefault
             ElseIf StreamFormat = c.tbSystemDefault Then
@@ -154,13 +154,13 @@
         Private Function Resolve(path)
             SaveCurrentDirectory
             n.sh.CurrentDirectory = relativePath  'set the reference folder relative paths
-            
+
             Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
             RestoreCurrentDirectory
         End Function
 
         Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
         Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
-        
+
     </script>
 </scriptlet>

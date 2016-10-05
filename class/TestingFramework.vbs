@@ -1,5 +1,5 @@
 
-'A lightweight VBScript testing framework, using VBScript
+'A lightweight testing framework
 
 'Usage example
 '

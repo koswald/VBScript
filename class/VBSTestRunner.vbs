@@ -19,8 +19,9 @@ Class VBSTestRunner
 
     Private passing, failing, erring, foundTestFiles
     Private regex
-    Private specFolder, fs, specPattern, specFile
-    Private searchingSubfolders, specFileExists
+    Private fs
+    Private specFolder, specPattern, specFile
+    Private searchingSubfolders
 
     Sub Class_Initialize
         passing = 0
