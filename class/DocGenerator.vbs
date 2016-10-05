@@ -106,7 +106,7 @@ Class DocGenerator
 
     Private Sub InitializeLiterals
 
-        'patterns that identify lines commented out in the code
+        'regex patterns that identify lines commented out in the code
 
         methodPattern     = "^\s*'\s*Method\s*:?\s*(.*)\s*$"
         propertyPattern   = "^\s*'\s*(?:Property|Function)\s*:?\s*(.*)\s*$"
@@ -159,26 +159,31 @@ Class DocGenerator
     'Method SetScriptFolder
     'Parameter: a folder
     'Remark: Required. Must be set before calling the Generate method. Sets the folder containing the scripts to include in the generated documentation. Environment variables OK. Relative paths OK.
+
     Sub SetScriptFolder(newScriptFolder) : scriptFolder = fs.Resolve(newScriptFolder) : End Sub
 
     'Method SetDocFolder
     'Parameter: a folder
     'Remark: Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK.
+
     Sub SetDocFolder(newDocFolder) : docFolder = fs.Resolve(newDocFolder) : End Sub
 
     'Method SetDocName
     'Parameter: a filename
     'Remark: Required. Must be set before calling the Generate method. Specifies the name of the documentation file, including the filename extension (.html suggested).
+
     Sub SetDocName(newDocName) : docName = newDocName : End Sub
 
     'Method SetTitle
     'Parameter: a string
     'Remark: Required. Must be set before calling the Generate method. Sets the title for the documentation.
+
     Sub SetTitle(newDocTitle) : docTitle = newDocTitle : End Sub
 
     'Method SetFilesToDocument
     'Parameter: A regular expression
     'Remark: Optional. Specifies which files to document: default is <strong> .*\.vbs </strong>
+
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = newFilesToDocument : End Sub
 
     Private Sub ValidateConfiguration
@@ -205,6 +210,7 @@ Class DocGenerator
 
     'Method Generate
     'Remark: Generate the docs for the scripts in the specified folder. The doc file will be located in the same folder as the calling script.
+
     Sub Generate
 
         ValidateConfiguration
@@ -224,6 +230,7 @@ Class DocGenerator
 
     'Method View
     'Remark: Open the documentation file for viewing
+
     Sub View
         fs.sh.Run docFile
     End Sub

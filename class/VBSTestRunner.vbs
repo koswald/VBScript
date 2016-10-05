@@ -14,7 +14,7 @@
 '
 Class VBSTestRunner
 
-    Private passing, failing, erring
+    Private passing, failing, erring, foundTestFiles
     Private regex
     Private specFolder, fs, specPattern, specFile
     Private searchingSubfolders, specFileExists
@@ -23,6 +23,7 @@ Class VBSTestRunner
         passing = 0
         failing = 0
         erring = 0
+        foundTestFiles = 0
         With CreateObject("includer")
             ExecuteGlobal(.read("VBSFileSystem"))
         End With
@@ -36,9 +37,11 @@ Class VBSTestRunner
     Private Property Get GetPassing : GetPassing = passing : End Property
     Private Property Get GetFailing : GetFailing = failing : End Property
     Private Property Get GetErring : GetErring = erring : End Property
+    Private Property Get GetSpecFiles : GetSpecFiles = foundTestFiles : End Property
     Private Sub IncrementFailing : failing = 1 + failing : End Sub
     Private Sub IncrementPassing : passing = 1 + passing : End Sub
     Private Sub IncrementErring : erring = 1 + erring : End Sub
+    Private Sub IncrementSpecFiles : foundTestFiles = 1 + foundTestFiles : End Sub
 
     'Method SetSpecFolder
     'Parameter a folder
@@ -72,14 +75,16 @@ Class VBSTestRunner
         searchingSubfolders = newSearchingSubfolders
     End Sub
 
+    'Ensure that the specified settings are valid
+
     Private Sub ValidateSettings
         Dim msg
 
-        msg = "An existing spec folder must be set using SetSpecFolder. A relative path is fine, relative to the calling script's folder, " & fs.SFolderName
+        msg = "The folder specified using SetSpecFolder must exist. A relative path is fine, relative to the calling script's folder, " & fs.SFolderName
 
         If Not fs.fso.FolderExists(specFolder) Then Err.Raise 1, fs.SName, msg
 
-        msg = "The file set with SetSpecFile, " & specFile & ", must exist. A relative path is fine, relative to the spec folder, " & specFolder
+        msg = "Wnen SetSpecFile is used to specify a single spec file, the file specified (" & specFile & ") must exist. A relative path is fine, relative to the spec folder, " & specFolder
 
         If Not "" = specFile Then
             If Not fs.fso.FileExists(fs.ResolveTo(specFile, specFolder)) Then Err.Raise 1, fs.SName, msg
@@ -93,28 +98,29 @@ Class VBSTestRunner
 
         ValidateSettings
 
-        Set regex = New RegExp
-        regex.IgnoreCase = True
+        'run the test(s)
 
-        'determine the test configuration and initiate the test(s)
-
-        If Not "" = specFile Then
-            'the specFile path is resolved relative to the specFolder, not the calling script's folder
+        If Len(specFile) Then
             RunTest fs.ResolveTo(specFile, specFolder)
         Else
+            Set regex = New RegExp
+            regex.IgnoreCase = True
             regex.Pattern = specPattern
             ProcessFiles fs.fso.GetFolder(specFolder)
         End If
 
-        'write result summary
+        'write the result summary
 
         If GetErring Then
-            Write_ GetErring & " erring, "
+            Write_ GetErring & " erring files, "
         End If
         If GetFailing Then
-            Write_ GetFailing & " failing, "
+            Write_ GetFailing & " failing specs, "
         End If
-        Write_ GetPassing & " passing"
+        If GetPassing Then
+            Write_ GetPassing & " passing specs; "
+        End If
+        Write_ GetSpecFiles & " test files"
 
     End Sub 'Run
 
@@ -133,7 +139,10 @@ Class VBSTestRunner
 
             'if the file is a test/spec file, then run it
 
-            If regex.Test(File.Name) Then RunTest File.Path
+            If regex.Test(File.Name) Then
+                IncrementSpecFiles
+                RunTest File.Path
+            End If
         Next
     End Sub
 

@@ -24,6 +24,12 @@ Class VBSFileSystem
     Property Get args : Set args = a : End Property
     Property Get a : Set a = n.a : End Property
 
+    'Property SBaseName
+    'Returns a file name, no extension
+    'Remark: Returns the name of the calling script, without the file name extension.
+
+    Property Get SBaseName : SBaseName = fso.GetBaseName(SName) : End Property 'script name without filename extension
+
     'Property SName
     'Returns a file name
     'Remark: Returns the name of the calling script, including file name extension
@@ -35,12 +41,6 @@ Class VBSFileSystem
     'Remark: Returns the filespec of the calling script
 
     Property Get SFullName : SFullName = WScript.ScriptFullName : End Property 'script filespec (with path)
-
-    'Property SBaseName
-    'Returns a file name, no extension
-    'Remark: Returns the name of the calling script, without the file name extension.
-
-    Property Get SBaseName : SBaseName = fso.GetBaseName(SName) : End Property 'script name without filename extension
 
     'Property SFolderName
     'Returns a folder
