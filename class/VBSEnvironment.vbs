@@ -29,7 +29,7 @@ Class VBSEnvironment
 
     'Function Expand
     'Parameter: a string
-    'Returns a string with environment variables expanded
+    'Returns a string
     'Remark: Expands environment variable(s); e.g. convert %UserProfile% to C:\Users\user42
 
     Function Expand(string_)
@@ -38,8 +38,9 @@ Class VBSEnvironment
 
     'Property: Collapse
     'Parameters: a string
-    'Returns: a string with environment variables collapsed
+    'Returns: a string
     'Remark: Collapses a string that may contain one or more substrings that can be shortened to an environment variable.
+
     Function Collapse(str)
 
         Dim varName, s : s = str
@@ -57,6 +58,7 @@ Class VBSEnvironment
     'Method: CreateUserVar
     'Parameters: varName, varValue
     'Remarks: Create or set a user environment variable
+
     Sub CreateUserVar(varName, varValue)
         userEnv(varName) = varValue
     End Sub
@@ -64,16 +66,20 @@ Class VBSEnvironment
     'Method: SetUserVar
     'Parameters: varName, varValue
     'Remarks: Set or create a user environment variable
+
     Sub SetUserVar(varName, varValue) : CreateUserVar varName, varValue : End Sub
 
     'Property GetUserVar
-    'Parameter: varName
-    'Returns the value of the specified user environment variable
+    'Parameter: a variable name
+    'Returns the variable value
+    'Remark: Returns the value of the specified user environment variable
+
     Property Get GetUserVar(varName) : GetUserVar = userEnv(varName) : End Property
 
     'Method RemoveUserVar
     'Parameter: varName
     'Remark: Removes a user environment variable
+
     Sub RemoveUserVar(varName)
         userEnv.remove varName
     End Sub
@@ -81,6 +87,7 @@ Class VBSEnvironment
     'Method: CreateProcessVar
     'Parameters: varName, varValue
     'Remarks: Create a (temporary) process variable
+
     Sub CreateProcessVar(varName, varValue)
         proEnv(varName) = varValue
     End Sub
@@ -88,19 +95,27 @@ Class VBSEnvironment
     'Method: SetProcessVar
     'Parameters: varName, varValue
     'Remarks: Sets or creates a (temporary) process environment variable
+
     Sub SetProcessVar(varName, varValue) : CreateProcessVar varName, varValue : End Sub
 
     'Property GetProcessVar
     'Parameter: varName
-    'Returns the value of the specified environment variable
+    'Returns: the variable value
+    'Remark: Returns the value of the specified environment variable
+
     Property Get GetProcessVar(varName) : GetProcessVar = proEnv(varName) : End Property
 
     'Method RemoveProcessVar
     'Parameter: varName
     'Remark: Removes the specified process environment variable
+
     Sub RemoveProcessVar(varName)
         proEnv.remove varName
     End Sub
+
+    'Property GetDefaults
+    'Returns an array
+    'Remark: Returns an array of common environment variables pre-installed with some versions of Windows&reg. Not exhaustive.
 
     Property Get GetDefaults 'variables that often come pre-installed with Windows
         GetDefaults = Array( _
@@ -117,7 +132,7 @@ Class VBSEnvironment
 	        "ProgramW6432", "ConfigSetRoot" )
     End Property
 
-    Function IsADefault(name)
+    Private Function IsADefault(name)
         Dim i
         For i = 0 To UBound(defaults)
             If LCase(defaults(i)) = LCase(name) Then

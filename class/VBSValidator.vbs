@@ -7,6 +7,7 @@ Class VBSValidator
     'Parameter a boolean candidate
     'Returns a boolean
     'Remark: Returns True if the parameter is a boolean subtype; False if not.
+
     Function IsBoolean(pBool)
         If vbBoolean = VarType(pBool) Then
             IsBoolean = True
@@ -18,6 +19,7 @@ Class VBSValidator
     'Method EnsureBoolean
     'Parameter a boolean candidate
     'Remark: Raises an error if the parameter is not a boolean
+
     Sub EnsureBoolean(pBool)
         If Not IsBoolean(pBool) Then
             Err.Raise 1, GetClassName, WScript.ScriptName & ": " & CStr(pBool) & ErrDescrBool
@@ -28,6 +30,7 @@ Class VBSValidator
     'Parameter: an integer candidate
     'Returns a boolean
     'Remark: Returns True if the parameter is an integer subtype; False if not.
+
     Function IsInteger(pInt)
         If vbInteger = VarType(pInt) Then
             IsInteger = True
@@ -39,6 +42,7 @@ Class VBSValidator
     'Method EnsureInteger
     'Parameter: an integer candidate
     'Remark: Raises an error if the parameter is not an integer
+
     Sub EnsureInteger(pInt)
         If Not IsInteger(pInt) Then
             Err.Raise 1, GetClassName, WScript.ScriptName & ": " & CStr(pInt) & ErrDescrInt
@@ -48,16 +52,19 @@ Class VBSValidator
     'Property ErrDescrBool
     'Returns a string
     'Remark:                                   " is not a boolean." Useful for verifying Err.Description in a unit test.
+
     Property Get ErrDescrBool : ErrDescrBool = " is not a boolean." : End Property
 
     'Property ErrDescrInt
     'Returns a string
     'Remark:                                 " is not an integer." Useful for verifying Err.Description in a unit test.
+
     Property Get ErrDescrInt : ErrDescrInt = " is not an integer." : End Property
 
     'Property GetClassName
     'Returns the class name
     'Remark:                                   "VBSValidator". Useful for verifying Err.Source in a unit test.
+
     Property Get GetClassName : GetClassName = "VBSValidator" : End Property
 
 End Class

@@ -1,7 +1,10 @@
 
 Class VBSArrays
 
-    'Return an array with no duplicate items, given an array that may have some
+    'Function Uniques
+    'Parameter: an array
+    'Returns an array
+    'Remark: Returns an array with no duplicate items, given an array that may have some.
 
     Function Uniques(arr)
         Dim i, s

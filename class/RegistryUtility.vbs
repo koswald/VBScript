@@ -18,6 +18,7 @@ Class RegistryUtility
     'Parameters: rootKey, subKey, valueName
     'Returns the value of the specified registry entry.
     'Remark: The specified registry entry must be of type string (REG_SZ). <p>Set valueName to vbEmpty or "" to retrieve the default value.</p> For rootKey, use Property HKLM or HKCU.
+
     Function GetStringValue(rootKey, subKey, valueName)
         reg.GetStringValue rootKey, subKey, valueName, value
         GetStringValue = value
@@ -26,6 +27,7 @@ Class RegistryUtility
     'Method SetStringValue
     'Parameters: rootKey, subKey, valueName, value
     'Remark: The specified registry entry must be of type string (REG_SZ). <p>Requires elevated privileges when used with HKLM.</p> Set valueName to vbEmpty or "" for setting the default value. <br /><br />For rootKey, use Property HKLM or HKCU.
+
     Sub SetStringValue(rootKey, subKey, valueName, value)
         reg.SetStringValue rootKey, subKey, valueName, value
     End Sub
@@ -33,11 +35,13 @@ Class RegistryUtility
     'Property HKLM
     'Returns &H80000002
     'Remark: Represents HKEY_LOCAL_MACHINE. For use with the rootKey parameter.
+
     Property Get HKLM : HKLM = &H80000002 : End Property
 
     'Property HKCU
     'Returns &H80000001
     'Remark: Represents HKEY_CURRENT_USER. For use with the rootKey parameter.
+
     Property Get HKCU : HKCU = &H80000001 : End Property
 
     Private Property Get GetWmiRegToken
@@ -47,6 +51,7 @@ Class RegistryUtility
     'Method SetPC
     'Parameter: a computer name
     'Remark: A dot (.) can be used for the local computer (default), in place of the computer name.
+
     Sub SetPC(newPC)
         pc = newPC
         Set oStdRegProv = GetObject(GetWmiRegToken)

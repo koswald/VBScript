@@ -20,11 +20,13 @@ Class VBSExtracter
     'Method SetPattern
     'Parameter: a regex pattern
     'Remark: Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  |</strong> must preceed the special character with a <strong>\</strong>
+
     Sub SetPattern(pStr) : re.SetPattern(pStr) : End Sub
 
     'Method SetFile
     'Parameter: filespec
     'Remark: Specifies the file to extract text from
+
     Sub SetFile(pFile) : file = fs.Expand(pFile) : End Sub
 
 
@@ -33,6 +35,7 @@ Class VBSExtracter
     'Method SetIgnoreCase
     'Parameter: a boolean
     'Remark: Set whether to ignore case when matching text (default=False)
+
     Sub SetIgnoreCase(pBool) : re.SetIgnoreCase(pBool) : End Sub
 
     'Sub SetGlobal(pBool) : re.SetGlobal(pBool) : End Sub
@@ -68,6 +71,7 @@ Class VBSExtracter
     'Property Extract
     'Returns the first string found in the specified file matching the specified pattern
     'Remark: Before calling this method, you must specify the file and the pattern
+
     Function Extract 'return the string that matches the regex pattern, or "" if no match
         Extract = ""
         EnsureInitialized

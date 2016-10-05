@@ -60,6 +60,7 @@ Class VBSLogger 'Logger for use in VBScript files
     'Method Log
     'Parameter: a string
     'Remark: Opens the log file, writes the specified string, then closes the log file. This is the default method for the VBSLogger class.
+
     Public Default Sub Log(msg) 'open the log file for appending, write the message, and then close the text stream
         PrivateOpen
         stream.WriteLine(dt.GetFormattedTime(Now) & " - " & WScript.ScriptName & " - " & msg)
@@ -69,6 +70,7 @@ Class VBSLogger 'Logger for use in VBScript files
     'Method SetLogFolder
     'Parameter: a folder path
     'Remark: Optional. Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed. See GetDefaultLogFolder.
+
     Sub SetLogFolder(newLogFolder) 'set the log folder; create it if necesssary
         logFolder = fs.Expand(newLogFolder)
         If Not fs.MakeFolder(logFolder) Then Err.Raise 1, "VBSLogger.SetLogFolder", "Failed to create log folder " & logFolder
@@ -89,6 +91,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method Open
     'Remark: Opens the log file for writing. The log file is opened and remains open for writing. While it is open, other processes/scripts will be unable to write to it.
+
     Sub Open
         PrivateOpen
         stream.WriteLine(dt.GetFormattedTime(Now) & " - log opened by " & WScript.ScriptName)
@@ -97,12 +100,14 @@ Class VBSLogger 'Logger for use in VBScript files
     'Method Write
     'Parameter: a string
     'Remark: Writes the specified string to the log file.
+
     Sub Write(msg) 'write to the log with timestamp
         stream.WriteLine(dt.GetFormattedTime(Now) & " - " & msg)
     End Sub
 
     'Method Close
     'Remark: Closes the log file text stream, enabling other process to write to it.
+
     Sub Close
         stream.WriteLine(dt.GetFormattedTime(Now) & " - log closed by " & WScript.ScriptName)
         PrivateClose
@@ -117,6 +122,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method View
     'Remark: Opens the log file for viewing. Notepad is the default editor. See SetViewer.
+
     Sub View 'open the log file for viewing in a text editor
         n.sh.Run """" & viewer & """ """ & logFile & """"
     End Sub
@@ -124,10 +130,12 @@ Class VBSLogger 'Logger for use in VBScript files
     'Method SetViewer
     'Parameter: a filespec
     'Remark: Optional. Customize the program that the View method uses to view log files. Default: Notepad.
+
     Sub SetViewer(newViewer) : viewer = newViewer : End Sub
 
     'Method ViewFolder
     'Remark: Open the log folder
+
     Sub ViewFolder 'open Windows File Explorer at the log folder
         n.sh.Run "explorer """ & logFolder & """"
     End Sub
@@ -135,11 +143,13 @@ Class VBSLogger 'Logger for use in VBScript files
     'Property WordPad
     'Returns a filespec
     'Remark: Can be used as the argument for the SetViewer method in order to open files with WordPad when the View method is called.
+
     Property Get WordPad : Wordpad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe" : End Property
 
     'Property GetDefaultLogFolder
     'Returns a folder
     'Remark: Retrieves the default log folder, %AppData%\VBScripts\logs
+
     Property Get GetDefaultLogFolder
         GetDefaultLogFolder                 = "%AppData%\VBScripts\logs"
     End Property
@@ -147,6 +157,7 @@ Class VBSLogger 'Logger for use in VBScript files
     'Property GetLogFilePath
     'Returns a filespec
     'Remark: Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt
+
     Property Get GetLogFilePath : GetLogFilePath = logFile : End Property
 
     Sub Class_Terminate 'event fires when the logger instance goes out of scope or is Set to Nothing

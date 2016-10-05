@@ -10,9 +10,10 @@
 '' Dim reg : Set reg = New RegExFunctions
 '' reg.SetTestString "'Method SetSomething"
 '' reg.SetPattern "(').*(od).*(tS)"
-'' Dim s, submatch, subs
+'' 
+'' Dim s, submatch, subs : s = ""
 '' Set subs = reg.GetSubMatches
-'' s = ""
+'' 
 '' For Each submatch In subs
 ''     s = s & " " & submatch
 '' Next

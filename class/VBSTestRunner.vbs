@@ -60,7 +60,7 @@ Class VBSTestRunner
     End Sub
 
     'Method SetSpecFile
-    'Parameter: a single file name / relative path
+    'Parameter: a file
     'Remark Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run. See SetSpecPattern.
 
     Sub SetSpecFile(newSpecFile)

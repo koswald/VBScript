@@ -49,6 +49,7 @@ Class TestingFramework
     'Method describe
     'Parameter: unit description
     'Remark: Provides a description for the unit under test. E.g. describe "DocGenerator class"
+
     Sub describe(newUnit)
         ShowPendingResult
         unit = newUnit
@@ -58,6 +59,7 @@ Class TestingFramework
     'Method it
     'Parameter: an expectation
     'Remark: Provides a description of some expectation to be met by the unit under test. E.g. it "should return an integer"
+
     Sub it(newSpec)
         ShowPendingResult
         spec = newSpec
@@ -75,6 +77,7 @@ Class TestingFramework
     'Method AssertEqual
     'Parameters: variant1, variant2
     'Remark: Asserts that the specified two variants, of any subtype, are equal.
+
     Sub AssertEqual(var1, var2)
         ShowPendingResult
        If var1 = var2 Then
@@ -88,6 +91,7 @@ Class TestingFramework
 
     'Method AssertErrorRaised
     'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with a <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.
+
     Sub AssertErrorRaised
         ShowPendingResult
         If Err Then
