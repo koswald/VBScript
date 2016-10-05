@@ -86,7 +86,7 @@ Class VBSTestRunner
 
         msg = "Wnen SetSpecFile is used to specify a single spec file, the file specified (" & specFile & ") must exist. A relative path is fine, relative to the spec folder, " & specFolder
 
-        If Not "" = specFile Then
+        If Len(specFile) Then
             If Not fs.fso.FileExists(fs.ResolveTo(specFile, specFolder)) Then Err.Raise 1, fs.SName, msg
         End If
     End Sub
@@ -161,7 +161,7 @@ Class VBSTestRunner
 
         While Not Pipe.StdErr.AtEndOfStream
             Line = Pipe.StdErr.ReadLine
-            If Not "" = Line Then
+            If Len(Line) Then
                 WriteLine WScript.ScriptName & ": """ & Line & """"
                 IncrementErring
             End If
@@ -171,13 +171,13 @@ Class VBSTestRunner
     'Write a line to StdOut
 
     Private Sub WriteLine(line)
-        If Not "" = line Then WScript.StdOut.WriteLine line
+        If Len(line) Then WScript.StdOut.WriteLine line
     End Sub
 
     'Write to StdOut
 
     Private Sub Write_(str)
-        If Not "" = str Then WScript.StdOut.Write str
+        If Len(str) Then WScript.StdOut.Write str
     End Sub
 
 End Class 'VBSTestRunner

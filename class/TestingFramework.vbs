@@ -43,7 +43,7 @@ Class TestingFramework
     End Sub
 
     Private Sub WriteLine(str)
-        If Not "" = str Then WScript.StdOut.WriteLine str
+        If Len(str) Then WScript.StdOut.WriteLine str
     End Sub
 
     'Method describe
@@ -53,7 +53,7 @@ Class TestingFramework
     Sub describe(newUnit)
         ShowPendingResult
         unit = newUnit
-        If Not "" = unit Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 80)
+        If Len(unit) Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 80)
     End Sub
 
     'Method it

@@ -422,7 +422,7 @@ Class DocGenerator
             msg = "Methods may have parameters; may not have Returns; must have Remarks"
 
             If "" = remarksContent Then RaiseContentError msg
-            If Not "" = returnsContent Then RaiseContentError msg Else returnsContent = "N/A"
+            If Len(returnsContent) Then RaiseContentError msg Else returnsContent = "N/A"
             If "" = parametersContent Then parametersContent = "None"
 
         ElseIf property_ =  routineType Then
