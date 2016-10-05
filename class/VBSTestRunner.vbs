@@ -43,6 +43,7 @@ Class VBSTestRunner
     'Method SetSpecFolder
     'Parameter a folder
     'Remark Specifies the folder containing the test files. Can be a relative path, relative to the calling script.
+
     Sub SetSpecFolder(newSpecFolder)
         specFolder = fs.Resolve(newSpecFolder)
     End Sub
@@ -50,6 +51,7 @@ Class VBSTestRunner
     'Method SetSpecPattern
     'Parameter a regular expression
     'Remark Specifies which file types to run. Default is .*\.spec\.vbs
+
     Sub SetSpecPattern(newSpecPattern)
         specPattern = newSpecPattern
     End Sub
@@ -57,6 +59,7 @@ Class VBSTestRunner
     'Method SetSpecFile
     'Parameter: a single file name / relative path
     'Remark Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run.
+
     Sub SetSpecFile(newSpecFile)
         specFile = newSpecFile
     End Sub
@@ -64,6 +67,7 @@ Class VBSTestRunner
     'Method SetSearchSubfolders
     'Parameter: a boolean
     'Remark: Specifies whether to search subfolders for test files. True or False.
+
     Sub SetSearchSubfolders(newSearchingSubfolders)
         searchingSubfolders = newSearchingSubfolders
     End Sub
@@ -84,6 +88,7 @@ Class VBSTestRunner
 
     'Method Run
     'Remark: Initiate the specified tests
+
     Sub Run
 
         ValidateSettings
@@ -113,7 +118,7 @@ Class VBSTestRunner
 
     End Sub 'Run
 
-    'use the regex filter to process multiple spec files
+    'search for and run tests in the specified folder
 
     Private Sub ProcessFiles(Folder)
         Dim File, Subfolder
@@ -132,7 +137,7 @@ Class VBSTestRunner
         Next
     End Sub
 
-    'run a single spec file
+    'run a single test file
 
     Private Sub RunTest(filespec)
         Dim Line
@@ -144,6 +149,7 @@ Class VBSTestRunner
             If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
             If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
         Wend
+
         While Not Pipe.StdErr.AtEndOfStream
             Line = Pipe.StdErr.ReadLine
             If Not "" = Line Then
