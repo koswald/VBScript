@@ -10,9 +10,8 @@ Class TimeFunctions
         Set oVBSValidator = New VBSValidator
 
         class_ = "TimeFunctions"
-        SetFirstDOW(vbSunday)
+        SetFirstDOW vbSunday
         LetDOWBeAbbreviated = False
-        If Err Then MsgBox "Err.Number: " & Err & "; .Description: " & Err.Description
     End Sub
 
     Property Get v : Set v = oVBSValidator : End Property

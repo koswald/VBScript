@@ -1,18 +1,20 @@
 
 Class VBSFileSystem
 
-    Private oVBSNatives, oVBSEnvironment
+    Private oVBSNatives, oVBSEnvironment, oVBSMessages
     Private referencePath, savedCurrentDirectory, savedReferencePath
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next
             ExecuteGlobal(.read("VBSNatives"))
+            ExecuteGlobal(.read("VBSMessages"))
             ExecuteGlobal(.read("VBSEnvironment"))
         End With : On Error Goto 0
         Set oVBSNatives = New VBSNatives
         Set oVBSEnvironment = New VBSEnvironment
+        Set oVBSMessages = New VBSMessages
 
-        SetReferencePath(defaultReferencePath)
+        SetReferencePath defaultReferencePath
         SaveReferencePath
     End Sub
 
@@ -23,6 +25,9 @@ Class VBSFileSystem
     Property Get fso : Set fso = n.fso : End Property
     Property Get args : Set args = a : End Property
     Property Get a : Set a = n.a : End Property
+
+    Property Get m : Set m = oVBSMessages : End Property
+    Property Get msgs : Set msgs = m : End Property
 
     'Property SBaseName
     'Returns a file name, no extension
@@ -47,9 +52,6 @@ Class VBSFileSystem
     'Remark: Returns the parent folder of the calling script.
 
     Property Get SFolderName : SFolderName = Parent(SFullName) : End Property 'script's folder
-
-    Property Get m : Set m = oVBSMessages : End Property
-    Property Get msgs : Set msgs = m : End Property
 
     'Function MakeFolder
     'Parameter: a path
@@ -76,18 +78,18 @@ Class VBSFileSystem
         Parent = Left(string, InStrRev(string, "\") - 1)
     End Function
 
-    Private Sub SaveCurrentDirectory : savedCurrentDirectory = sh.CurrentDirectory : End Sub
-    Private Sub RestoreCurrentDirectory : sh.CurrentDirectory = savedCurrentDirectory : End Sub
-    Private Property Get defaultReferencePath : defaultReferencePath = Parent(WScript.ScriptFullName) : End Property
-    Private Sub SaveReferencePath : savedReferencePath = referencePath : End Sub
-    Private Sub RestoreReferencePath : referencePath = savedReferencePath : End Sub
-
     'Method SetReferencePath
     'Parameter: a path
     'Remark: Call this method, if desired, before calling the property Resolve in order specify the base path against which relative paths should be referenced from. By default, the reference path is the parent folder of the calling script.
 
     Sub SetReferencePath(newPath) : referencePath = newPath : End Sub
+
+    Private Property Get defaultReferencePath : defaultReferencePath = SFolderName : End Property
     Property Get GetReferencePath : GetReferencePath = referencePath : End Property
+    Private Sub SaveCurrentDirectory : savedCurrentDirectory = sh.CurrentDirectory : End Sub
+    Private Sub RestoreCurrentDirectory : sh.CurrentDirectory = savedCurrentDirectory : End Sub
+    Private Sub SaveReferencePath : savedReferencePath = referencePath : End Sub
+    Private Sub RestoreReferencePath : referencePath = savedReferencePath : End Sub
 
     'Property Resolve
     'Returns a resolved path
