@@ -6,7 +6,6 @@ Main
 Sub Main
     With CreateObject("includer")
         ExecuteGlobal(.read("VBSTestRunner"))
-        ExecuteGlobal(.read("VBSHoster"))
     End With
     Dim testRunner : Set testRunner = New VBSTestRunner
     With WScript.Arguments
