@@ -1,5 +1,5 @@
 
-'"Adds an event entry to a log file"
+'Adds an event entry to a log file
 '
 'Wrapper for the Windows Script Host (WSH) WshShell.LogEvent method
 '
@@ -23,8 +23,8 @@
 Class VBSEventLogger
 
     Private fs
-    Private customViewFile, viewsFolder, VBScriptLibraryPath
-    Private configFolder, logFile, logFolder
+    Private viewsFolder, VBScriptLibraryPath
+    Private customViewFile, configFolder, logFile, logFolder
 
     Sub Class_Initialize
 

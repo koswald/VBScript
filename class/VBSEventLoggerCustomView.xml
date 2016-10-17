@@ -1,9 +1,10 @@
 <?xml version="1.0"?> 
 
-<!-- copy this file to %ProgramData%\Microsoft\Event Viewer\Views 
-in order to have a view available the next time the Event Viewer
-is opened, under Custom Views, named WSH Logs, listing all events
-logged by invoking the WSH LogEvent method -->
+<!-- In order to have a custom view available the next time 
+the Event Viewer is opened, under Custom Views, named WSH Logs, 
+listing all events logged by invoking the WSH LogEvent method,
+copy this file to %ProgramData%\Microsoft\Event Viewer\Views,
+manually or using VBSEventLogger's CreateCustomView method -->
 
 <ViewerConfig>
   <QueryConfig>

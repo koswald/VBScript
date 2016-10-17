@@ -142,23 +142,23 @@
                 file = file & ".vbs" 'add the .vbs file extension and try again
                 If Not n.fso.FileExists(file) Then
                     Read = "MsgBox ""Couldn't find file "" & """ & file & """, vbExclamation"
-      Exit Function
-      End If
-      End If
-      Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
-      PrivateRead = stream.ReadAll
-      stream.Close
-      Set stream = Nothing
-      End Function
+                    Exit Function
+                End If
+            End If
+            Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
+            PrivateRead = stream.ReadAll
+            stream.Close
+            Set stream = Nothing
+        End Function
 
       'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
 
       Private Function Resolve(path)
-      SaveCurrentDirectory
-      n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
+          SaveCurrentDirectory
+          n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
 
-      Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
-      RestoreCurrentDirectory
+          Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
+          RestoreCurrentDirectory
       End Function
 
       'Function LibraryPath
