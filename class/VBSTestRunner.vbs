@@ -17,10 +17,10 @@
 '
 Class VBSTestRunner
 
-    Private passing, failing, erring, foundTestFiles
+    Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
     Private fs
-    Private specFolder, specPattern, specFile
+    Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
 
     Sub Class_Initialize

@@ -3,7 +3,7 @@
 
 <scriptlet> <!--
 
-'A dependency management tool, primarily intended to be used in a class file, to allow the class to manage its own dependencies. Can be used in a .wsf or .vbs script.
+'A dependency management tool. Can be used in a .wsf or .vbs script.
 '
 '    <h5> How it works </h5>
 '
@@ -47,9 +47,10 @@
     </registration>
 
     <public>
-        <method name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
+        <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
         <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
         <property name="c" /> <!-- get text stream constants, iForReading, iForAppending, iForWriting, bCreateNew, bDontCreateNew, plus SetFormat parameters as above -->
+        <property name="LibraryPath" /> <!-- get the folder containing this .wsc file -->
         <property name="Version" internalname="sVersion" />
         <property name="UUID" internalname="sWscID" />
     </public>
@@ -65,7 +66,8 @@
         Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid above
 
         Dim n, oStreamConstants, StreamFormat
-        Dim relativePath, savedCurrentDirectory
+        Dim savedCurrentDirectory
+        Dim referencePath
 
         InitializeMembers
 
@@ -83,7 +85,7 @@
             Dim subKey : subKey = "Software\Classes\CLSID\" & sWscID & "\ScriptletURL"
             Dim thisFile : thisFile = reg.GetStringValue(reg.HKLM, subKey, "") 'get path to this scriptlet from the registry
             thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
-            relativePath = n.fso.GetParentFolderName(thisFile)
+            referencePath = n.fso.GetParentFolderName(thisFile)
             SetFormat c.tbAscii
         End Sub
 
@@ -140,27 +142,33 @@
                 file = file & ".vbs" 'add the .vbs file extension and try again
                 If Not n.fso.FileExists(file) Then
                     Read = "MsgBox ""Couldn't find file "" & """ & file & """, vbExclamation"
-                    Exit Function
-                End If
-            End If
-            Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
-            PrivateRead = stream.ReadAll
-            stream.Close
-            Set stream = Nothing
-        End Function
+      Exit Function
+      End If
+      End If
+      Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
+      PrivateRead = stream.ReadAll
+      stream.Close
+      Set stream = Nothing
+      End Function
 
-        'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
+      'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
 
-        Private Function Resolve(path)
-            SaveCurrentDirectory
-            n.sh.CurrentDirectory = relativePath  'set the reference folder relative paths
+      Private Function Resolve(path)
+      SaveCurrentDirectory
+      n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
 
-            Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
-            RestoreCurrentDirectory
-        End Function
+      Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
+      RestoreCurrentDirectory
+      End Function
 
-        Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
-        Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
+      'Function LibraryPath
+      'Returns a folder path
+      'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read method.
+
+      Function LibraryPath : LibraryPath = referencePath : End Function
+
+      Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
+      Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
 
     </script>
 </scriptlet>

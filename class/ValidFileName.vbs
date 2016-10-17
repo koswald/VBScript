@@ -1,8 +1,5 @@
 
-'Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg file name.
-
-'Example of well-formed comments in a script without a Class statement:
-'A line starting with '''' (four single quotes) separates the general comments at the beginning of the script from the rest of the script
+'Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.
 
 'Usage Example
 ''
@@ -13,20 +10,22 @@
 ''    MsgBox GetValidFileName("test\ing") 'test-ing
 '
 
-'''' End general comments. For the DocGenerator, this line takes the place of a Class statement.
+'ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.
+
+'''' End general comments
 
 'Function GetValidFileName
 'Parameter: a file name candidate
 'Returns a valid file name
-'Remarks: Returns a string suitable for use as a file name: Strips ("\", "/", ":", "*", "?", """", "<", ">", "|", "%20") and replaces them with a hyphen/dash (-)
+'Remarks: Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-)
 
 Function GetValidFileName(fileNameCandidate)
 
-   'items #1 thru #9: a Windows file name can't contain any of these
-   'item #10: Chrome won't open an .html file with %20 in the title
-   invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20")
+   'items 1 - 9: a Windows file name can't contain any of these
+   'items 10 - 11: Chrome won't open a local .html file with %20 or # in the title
+   invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
 
-   'a file name has a max value, somewhere in the neightborhood of 200 characters
+   'a file name has a max value, somewhere in the neighborhood of 200 characters
    Const maxLength = 130
 
    x = fileNameCandidate

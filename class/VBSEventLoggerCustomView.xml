@@ -1,0 +1,28 @@
+<?xml version="1.0"?> 
+
+<!-- copy this file to %ProgramData%\Microsoft\Event Viewer\Views 
+in order to have a view available the next time the Event Viewer
+is opened, under Custom Views, named WSH Logs, listing all events
+logged by invoking the WSH LogEvent method -->
+
+<ViewerConfig>
+  <QueryConfig>
+    <QueryParams>
+      <Simple>
+        <Channel>Application</Channel>
+        <RelativeTimeInfo>0</RelativeTimeInfo>
+        <Source>WSH</Source>
+        <BySource>False</BySource>
+      </Simple>
+    </QueryParams>
+    <QueryNode>
+      <Name>WSH Logs</Name>
+      <Description>Logs created by invoking the WSH LogEvent method</Description>
+      <QueryList>
+        <Query Path="Application" Id="0">
+          <Select Path="Application">*[System[Provider[@Name='WSH']]]</Select>
+        </Query>
+      </QueryList>
+    </QueryNode>
+  </QueryConfig>
+</ViewerConfig>
