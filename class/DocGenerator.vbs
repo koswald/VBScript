@@ -209,7 +209,7 @@ Class DocGenerator
     End Sub
 
     'Method Generate
-    'Remark: Generate the docs for the scripts in the specified folder. The doc file will be located in the same folder as the calling script.
+    'Remark: Generate comment-based documentation for the scripts in the specified folder.
 
     Sub Generate
 
