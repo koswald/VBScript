@@ -1,1 +1,1 @@
-@CScript //nologo TestLauncher.vbs VBSLogger.spec.vbs
+@CScript //nologo TestLauncher.vbs VBSEnvironment.spec.vbs

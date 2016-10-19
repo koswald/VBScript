@@ -8,8 +8,6 @@ With CreateObject("includer")
 End With
 
 Dim n : Set n = New VBSNatives
-Dim sh : Set sh = n.sh
-Dim fso : Set fso = n.fso
 
 With New TestingFramework
 
@@ -19,16 +17,16 @@ With New TestingFramework
 
     .it "should create a user variable"
 
-        Dim varName : varName = fso.GetBaseName(fso.GetTempName)
-        Dim varValue : varValue = fso.GetBaseName(fso.GetTempName)
-        Dim userEnv : Set userEnv = sh.Environment("user")
+        Dim varName : varName = n.fso.GetBaseName(n.fso.GetTempName)
+        Dim varValue : varValue = n.fso.GetBaseName(n.fso.GetTempName)
+        Dim userEnv : Set userEnv = n.sh.Environment("user")
         env.CreateUserVar varName, varValue
 
         .AssertEqual userEnv(varName), varValue
 
     .it "should collapse a the user variable"
 
-        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
+        .AssertEqual env.collapse(n.sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
 
     .it "should remove a user variable"
 
@@ -38,9 +36,9 @@ With New TestingFramework
 
     .it "should create a process variable"
 
-        varName = fso.GetBaseName(fso.GetTempName)
-        varValue = fso.GetBaseName(fso.GetTempName)
-        Dim proEnv : Set proEnv = sh.Environment("process")
+        varName = n.fso.GetBaseName(n.fso.GetTempName)
+        varValue = n.fso.GetBaseName(n.fso.GetTempName)
+        Dim proEnv : Set proEnv = n.sh.Environment("process")
         env.CreateProcessVar varName, varValue
 
         .AssertEqual proEnv(varName), varValue
@@ -53,6 +51,12 @@ With New TestingFramework
 
     .it "should expand an environment variable"
 
-        .AssertEqual sh.ExpandEnvironmentStrings("%SystemRoot%"), env.Expand("%SystemRoot%")
+        .AssertEqual n.sh.ExpandEnvironmentStrings("%SystemRoot%"), env.Expand("%SystemRoot%")
+
+
+    'garbage collection
+
+        Set userEnv = Nothing
+        Set proEnv = Nothing
 
 End With
