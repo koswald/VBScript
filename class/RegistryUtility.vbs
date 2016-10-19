@@ -1,7 +1,7 @@
 
 'Provides functions relating to the Windows&reg; registry
 
-'Official StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx">here</a>
+'StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online </a>.
 '
 
 Class RegistryUtility

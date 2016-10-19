@@ -22,16 +22,16 @@
 '
 Class VBSEventLogger
 
-    Private fs
+    Private fs 'file system utilities
     Private viewsFolder, VBScriptLibraryPath
     Private customViewFile, configFolder, logFile, logFolder
 
     Sub Class_Initialize
 
         'assign defaults in case VBSEventLogger.config is absent
-        customViewFile = "VBSEventLoggerCustomView.xml" 'custom view
-        configFolder = "%ProgramData%\Microsoft\Event Viewer" 'eventvwr.msc config
-        logFile = "Application.evtx" 'event log file that contains WSH events
+        customViewFile = "VBSEventLoggerCustomView.xml" 'custom view xml
+        configFolder = "%ProgramData%\Microsoft\Event Viewer" 'eventvwr.msc config folder
+        logFile = "Application.evtx" 'event log file with WSH events
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
         With CreateObject("includer") : On Error Resume Next

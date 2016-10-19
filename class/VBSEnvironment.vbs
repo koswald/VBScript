@@ -86,7 +86,7 @@ Class VBSEnvironment
 
     'Method: CreateProcessVar
     'Parameters: varName, varValue
-    'Remarks: Create a (temporary) process variable
+    'Remarks: Create a process variable
 
     Sub CreateProcessVar(varName, varValue)
         proEnv(varName) = varValue
@@ -94,7 +94,7 @@ Class VBSEnvironment
 
     'Method: SetProcessVar
     'Parameters: varName, varValue
-    'Remarks: Sets or creates a (temporary) process environment variable
+    'Remarks: Sets or creates a process environment variable
 
     Sub SetProcessVar(varName, varValue) : CreateProcessVar varName, varValue : End Sub
 
@@ -115,7 +115,7 @@ Class VBSEnvironment
 
     'Property GetDefaults
     'Returns an array
-    'Remark: Returns an array of common environment variables pre-installed with some versions of Windows&reg. Not exhaustive.
+    'Remark: Returns an array of common environment variables pre-installed with some versions of Windows&reg;. Not exhaustive.
 
     Property Get GetDefaults 'variables that often come pre-installed with Windows
         GetDefaults = Array( _
