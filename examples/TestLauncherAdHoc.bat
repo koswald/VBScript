@@ -1,1 +1,1 @@
-@CScript //nologo TestLauncher.vbs VBSEnvironment.spec.vbs
+@CScript //nologo TestLauncher.vbs StringFormatter.spec.vbs
