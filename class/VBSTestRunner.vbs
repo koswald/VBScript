@@ -19,7 +19,7 @@ Class VBSTestRunner
 
     Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
-    Private fs
+    Private fs, pluralizer
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
 
@@ -30,8 +30,10 @@ Class VBSTestRunner
         foundTestFiles = 0
         With CreateObject("includer")
             ExecuteGlobal(.read("VBSFileSystem"))
+            ExecuteGlobal(.read("StringFormatter"))
         End With
         Set fs = New VBSFileSystem
+        Set pluralizer = New StringFormatter
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
@@ -79,8 +81,6 @@ Class VBSTestRunner
         searchingSubfolders = newSearchingSubfolders
     End Sub
 
-    'Ensure that the specified settings are valid
-
     Private Sub ValidateSettings
         Dim msg
 
@@ -116,15 +116,15 @@ Class VBSTestRunner
         'write the result summary
 
         If GetErring Then
-            Write_ GetErring & " erring files, "
+            Write_ pluralizer(GetErring, "erring file") & ", "
         End If
         If GetFailing Then
-            Write_ GetFailing & " failing specs, "
+            Write_ pluralizer(GetFailing, "failing spec") & ", "
         End If
         If GetPassing Then
-            Write_ GetPassing & " passing specs; "
+            Write_ pluralizer(GetPassing, "passing spec") & "; "
         End If
-        Write_ GetSpecFiles & " test files"
+        Write_ pluralizer(GetSpecFiles, "test file")
 
     End Sub 'Run
 
@@ -144,7 +144,6 @@ Class VBSTestRunner
             'if the file is a test/spec file, then run it
 
             If regex.Test(File.Name) Then
-                IncrementSpecFiles
                 RunTest File.Path
             End If
         Next
@@ -155,6 +154,7 @@ Class VBSTestRunner
     Private Sub RunTest(filespec)
         Dim Line
         Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo " & filespec)
+        IncrementSpecFiles
 
         While Not Pipe.StdOut.AtEndOfStream
             Line = Pipe.StdOut.ReadLine
