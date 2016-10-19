@@ -124,7 +124,7 @@ Class VBSTestRunner
         If GetPassing Then
             Write_ pluralizer(GetPassing, "passing spec") & "; "
         End If
-        Write_ pluralizer(GetSpecFiles, "test file")
+        Write_ pluralizer(GetSpecFiles, "test file") & " "
 
     End Sub 'Run
 
