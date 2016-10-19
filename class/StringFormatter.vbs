@@ -31,7 +31,8 @@ Class StringFormatter
     'Remark: Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring | red herrings", "|")</code>. Pluralize is the default property for the class, so the property name is optional.
 
     Public Default Property Get Pluralize(count, noun_)
-        Dim s, noun : noun = noun_ : s = count & " "
+        Dim s : s = count & " "
+        Dim noun : noun = noun_
         If vbString = VarType(noun) Then
             'convert string to two-element array
             noun = Array("", "")
