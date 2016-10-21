@@ -5,11 +5,9 @@ With CreateObject("includer")
     Execute(.read("VBSEnvironment"))
     Execute(.read("VBSNatives"))
     Execute(.read("TestingFramework"))
-    Execute(.read("VBSLogger"))
 End With
 
 Dim n : Set n = New VBSNatives
-Dim log : Set log = New VBSLogger
 
 With New TestingFramework
 
@@ -21,10 +19,9 @@ With New TestingFramework
 
         Dim varName : varName = n.fso.GetBaseName(n.fso.GetTempName)
         Dim varValue : varValue = n.fso.GetBaseName(n.fso.GetTempName)
+        'with Android Studio running on emulator, creating a variable may be very slow
         Dim userEnv : Set userEnv = n.sh.Environment("user")
-        log "Creating a user variable" 'logging to measure time lag: when Android Studio is running an app, this step may be very slow
         env.CreateUserVar varName, varValue
-        log "Done creating a user variable"
 
         .AssertEqual userEnv(varName), varValue
 

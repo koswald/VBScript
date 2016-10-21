@@ -49,7 +49,7 @@ Class WMIUtility
     'Function GetProcessIDsByName
     'Parameter a process name
     'Returns a boolean
-    'Remark: Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. E.g. notepad.exe.
+    'Remark: Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>.
 
     Function GetProcessIDsByName(pName)
         Dim s : s = ""
@@ -73,6 +73,15 @@ Class WMIUtility
             s = s & " " & process.Name
         Next
         GetProcessesWithNamesLike = split(Trim(s))
+    End Function
+
+    'Function IsRunning
+    'Parameter: a process name
+    'Returns a boolean
+    'Remark: Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning("notepad.exe") 'True or False</code>.
+
+    Function IsRunning(name)
+        IsRunning = -1 < UBound(GetProcessIDsByName(name))
     End Function
 
     'Scrub parameters before query
