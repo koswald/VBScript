@@ -100,7 +100,7 @@ Class TextStreamer
     'Method Delete
     'Remark: Deletes the streamer file
     Sub Delete
-        WScript.Sleep 500 'give time for the file to open in Notepad before deleting
+        'WScript.Sleep 10 'give time for the file to open in Notepad before deleting
         fso.DeleteFile(fs.Expand(file))
     End Sub
 

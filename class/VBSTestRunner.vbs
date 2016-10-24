@@ -22,6 +22,7 @@ Class VBSTestRunner
     Private fs, pluralizer
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
+    Private startTime
 
     Sub Class_Initialize
         passing = 0
@@ -38,6 +39,7 @@ Class VBSTestRunner
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
         SetSearchSubfolders False
+        startTime = Now
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -124,7 +126,8 @@ Class VBSTestRunner
         If GetPassing Then
             Write_ pluralizer(GetPassing, "passing spec") & "; "
         End If
-        Write_ pluralizer(GetSpecFiles, "test file") & " "
+        Write_ pluralizer(GetSpecFiles, "test file") & "; "
+        Write_ "test duration: " & pluralizer(DateDiff("s", startTime, Now), "second") & " "
 
     End Sub 'Run
 
