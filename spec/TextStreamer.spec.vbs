@@ -45,12 +45,11 @@ With New TestingFramework
         stream.Close
         ts.SetForReading
         Set stream = ts.Open
-        Dim line : line = stream.ReadLine
+
+        .AssertEqual stream.ReadLine, sentence
+
         stream.Close
-
-        .AssertEqual line, sentence
-
-         ts.Delete
+        ts.Delete
 
    .it "should open a file for writing"
 
@@ -60,11 +59,10 @@ With New TestingFramework
         stream.Close
         ts.SetForReading
         Set stream = ts.Open
-        line = stream.ReadLine
+
+        .AssertEqual stream.ReadLine, sentence
+
         stream.Close
-
-        .AssertEqual line, sentence
-
         ts.Delete
 
 End With

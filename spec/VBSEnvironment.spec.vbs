@@ -19,7 +19,8 @@ With New TestingFramework
 
         Dim varName : varName = n.fso.GetBaseName(n.fso.GetTempName)
         Dim varValue : varValue = n.fso.GetBaseName(n.fso.GetTempName)
-        'with Android Studio running on emulator, creating a variable may be very slow
+        'with Android Studio running on emulator,
+        'creating a variable may be very slow
         Dim userEnv : Set userEnv = n.sh.Environment("user")
         env.CreateUserVar varName, varValue
 

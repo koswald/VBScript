@@ -13,6 +13,9 @@ With New TestingFramework
 
     .describe "VBSArguments class"
 
+        'generate a script that will call the class
+        'under test and send the results to StdOut
+
         Dim script : script = ts.GetFile & ".vbs"
         ts.SetFile script
         Dim stream : Set stream = ts.Open
@@ -21,8 +24,9 @@ With New TestingFramework
         stream.WriteLine "With CreateObject(""includer"")"
         stream.WriteLine "    Execute(.read(""VBSArguments""))"
         stream.WriteLine "End With"
-        stream.WriteLine "Set va = New VBSArguments"
-        stream.WriteLine "WScript.StdOut.WriteLine va.GetArgumentsString"
+        stream.WriteLine "With New VBSArguments"
+        stream.WriteLine "    WScript.StdOut.WriteLine .GetArgumentsString"
+        stream.WriteLine "End With"
         stream.Close
         Dim arg, args
         Dim pipe
@@ -50,8 +54,8 @@ With New TestingFramework
 
     .it "should get a single command-line argument without spaces #2"
 
-        'Note: each argument is wrapped in double quotes,
-        'regardless of whether it contains spaces
+        'Note: VBSArguments.GetArgumentsString wraps each argument
+        'in double quotes, regardless of whether it contains spaces
 
         arg = "SomeFile.txt"
         Set pipe = ts.sh.Exec("%ComSpec% /c cscript //nologo " & script & " " & arg)
