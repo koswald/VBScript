@@ -9,7 +9,7 @@
 '' 
 '' Dim reg : Set reg = New RegExFunctions
 '' reg.SetTestString "'Method SetSomething"
-'' reg.SetPattern "(').*(od).*(tS)"
+'' reg.SetPattern "(M).*(od).*(tS)"
 '' 
 '' Dim s, submatch, subs : s = ""
 '' Set subs = reg.GetSubMatches
@@ -17,7 +17,7 @@
 '' For Each submatch In subs
 ''     s = s & " " & submatch
 '' Next
-'' MsgBox s
+'' MsgBox s 'M od tS
 '
 Class RegExFunctions
 

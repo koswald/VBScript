@@ -7,7 +7,7 @@
 
 Class TextStreamer
 
-    Private file, StreamMode, AllowToCreateNew, StreamFormat, viewer
+    Private file, StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
     Private oStreamConstants, oVBSFileSystem
 
     Sub Class_Initialize 'event fires on object instantiation
@@ -40,14 +40,15 @@ Class TextStreamer
     Property Get a : Set a = fs.a : End Property
 
     'Property Open
-    'Returns: Returns a text stream object according to the specified settings (methods beginning with Set...)
+    'Returns an object
+    'Remark: Returns a text stream object according to the specified settings (methods beginning with Set...)
     Property Get Open
         Set Open = fso.OpenTextFile(fs.Expand(file), StreamMode, AllowToCreateNew, StreamFormat)
     End Property
 
     'Method SetFile
     'Parameter: a filespec
-    'Remark Specifies the file to be opened by the text streamer. Can include environment variables, %wrap%ped in the usual manner. The default file is a random-named .txt file on the desktop.
+    'Remark Specifies the file to be opened by the text streamer. Can include environment variable names, %wrapped% in the usual manner. The default file is a random-named .txt file on the desktop.
     Sub SetFile(pFile) : file = pFile : End Sub
 
     'Method SetForReading
@@ -84,7 +85,12 @@ Class TextStreamer
 
     'Method View
     'Remark: Opens the file for viewing
-    Sub View : sh.Run """" & viewer & """ """ & file & """" : End Sub
+    Sub View : Set viewerProcess = sh.Exec("""" & viewer & """ """ & file & """") : End Sub
+
+    'Method CloseViewer
+    'Remark: Close the file viewer. From the docs: Use the Terminate method only as a last resort since some applications do not clean up properly. As a general rule, let the process run its course and end on its own. The Terminate method attempts to end a process using the WM_CLOSE message. If that does not work, it kills the process immediately without going through the normal shutdown procedure.
+
+    Sub CloseViewer : viewerProcess.Terminate : End Sub
 
     'Method SetViewer
     'Parameter: filespec
@@ -93,10 +99,37 @@ Class TextStreamer
 
     'Method Delete
     'Remark: Deletes the streamer file
-    Sub Delete : fso.DeleteFile(fs.Expand(file)) : End Sub
+    Sub Delete
+        WScript.Sleep 500 'give time for the file to open in Notepad before deleting
+        fso.DeleteFile(fs.Expand(file))
+    End Sub
 
     'Method: Run
     'Remark: Open/Run the file, assuming it has an executable file extension.
     Sub Run : sh.Run """" & file & """" : End Sub
+
+    'Property GetFile
+    'Returns a filespec
+    'Remark: Returns the filespec of the file that is open or set to be opened by the text streamer. Environment variables are not expanded.
+    Property Get GetFile : GetFile = file : End Property
+
+    'Property GetCreateMode
+    'Returns a boolean
+    'Remark: Gets the current CreateMode setting. Returns one of these stream constants: bDontCreateNew or bCreateNew.
+    Property Get GetCreateMode : GetCreateMode = AllowToCreateNew : End Property
+
+    'Property GetStreamMode
+    'Returns an integer
+    'Remark: Gets the current StreamMode setting. Returns one of these stream constants: iForReading, iForWriting, iForAppending
+    Property Get GetStreamMode : GetStreamMode = StreamMode : End Property
+
+    'Property GetStreamFormat
+    'Returns a tristate boolean
+    'Remark: Gets the current StreamFormat setting. Returns one of these stream constants: tbAscii, tbUnicode, tbSystemDefault
+    Property Get GetStreamFormat : GetStreamFormat = StreamFormat : End Property
+
+    Sub Class_Terminate
+        Set viewerProcess = Nothing
+    End Sub
 
 End Class

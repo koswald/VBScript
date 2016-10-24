@@ -21,21 +21,21 @@
 
 Function GetValidFileName(fileNameCandidate)
 
-   'items 1 - 9: a Windows file name can't contain any of these
-   'items 10 - 11: Chrome won't open a local .html file with %20 or # in the title
-   invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
+    'items 1 - 9: a Windows file name can't contain any of these
+    'items 10 - 11: Chrome won't open a local .html file with %20 or # in the title
+    invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
 
-   'a file name has a max value, somewhere in the neighborhood of 200 characters
-   Const maxLength = 130
+    With CreateObject("includer")
+        Execute(.read("ValidFileName.config")) 'get the maxLength variable
+    End With
 
-   x = fileNameCandidate
+    x = fileNameCandidate
 
-   x = Left(x, maxLength)
+    For i = 0 to UBound(invalidItems)
 
-   For i = 0 to UBound(invalidItems)
+        x = Replace(x, invalidItems(i), "-")
 
-      x = Replace(x, invalidItems(i), "-")
-
-   Next
-   GetValidFileName = x
+    Next
+    GetValidFileName = Left(x, maxLength)
 End Function
+

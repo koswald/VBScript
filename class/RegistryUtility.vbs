@@ -57,6 +57,11 @@ Class RegistryUtility
         Set oStdRegProv = GetObject(GetWmiRegToken)
     End sub
 
+    'Property GetPC
+    'Returns a string
+    'Remark: Returns the name of the current computer. <strong> . </strong> (dot) indicates the local computer.
+    Property Get GetPC : GetPC = pc : End Property
+
     Sub Class_Terminate
         Set oStdRegProv = Nothing
     End Sub
