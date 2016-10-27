@@ -30,9 +30,9 @@ Class VBSSetupUtility
             Err.Raise 1, WScript.ScriptName, "Couldn't find the required scriptlet: " & includer
         End If
 
-        'register the scriptlet
+        'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
 
-        sa.ShellExecute "regsvr32", "/s " & parent & "\" & includer, "", "runas"
+        sa.ShellExecute "cmd", "/c regsvr32 /s """ & parent & "\" & includer & """ & %SystemRoot%\SysWow64\regsvr32 /s """ & parent & "\" & includer & """", "", "runas"
 
         'test the setup by running the tests, if desired
 

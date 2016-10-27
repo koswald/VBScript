@@ -48,6 +48,7 @@
 
     <public>
         <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
+        <property name="readFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
         <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
         <property name="c" /> <!-- get text stream constants, iForReading, iForAppending, iForWriting, bCreateNew, bDontCreateNew, plus SetFormat parameters as above -->
         <property name="LibraryPath" /> <!-- get the folder containing this .wsc file -->
@@ -122,6 +123,18 @@
             Err.Clear
                 Read = PrivateRead(file)
             On Error Goto 0
+        End Function
+
+        'Function ReadFrom
+        'Parameters: file, path
+        'Returns: file contents
+        'Remark: Returns the contents of the specified file, which can be expressed either as an abolute path, or as a relative path relative to the path specified.
+
+        Function ReadFrom(relativePath, tempReferencePath)
+            Dim savedReferencePath : savedReferencePath = referencePath
+            referencePath = tempReferencePath
+            ReadFrom = Read(relativePath)
+            referencePath = savedReferencePath
         End Function
 
         Private Sub ToggleFormat
