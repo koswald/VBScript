@@ -31,7 +31,8 @@
 ''            On Error Goto 0
 ''    End With
 '
-
+' See also VBSTestRunner
+'
 Class TestingFramework
 
     Private unit, spec, T, explanation
@@ -75,7 +76,7 @@ Class TestingFramework
     End Sub
 
     'Method AssertEqual
-    'Parameters: variant1, variant2
+    'Parameters: actual, expected
     'Remark: Asserts that the specified two variants, of any subtype, are equal.
 
     Sub AssertEqual(var1, var2)
@@ -90,7 +91,7 @@ Class TestingFramework
     End Sub
 
     'Method AssertErrorRaised
-    'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with a <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.
+    'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.
 
     Sub AssertErrorRaised
         ShowPendingResult

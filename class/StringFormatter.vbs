@@ -8,6 +8,7 @@
 '' Dim pluralizer : Set pluralizer = New StringFormatter
 '' 
 '' WScript.Echo pluralizer(3, "dog") '3 dogs
+'' WScript.Echo pluralizer(1, "dog") '1 dog
 '' WScript.Echo pluralizer(0, "dog") '0 dogs
 '' pluralizer.SetZeroSingular
 '' WScript.Echo pluralizer(0, "dog") '0 dog

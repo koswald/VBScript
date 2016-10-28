@@ -15,6 +15,8 @@
 ''        .Run
 ''    End With
 '
+' See also TestingFramework
+'
 Class VBSTestRunner
 
     Private passing, failing, erring, foundTestFiles 'tallies

@@ -25,6 +25,8 @@ fieldset {
 code, pre {
     font-size: large;
     background-color: beige;
+    padding-left: .2em;
+    padding-right: .2em;
 }
 pre {
     margin-top: 0em;

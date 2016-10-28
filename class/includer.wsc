@@ -16,7 +16,7 @@
 ''            ExecuteGlobal(.read("VBSNatives"))
 ''        End With
 '
-'        Or just <code> Execute(.read("VBSNatives"))</code> if the statement already has global scope
+'        Or just <code> Execute(.read("VBSNatives"))</code> if the statement already has global scope, or if local scope is desired.
 '
 '        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:
 '
@@ -34,9 +34,10 @@
 '
 '        Instead,
 '        1) run the Setup.vbs in the project folder, or
-'        2) run the following command in a command window with elevated privileges
+'        2) run the following commands in a command window with elevated privileges
 '
-''            regsvr32 &lt;absolute\path\to\the\file&gt;\includer.wsc
+''            regsvr32 &lt;absolute\path\to&gt;\includer.wsc
+''            %SystemRoot%\SysWow64\regsvr32 &lt;absolute\path\to&gt;\includer.wsc
 '
 ''''
 -->
@@ -93,7 +94,7 @@
         'Function Read
         'Parameter: a file
         'Return the file contents
-        'Remark: The file may be specified as a relative path, relative to the folder where this .wsc file resides. The file name extension may be omitted for .vbs files.
+        'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the folder where this .wsc file resides, named <code> class</code> by default. The file name extension may be omitted for .vbs files.
 
         Function Read(file)
 
@@ -128,7 +129,7 @@
         'Function ReadFrom
         'Parameters: file, path
         'Returns: file contents
-        'Remark: Returns the contents of the specified file, which can be expressed either as an abolute path, or as a relative path relative to the path specified.
+        'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files.
 
         Function ReadFrom(relativePath, tempReferencePath)
             Dim savedReferencePath : savedReferencePath = referencePath
@@ -149,8 +150,8 @@
 
         'return the contents of a file
 
-        Private Function PrivateRead(file)
-            file = Resolve(file)
+        Private Function PrivateRead(file_)
+            Dim file : file = Resolve(file_)
             If Not n.fso.FileExists(file) Then
                 file = file & ".vbs" 'add the .vbs file extension and try again
                 If Not n.fso.FileExists(file) Then
@@ -164,24 +165,24 @@
             Set stream = Nothing
         End Function
 
-      'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
+        'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
 
-      Private Function Resolve(path)
-          SaveCurrentDirectory
-          n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
+        Private Function Resolve(path)
+            SaveCurrentDirectory
+            n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
 
-          Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
-          RestoreCurrentDirectory
-      End Function
+            Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
+            RestoreCurrentDirectory
+        End Function
 
-      'Function LibraryPath
-      'Returns a folder path
-      'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read method.
+        'Function LibraryPath
+        'Returns a folder path
+        'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read method.
 
-      Function LibraryPath : LibraryPath = referencePath : End Function
+        Function LibraryPath : LibraryPath = referencePath : End Function
 
-      Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
-      Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
+        Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
+        Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
 
     </script>
 </scriptlet>
