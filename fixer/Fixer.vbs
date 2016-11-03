@@ -26,7 +26,7 @@ Class Fixer
         If WScript.Arguments(0) <> token Then QuitMessage("Invalid token: " & WScript.Arguments(0)) : Exit Sub
 
         'start the .hta file with elevated privileges,
-        'using the 64-bit mshta: this will work only if this script was started with a 64-bit wscript.exe or cscript.exe, hence the token
+        'using the 64-bit mshta: this will work only if this script itself was started with a 64-bit wscript.exe or cscript.exe, hence the token
         'assume .hta file has the same name as this file
         'assume .hta file is in the same folder as this file
 

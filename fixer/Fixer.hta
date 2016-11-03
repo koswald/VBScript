@@ -107,13 +107,12 @@
                 End Sub
 
                 'body onload event handler
-                'verify that this .hta was launched using the .bat file: look for command-line argument token
+                'verify that this .hta was launched using the .bat file: look for token in the command-line
 
                 Sub Validate
-                    If Not CBool(InStr(oHta.CommandLine, token)) Then
-                        MsgBox "Invalid token." & vbLf & "mshta.exe command-line argument(s):" & vbLf & oHta.CommandLine & vbLf & vbLf & closeMessage, vbInformation, htaName
-                        Self.Close
-                    End If
+                    If InStr(oHta.CommandLine, token) Then Exit Sub
+                    MsgBox "Invalid token." & vbLf & "mshta.exe command-line argument(s):" & vbLf & oHta.CommandLine & vbLf & vbLf & closeMessage, vbInformation, htaName
+                    Self.Close
                 End Sub
 
                 'update DOM element with the registry value

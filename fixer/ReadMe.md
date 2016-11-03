@@ -1,5 +1,5 @@
 
-# Fixing problems running .vbs, .wsf, and .hta scripts on 64-bit machines
+# Having problems running .vbs, .wsf, and .hta scripts on your 64-bit machine?
 
 Fixer.hta is intended to easily troubleshoot and fix certain Windows&reg; configuration problems that may prevent `.wsf`, `.vbs`, or `.hta` scripts from running.  
 
