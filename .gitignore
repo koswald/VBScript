@@ -1,3 +1,6 @@
 
-# Force the documentation to be created locally
+# Documentation - use examples\Generate-the-docs.vbs to create this .html file
 TheDocs.html
+
+# shortcuts
+*.lnk

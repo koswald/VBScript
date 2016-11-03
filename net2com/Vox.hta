@@ -1,0 +1,27 @@
+<html>
+<head>
+	<hta:application scroll="no">
+	<title> Vox </title>
+	<style> textarea { width: 100%; height: 80%; font-family: "Comic Sans MS", arial, sans-serif; font-weight: bold; font-size: larger; overflow: auto; } input { margin-bottom: .5em; } body { margin-bottom: .5em; } </style>
+</head>
+<body>
+	<input type="button" value="Speak" onclick="Speak()"> <br />
+	<textarea id="saythis"> I just say what I'm told to say </textarea>
+	<script language="VBScript">
+
+		Self.ResizeTo 400, 250 'width, height
+		Self.MoveTo 200, 200 'left, top
+
+		Set Vox = CreateObject("Vox")
+
+		Sub Speak
+			Vox.say document.getElementById("saythis").value
+		End Sub
+
+		Sub Window_OnUnload
+			Set Vox = Nothing
+		End Sub
+
+	</script>
+</body>
+</html>

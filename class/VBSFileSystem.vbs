@@ -80,7 +80,7 @@ Class VBSFileSystem
 
     'Method SetReferencePath
     'Parameter: a path
-    'Remark: Call this method, if desired, before calling the property Resolve in order specify the base path against which relative paths should be referenced from. By default, the reference path is the parent folder of the calling script.
+    'Remark: Optional. Specifies the base path from which relative paths should be referenced. By default, the reference path is the parent folder of the calling script. See also Resolve and ResolveTo.
 
     Sub SetReferencePath(newPath) : referencePath = newPath : End Sub
 
