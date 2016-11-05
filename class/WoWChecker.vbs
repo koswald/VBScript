@@ -34,7 +34,10 @@ Class WoWChecker
         Dim out32 : out32 = GetOutput(pipe32)
         Set pipe64 = Nothing
         Set pipe32 = Nothing
-        isWoW = CBool(out64 = out32)
+
+        'in 32-bit mode, the files in %SystemRoot%\SysWoW64 and %SystemRoot%\System32 are the same
+
+        isWoW = (out64 = out32)
     End Property
 
     'Function isSysWoW64

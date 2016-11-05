@@ -3,7 +3,7 @@
 
 <scriptlet> <!--
 
-'A dependency management tool. Can be used in a .wsf or .vbs script.
+'A dependency manager. Can be used in a .wsf or .vbs script.
 '
 '    <h5> How it works </h5>
 '
@@ -51,6 +51,9 @@
         <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
         <property name="readFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
         <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
+        <method name="SetFormatAscii" /> <!-- Set the stream format to tbAscii -->
+        <method name="SetFormatUnicode" /> <!-- Set the stream format to tbUnicode -->
+        <method name="SetFormatSystemDefault" /> <!-- Set the stream format to tbSystemDefault -->
         <property name="c" /> <!-- get text stream constants, iForReading, iForAppending, iForWriting, bCreateNew, bDontCreateNew, plus SetFormat parameters as above -->
         <property name="LibraryPath" /> <!-- get the folder containing this .wsc file -->
         <property name="Version" internalname="sVersion" />
@@ -58,6 +61,7 @@
     </public>
 
     <script language="VBScript" src="StreamConstants.vbs" />
+    <script language="VBScript" src="EncodingAnalyzer.vbs" />
     <script language="VBScript" src="RegistryUtility.vbs" />
     <script language="VBScript" src="VBSNatives.vbs" />
     <script language="VBScript">
@@ -67,7 +71,7 @@
         Const sVersion = "0.0.0"
         Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid above
 
-        Dim n, oStreamConstants, StreamFormat
+        Dim n, oStreamConstants, StreamFormat, analyzer
         Dim savedCurrentDirectory
         Dim referencePath
 
@@ -76,11 +80,15 @@
         Function c : Set c = oStreamConstants : End Function
 
         Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
+        Sub SetFormatAscii : SetFormat c.tbAscii : End Sub
+        Sub SetFormatUnicode : SetFormat c.tbUnicode : End Sub
+        Sub SetFormatSystemDefault : SetFormat c.tbSystemDefault : End Sub
 
         Private Sub InitializeMembers
             Set n = New VBSNatives 'objects native to VBScript
             Set oStreamConstants = New StreamConstants
             Dim reg : Set reg = New RegistryUtility
+            Set analyzer = New EncodingAnalyzer
 
             'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
 
@@ -100,30 +108,25 @@
 
             'Expect Ascii and Unicode file formats to be mixed together in the script library...
 
-            'Read the requested file and attempt to execute it, then check
-            'if there was an error; if so, try another stream format, e.g. Unicode.
-            'Executing well-encapsulated trusted code here should have little impact,
-            'and the calling script will still need to do an Execute or ExecuteGlobal.
+            'If the file format is Unicode,
+            'but the StreamFormat has not been set to Unicode,
+            'then temporarily set the StreamFormat to Unicode,
+            'read the file, then restore the previous
+            'StreamFormat setting
 
-            On Error Resume Next
+            If c.tbUnicode = StreamFormat Then
                 Read = PrivateRead(file)
-                Execute(Read)
-                If Err Then
-                    ToggleFormat
-                Else
-                    Exit Function
-                End If
-            Err.Clear
+
+            ElseIf analyzer.SetFile(Resolve(file)).isUTF16LE Then
+                Dim savedStreamFormat
+                savedStreamFormat = StreamFormat
+                SetFormatUnicode
                 Read = PrivateRead(file)
-                Execute(Read)
-                If Err Then
-                    ToggleFormat
-                Else
-                    Exit Function
-                End If
-            Err.Clear
+                StreamFormat = savedStreamFormat
+
+            Else
                 Read = PrivateRead(file)
-            On Error Goto 0
+            End If
         End Function
 
         'Function ReadFrom
@@ -132,19 +135,19 @@
         'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files.
 
         Function ReadFrom(relativePath, tempReferencePath)
-            Dim savedReferencePath : savedReferencePath = referencePath
-            referencePath = tempReferencePath
+            Dim savedReferencePath : savedReferencePath = me.referencePath
+            me.referencePath = tempReferencePath
             ReadFrom = Read(relativePath)
-            referencePath = savedReferencePath
+            me.referencePath = savedReferencePath
         End Function
 
         Private Sub ToggleFormat
             If StreamFormat = c.tbAscii Then
-                SetFormat c.tbUnicode
+                SetFormatUnicode
             ElseIf StreamFormat = c.tbUnicode Then
-                SetFormat c.tbSystemDefault
+                SetFormatSystemDefault
             ElseIf StreamFormat = c.tbSystemDefault Then
-                SetFormat c.tbAscii
+                SetFormatAscii
             End If
         End Sub
 
