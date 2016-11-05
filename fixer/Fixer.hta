@@ -1,12 +1,16 @@
 <html>  <!--
 
     Easily modify which executables start .hta, .vbs, and .wsf files, that is,
-    whether the given file types are started by 64-bit or 32-bit executables.  -->
+    whether the given file types are started by 64-bit or 32-bit executables.
+
+    Launch this file from the .bat file of the same name, in order to ensure
+    that it is started with the 64-bit cmd.exe, with elevated privileges  -->
 
     <head>
         <hta:application id="oHta" scroll="No">
         <style> body { font-family: "Calibri", Arial, sans-serif; } fieldset { padding-left: 1em; margin-left: 1em; padding-bottom: 1em; margin-bottom: .75em; } #out { padding-top: 1em; } </style>
     </head>
+
     <body onload="tr.Validate()">
 
         <fieldset> <legend id="lgdHta"> </legend>

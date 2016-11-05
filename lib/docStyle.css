@@ -24,6 +24,7 @@ fieldset {
 }
 code, pre {
     font-size: large;
+    font-family: 'Consolas', 'Lucida Console', sans-serif;
     background-color: beige;
     padding-left: .2em;
     padding-right: .2em;
