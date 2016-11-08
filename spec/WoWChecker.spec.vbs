@@ -4,15 +4,18 @@
 With CreateObject("includer")
     Execute(.read("TestingFramework"))
     Execute(.read("WoWChecker"))
+    Execute(.read("VBSNatives"))
 End With
+
+Dim n : Set n = New VBSNatives
 
 With New TestingFramework
 
     .describe "WoWChecker class"
 
-    .it "should return False, with a correctly configured test"
+        Dim chkr : Set chkr = New WoWChecker
 
-        Set chkr = New WoWChecker
+    .it "should return False, with a correctly configured test"
 
         .AssertEqual chkr.isWoW, False
 
@@ -32,8 +35,20 @@ With New TestingFramework
 
         .AssertEqual chkr, False
 
+    .it "should return True with a 32-bit process on isWoW call"
+
+        Dim pipe : Set pipe = n.sh.Exec("%SystemRoot%\SysWoW64\cscript.exe //nologo WoWChecker.sp01.vbs")
+
+        .AssertEqual CBool(pipe.StdOut.ReadLine), True
+
+    .it "should return False with a 64-bit process on isWoW call"
+
+        Set pipe = n.sh.Exec("%SystemRoot%\System32\cscript.exe //nologo WoWChecker.sp01.vbs")
+
+        .AssertEqual CBool(pipe.StdOut.ReadLine), False
 End With
 
 'garbage collection
 
 Set chkr = Nothing
+Set pipe = Nothing

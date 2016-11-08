@@ -141,16 +141,6 @@
             me.referencePath = savedReferencePath
         End Function
 
-        Private Sub ToggleFormat
-            If StreamFormat = c.tbAscii Then
-                SetFormatUnicode
-            ElseIf StreamFormat = c.tbUnicode Then
-                SetFormatSystemDefault
-            ElseIf StreamFormat = c.tbSystemDefault Then
-                SetFormatAscii
-            End If
-        End Sub
-
         'return the contents of a file
 
         Private Function PrivateRead(file_)

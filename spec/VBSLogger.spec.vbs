@@ -4,12 +4,11 @@ With CreateObject("includer")
     Execute(.read("TestingFramework"))
 End With
 
-Dim log : Set log = New VBSLogger
-Dim fs : Set fs = log.fs
-
 With New TestingFramework
 
     .describe "VBSLogger class"
+
+        Dim log : Set log = New VBSLogger
 
     .it "should return the expected default log folder"
 
@@ -19,6 +18,7 @@ With New TestingFramework
 
         'set a custom log folder
 
+        Dim fs : Set fs = log.fs
         Dim testLogFolder : testLogFolder = "%UserProfile%\Desktop\" & fs.fso.GetTempName
         log.SetLogFolder testLogFolder
 

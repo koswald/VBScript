@@ -21,7 +21,7 @@ Class VBSTestRunner
 
     Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
-    Private fs, pluralizer
+    Private fs, formatter
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
     Private startTime
@@ -36,7 +36,7 @@ Class VBSTestRunner
             ExecuteGlobal(.read("StringFormatter"))
         End With
         Set fs = New VBSFileSystem
-        Set pluralizer = New StringFormatter
+        Set formatter = New StringFormatter
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
@@ -92,6 +92,8 @@ Class VBSTestRunner
 
         If Not fs.fso.FolderExists(specFolder) Then Err.Raise 1, fs.SName, msg
 
+        fs.sh.CurrentDirectory = specFolder
+
         msg = "Wnen SetSpecFile is used to specify a single spec file, the file specified (" & specFile & ") must exist. A relative path is fine, relative to the spec folder, " & specFolder
 
         If Len(specFile) Then
@@ -120,16 +122,16 @@ Class VBSTestRunner
         'write the result summary
 
         If GetErring Then
-            Write_ pluralizer(GetErring, "erring file") & ", "
+            Write_ formatter.pluralize(GetErring, "erring file") & ", "
         End If
         If GetFailing Then
-            Write_ pluralizer(GetFailing, "failing spec") & ", "
+            Write_ formatter.pluralize(GetFailing, "failing spec") & ", "
         End If
         If GetPassing Then
-            Write_ pluralizer(GetPassing, "passing spec") & "; "
+            Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
         End If
-        Write_ pluralizer(GetSpecFiles, "test file") & "; "
-        Write_ "test duration: " & pluralizer(DateDiff("s", startTime, Now), "second") & " "
+        Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
+        Write_ "test duration: " & formatter.pluralize(DateDiff("s", startTime, Now), "second") & " "
 
     End Sub 'Run
 
