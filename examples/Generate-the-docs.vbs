@@ -1,6 +1,6 @@
 
 With CreateObject("includer")
-	Execute(.read("DocGenerator"))
+    Execute(.read("DocGenerator"))
 End With
 
 With New DocGenerator

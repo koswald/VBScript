@@ -1,37 +1,36 @@
 <html>
 <head>
-	<hta:application scroll="no" />
-	<title> Vox </title>
-	<style> textarea { width: 100%; height: 80%; font-family: "Comic Sans MS", arial, sans-serif; font-weight: bold; font-size: larger; overflow: auto; } input { margin-bottom: .5em; } body { margin-bottom: .5em; } </style>
+    <hta:application scroll="no" />
+    <title> Vox </title>
+    <style> textarea { width: 100%; height: 80%; font-family: "Comic Sans MS", arial, sans-serif; font-weight: bold; font-size: larger; overflow: auto; } input { margin-bottom: .5em; } body { margin-bottom: .5em; } </style>
 </head>
 <body onkeyup="KeyedUp()">
-	<input type="button" value="Speak" onclick="Speak()"> <br />
-	<textarea id="say_this"> </textarea>
-	<script language="VBScript">
+    <input type="button" value="Speak" onclick="Speak()"> <br />
+    <textarea id="say_this"> </textarea>
+    <script language="VBScript">
 
         Dim say_what, Vox
 
         Sub Window_OnLoad
-		    Self.ResizeTo 400, 250 'width, height
-		    Self.MoveTo 200, 200 'left, top
+            Self.ResizeTo 400, 250 'width, height
+            Self.MoveTo 200, 200 'left, top
             Set Vox = CreateObject("Vox")
-		    Set say_what = document.getElementById("say_this")
-            say_what.value = "I only say what I'm told to say"
+            Set say_what = document.getElementById("say_this")
         End Sub
 
-		Sub Speak
-			Vox.say say_what.value
-		End Sub
+        Sub Speak
+            Vox.say say_what.value
+        End Sub
 
         Sub KeyedUp 'body onkeyup event handler
             Const EnterKey = 13
             If EnterKey = window.event.keyCode Then Speak
         End Sub
 
-		Sub Window_OnUnload
-			Set Vox = Nothing
-		End Sub
+        Sub Window_OnUnload
+            Set Vox = Nothing
+        End Sub
 
-	</script>
+    </script>
 </body>
 </html>

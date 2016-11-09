@@ -61,11 +61,11 @@ Class VBSFileSystem
     Function MakeFolder(sFolder)
         MakeFolder = True
 
-	    If Not fso.FolderExists(Parent(Expand(sFolder))) Then
-		    MakeFolder(Parent(sFolder))	'Recurse: create parent before child
-	    End If
-	    If Not fso.FolderExists(Expand(sFolder)) Then fso.CreateFolder(Expand(sFolder)) 'create folder
-	    If Not fso.FolderExists(Expand(sFolder)) Then MakeFolder = False 'folder could not be created
+        If Not fso.FolderExists(Parent(Expand(sFolder))) Then
+    	    MakeFolder(Parent(sFolder))	'Recurse: create parent before child
+        End If
+        If Not fso.FolderExists(Expand(sFolder)) Then fso.CreateFolder(Expand(sFolder)) 'create folder
+        If Not fso.FolderExists(Expand(sFolder)) Then MakeFolder = False 'folder could not be created
     End Function
 
     'Property Parent

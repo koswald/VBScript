@@ -120,16 +120,16 @@ Class VBSEnvironment
     Property Get GetDefaults 'variables that often come pre-installed with Windows
         GetDefaults = Array( _
             "tmp", "temp", "AllUsersProfile", _
-	        "AppData", "CommonProgramFiles", "ComputerName", "ComSpec", "DFSTracingOn", _
-	        "FP_No_Host_Check", "HomeDrive", "HomePath", "LocalAppData", "LogOnServer", _
-	        "Number_Of_Processors", "OS", "Path", "PathExt", "Processor_Architecture", _
-	        "Processor_Identifier", "Processor_Level", "Processor_Revision", "ProgramData", _
-	        "ProgramFiles", "PSModulePath", "Public", "SessionName", "SystemDrive", _
-	        "SystemRoot", "Trace_Format_Search_Path", "UserDomain", "UserName", _
+            "AppData", "CommonProgramFiles", "ComputerName", "ComSpec", "DFSTracingOn", _
+            "FP_No_Host_Check", "HomeDrive", "HomePath", "LocalAppData", "LogOnServer", _
+            "Number_Of_Processors", "OS", "Path", "PathExt", "Processor_Architecture", _
+            "Processor_Identifier", "Processor_Level", "Processor_Revision", "ProgramData", _
+            "ProgramFiles", "PSModulePath", "Public", "SessionName", "SystemDrive", _
+            "SystemRoot", "Trace_Format_Search_Path", "UserDomain", "UserName", _
             "UserProfile", "WinDir", "Prompt", _
-	        "OnlineServices", "PCBrand", "Platform", "CommonProgramFiles\(x86\)", _
-	        "CommonProgramW6432", "Processor_ArchiteW6432", "ProgramFiles\(x86\)", _
-	        "ProgramW6432", "ConfigSetRoot" )
+            "OnlineServices", "PCBrand", "Platform", "CommonProgramFiles\(x86\)", _
+            "CommonProgramW6432", "Processor_ArchiteW6432", "ProgramFiles\(x86\)", _
+            "ProgramW6432", "ConfigSetRoot" )
     End Property
 
     Private Function IsADefault(name)
