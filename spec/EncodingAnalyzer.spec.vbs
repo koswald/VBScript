@@ -13,49 +13,76 @@ With New TestingFramework
 
         Dim ea : Set ea = New EncodingAnalyzer
 
-    .it "should identify an Ascii file"
+    .it "should identify an Ascii file, returning a boolean"
 
-        ea.SetFile("EncodingAnalyzer.sp01.txt")
+        Dim baseName : baseName = "fixture/EncodingAnalyzer."
+        Dim suffix : suffix = ".txt"
+        Dim format : format = "Ascii"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isAscii, True
-        .AssertEqual ea.GetType, "Ascii"
 
-    .it "should identify a UTF16LE file"
+    .it "should identify an Ascii file, returning a string"
 
-        ea.SetFile("EncodingAnalyzer.sp02.txt")
+        .AssertEqual ea.GetType, format
+
+    .it "should identify a UTF16LE file, returning a boolean"
+
+        format = "UTF16LE"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF16LE, True
-        .AssertEqual ea.GetType, "UTF16LE"
 
-    .it "should identify a UTF16BE file"
+    .it "should identify a UTF16LE file, returning a string"
 
-        ea.SetFile("EncodingAnalyzer.sp03.txt")
+        .AssertEqual ea.GetType, format
+
+    .it "should identify a UTF16BE file, returning a boolean"
+
+        format = "UTF16BE"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF16BE, True
-        .AssertEqual ea.GetType, "UTF16BE"
 
-    .it "should identify a UTF7 file"
+    .it "should identify a UTF16BE file, returning a string"
 
-        ea.SetFile("EncodingAnalyzer.sp04.txt")
+        .AssertEqual ea.GetType, format
+
+    .it "should identify a UTF7 file, returning a boolean"
+
+        format = "UTF7"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF7, True
-        .AssertEqual ea.GetType, "UTF7"
 
-    .it "should identify a UTF8 file"
+    .it "should identify a UTF7 file, returning a string"
 
-        ea.SetFile("EncodingAnalyzer.sp05.txt")
+        .AssertEqual ea.GetType, format
+
+    .it "should identify a UTF8 file, returning a boolean"
+
+        format = "UTF8"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF8, True
-        .AssertEqual ea.GetType, "UTF8"
 
-    .it "should identify a UTF32 file"
+    .it "should identify a UTF8 file, returning a string"
 
-        ea.SetFile("EncodingAnalyzer.sp06.txt")
+        .AssertEqual ea.GetType, format
+
+    .it "should identify a UTF32 file, returning a boolean"
+
+        format = "UTF32"
+        ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF32, True
-        .AssertEqual ea.GetType, "UTF32"
+
+    .it "should identify a UTF32 file, returning a string"
+
+        .AssertEqual ea.GetType, format
 
     .it "should get the Byte Order Mark bytes"
 
         .AssertEqual ea.GetByte(0) & ea.GetByte(1) & ea.GetByte(2) & ea.GetByte(3), "00254255"
+
 End With
