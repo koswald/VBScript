@@ -1,1 +1,1 @@
-@CScript //nologo TestLauncher.vbs VBSArguments.spec.vbs
+@CScript //nologo TestLauncher.vbs GUIDGenerator.spec.vbs
