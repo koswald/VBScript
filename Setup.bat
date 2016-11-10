@@ -1,0 +1,1 @@
+@ %SystemRoot%\System32\wscript.exe Setup.vbs Ensure_64-bit_executable

@@ -14,7 +14,7 @@ Windows 10, 8, 7, Vista ...
 
 ##### Installation
 
-Clone the repo and double-click the Setup.vbs file. This will register the required Windows Script Component file (.wsc) used to manage dependencies. You will be prompted to elevate privileges.
+Clone the repo and double-click the Setup.bat file. This will register the required Windows Script Component file (.wsc) used to manage dependencies. You will be prompted to elevate privileges.
 
 ##### Examples
 
