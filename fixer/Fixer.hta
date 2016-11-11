@@ -47,7 +47,8 @@
                 Private oSpanHta, oSpanVbs, oSpanWsf 'span elements for display of registry values
                 Private htaKey, vbsKey, wsfKey 'registry keys
                 Private keyName, rootKeyShortName
-                Private htaName, token, closeMessage, oDoc
+                Private reg, HKCR, wmiRootKey
+                Private htaName, cmdLineToken, closeMessage, oDoc
                 Private regex
 
                 Sub Class_Initialize
@@ -68,12 +69,15 @@
                     wsfKey = "WSFFile\Shell\Open\Command"
                     keyName = "" 'use empty string for the default value, some other value for debugging
                     rootKeyShortName = "HKCR" 'registry root key
+                    HKCR = &H80000000
+                    wmiRootKey = HKCR
+                    Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
 
                     ShowVal htaKey, oSpanHta 'radio button group label <= key value
                     ShowVal vbsKey, oSpanVbs
                     ShowVal wsfKey, oSpanWsf
 
-                    token = "Ensure_x64_exe_starts_.hta_file" 'command-line argument
+                    cmdLineToken = "Ensure_x64_exe_starts_.hta_file" 'command-line argument
                     Set oDoc = document.ParentWindow.document
                     htaName = fso.GetBaseName(oDoc.location.href)
                     oDoc.Title = htaName
@@ -114,7 +118,7 @@
                 'verify that this .hta was launched using the .bat file: look for token in the command-line
 
                 Sub Validate
-                    If InStr(oHta.CommandLine, token) Then Exit Sub
+                    If InStr(oHta.CommandLine, cmdLineToken) Then Exit Sub
                     MsgBox "Invalid token." & vbLf & "mshta.exe command-line argument(s):" & vbLf & oHta.CommandLine & vbLf & vbLf & closeMessage, vbInformation, htaName
                     Self.Close
                 End Sub
@@ -135,30 +139,43 @@
 
                 'Write to the registry
 
+                'Expected types: REG_SZ for htafile key and REG_EXPAND_SZ for the others,
+                'but don't assume that this is so: use the same type that the system is using
+
                 Sub SetRegValue(key_, val)
-                    Dim re : Set re = New RegExp
-                    re.IgnoreCase = True
-                    re.Pattern = "htafile"
                     Dim key : key = rootKeyShortName & "\" & key_ & "\" & keyName
-                    On Error Resume Next
-                        If re.Test(key) Then
-                            sh.RegWrite key, val 'use the default REG_SZ for htafile only
-                        Else
-                            sh.RegWrite key, val, "REG_EXPAND_SZ"
-                        End If
-                        If Err Then MsgBox "Couldn't write to registry key " & key, vbExclamation, htaName
-                    On Error Goto 0
-                    Set re = Nothing
+                    sh.RegWrite key, val, GetRegValueType(wmiRootKey, key_, keyName)
                 End Sub
 
                 'get a value from the registry
 
                 Function GetRegValue(key_)
                     Dim key : key = rootKeyShortName & "\" & key_ & "\" & keyName
-                    On Error Resume Next
-                        GetRegValue = sh.RegRead(key)
-                        If Err Then MsgBox "Couldn't read from registry key ", key, vbExclamation, htaName
-                    On Error Goto 0
+                    GetRegValue = sh.RegRead(key)
+                End Function
+
+                'Get registry key value type strings used by WScript.Shell RegWrite
+
+                Function GetRegValueType(rootKey, subKey, valueName)
+                    Const REG_SZ = 1
+                    Const REG_EXPAND_SZ = 2
+                    Const REG_BINARY = 3
+                    Const REG_DWORD = 4
+                    Const REG_MULTI_SZ = 7
+                    Const REG_QWORD = 11
+                    Dim i, aNames, aTypes, iType, sType
+                    reg.EnumValues rootKey, subKey, aNames, aTypes
+                    For i = 0 To UBound(aNames)
+                        If valueName = aNames(i) Then iType = aTypes(i)
+                    Next
+                    Select Case iType
+                    Case REG_SZ sType = "REG_SZ"
+                    Case REG_EXPAND_SZ sType = "REG_EXPAND_SZ"
+                    Case REG_BINARY sType = "REG_BINARY"
+                    Case REG_DWORD sType = "REG_DWORD"
+                    Case Else sType = "Type not supported by WScript.Shell.RegWrite"
+                    End Select
+                    GetRegValueType = sType
                 End Function
 
                 'click handlers for the radio buttons
@@ -189,6 +206,7 @@
                     Set oSpanVbs = Nothing
                     Set oSpanWsf = Nothing
                     Set oDoc = Nothing
+                    Set reg = Nothing
                 End Sub
 
             End Class

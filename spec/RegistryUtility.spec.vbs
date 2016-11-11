@@ -46,6 +46,14 @@ With New TestingFramework
 
         .AssertEqual r.GetStringValue(r.HKCU, subKey, valueName), value
 
+    .it "should return an integer showing a reg value type"
+
+        .AssertEqual r.GetRegValueType(r.HKCU, subKey, valueName), r.REG_SZ
+
+    .it "should return a string showing a reg value type"
+
+        .AssertEqual r.GetRegValueTypeString(r.HKCU, subKey, valueName), "REG_SZ"
+
 End With
 
 'restore the saved registry value
