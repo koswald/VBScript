@@ -309,7 +309,7 @@ Class DocGenerator
         IndentIncrease
         WriteLine "<tr>"
         IndentIncrease
-        WriteLine "<th>Routine type</th>"
+        WriteLine "<th>Procedure type</th>"
         WriteLine "<th>Name</th>"
         WriteLine "<th>Parameter(s)</th>"
         WriteLine "<th>Return value</th>"
@@ -427,7 +427,9 @@ Class DocGenerator
 
         ElseIf property_ =  routineType Then
 
-            msg = "Properties may have parameters; must have Returns; may have Remarks"
+            msg = "Properties may have parameters; may have Remarks; must have Returns. NOTE: Property Set and Property Let do not require a return value but still must have a 'Return or 'Returns comment."
+
+            'TODO: allow Property Let and Property Set to have no return comment
 
             If "" = returnsContent Then RaiseContentError msg
             If "" = parametersContent Then parametersContent = "None"

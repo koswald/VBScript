@@ -1,4 +1,5 @@
 <html>
+    <!-- convert written words to sound -->
 <head>
     <hta:application scroll="no" />
     <title> Vox </title>
@@ -14,12 +15,15 @@
         Sub Window_OnLoad
             Self.ResizeTo 400, 250 'width, height
             Self.MoveTo 200, 200 'left, top
-            Set Vox = CreateObject("Vox")
+            Set Vox = CreateObject("Vox") 'instantiate the COM library just compiled; see ReadMe.md
             Set say_what = document.getElementById("say_this")
+            say_what.focus() 'put focus on the text area; prepare to type some words
         End Sub
 
         Sub Speak
             Vox.say say_what.value
+            say_what.select() 'select all; prepare to overwrite the previous words
+
         End Sub
 
         Sub KeyedUp 'body onkeyup event handler

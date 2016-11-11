@@ -1,23 +1,42 @@
 
 'Provides functions relating to the Windows&reg; registry
-
-'StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online </a>.
 '
-
+'Usage example
+'
+'' With CreateObject("includer")
+''     Execute(.read("RegistryUtility"))
+'' End With
+'' Dim reg : Set reg = New RegistryUtility
+'' Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+'' MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName")
+'
+'Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.
+'
+'StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online</a>.
+'
 Class RegistryUtility
 
     Private pc, oStdRegProv
 
     Sub Class_Initialize
-        SetPC(".") 'this also initializes or reinitializes oStdRegProv
+        SetPC(".")
     End Sub
+
+    'Method SetPC
+    'Parameter: a computer name
+    'Remark: Optional. A dot (.) can be used for the local computer (default), in place of the computer name.
+
+    Sub SetPC(newPC)
+        pc = newPC
+        Set oStdRegProv = GetObject(GetWmiRegToken)
+    End sub
 
     Private Property Get reg : Set reg = oStdRegProv : End Property
 
     'Function GetStringValue
     'Parameters: rootKey, subKey, valueName
-    'Returns the value of the specified registry entry.
-    'Remark: The specified registry entry must be of type string (REG_SZ). <p>Set valueName to vbEmpty or "" to retrieve the default value.</p> For rootKey, use Property HKLM or HKCU.
+    'Returns a string
+    'Remark: Returns the value of the specified registry location. The specified registry entry must be of type string (REG_SZ).
 
     Function GetStringValue(rootKey, subKey, valueName)
         Dim value
@@ -27,7 +46,7 @@ Class RegistryUtility
 
     'Method SetStringValue
     'Parameters: rootKey, subKey, valueName, value
-    'Remark: The specified registry entry must be of type string (REG_SZ). <p>Requires elevated privileges when used with HKLM.</p> Set valueName to vbEmpty or "" for setting the default value. <br /><br />For rootKey, use Property HKLM or HKCU.
+    'Remark: Writes the specified REG_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.
 
     Sub SetStringValue(rootKey, subKey, valueName, value)
         reg.SetStringValue rootKey, subKey, valueName, value
@@ -35,8 +54,8 @@ Class RegistryUtility
 
     'Function GetExpandedStringValue
     'Parameters: rootKey, subKey, valueName
-    'Returns the value of the specified registry entry.
-    'Remark: The specified registry entry must be of type REG_EXPAND_SZ. <p>Set valueName to vbEmpty or "" to retrieve the default value.</p> For rootKey, use Property HKLM or HKCU.
+    'Returns a string
+    'Remark: Returns the value of the specified registry location. The specified registry entry must be of type REG_EXPAND_SZ.
 
     Function GetExpandedStringValue(rootKey, subKey, valueName)
         Dim value
@@ -46,7 +65,7 @@ Class RegistryUtility
 
     'Method SetExpandedStringValue
     'Parameters: rootKey, subKey, valueName, value
-    'Remark: The specified registry entry must be of type REG_EXPAND_SZ. <p>Requires elevated privileges when used with HKLM.</p> Set valueName to vbEmpty or "" for setting the default value. <br /><br />For rootKey, use Property HKLM or HKCU.
+    'Remark: Writes the specified REG_EXPAND_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.
 
     Sub SetExpandedStringValue(rootKey, subKey, valueName, value)
         reg.SetExpandedStringValue rootKey, subKey, valueName, value
@@ -74,25 +93,16 @@ Class RegistryUtility
         GetWmiRegToken = "winmgmts:\\" & pc & "\root\default:StdRegProv"
     End Property
 
-    'Method SetPC
-    'Parameter: a computer name
-    'Remark: A dot (.) can be used for the local computer (default), in place of the computer name.
-
-    Sub SetPC(newPC)
-        pc = newPC
-        Set oStdRegProv = GetObject(GetWmiRegToken)
-    End sub
-
     'Property GetPC
     'Returns a string
-    'Remark: Returns the name of the current computer. <strong> . </strong> (dot) indicates the local computer.
+    'Remark: Returns the name of the current computer. <strong> .</strong> (dot) indicates the local computer.
 
     Property Get GetPC : GetPC = pc : End Property
 
     'Function GetRegValueType
     'Parameters: rootKey, subKey, valueName
     'Returns an integer
-    'Remark: Get registry key value type integer.
+    'Remark: Returns a registry key value type integer.
 
     Function GetRegValueType(rootKey, subKey, valueName)
         Dim i, aNames, aTypes, iType, sType
@@ -106,37 +116,43 @@ Class RegistryUtility
     'Property REG_SZ
     'Returns 1
     'Remark: Returns a registry value type constant.
+
     Property Get REG_SZ : REG_SZ = 1 : End Property
 
     'Property REG_EXPAND_SZ
     'Returns 2
     'Remark: Returns a registry value type constant.
+
     Property Get REG_EXPAND_SZ : REG_EXPAND_SZ = 2 : End Property
 
     'Property REG_BINARY
     'Returns 3
     'Remark: Returns a registry value type constant.
+
     Property Get REG_BINARY : REG_BINARY = 3 : End Property
 
     'Property REG_DWORD
     'Returns 4
     'Remark: Returns a registry value type constant.
+
     Property Get REG_DWORD : REG_DWORD = 4 : End Property
 
     'Property REG_MULTI_SZ
     'Returns 7
     'Remark: Returns a registry value type constant.
+
     Property Get REG_MULTI_SZ : REG_MULTI_SZ = 7 : End Property
 
     'Property REG_QWORD
     'Returns 11
     'Remark: Returns a registry value type constant.
+
     Property Get REG_QWORD : REG_QWORD = 11 : End Property
 
     'Function GetRegValueTypeString
     'Parameters: rootKey, subKey, valueName
     'Returns a string
-    'Remark: Get registry key value type strings used by WScript.Shell RegWrite
+    'Remark: Returns a registry key value type string suitable for use with WScript.Shell RegWrite method argument #3. That is, one of "REG_SZ", "REG_EXPAND_SZ", "REG_BINARY", or "REG_DWORD".
 
     Function GetRegValueTypeString(rootKey, subKey, valueName)
         Select Case GetRegValueType(rootKey, subKey, valueName)
