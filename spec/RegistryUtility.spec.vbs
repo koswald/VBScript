@@ -10,7 +10,7 @@ End With
 Dim r : Set r = New RegistryUtility 'class under test
 Dim n : Set n = New VBSNatives
 
-Dim subKey : subKey = "Software\Scripts by Karl"
+Dim subKey : subKey = "Software\VBScripts"
 Dim valueName : valueName = "" 'use the subKey's default value
 Dim value : value = n.fso.GetTempName 'a random string
 Dim key : key = "HKCU\" & subKey & "\" & valueName 'registry key format used by WScript.Shell.RegRead & .RegWrite; this format is not used by the class under test
