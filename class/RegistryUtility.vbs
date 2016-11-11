@@ -64,6 +64,12 @@ Class RegistryUtility
 
     Property Get HKCU : HKCU = &H80000001 : End Property
 
+    'Property HKCR
+    'Returns &H80000000
+    'Remark: Represents HKEY_CLASSES_ROOT. For use with the rootKey parameter.
+
+    Property Get HKCR : HKCR = &H80000000 : End Property
+
     Private Property Get GetWmiRegToken
         GetWmiRegToken = "winmgmts:\\" & pc & "\root\default:StdRegProv"
     End Property
@@ -80,7 +86,68 @@ Class RegistryUtility
     'Property GetPC
     'Returns a string
     'Remark: Returns the name of the current computer. <strong> . </strong> (dot) indicates the local computer.
+
     Property Get GetPC : GetPC = pc : End Property
+
+    'Function GetRegValueType
+    'Parameters: rootKey, subKey, valueName
+    'Returns an integer
+    'Remark: Get registry key value type integer.
+
+    Function GetRegValueType(rootKey, subKey, valueName)
+        Dim i, aNames, aTypes, iType, sType
+        reg.EnumValues rootKey, subKey, aNames, aTypes
+        For i = 0 To UBound(aNames)
+            If valueName = aNames(i) Then iType = aTypes(i)
+        Next
+        GetRegValueType = iType
+    End Function
+
+    'Property REG_SZ
+    'Returns 1
+    'Remark: Returns a registry value type constant.
+    Property Get REG_SZ : REG_SZ = 1 : End Property
+
+    'Property REG_EXPAND_SZ
+    'Returns 2
+    'Remark: Returns a registry value type constant.
+    Property Get REG_EXPAND_SZ : REG_EXPAND_SZ = 2 : End Property
+
+    'Property REG_BINARY
+    'Returns 3
+    'Remark: Returns a registry value type constant.
+    Property Get REG_BINARY : REG_BINARY = 3 : End Property
+
+    'Property REG_DWORD
+    'Returns 4
+    'Remark: Returns a registry value type constant.
+    Property Get REG_DWORD : REG_DWORD = 4 : End Property
+
+    'Property REG_MULTI_SZ
+    'Returns 7
+    'Remark: Returns a registry value type constant.
+    Property Get REG_MULTI_SZ : REG_MULTI_SZ = 7 : End Property
+
+    'Property REG_QWORD
+    'Returns 11
+    'Remark: Returns a registry value type constant.
+    Property Get REG_QWORD : REG_QWORD = 11 : End Property
+
+    'Function GetRegValueTypeString
+    'Parameters: rootKey, subKey, valueName
+    'Returns a string
+    'Remark: Get registry key value type strings used by WScript.Shell RegWrite
+
+    Function GetRegValueTypeString(rootKey, subKey, valueName)
+        Select Case GetRegValueType(rootKey, subKey, valueName)
+        Case REG_SZ sType = "REG_SZ"
+        Case REG_EXPAND_SZ sType = "REG_EXPAND_SZ"
+        Case REG_BINARY sType = "REG_BINARY"
+        Case REG_DWORD sType = "REG_DWORD"
+        Case Else sType = "Type not supported by WScript.Shell.RegWrite"
+        End Select
+        GetRegValueTypeString = sType
+    End Function
 
     Sub Class_Terminate
         Set oStdRegProv = Nothing
