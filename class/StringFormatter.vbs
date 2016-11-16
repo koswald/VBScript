@@ -22,6 +22,7 @@ Class StringFormatter
 
     Private zero, singular, plural
     Private scriptName
+    Private surrogate
 
     Sub Class_Initialize
         singular = "singular"
@@ -30,6 +31,7 @@ Class StringFormatter
         On Error Resume Next
             scriptName = WScript.ScriptName
         On Error Goto 0
+        SetSurrogate "%s"
     End Sub
 
     'Function Format
@@ -38,18 +40,25 @@ Class StringFormatter
     'Remark: Returns a formatted string. The parameter is an array whose first element contains the pattern of the returned string. The first %s in the pattern is replaced by the next element in the array. The second %s in the pattern is replaced by the next element in the array, and so on. Variant subtypes tested OK with %s include string, integer, and single. Format is the default property for the class, so the property name is optional. If there are too many or too few %s instances, then an error will be raised.
 
     Public Default Function Format(array_)
-        Const strSurrogate = "%s"
         Const startPosition = 1
         Const replacemtCount = 1
         Dim arr : arr = array_
         Dim i, pattern : pattern = arr(0)
         For i = 1 To UBound(arr)
-            If Not CBool(InStr(pattern, strSurrogate)) Then Err.Raise 1, scriptName, "There are too few instances of " & strSurrogate & vbLf & "Pattern: " & arr(0)
-            pattern = Replace(pattern, strSurrogate, arr(i), startPosition, replacemtCount)
+            If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 1, scriptName, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
+            pattern = Replace(pattern, surrogate, arr(i), startPosition, replacemtCount)
         Next
-        If InStr(pattern, strSurrogate) Then Err.Raise 1, scriptName, "There are too many instances of " & strSurrogate & vbLf & "Pattern: " & arr(0)
+        If InStr(pattern, surrogate) Then Err.Raise 1, scriptName, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
         Format = pattern
     End Function
+
+    'Method SetSurrogate
+    'Parameter: a string
+    'Remark: Optional. Sets the string that the Format method will replace with the specified array element(s), %s by default.
+
+    Sub SetSurrogate(newSurrogate)
+        surrogate = newSurrogate
+    End Sub
 
     'Property Pluralize
     'Parameters: count, noun
@@ -75,9 +84,12 @@ Class StringFormatter
 
     'Method SetZeroSingular
     'Remark: Optional. Changes the default behavior of considering a count of zero to be plural.
+
     Sub SetZeroSingular : zero = singular : End Sub
 
     'Method SetZeroPlural
     'Remark: Optional. Restores the default behavior of considering a count of zero to be plural.
+
     Sub SetZeroPlural : zero = plural : End Sub
+
 End Class
