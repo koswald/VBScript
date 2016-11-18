@@ -11,4 +11,4 @@ This type of problem might be fixed by changing the registry entries to use the 
  
 1) Double click `Fixer.bat`, which launches `Fixer.hta` with elevated privileges.  
 
-2) In the `Fixer` window, for the `.vbs` file type, select 32-bit.
+2) In the `Fixer` window, for the `.vbs` file type, select 32-bit.  

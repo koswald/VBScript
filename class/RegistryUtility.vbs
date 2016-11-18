@@ -106,12 +106,36 @@ Class RegistryUtility
 
     Function GetRegValueType(rootKey, subKey, valueName)
         Dim i, aNames, aTypes, iType, sType
-        reg.EnumValues rootKey, subKey, aNames, aTypes
+        EnumValues rootKey, subKey, aNames, aTypes
         For i = 0 To UBound(aNames)
-            If valueName = aNames(i) Then iType = aTypes(i)
+            If LCase(valueName) = LCase(aNames(i)) Then
+                iType = aTypes(i)
+                Exit For
+            End If
         Next
         GetRegValueType = iType
     End Function
+
+    'Method EnumValues
+    'Parameters: rootKey, subKey, aNames, aTypes
+    'Remark: Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are passed by reference and are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, if present.
+
+    Sub EnumValues(rootKey, subKey, aNames, aTypes)
+        reg.EnumValues rootKey, subKey, aNames, aTypes
+
+        'a null aNames is a sign of the bug mentioned in
+        'LonelyDefaultValueBug.md, so if null,
+        'try again after writing a random value to the registry
+
+        If VarType(aNames) <> vbNull Then Exit Sub
+        Dim s : s = "928507A9-7958-4E6E-A0B1-C33A5D4D602A"
+        Dim r : r = RootKeyString(rootKey) & "\"
+        On Error Resume Next
+            reg.SetStringValue rootKey, subKey, s, s
+            reg.DeleteValue rootKey, subKey, s
+        On Error Goto 0
+        reg.EnumValues rootKey, subKey, aNames, aTypes
+    End Sub
 
     'Property REG_SZ
     'Returns 1
@@ -156,11 +180,11 @@ Class RegistryUtility
 
     Function GetRegValueTypeString(rootKey, subKey, valueName)
         Select Case GetRegValueType(rootKey, subKey, valueName)
-        Case REG_SZ sType = "REG_SZ"
-        Case REG_EXPAND_SZ sType = "REG_EXPAND_SZ"
-        Case REG_BINARY sType = "REG_BINARY"
-        Case REG_DWORD sType = "REG_DWORD"
-        Case Else sType = "Type not supported by WScript.Shell.RegWrite"
+            Case REG_SZ sType = "REG_SZ"
+            Case REG_EXPAND_SZ sType = "REG_EXPAND_SZ"
+            Case REG_BINARY sType = "REG_BINARY"
+            Case REG_DWORD sType = "REG_DWORD"
+            Case Else sType = "Type not supported by WScript.Shell.RegWrite"
         End Select
         GetRegValueTypeString = sType
     End Function

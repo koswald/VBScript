@@ -72,7 +72,6 @@
                     HKCR = &H80000000
                     wmiRootKey = HKCR
                     Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
-
                     ShowVal htaKey, oSpanHta 'radio button group label <= key value
                     ShowVal vbsKey, oSpanVbs
                     ShowVal wsfKey, oSpanWsf
@@ -157,16 +156,10 @@
                 'Get registry key value type strings used by WScript.Shell RegWrite
 
                 Function GetRegValueType(rootKey, subKey, valueName)
-                    Const REG_SZ = 1
-                    Const REG_EXPAND_SZ = 2
-                    Const REG_BINARY = 3
-                    Const REG_DWORD = 4
-                    Const REG_MULTI_SZ = 7
-                    Const REG_QWORD = 11
                     Dim i, aNames, aTypes, iType, sType
-                    reg.EnumValues rootKey, subKey, aNames, aTypes
+                    EnumValues rootKey, subKey, aNames, aTypes
                     For i = 0 To UBound(aNames)
-                        If valueName = aNames(i) Then iType = aTypes(i)
+                        If LCase(valueName) = LCase(aNames(i)) Then iType = aTypes(i)
                     Next
                     Select Case iType
                     Case REG_SZ sType = "REG_SZ"
@@ -177,6 +170,61 @@
                     End Select
                     GetRegValueType = sType
                 End Function
+
+                'Method EnumValues
+                'Parameters: rootKey, subKey, aNames, aTypes
+                'Remark: Wraps the StdRegProv EnumValues method. The aNames and aTypes variables, passed by reference are populated with arrays of key value name strings and type integers.
+
+                Sub EnumValues(rootKey, subKey, aNames, aTypes)
+                    reg.EnumValues rootKey, subKey, aNames, aTypes
+
+                    'a null aNames is a sign of regression for the lonely Default Value bug, so
+                    'try again after writing a random value to the registry
+
+                    If VarType(aNames) <> vbNull Then Exit Sub
+                    Dim s : s = "928507A9-7958-4E6E-A0B1-C33A5D4D602A"
+                    On Error Resume Next
+                        reg.SetStringValue rootKey, subKey, s, s
+                        reg.EnumValues rootKey, subKey, aNames, aTypes
+                        reg.DeleteValue rootKey, subKey, s
+                    On Error Goto 0
+                End Sub
+
+                'Property REG_SZ
+                'Returns 1
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_SZ : REG_SZ = 1 : End Property
+
+                'Property REG_EXPAND_SZ
+                'Returns 2
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_EXPAND_SZ : REG_EXPAND_SZ = 2 : End Property
+
+                'Property REG_BINARY
+                'Returns 3
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_BINARY : REG_BINARY = 3 : End Property
+
+                'Property REG_DWORD
+                'Returns 4
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_DWORD : REG_DWORD = 4 : End Property
+
+                'Property REG_MULTI_SZ
+                'Returns 7
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_MULTI_SZ : REG_MULTI_SZ = 7 : End Property
+
+                'Property REG_QWORD
+                'Returns 11
+                'Remark: Returns a registry value type constant.
+
+                Property Get REG_QWORD : REG_QWORD = 11 : End Property
 
                 'click handlers for the radio buttons
 

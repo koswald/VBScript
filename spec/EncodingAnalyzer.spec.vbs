@@ -4,7 +4,6 @@
 With CreateObject("includer")
     Execute(.read("EncodingAnalyzer"))
     Execute(.read("TestingFramework"))
-    Execute(.read("VBSNatives"))
 End With
 
 With New TestingFramework
@@ -13,11 +12,15 @@ With New TestingFramework
 
         Dim ea : Set ea = New EncodingAnalyzer
 
-    .it "should identify an Ascii file, returning a boolean"
+    'setup
 
         Dim baseName : baseName = "fixture/EncodingAnalyzer."
         Dim suffix : suffix = ".txt"
-        Dim format : format = "Ascii"
+        Dim format
+
+    .it "should identify an Ascii file, returning a boolean"
+
+        format = "Ascii"
         ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isAscii, True
@@ -26,14 +29,14 @@ With New TestingFramework
 
         .AssertEqual ea.GetType, format
 
-    .it "should identify a UTF16LE file, returning a boolean"
+    .it "should identify a UTF16LE (Unicode) file, returning a boolean"
 
         format = "UTF16LE"
         ea.SetFile(baseName & format & suffix)
 
         .AssertEqual ea.isUTF16LE, True
 
-    .it "should identify a UTF16LE file, returning a string"
+    .it "should identify a UTF16LE (Unicode) file, returning a string"
 
         .AssertEqual ea.GetType, format
 

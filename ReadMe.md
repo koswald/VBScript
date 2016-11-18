@@ -5,8 +5,8 @@ This project has a number facets:
 - An automatic documentation generator
 - A lightweight unit-testing framework
 - A logger
-- Classes that manage their own dependencies
-- Computer administration utilities
+- A dependency manager
+- A .Net to COM example
 
 ##### Requirements
 
