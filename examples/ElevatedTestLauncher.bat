@@ -1,0 +1,1 @@
+@CScript //nologo ElevatedTestLauncher.vbs %1

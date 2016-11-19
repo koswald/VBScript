@@ -118,7 +118,7 @@ Class RegistryUtility
 
     'Method EnumValues
     'Parameters: rootKey, subKey, aNames, aTypes
-    'Remark: Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are passed by reference and are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, if present.
+    'Remark: Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, except that with HKCR and HKLM, elevated privileges are required or else aNames and aValues may be null if the default value is the only value.
 
     Sub EnumValues(rootKey, subKey, aNames, aTypes)
         reg.EnumValues rootKey, subKey, aNames, aTypes
@@ -129,7 +129,6 @@ Class RegistryUtility
 
         If VarType(aNames) <> vbNull Then Exit Sub
         Dim s : s = "928507A9-7958-4E6E-A0B1-C33A5D4D602A"
-        Dim r : r = RootKeyString(rootKey) & "\"
         On Error Resume Next
             reg.SetStringValue rootKey, subKey, s, s
             reg.DeleteValue rootKey, subKey, s

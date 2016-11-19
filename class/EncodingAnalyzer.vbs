@@ -163,7 +163,7 @@ Class EncodingAnalyzer
     'Function GetByte
     'Parameter: BOM byte number
     'Returns an Ascii value
-    'Remark: Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark.
+    'Remark: Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark (BOM).
 
     Function GetByte(i)
         ValidateFile

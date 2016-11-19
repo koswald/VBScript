@@ -15,7 +15,7 @@ Class NETCOMCompiler
     Private args, cmd, L, scriptName, msg
 
     Sub Class_Initialize
-        args = "" 
+        args = ""
         exeFolder = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
         'AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
         ext = "exe" 'default file extension

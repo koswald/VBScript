@@ -62,8 +62,6 @@
 
     <script language="VBScript" src="StreamConstants.vbs" />
     <script language="VBScript" src="EncodingAnalyzer.vbs" />
-    <script language="VBScript" src="RegistryUtility.vbs" />
-    <script language="VBScript" src="VBSNatives.vbs" />
     <script language="VBScript">
 
         Option Explicit 'Require the declaration of variables
@@ -87,13 +85,11 @@
         Private Sub InitializeMembers
             Set n = New VBSNatives 'objects native to VBScript
             Set oStreamConstants = New StreamConstants
-            Dim reg : Set reg = New RegistryUtility
             Set analyzer = New EncodingAnalyzer
 
             'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
 
-            Dim subKey : subKey = "Software\Classes\CLSID\" & sWscID & "\ScriptletURL"
-            Dim thisFile : thisFile = reg.GetStringValue(reg.HKLM, subKey, "") 'get path to this scriptlet from the registry
+            Dim thisFile : thisFile = n.sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
             thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
             referencePath = n.fso.GetParentFolderName(thisFile)
             SetFormat c.tbAscii
@@ -116,14 +112,12 @@
 
             If c.tbUnicode = StreamFormat Then
                 Read = PrivateRead(file)
-
             ElseIf analyzer.SetFile(Resolve(file)).isUTF16LE Then
                 Dim savedStreamFormat
                 savedStreamFormat = StreamFormat
                 SetFormatUnicode
                 Read = PrivateRead(file)
                 StreamFormat = savedStreamFormat
-
             Else
                 Read = PrivateRead(file)
             End If
@@ -176,6 +170,22 @@
 
         Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
         Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
+
+        'Wrap selected objects native to WScript/Windows
+
+        Class VBSNatives
+            Private oSh, oFSO
+            Sub Class_Initialize
+                Set oSh = CreateObject("WScript.Shell")
+                Set oFSO = CreateObject("Scripting.FileSystemObject")
+            End Sub
+            Property Get sh : Set sh = oSh : End Property
+            Property Get fso : Set fso = oFSO : End Property
+            Sub Class_Terminate 'event fires when the object instance goes out of scope
+                Set oSh = Nothing
+                Set oFSO = Nothing
+            End Sub
+        End Class
 
     </script>
 </scriptlet>
