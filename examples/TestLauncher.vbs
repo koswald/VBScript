@@ -24,5 +24,8 @@ Sub Main
 
     'run the tests
 
-    testRunner.Run
+    On Error Resume Next
+        testRunner.Run
+        If Err.Number = &H80070006 Then MsgBox "Start this script from a command window with CScript.exe:" & vbLf & vbLf & "cscript //nologo " & WScript.ScriptName, vbInformation, WScript.ScriptName
+    On Error Goto 0
 End Sub

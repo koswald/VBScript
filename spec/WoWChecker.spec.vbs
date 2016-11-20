@@ -39,13 +39,13 @@ With New TestingFramework
 
         Dim pipe : Set pipe = n.sh.Exec("%SystemRoot%\SysWoW64\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
 
-        .AssertEqual CBool(pipe.StdOut.ReadLine), True
+        .AssertEqual pipe.StdOut.ReadLine, "True"
 
     .it "should return False with a 64-bit process on isWoW call"
 
         Set pipe = n.sh.Exec("%SystemRoot%\System32\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
 
-        .AssertEqual CBool(pipe.StdOut.ReadLine), False
+        .AssertEqual pipe.StdOut.ReadLine, "False"
 End With
 
 'garbage collection

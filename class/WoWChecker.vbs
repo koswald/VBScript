@@ -1,6 +1,8 @@
 
 'Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.
-
+'
+'How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.
+'
 'Usage examples
 ''MsgBox New WoWChecker.BySize.isWoW
 ''MsgBox New WoWChecker.isWoW

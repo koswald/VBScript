@@ -1,1 +1,1 @@
-@CScript //nologo TestLauncher.vbs %1
+@ CScript //nologo TestLauncher.vbs %1
