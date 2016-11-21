@@ -58,7 +58,7 @@ Class EncodingAnalyzer
 
     'Function isUTF16LE
     'Returns a boolean
-    'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode "Little Endian."
+    'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode Little Endian, <strong> aka Unicode</strong>.
 
     Function isUTF16LE
         ValidateFile
@@ -67,7 +67,7 @@ Class EncodingAnalyzer
 
     'Function isUTF16BE
     'Returns a boolean
-    'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode "Big Endian."
+    'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode Big Endian.
 
     Function isUTF16BE
         ValidateFile
@@ -162,7 +162,7 @@ Class EncodingAnalyzer
 
     'Function GetByte
     'Parameter: BOM byte number
-    'Returns an Ascii value
+    'Returns an integer
     'Remark: Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark (BOM).
 
     Function GetByte(i)

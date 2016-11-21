@@ -1,4 +1,6 @@
 
+'General utility functions
+
 Class VBSFileSystem
 
     Private oVBSNatives, oVBSEnvironment, oVBSMessages

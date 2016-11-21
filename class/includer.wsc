@@ -30,7 +30,7 @@
 '
 '    <h5> Registration </h5>
 '
-'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc</code> and selecting Register probably will not work.
+'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>.
 '
 '        Instead,
 '        1) run the Setup.vbs in the project folder, or
