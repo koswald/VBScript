@@ -37,7 +37,7 @@ Class Fixer
     End Sub
 
     Sub QuitMessage(str)
-        sh.PopUp "Error: " & str & vbLf & vbLf & msg, 30, WScript.ScriptName, vbInformation
+        sh.PopUp msg, 30, WScript.ScriptName, vbInformation
     End Sub
 
     Sub Class_Terminate

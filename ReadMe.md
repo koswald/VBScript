@@ -22,4 +22,4 @@ The scripts in the examples folder include a test launcher and an example for us
 
 ---
 
-See the [wiki](../../wiki)
+Read or edit the [wiki](../../wiki)

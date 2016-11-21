@@ -7,7 +7,7 @@
     that it is started with the 64-bit cmd.exe, with elevated privileges  -->
 
     <head>
-        <hta:application id="oHta" scroll="No">
+        <hta:application id="oHta" scroll="No" icon="msdt.exe" />
         <style> body { font-family: "Calibri", Arial, sans-serif; } fieldset { padding-left: 1em; margin-left: 1em; padding-bottom: 1em; margin-bottom: .75em; } #out { padding-top: 1em; } </style>
     </head>
 
@@ -80,7 +80,7 @@
                     Set oDoc = document.ParentWindow.document
                     htaName = fso.GetBaseName(oDoc.location.href)
                     oDoc.Title = htaName
-                    closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used to start it."
+                    closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used."
 
                     InitializeDOM "hta"
                     InitializeDOM "vbs"
@@ -118,7 +118,7 @@
 
                 Sub Validate
                     If InStr(oHta.CommandLine, cmdLineToken) Then Exit Sub
-                    MsgBox "Invalid token." & vbLf & "mshta.exe command-line argument(s):" & vbLf & oHta.CommandLine & vbLf & vbLf & closeMessage, vbInformation, htaName
+                    MsgBox closeMessage, vbInformation, htaName
                     Self.Close
                 End Sub
 
