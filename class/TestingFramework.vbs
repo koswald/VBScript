@@ -49,7 +49,7 @@ Class TestingFramework
 
     'Method describe
     'Parameter: unit description
-    'Remark: Provides a description for the unit under test. E.g. .describe "DocGenerator class"
+    'Remark: Sets the description for the unit under test. E.g. .describe "DocGenerator class"
 
     Sub describe(newUnit)
         ShowPendingResult
@@ -59,12 +59,18 @@ Class TestingFramework
 
     'Method it
     'Parameter: an expectation
-    'Remark: Provides a specification, a.k.a. a spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer"
+    'Remark: Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer"
 
     Sub it(newSpec)
         ShowPendingResult
         spec = newSpec
     End Sub
+
+    'Property GetSpec
+    'Returns a string
+    'Remark: Returns the specification string for the current spec.
+
+    Property Get GetSpec : GetSpec = spec : End Property
 
     Private Sub ShowPendingResult
         If Not resultPending Then Exit Sub
