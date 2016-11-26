@@ -16,13 +16,16 @@ With New TestingFramework
 
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim pipe
-        Const pause = 0
+        Dim pause : pause = 10
 
     .it "should open a browse for file window"
 
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
+        ch.SetPatience 30 'in case the pc is very busy with other tasks, as at startup
 
         .AssertEqual ch.DialogHasOpened(ch.BFFileTitle), True
+
+        ch.SetPatience 5 'restore default
 
     .it "should return the path of a user-selected file"
 
@@ -51,6 +54,8 @@ With New TestingFramework
         End If
 
         .AssertEqual pipe.StdOut.ReadLine, ""
+
+        pause = 0
 
     .it "should open a browse for folder window"
 
