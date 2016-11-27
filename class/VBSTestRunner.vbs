@@ -24,7 +24,7 @@ Class VBSTestRunner
     Private fs, formatter
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
-    Private startTime
+    Private tymer
 
     Sub Class_Initialize
         passing = 0
@@ -34,14 +34,16 @@ Class VBSTestRunner
         With CreateObject("includer")
             ExecuteGlobal(.read("VBSFileSystem"))
             ExecuteGlobal(.read("StringFormatter"))
+            ExecuteGlobal(.read("VBSTimer"))
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
+        Set tymer = New VBSTimer
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
         SetSearchSubfolders False
-        startTime = Now
+        SetPrecision 2
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -84,6 +86,12 @@ Class VBSTestRunner
     Sub SetSearchSubfolders(newSearchingSubfolders)
         searchingSubfolders = newSearchingSubfolders
     End Sub
+
+    'Method SetPrecision
+    'Parameter: non-negative integer
+    'Remark: Sets the precision of the reported elapsed time. Precisions greater than 2 should be used for comparison only, due to accuracy limitations.
+
+    Sub SetPrecision(newPrecision) : tymer.SetPrecision newPrecision : End Sub
 
     Private Sub ValidateSettings
         Dim msg
@@ -131,7 +139,7 @@ Class VBSTestRunner
             Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
         End If
         Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
-        Write_ "test duration: " & formatter.pluralize(DateDiff("s", startTime, Now), "second") & " "
+        Write_ "test duration: " & formatter.pluralize(tymer, "second") & " "
 
     End Sub 'Run
 
