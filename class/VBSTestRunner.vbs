@@ -88,8 +88,8 @@ Class VBSTestRunner
     End Sub
 
     'Method SetPrecision
-    'Parameter: non-negative integer
-    'Remark: Sets the precision of the reported elapsed time. Precisions greater than 2 should be used for comparison only, due to accuracy limitations.
+    'Parameter: 0, 1, or 2
+    'Remark: Sets the precision of the reported elapsed time.
 
     Sub SetPrecision(newPrecision) : tymer.SetPrecision newPrecision : End Sub
 

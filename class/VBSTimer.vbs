@@ -17,16 +17,36 @@ Class VBSTimer
     'Remark: Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.
 
     Public Default Function Split
+        Split = Round(UnroundedSplit, precision)
+    End Function
+
+    Function UnroundedSplit
         Dim endDate : endDate = Now
         daysElapsed = DateDiff("d", startDate, endDate)
-        Split = Round(Timer - start + daysElapsed * 24 * 60 * 60, precision)
+        UnroundedSplit = Timer - start + daysElapsed * 24 * 60 * 60
     End Function
 
     'Method SetPrecision
-    'Parameter: a non-negative integer
-    'Remark: Sets the number of decimal places to round the Split function return value. Precision greater than 2 should be used for comparison only due to accuracy limits.
+    'Parameter: 0, 1, or 2
+    'Remark: Sets the number of decimal places to round the Split function return value.
 
-    Sub SetPrecision(newPrecision) : precision = newPrecision : End Sub
+    Sub SetPrecision(newPrecision)
+        If Not IsNumeric(newPrecision) Then
+            precision = 0
+        ElseIf Abs(newPrecision) > 1.5 Then
+            precision = 2
+        ElseIf Abs(newPrecision) > 0.5 Then
+            precision = 1
+        Else
+            precision = 0
+        End If
+    End Sub
+
+    'Property GetPrecision
+    'Returns 0, 1, or 2
+    'Remark: Returns the current precision.
+
+    Property Get GetPrecision : GetPrecision = precision : End Property
 
     'Method Reset
     'Remark: Sets the timer to zero.
