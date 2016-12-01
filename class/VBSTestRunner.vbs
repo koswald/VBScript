@@ -15,7 +15,7 @@
 ''        .Run
 ''    End With
 '
-' See also TestingFramework
+'See also TestingFramework
 '
 Class VBSTestRunner
 
@@ -24,7 +24,8 @@ Class VBSTestRunner
     Private fs, formatter
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
-    Private tymer
+    Private tim_r
+    Private runCount
 
     Sub Class_Initialize
         passing = 0
@@ -38,12 +39,13 @@ Class VBSTestRunner
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
-        Set tymer = New VBSTimer
+        Set tim_r = New VBSTimer
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
         SetSearchSubfolders False
         SetPrecision 2
+        SetRunCount 1
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -91,7 +93,15 @@ Class VBSTestRunner
     'Parameter: 0, 1, or 2
     'Remark: Sets the precision of the reported elapsed time.
 
-    Sub SetPrecision(newPrecision) : tymer.SetPrecision newPrecision : End Sub
+    Sub SetPrecision(newPrecision) : tim_r.SetPrecision newPrecision : End Sub
+
+    'Method SetRunCount
+    'Parameter: an integer
+    'Remark: Optional. Sets the number of times to run the test(s). Default is 1.
+
+    Sub SetRunCount(newRunCount)
+        runCount = newRunCount
+    End Sub
 
     Private Sub ValidateSettings
         Dim msg
@@ -118,14 +128,17 @@ Class VBSTestRunner
 
         'run the test(s)
 
-        If Len(specFile) Then
-            RunTest fs.ResolveTo(specFile, specFolder)
-        Else
-            Set regex = New RegExp
-            regex.IgnoreCase = True
-            regex.Pattern = specPattern
-            ProcessFiles fs.fso.GetFolder(specFolder)
-        End If
+        Set regex = New RegExp
+        regex.IgnoreCase = True
+        regex.Pattern = specPattern
+
+        Dim i : For i = 1 To runCount
+            If Len(specFile) Then
+                RunTest fs.ResolveTo(specFile, specFolder) 'a single test
+            Else
+                ProcessFiles fs.fso.GetFolder(specFolder) 'multiple tests
+            End If
+        Next
 
         'write the result summary
 
@@ -139,11 +152,11 @@ Class VBSTestRunner
             Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
         End If
         Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
-        Write_ "test duration: " & formatter.pluralize(tymer, "second") & " "
+        Write_ "test duration: " & formatter.pluralize(tim_r, "second") & " "
 
     End Sub 'Run
 
-    'search for and run tests in the specified folder
+    'run all the test files whose names match the regex pattern
 
     Private Sub ProcessFiles(Folder)
         Dim File, Subfolder
@@ -171,12 +184,16 @@ Class VBSTestRunner
         Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo " & filespec)
         IncrementSpecFiles
 
+        'show the results
+
         While Not Pipe.StdOut.AtEndOfStream
             Line = Pipe.StdOut.ReadLine
             WriteLine Line
             If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
             If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
         Wend
+
+        'show any errors
 
         While Not Pipe.StdErr.AtEndOfStream
             Line = Pipe.StdErr.ReadLine

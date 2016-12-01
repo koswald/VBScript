@@ -18,6 +18,10 @@ Sub Main
         End If
     End With
 
+    'specify the number of times to run the test(s)
+
+    testRunner.SetRunCount 1
+
     'specify the folder containing the tests; path is relative to this script
 
     testRunner.SetSpecFolder "../spec"
