@@ -10,7 +10,6 @@ With New TestingFramework
 
     'setup
         Const max = 0.02 'based on ~1.1 * max observed overhead
-        Dim before, after
         
     .describe "VBSTimer class"
         Dim tmr : Set tmr = New VBSTimer
@@ -29,9 +28,9 @@ With New TestingFramework
     .it "should be resettable"
         tmr.SetPrecision 2
         WScript.Sleep 10 'millisecond(s) wait
-        before = tmr.Split
+        Dim before : before = tmr.Split
         tmr.Reset
-        after = tmr.Split
+        Dim after : after = tmr.Split
         .AssertEqual before > after, True
 
 End With
