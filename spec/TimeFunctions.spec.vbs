@@ -28,11 +28,11 @@ With New TestingFramework
         tf.LetDOWBeAbbreviated = True
         .AssertEqual tf.DOW(date_), "Mon"
 
-    .it "should return a day string like 2016-09-19-Mon (DOW abbreviated)"
+    .it "should return a day string like 2016-09-19-Mon"
 
         .AssertEqual tf.GetFormattedDay("September 19, 2016"), "2016-09-19-Mon"
 
-    .it "should return a day string like 1970-06-07-Sunday (DOW not abbreviated)"
+    .it "should return a day string like 1970-06-07-Sunday"
 
         tf.LetDOWBeAbbreviated = False 'restore default
         .AssertEqual tf.GetFormattedDay("June 7, 1970"), "1970-06-07-Sunday"

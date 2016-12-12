@@ -17,13 +17,13 @@ With New TestingFramework
 
         .AssertEqual f.pluralize(0, Split("person people")), "0 people"
 
-    .it "should not pluralize a regular noun with a count of 0, after SetZeroSingular"
+    .it "should not pluralize a reg noun, count=0, after SetZeroSingular"
 
         f.SetZeroSingular
 
         .AssertEqual f.pluralize(0, "erring test"), "0 erring test"
 
-    .it "should not pluralize an irregular noun with a count of 0, after SetZeroSingular"
+    .it "should not pluralize an irreg noun, count=0, after SetZeroSingular"
 
         .AssertEqual f.pluralize(0, Split("person people")), "0 person"
 

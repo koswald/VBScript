@@ -54,7 +54,7 @@ Class TestingFramework
     Sub describe(newUnit)
         ShowPendingResult
         unit = newUnit
-        If Len(unit) Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 80)
+        If Len(unit) Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 79)
     End Sub
 
     'Method it
