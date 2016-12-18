@@ -1,10 +1,29 @@
 
-@set command=cscript //nologo TestLauncher.vbs
+:: prepare to manually launch a series of tests from a console window
 
-:: configure doskey macros
+:: define variables
 
-@doskey test=%command%
-@doskey wip=%command% Chooser.spec.wip.vbs
-@doskey wip2=%command% VBSClipboard.spec.vbs 2
+@set test=cscript //nologo TestLauncher.vbs
+@set wip=%test% VBSClipboard.spec.vbs
+@set wip100=%wip% 100 
 
-@cmd /k %command%
+@set macro1=test=%test%
+@set macro2=wip=%wip%
+@set macro3=wip100=%wip100%
+
+:: define doskey macros
+
+@doskey %macro1%
+@doskey %macro2%
+@doskey %macro3%
+
+:: show macro definitions
+
+@echo %macro1%
+@echo %macro2%
+@echo %macro3%
+@echo.
+
+:: start the first test
+
+@cmd /k %wip%

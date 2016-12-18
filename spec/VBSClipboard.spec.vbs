@@ -17,6 +17,7 @@ With New TestingFramework
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim HtmlFile : Set HtmlFile = CreateObject("htmlfile")
         Dim randomText
+        Dim actual, expected
 
     .it "should copy text to the clipboard"
         randomText = fso.GetTempName
@@ -25,8 +26,15 @@ With New TestingFramework
 
     .it "should get text from the clipboard"
         randomText = fso.GetTempName
-        sh.Run "cmd.exe /c echo " & randomText & " | clip", hidden, synchronous
-        .AssertEqual cb.GetClipText, randomText
+
+        expected = randomText
+
+        sh.Run "cmd.exe /c echo " & randomText & " | clip", hidden, synchronous 'set clipboard text
+        '.AssertEqual cb.GetClipText, randomText
+
+        actual = cb.GetClipText
+        ShowDiscrepency
+        .AssertEqual actual, expected
 End With
 
 'teardown
@@ -34,3 +42,14 @@ End With
 Set fso = Nothing
 Set sh = Nothing
 Set HtmlFile = Nothing
+
+Sub ShowDiscrepency
+    If actual = expected Then Exit Sub
+    Dim i, a : a = actual
+    WScript.StdOut.Write "Characters: "
+    For i = 1 To Len(a)
+        WScript.StdOut.Write Asc(Left(a, 1)) & " "
+        a = Right(a, Len(a) - 1)
+    Next
+    WScript.StdOut.WriteLine ""
+End Sub
