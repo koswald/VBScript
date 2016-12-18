@@ -15,12 +15,12 @@ Sub Main
             'command line, using a relative path, relative to the spec folder
 
             testRunner.SetSpecFile .item(0)
-        End If
+ 
+            'get the runCount from the command-line, arg #2, if specified
+
+            If .Count >= 2 Then testRunner.SetRunCount .item(1)
+       End If
     End With
-
-    'specify the number of times to run the test(s)
-
-    testRunner.SetRunCount 1
 
     'specify the folder containing the tests; path is relative to this script
 
