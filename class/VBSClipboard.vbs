@@ -24,8 +24,6 @@ Class VBSClipboard
     'Property GetClipText
     'Returns a string
     'Remark: Returns text from the clipboard
-    'ToDo: Loop count limit.
-    'ToDo: Test edge case where cliboard text is null; double or triple check null value
 
     Property Get GetClipText
         GetClipText = ""
