@@ -1,29 +1,32 @@
 
 :: prepare to manually launch a series of tests from a console window
 
-:: define variables
+@echo off
 
-@set test=cscript //nologo TestLauncher.vbs
-@set wip=%test% VBSClipboard.spec.vbs
-@set wip100=%wip% 100 
+:: define and display environment variables
 
-@set macro1=test=%test%
-@set macro2=wip=%wip%
-@set macro3=wip100=%wip100%
+set launch0=cscript //nologo TestLauncher.vbs
+set launch1=%launch0% VBSClipboard.spec.vbs
 
-:: define doskey macros
+echo Environment variables & echo.
 
-@doskey %macro1%
-@doskey %macro2%
-@doskey %macro3%
+echo %%launch0%%=%launch0%
+echo %%launch1%%=%launch1%
 
-:: show macro definitions
+:: define and display doskey macros
 
-@echo %macro1%
-@echo %macro2%
-@echo %macro3%
-@echo.
+set macro0=all=%launch0%
+set macro1=wip1=%launch1%
+
+doskey %macro0%
+doskey %macro1%
+
+echo. & echo DosKey macros & echo.
+
+echo %macro0%
+echo %macro1%
+echo.
 
 :: start the first test
 
-@cmd /k %wip%
+cmd /k %launch1% 3
