@@ -17,7 +17,11 @@ Class VBSClipboard
     'Parameter: a string
     'Remark: Copies the specified string to the clipboard. Uses clip.exe, which shipped with Windows&reg; Vista / Server 2003 through Windows 10.
 
-    Sub SetClipText(newText)
+    Sub SetClipText(newText_)
+        Dim newText : newText = newText_
+        If newText = "" Then
+            newText = "off" ' "echo off | clip" clears the clipboard
+        End If
         sh.Run "cmd.exe /c echo " & newText & " | clip", hidden, synchronous
     End Sub
 
@@ -28,7 +32,7 @@ Class VBSClipboard
     Property Get GetClipText
         GetClipText = ""
         On Error Resume Next
-            While Err.Number <> 0 Or GetClipText = "" Or GetClipText = TextToCut Or TypeName(GetClipText) = "Null"
+            While Err.Number <> 0 Or GetClipText = "" Or GetClipText = TextToCut ' Or TypeName(GetClipText) = "Null"
                 Err.Clear
                 GetClipText = TrimHtmlFileData(HtmlFile.parentWindow.ClipboardData.GetData("text"))
             Wend
