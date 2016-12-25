@@ -29,4 +29,4 @@ echo.
 
 :: start the first test
 
-cmd /k %launch1% 3
+cmd /k %launch1% 1
