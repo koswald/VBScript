@@ -15,6 +15,7 @@ With New TestingFramework
     'setup
 
         Dim sh : Set sh = CreateObject("WScript.Shell")
+        Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
 
         'rig for busy CPU, as at startup
@@ -76,7 +77,7 @@ With New TestingFramework
 
         .AssertEqual pipe.StdOut.ReadLine, sh.ExpandEnvironmentStrings("%tmp%")
 
-    .it "should return an empty string if no folder was selected on Folder call"
+    .it "should return an empty string if no folder was selected: .Folder"
 
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.folder.vbs")
 
@@ -104,7 +105,7 @@ With New TestingFramework
 
         .AssertEqual pipe.StdOut.ReadLine, "Temp"
 
-    .it "should return an empty string if no folder was selected on FolderTitle call"
+    .it "should return an empty string if no folder was selected: .FolderTitle"
 
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.title.vbs")
 
@@ -153,3 +154,5 @@ End With
 
 Set pipe = Nothing
 Set sh = Nothing
+warning.Terminate
+Set warning = Nothing
