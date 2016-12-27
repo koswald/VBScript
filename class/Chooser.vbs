@@ -78,10 +78,6 @@ Class Chooser
         WindowTitle = newWindowTitle
     End Sub
 
-    'Some procedures below are intentionally
-    'undocumented by inserting two single quotes
-    'instead of one before the procedure type
-
     'Method SetWindowOptions
     'Parameter: a hex value
     'Remark: Sets the behavior or behaviors for the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER.
@@ -97,6 +93,10 @@ Class Chooser
     Sub AddWindowOptions(newOptions)
         WindowOptions = WindowOptions + newOptions
     End Sub
+
+    'Some procedures below are intentionally excluded
+    'from the documentation by inserting two single quotes
+    'instead of one before the procedure type
 
     'Property BIF_RETURNONLYFSDIRS
     'Returns &H0001
@@ -180,22 +180,24 @@ Class Chooser
 
     Sub SetPatience(newPatience) : patience = newPatience : End Sub
 
-    'Wait for the specified dialog to appear
-    'Returns False if it doesn't appear within the specified time
-    'Undocumented function used internally and by the unit test.
+    'Undocumented Function DialogHasOpened, used internally and by the unit test
+    'Waits for the specified dialog to appear
+    'Returns False if it doesn't appear within the specified time (patience)
+    'Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder.
 
-    Function DialogHasOpened(titlebar)
+    Function DialogHasOpened(ByVal ActivateBy)
+        If Not "String" = TypeName(ActivateBy) Then ActivateBy = ActivateBy.ProcessId
         Const loopPause = 10 'milliseconds
         DialogHasOpened = True
         Dim StartTime : StartTime = Now
         While patience > DateDiff("s", StartTime, Now)
-            If sh.AppActivate(titlebar) Then Exit Function
+            If sh.AppActivate(ActivateBy) Then Exit Function
             WScript.Sleep loopPause
         Wend
         DialogHasOpened = False
     End Function
 
-    'Navigate the browse for file dialog to the RootPath
+    'Navigate the browse for file dialog to the specified RootPath
 
     Private Sub GoToRootPath
         If DialogHasOpened(BFFileTitle) Then
