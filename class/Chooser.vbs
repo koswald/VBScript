@@ -18,6 +18,7 @@ Class Chooser
     Private sh, sa
     Private WindowTitle, WindowOptions, RootPath
     Private SendKeysIsEnabled, patience, pause
+    Private BFFileTimeout, LastBFFileExec
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
@@ -27,6 +28,7 @@ Class Chooser
         SetPatience 5
         DisableSendKeys
         SetPause 10
+        SetBFFileTimeout 0
     End Sub
 
     'Function File
@@ -35,6 +37,8 @@ Class Chooser
 
     Function File
         Dim oExec : Set oExec = sh.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
+        Set LastBFFileExec = oExec
+        SetBFFileTerminator
         If SendKeysIsEnabled Then GoToRootPath
         File = oExec.StdOut.ReadLine
         Set oExec = Nothing
@@ -180,10 +184,10 @@ Class Chooser
 
     Sub SetPatience(newPatience) : patience = newPatience : End Sub
 
-    'Undocumented Function DialogHasOpened, used internally and by the unit test
-    'Waits for the specified dialog to appear
-    'Returns False if it doesn't appear within the specified time (patience)
-    'Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder.
+    'Function DialogHasOpened
+    'Parameter: a string or an object
+    'Returns a boolean
+    'Remark: Waits for the specified dialog to appear, then returns False if the specified doesn't appear within the time specified by SetPatience, by default 5 (seconds). Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder. Used internally and by the unit test.
 
     Function DialogHasOpened(ByVal ActivateBy)
         If Not "String" = TypeName(ActivateBy) Then ActivateBy = ActivateBy.ProcessId
@@ -214,6 +218,26 @@ Class Chooser
     Sub SetPause(newPause) : pause = newPause : End Sub
     Property Get BFFolderTitle : BFFolderTitle = "Browse For Folder" : End Property
     Property Get BFFileTitle : BFFileTitle = "Choose File to Upload" : End Property
+
+    'Method SetBFFileTimeout
+    'Parameter: an integer
+    'Remark: Sets the time in seconds after which the Browse For File (Choose File to Upload) dialog will be terminated if a file has not been chosen. A timeout of 0 (default) will allow the dialog to remain open indefinitely. Intended to allow improved testing reliability.
+
+    Sub SetBFFileTimeout(newBFFileTimeout)
+        BFFileTimeout = newBFFileTimeout
+    End Sub
+
+    'Private Method SetBFFileTerminator
+    'Remark: Terminate the most recently opened Browse For File dialog after the time in seconds set by SetBFFileTimeout, if not already closed, and if SetBFFileTimout has been changed from the default 0.
+
+    Private Sub SetBFFileTerminator
+        If 0 = BFFileTimeout Then Exit Sub
+        With CreateObject("includer") : On Error Resume Next
+            ExecuteGlobal(.read("WMIUtility"))
+        End With : On Error Goto 0
+        Dim wmi : Set wmi = New WMIUtility
+        wmi.TerminateProcessByIdAndNameDelayed LastBFFileExec.ProcessID, "mshta.exe", BFFileTimeout * 1000
+    End Sub
 
     Sub Class_Terminate
         Set sh = Nothing

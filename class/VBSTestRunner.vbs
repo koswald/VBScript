@@ -18,34 +18,38 @@
 'See also TestingFramework
 '
 Class VBSTestRunner
-
     Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
-    Private fs, formatter
+    Private fs, formatter, tim_r, log
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
-    Private tim_r
     Private runCount
-
+    Private timeout, TimedOut
+    Private TestIsFinished, TestIsRunning
     Sub Class_Initialize
         passing = 0
         failing = 0
         erring = 0
         foundTestFiles = 0
+        TestIsRunning = 0
+        TestIsFinished = 1
         With CreateObject("includer")
             ExecuteGlobal(.read("VBSFileSystem"))
             ExecuteGlobal(.read("StringFormatter"))
             ExecuteGlobal(.read("VBSTimer"))
+            ExecuteGlobal(.read("VBSlogger"))
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
         Set tim_r = New VBSTimer
+        Set log = New VBSLogger
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
         SetSearchSubfolders False
         SetPrecision 2
         SetRunCount 1
+        SetTimeout 15
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -99,9 +103,13 @@ Class VBSTestRunner
     'Parameter: an integer
     'Remark: Optional. Sets the number of times to run the test(s). Default is 1.
 
-    Sub SetRunCount(newRunCount)
-        runCount = newRunCount
-    End Sub
+    Sub SetRunCount(newRunCount) : runCount = newRunCount : End Sub
+
+    'Method SetTimeout
+    'Parameter: an integer
+    'Remark: Optional. Sets the maximum time in seconds to wait for a test to finish. 0 waits indefinitely. Default is 15.
+
+    Sub SetTimeout(newTimeout) : timeout = newTimeout : End Sub
 
     Private Sub ValidateSettings
         Dim msg
@@ -180,9 +188,16 @@ Class VBSTestRunner
     'run a single test file
 
     Private Sub RunTest(filespec)
-        Dim Line
         Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo " & filespec)
+        TimedOut = False
+        Dim Line
         IncrementSpecFiles
+
+        'wait for test to finish or time out
+
+        If timeout > 0 Then
+            WaitForTestToFinishOrTimeout(Pipe)
+        End If
 
         'show the results
 
@@ -202,6 +217,21 @@ Class VBSTestRunner
                 IncrementErring
             End If
         Wend
+
+        If TimedOut Then
+            Pipe.Terminate
+            log fs.fso.GetBaseName(filespec) & " timed out"
+        End If
+    End Sub
+
+    Private Sub WaitForTestToFinishOrTimeout(Pipe)
+        Dim startSplit : startSplit = tim_r.split
+        Do
+            WScript.Sleep 100 'milliseconds
+            If tim_r.Split - startSplit > timeout Then Exit Do
+            If TestIsFinished = Pipe.status Then Exit Sub
+        Loop
+        TimedOut = True
     End Sub
 
     'Write a line to StdOut

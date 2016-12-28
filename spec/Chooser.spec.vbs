@@ -4,6 +4,7 @@
 With CreateObject("includer")
     Execute(.read("Chooser"))
     Execute(.read("TestingFramework"))
+    Execute(.read("WMIUtility"))
 End With
 
 With New TestingFramework
@@ -15,6 +16,7 @@ With New TestingFramework
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
+        Dim wmi : Set wmi = New WMIUtility
 
         'rig for busy CPU, as at startup
         pause = 60
@@ -23,6 +25,7 @@ With New TestingFramework
     .it "should open a browse for file window"
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
         .AssertEqual ch.DialogHasOpened(ch.BFFileTitle), True
+
 
     .it "should return the path of a user-selected file"
         'simulate user selecting this script file
@@ -34,6 +37,9 @@ With New TestingFramework
         WScript.Sleep pause
         sh.SendKeys "{ENTER}"
         .AssertEqual pipe.StdOut.ReadLine, WScript.ScriptFullName
+
+'        WScript.Sleep 4000
+'        wmi.TerminateProcessByIdAndName pipe.ProcessID, "cscript.exe"
 
     .it "should return an empty string if no file was selected"
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
