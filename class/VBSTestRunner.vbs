@@ -18,34 +18,38 @@
 'See also TestingFramework
 '
 Class VBSTestRunner
-
     Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
-    Private fs, formatter
+    Private fs, formatter, tim_r, log
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
-    Private tim_r
     Private runCount
-
+    Private timeout, TimedOut
+    Private TestIsFinished, TestIsRunning
     Sub Class_Initialize
         passing = 0
         failing = 0
         erring = 0
         foundTestFiles = 0
+        TestIsRunning = 0
+        TestIsFinished = 1
         With CreateObject("includer")
             ExecuteGlobal(.read("VBSFileSystem"))
             ExecuteGlobal(.read("StringFormatter"))
             ExecuteGlobal(.read("VBSTimer"))
+            ExecuteGlobal(.read("VBSlogger"))
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
         Set tim_r = New VBSTimer
+        Set log = New VBSLogger
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern ".*\.spec\.vbs"
         SetSearchSubfolders False
         SetPrecision 2
         SetRunCount 1
+        SetTimeout 0
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -91,7 +95,7 @@ Class VBSTestRunner
 
     'Method SetPrecision
     'Parameter: 0, 1, or 2
-    'Remark: Sets the precision of the reported elapsed time.
+    'Remark: Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2.
 
     Sub SetPrecision(newPrecision) : tim_r.SetPrecision newPrecision : End Sub
 
@@ -99,9 +103,13 @@ Class VBSTestRunner
     'Parameter: an integer
     'Remark: Optional. Sets the number of times to run the test(s). Default is 1.
 
-    Sub SetRunCount(newRunCount)
-        runCount = newRunCount
-    End Sub
+    Sub SetRunCount(newRunCount) : runCount = newRunCount : End Sub
+
+    'Method SetTimeout
+    'Parameter: an integer
+    'Remark: Optional. Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0.
+
+    Sub SetTimeout(newTimeout) : timeout = newTimeout : End Sub
 
     Private Sub ValidateSettings
         Dim msg
@@ -180,28 +188,65 @@ Class VBSTestRunner
     'run a single test file
 
     Private Sub RunTest(filespec)
-        Dim Line
         Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo " & filespec)
+        TimedOut = False
+        Dim Line
         IncrementSpecFiles
 
-        'show the results
+        'wait for test to finish or time out
+
+        If timeout > 0 Then
+            WaitForTestToFinishOrTimeout(Pipe)
+        End If
+
+        'show StdOut results not already shown
 
         While Not Pipe.StdOut.AtEndOfStream
-            Line = Pipe.StdOut.ReadLine
-            WriteLine Line
-            If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
-            If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
+            WriteALineOfStdOut(Pipe)
         Wend
 
         'show any errors
 
         While Not Pipe.StdErr.AtEndOfStream
+            WriteALineOfStdErr(Pipe)
+        Wend
+
+        If TimedOut Then
+            Pipe.Terminate
+            log fs.fso.GetBaseName(filespec) & " timed out"
+        End If
+    End Sub
+
+    Private Sub WriteALineOfStdOut(Pipe)
+        Dim Line
+        If Not Pipe.StdOut.AtEndOfStream Then
+            Line = Pipe.StdOut.ReadLine
+            WriteLine Line
+            If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
+            If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
+        End If
+    End Sub
+
+    Private Sub WriteALineOfStdErr(Pipe)
+        Dim Line
+        If Not Pipe.StdErr.AtEndOfStream Then
             Line = Pipe.StdErr.ReadLine
             If Len(Line) Then
                 WriteLine WScript.ScriptName & ": """ & Line & """"
                 IncrementErring
             End If
-        Wend
+        End If
+    End Sub
+
+    Private Sub WaitForTestToFinishOrTimeout(Pipe)
+        Dim startSplit : startSplit = tim_r.split
+        Do
+            WScript.Sleep 100 'milliseconds
+            WriteALineOfStdOut(Pipe)
+            If tim_r.Split - startSplit > timeout Then Exit Do
+            If TestIsFinished = Pipe.status Then Exit Sub
+        Loop
+        TimedOut = True
     End Sub
 
     'Write a line to StdOut

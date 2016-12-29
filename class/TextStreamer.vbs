@@ -7,7 +7,8 @@
 
 Class TextStreamer
 
-    Private file, StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
+    Private file, folder, fileName
+    Private StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
     Private oStreamConstants, oVBSFileSystem
 
     Sub Class_Initialize 'event fires on object instantiation
@@ -22,8 +23,9 @@ Class TextStreamer
         SetForAppending 'set defaults for Private members
         SetCreateNew
         SetAscii
-        SetViewer("Notepad")
-        SetFile("%UserProfile%\Desktop\" & fso.GetBaseName(fso.GetTempName) & ".txt")
+        SetViewer "Notepad"
+        SetFolder "%UserProfile%\Desktop"
+        SetFileName fso.GetBaseName(fso.GetTempName) & ".txt"
     End Sub
 
     Property Get fs : Set fs = oVBSFileSystem : End Property
@@ -48,8 +50,25 @@ Class TextStreamer
 
     'Method SetFile
     'Parameter: a filespec
-    'Remark Specifies the file to be opened by the text streamer. Can include environment variable names, %wrapped% in the usual manner. The default file is a random-named .txt file on the desktop.
-    Sub SetFile(pFile) : file = pFile : End Sub
+    'Remark Deprecated. Use SetFolder and/or SetFileName instead. Specifies the file to be opened by the text streamer. Can include environment variable names. The default file is a random-named .txt file on the desktop.
+    Sub SetFile(newFile) : file = newFile : End Sub
+
+    'Method SetFolder
+    'Parameter: a folder
+    'Remark: Specifies the folder of the file to be opened by the text streamer. Can include environment variables. Default is %UserProfile%\Desktop
+    Sub SetFolder(newFolder)
+        folder = newFolder
+        If Not fso.FolderExists(folder) Then fs.MakeFolder folder
+        SetFile folder & "\" & fileName
+    End Sub
+
+    'Method SetFileName
+    'Parameter: a file name
+    'Remark: Specifies the file name, including extension, of the file to be opened by the text streamer. Default is a randomly named .txt file.
+    Sub SetFileName(newFileName)
+        fileName = newFileName
+        SetFile folder & "\" & fileName
+    End Sub
 
     'Method SetForReading
     'Remark Prepares the text stream to be opened for reading
@@ -112,6 +131,11 @@ Class TextStreamer
     'Returns a filespec
     'Remark: Returns the filespec of the file that is open or set to be opened by the text streamer. Environment variables are not expanded.
     Property Get GetFile : GetFile = file : End Property
+
+    'Property GetFileName
+    'Returns a file name
+    'Remark: Returns the file name of the file that is open or set to be opened by the text streamer. Environment variables are not expanded.
+    Property Get GetFileName : GetFileName = fileName : End Property
 
     'Property GetCreateMode
     'Returns a boolean
