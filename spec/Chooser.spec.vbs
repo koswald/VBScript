@@ -38,9 +38,6 @@ With New TestingFramework
         sh.SendKeys "{ENTER}"
         .AssertEqual pipe.StdOut.ReadLine, WScript.ScriptFullName
 
-'        WScript.Sleep 4000
-'        wmi.TerminateProcessByIdAndName pipe.ProcessID, "cscript.exe"
-
     .it "should return an empty string if no file was selected"
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
         If ch.DialogHasOpened(ch.BFFileTitle) Then

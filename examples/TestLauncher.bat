@@ -7,7 +7,7 @@
 
 echo Environment variables & echo.
 set launch0=cscript //nologo TestLauncher.vbs
-set launch1=%launch0% Chooser.spec.vbs
+set launch1=%launch0% VBSClipboard.spec.vbs
 echo %%launch0%%=%launch0%
 echo %%launch1%%=%launch1%
 

@@ -26,6 +26,10 @@ Sub Main
 
     testRunner.SetSpecFolder "../spec"
 
+    'specify the time allotted for each test file to complete all of its specs, in seconds
+
+    testRunner.SetTimeout 0 'default is 0; 0 => indefinite
+
     'run the tests
 
     On Error Resume Next

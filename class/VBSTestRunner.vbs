@@ -49,7 +49,7 @@ Class VBSTestRunner
         SetSearchSubfolders False
         SetPrecision 2
         SetRunCount 1
-        SetTimeout 15
+        SetTimeout 0
     End Sub
 
     Private Property Get GetPassing : GetPassing = passing : End Property
@@ -95,7 +95,7 @@ Class VBSTestRunner
 
     'Method SetPrecision
     'Parameter: 0, 1, or 2
-    'Remark: Sets the precision of the reported elapsed time.
+    'Remark: Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2.
 
     Sub SetPrecision(newPrecision) : tim_r.SetPrecision newPrecision : End Sub
 
@@ -107,7 +107,7 @@ Class VBSTestRunner
 
     'Method SetTimeout
     'Parameter: an integer
-    'Remark: Optional. Sets the maximum time in seconds to wait for a test to finish. 0 waits indefinitely. Default is 15.
+    'Remark: Optional. Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0.
 
     Sub SetTimeout(newTimeout) : timeout = newTimeout : End Sub
 
@@ -199,23 +199,16 @@ Class VBSTestRunner
             WaitForTestToFinishOrTimeout(Pipe)
         End If
 
-        'show the results
+        'show StdOut results not already shown
 
         While Not Pipe.StdOut.AtEndOfStream
-            Line = Pipe.StdOut.ReadLine
-            WriteLine Line
-            If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
-            If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
+            WriteALineOfStdOut(Pipe)
         Wend
 
         'show any errors
 
         While Not Pipe.StdErr.AtEndOfStream
-            Line = Pipe.StdErr.ReadLine
-            If Len(Line) Then
-                WriteLine WScript.ScriptName & ": """ & Line & """"
-                IncrementErring
-            End If
+            WriteALineOfStdErr(Pipe)
         Wend
 
         If TimedOut Then
@@ -224,10 +217,32 @@ Class VBSTestRunner
         End If
     End Sub
 
+    Private Sub WriteALineOfStdOut(Pipe)
+        Dim Line
+        If Not Pipe.StdOut.AtEndOfStream Then
+            Line = Pipe.StdOut.ReadLine
+            WriteLine Line
+            If "pass" = LCase(Left(Line, 4)) Then IncrementPassing
+            If "fail" = LCase(Left(Line, 4)) Then IncrementFailing
+        End If
+    End Sub
+
+    Private Sub WriteALineOfStdErr(Pipe)
+        Dim Line
+        If Not Pipe.StdErr.AtEndOfStream Then
+            Line = Pipe.StdErr.ReadLine
+            If Len(Line) Then
+                WriteLine WScript.ScriptName & ": """ & Line & """"
+                IncrementErring
+            End If
+        End If
+    End Sub
+
     Private Sub WaitForTestToFinishOrTimeout(Pipe)
         Dim startSplit : startSplit = tim_r.split
         Do
             WScript.Sleep 100 'milliseconds
+            WriteALineOfStdOut(Pipe)
             If tim_r.Split - startSplit > timeout Then Exit Do
             If TestIsFinished = Pipe.status Then Exit Sub
         Loop
