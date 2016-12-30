@@ -1,7 +1,8 @@
 
 'Show a warning while conducting tests that use SendKeys!
 
-warning = "Do not press any keys or make mouse clicks while the Chooser test is in progress!"
+warning = "Do not press any keys or make mouse clicks while the Chooser test is in progress!" _
+ & vbLf & vbLf & "To cancel, close the console/terminal window."
 soundlevel = silent
 prominence = AlwaysOnTop
 MsgBox warning, soundLevel + prominence, "Warning!"
