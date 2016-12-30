@@ -160,7 +160,7 @@ Class VBSTestRunner
             Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
         End If
         Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
-        Write_ "test duration: " & formatter.pluralize(tim_r, "second") & " "
+        WriteLine "test duration: " & formatter.pluralize(tim_r, "second") & " "
 
     End Sub 'Run
 
