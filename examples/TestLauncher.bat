@@ -6,22 +6,34 @@
 :: define and display environment variables
 
 echo Environment variables & echo.
-set launch0=cscript //nologo TestLauncher.vbs
-set launch1=%launch0% VBSClipboard.spec.vbs
-echo %%launch0%%=%launch0%
-echo %%launch1%%=%launch1%
+set test0=cscript //nologo TestLauncher.vbs
+set test1=%test0% VBSClipboard.spec.vbs
+echo %%test0%%=%test0%
+echo %%test1%%=%test1%
 
 :: define and display doskey macros
 
 echo. & echo DosKey macros & echo.
-set macro0=all=%launch0%
-set macro1=wip1=%launch1%
+set macro0=test0=%test0%
+set macro1=test1=%test1%
 doskey %macro0%
 doskey %macro1%
 echo %macro0%
 echo %macro1%
 echo.
 
-:: start the first test
+:: run all of the tests
 
-cmd /k %launch1% 1
+%test0%
+
+:: run a single test
+
+%test1%
+
+:: run it again, twice
+
+%test1% 2
+
+:: leave the command window open
+
+cmd /k
