@@ -4,7 +4,6 @@
 With CreateObject("includer")
     Execute(.read("Chooser"))
     Execute(.read("TestingFramework"))
-    Execute(.read("WMIUtility"))
 End With
 
 With New TestingFramework
@@ -16,7 +15,6 @@ With New TestingFramework
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
-        Dim wmi : Set wmi = New WMIUtility
 
         'rig for busy CPU, as at startup
         pause = 60
