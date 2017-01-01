@@ -7,7 +7,7 @@
 
 echo Environment variables & echo.
 set test0=cscript //nologo TestLauncher.vbs
-set test1=%test0% VBSClipboard.spec.vbs
+set test1=%test0% VBSPower.spec.vbs
 echo %%test0%%=%test0%
 echo %%test1%%=%test1%
 
@@ -24,7 +24,7 @@ echo.
 
 :: run all of the tests
 
-%test0%
+:: %test0%
 
 :: run a single test
 
@@ -32,7 +32,7 @@ echo.
 
 :: run it again, twice
 
-%test1% 2
+:: %test1% 2
 
 :: leave the command window open
 
