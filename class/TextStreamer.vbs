@@ -50,8 +50,12 @@ Class TextStreamer
 
     'Method SetFile
     'Parameter: a filespec
-    'Remark Deprecated. Use SetFolder and/or SetFileName instead. Specifies the file to be opened by the text streamer. Can include environment variable names. The default file is a random-named .txt file on the desktop.
-    Sub SetFile(newFile) : file = newFile : End Sub
+    'Remark: Specifies the file to be opened by the text streamer. Can include environment variable names. The default file is a random-named .txt file on the desktop.
+    Sub SetFile(newFile)
+        file = newFile
+        folder = fso.GetParentFolderName(file)
+        fileName = fso.GetFileName(file)
+    End Sub
 
     'Method SetFolder
     'Parameter: a folder
@@ -136,6 +140,11 @@ Class TextStreamer
     'Returns a file name
     'Remark: Returns the file name of the file that is open or set to be opened by the text streamer. Environment variables are not expanded.
     Property Get GetFileName : GetFileName = fileName : End Property
+
+    'Property GetFolder
+    'Returns a folder
+    'Remark: Returns the folder of the file that is open or set to be opened by the text streamer. Environment variables are not expanded.
+    Property Get GetFolder : GetFolder = folder : End Property
 
     'Property GetCreateMode
     'Returns a boolean
