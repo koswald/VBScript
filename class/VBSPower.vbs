@@ -4,10 +4,11 @@
 Class VBSPower
 
     Private debug, sh, sa
+    Private force
 
     Sub Class_Initialize
         SetDebug False
-        SetForce True
+        SetForce False
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
     End Sub
@@ -90,7 +91,7 @@ Class VBSPower
 
     'Method SetForce
     'Parameter: force
-    'Remark: Optional. Leaving this set to the default, True, forces the Shutdown, Restart, or Logoff, discarding unsaved work. With operating systems prior to Windows 10, this behavior may be preventable by setting this to False.
+    'Remark: Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close.
     Sub SetForce(newForce) : force = newForce : End Sub
 
     'Method SetDebug
