@@ -6,8 +6,9 @@
 :: define and display environment variables
 
 echo Environment variables & echo.
-set test0=cscript //nologo TestLauncher.vbs
-set test1=%test0% VBSPower.spec.vbs
+set test0=%SystemRoot%\SysWoW64\cscript.exe //nologo TestLauncher.vbs
+set test0=%SystemRoot%\System32\cscript.exe //nologo TestLauncher.vbs
+set test1=%test0% VBSTimer.spec.vbs
 echo %%test0%%=%test0%
 echo %%test1%%=%test1%
 
@@ -24,11 +25,11 @@ echo.
 
 :: run all of the tests
 
-:: %test0%
+%test0%
 
 :: run a single test
 
-%test1%
+:: %test1%
 
 :: run it again, twice
 
