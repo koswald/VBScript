@@ -1,0 +1,76 @@
+
+<!-- Pause Windows Updates to get more bandwidth. Don't forget to resume. -->
+
+<hta:application scroll="No" icon="msdt.exe" border="None" innerborder="No">
+    <body>
+        <input type="button" onclick="PauseUpdates()" id="pause" value="Pause" title="Pause Windows Updates" />
+        <input type="button" onclick="ResumeUpdates()" id="resume" value="Resume" title="Resume Windows Updates" />
+        <input type="button" onclick="SelfClose()" id="close" value=" x " title="Close the Windows Updates Pauser" />
+        <script language="VBScript">
+
+            With CreateObject("includer")
+                Execute(.read("WindowsUpdatesPauser"))
+            End With
+            Dim wup : Set wup = New WindowsUpdatesPauser
+
+            UpdateStatus(wup.GetStatus)
+
+            Sub PauseUpdates
+                wup.PauseUpdates
+                UpdateStatus(wup.GetStatus)
+            End Sub
+
+            Sub ResumeUpdates
+                wup.ResumeUpdates
+                UpdateStatus(wup.GetStatus)
+            End Sub
+
+            Sub UpdateStatus(status)
+                If "Metered" = status Then
+                    DisableById("pause") 'updates are already paused
+                    EnableById("resume")
+                ElseIf "Unmetered" = status Then
+                    DisableById("resume") 'updates are already enabled
+                    EnableById("pause")
+                Else
+                    self.close
+                End If
+            End Sub
+
+            Sub EnableById(id) : document.getElementById(id).disabled = False : End Sub
+            Sub DisableById(id) : document.getElementById(id).disabled = True : End Sub
+
+            Sub SelfClose : self.close : End Sub
+
+            Sub Window_OnLoad
+                Self.ResizeTo 200, 30
+                Self.MoveTo 100, 0
+            End Sub
+
+            Sub Window_OnUnload
+                wup.Class_Terminate
+            End Sub
+        </script>
+    </body>
+    <style>
+        body {
+            margin: 1%;
+            padding-left: 1%;
+            background-color: Background;
+        }
+        input {
+            height: 100%;
+        }
+        #pause {
+            width: 37%;
+        }
+        #resume {
+            width: 47%;
+        }
+        #close {
+            width: 12%;
+            background-color: red;
+            border-color: red;
+        }
+    </style>
+</hta:application>
