@@ -1,6 +1,6 @@
 ### VBScript Utilities
 
-This project has a number facets:
+This project has a number of facets:
 
 - An automatic documentation generator
 - A lightweight unit-testing framework
