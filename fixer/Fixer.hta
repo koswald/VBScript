@@ -35,8 +35,6 @@
 
     <script language="VBScript">
 
-        Self.ResizeTo 800, 400 'width, height
-        Self.MoveTo 200, 300 'left, top
         Dim tr : Set tr = New Troubleshooter
 
         Class Troubleshooter
@@ -52,6 +50,8 @@
             Private regex
 
             Sub Class_Initialize
+                Self.ResizeTo 800, 400 'width, height
+                Self.MoveTo 200, 300 'left, top
                 Set sh = CreateObject("WScript.Shell")
                 Set fso = CreateObject("Scripting.FileSystemObject")
                 Set regex = New RegExp
@@ -232,7 +232,7 @@
         End Class
 
         Sub Window_OnUnload
-            Set tr = Nothing
+            tr.Class_Terminate
         End Sub
 
     </script>
