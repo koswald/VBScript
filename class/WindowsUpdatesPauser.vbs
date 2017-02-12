@@ -3,16 +3,23 @@
 
 Class WindowsUpdatesPauser
 
+    'Method PauseUpdates
+    'Remark: Pauses Windows Updates.
+
     Sub PauseUpdates
         sh.Run format(Array("cmd /c netsh %s set profileparameter name=""%s"" cost=Fixed", srvcType, profileName)), hidden, synchronous
     End Sub
+
+    'Method ResumeUpdates
+    'Remark: Resumes Windows Updates.
 
     Sub ResumeUpdates
         sh.Run format(Array("cmd /c netsh %s set profileparameter name=""%s"" cost=Unrestricted", srvcType, profileName)), hidden, synchronous
     End Sub
 
     'Function GetStatus
-    'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates pauses to save money, incidentally not soaking up so much bandwidth. Also enables and disables buttons. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name AKA profileName.
+    'Returns a string
+    'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name AKA profileName.
 
     Function GetStatus
         Dim stat : Set stat = sh.Exec(format(Array("cmd /c netsh %s show profile name=""%s""", srvcType, profileName)))
