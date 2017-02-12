@@ -28,6 +28,7 @@
 Class VBSLogger 'Logger for use in VBScript files
 
     Private oTimeFunctions, oTextStreamer, stream, logFile, logFolder, viewer
+    Private scriptName, scriptFullName
 
     Sub Class_Initialize
         WIth CreateObject("includer") : On Error Resume Next 'get class dependencies
@@ -38,6 +39,11 @@ Class VBSLogger 'Logger for use in VBScript files
         Set oTimeFunctions = New TimeFunctions
         Set oTextStreamer = New TextStreamer
 
+        On Error Resume Next
+            scriptFullName = WScript.ScriptFullName
+            If Err Then scriptFullName = Replace(Replace(document.location.href, "file:///", ""), "%20", "") '.hta file
+        On Error Goto 0
+        scriptName = fso.GetFileName(scriptFullName)
         SetLogFolder(GetDefaultLogFolder)
         SetViewer(Notepad)
         dt.LetDOWBeAbbreviated = True 'DOW = day of the week
@@ -63,7 +69,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     Public Default Sub Log(msg) 'open the log file for appending, write the message, and then close the text stream
         PrivateOpen
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - " & WScript.ScriptName & " - " & msg)
+        stream.WriteLine(dt.GetFormattedTime(Now) & " - " & scriptName & " - " & msg)
         PrivateClose
     End Sub
 
@@ -94,7 +100,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     Sub Open
         PrivateOpen
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - log opened by " & WScript.ScriptName)
+        stream.WriteLine(dt.GetFormattedTime(Now) & " - log opened by " & scriptName)
     End Sub
 
     'Method Write
@@ -109,7 +115,7 @@ Class VBSLogger 'Logger for use in VBScript files
     'Remark: Closes the log file text stream, enabling other process to write to it.
 
     Sub Close
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - log closed by " & WScript.ScriptName)
+        stream.WriteLine(dt.GetFormattedTime(Now) & " - log closed by " & scriptName)
         PrivateClose
     End Sub
 
