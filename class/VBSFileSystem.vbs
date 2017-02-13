@@ -5,6 +5,7 @@ Class VBSFileSystem
 
     Private oVBSNatives, oVBSEnvironment, oVBSMessages
     Private referencePath, savedCurrentDirectory, savedReferencePath
+    Private scriptName, scriptFullName
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next
@@ -16,6 +17,11 @@ Class VBSFileSystem
         Set oVBSEnvironment = New VBSEnvironment
         Set oVBSMessages = New VBSMessages
 
+        On Error Resume Next
+            scriptFullName = WScript.ScriptFullName
+            If Err Then scriptFullName = Replace(Replace(document.location.href, "file:///", ""), "%20", "") '.hta file
+        On Error Goto 0
+        scriptName = fso.GetFileName(scriptFullName)
         SetReferencePath defaultReferencePath
         SaveReferencePath
     End Sub
@@ -41,13 +47,13 @@ Class VBSFileSystem
     'Returns a file name
     'Remark: Returns the name of the calling script, including file name extension
 
-    Property Get SName : SName = WScript.ScriptName : End Property 'script name; i.e. the name of the calling script
+    Property Get SName : SName = scriptName : End Property 'script name; i.e. the name of the calling script
 
     'Property SFullName
     'Returns a filespec
     'Remark: Returns the filespec of the calling script
 
-    Property Get SFullName : SFullName = WScript.ScriptFullName : End Property 'script filespec (with path)
+    Property Get SFullName : SFullName = scriptFullName : End Property 'script filespec (with path)
 
     'Property SFolderName
     'Returns a folder

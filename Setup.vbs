@@ -24,13 +24,12 @@ Class VBSSetupUtility
 
     Sub Setup
 
-        'verify that this script was called from the batch file of
+        'Verify the command-line token
+        'This verifies that this script was called from the batch file of
         'the same name, in order to ensure that it was started by
         'the 64-bit executable, if available, regardless of whether
         'the host machine opens .vbs files with the 64-bit .exe
-
         Dim msg : msg = "Please use Setup.bat to launch the Setup.vbs script"
-
         If 0 = WScript.Arguments.Count Then Err.Raise 1, WScript.ScriptName, msg
         If Not "Ensure_64-bit_executable" = WScript.Arguments(0) Then Err.Raise 1, WScript.ScriptName, msg
 

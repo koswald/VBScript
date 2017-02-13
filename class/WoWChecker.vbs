@@ -37,7 +37,7 @@ Class WoWChecker
         Set pipe64 = Nothing
         Set pipe32 = Nothing
 
-        'in 32-bit mode, the files in %SystemRoot%\SysWoW64 and %SystemRoot%\System32 are the same
+        'in 32-bit mode, the files in %SystemRoot%\SysWoW64 and %SystemRoot%\System32 appear to be the same
 
         isWoW = (out64 = out32)
     End Property
