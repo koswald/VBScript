@@ -3,20 +3,26 @@
 
 'For configuration settings, see the similarly named .config file in the same folder as the calling script/hta.
 
+'You can use a configFile variable in the first .config file pointing to a second .config file in the location of your choosing, using environment variables, if desired.
+
 Class WindowsUpdatesPauser
 
     'Method PauseUpdates
     'Remark: Pauses Windows Updates.
 
     Sub PauseUpdates
-        sh.Run format(Array("cmd /c netsh %s set profileparameter name=""%s"" cost=Fixed", srvcType, profileName)), hidden, synchronous
+        sh.Run format(Array( _
+            "cmd /c netsh %s set profileparameter name=""%s"" cost=Fixed", _
+            srvcType, profileName)), hidden, synchronous
     End Sub
 
     'Method ResumeUpdates
     'Remark: Resumes Windows Updates.
 
     Sub ResumeUpdates
-        sh.Run format(Array("cmd /c netsh %s set profileparameter name=""%s"" cost=Unrestricted", srvcType, profileName)), hidden, synchronous
+        sh.Run format(Array( _
+            "cmd /c netsh %s set profileparameter name=""%s"" cost=Unrestricted", _
+            srvcType, profileName)), hidden, synchronous
     End Sub
 
     'Function GetStatus
@@ -24,7 +30,9 @@ Class WindowsUpdatesPauser
     'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name AKA profileName.
 
     Function GetStatus
-        Dim stat : Set stat = sh.Exec(format(Array("cmd /c netsh %s show profile name=""%s""", srvcType, profileName)))
+        Dim stat : Set stat = sh.Exec(format(Array( _
+            "cmd /c netsh %s show profile name=""%s""", _
+            srvcType, profileName)))
         Dim line
         While Not stat.StdOut.AtEndOfStream
             'get the status by parsing the output of the show profile command
@@ -42,7 +50,7 @@ Class WindowsUpdatesPauser
 
     Private sh, fso, format, log 'objects
     Private thisFile
-    Public appName
+    Private appName
     Private profileName, srvcType, userInteractive, configFile 'data kept in .config file
     Private defaultConfigFile
     Private metered, unmetered, undefined ' "enums"
@@ -88,23 +96,27 @@ Class WindowsUpdatesPauser
         'so that the first place to look for a .config file doesn't
         'depend on a shortcut's working directory
         sh.CurrentDirectory = fso.GetParentFolderName(thisFile)
-        ExecuteConfigFile defaultConfigFile, True
-        'If the configFile variable was not initialized,
-        'use the default path\name
+        'read the default (first) .config file
+        ExecuteConfigFile defaultConfigFile, True 'True => first .config file
+        'determine whether the configFile variable was initialized
         If undefined = TypeName(configFile) Then
-            'we know that a custom configFile was not specified,
-            'and we now alredy have the necessary configFile data,
-            'so just resolve defaultConfigFile and use that
+            'a second configFile was not specified,
+            'and we should now have the necessary configFile data,
+            'so just resolve defaultConfigFile and use that.
             configFile = fso.GetAbsolutePathName(defaultConfigFile)
         Else
-            'a custom configFile was specified in the default configFile,
-            'so get/use the data in the custom configFile
-            '(except ignore configFile in the custom file)
+            'a second configFile was specified in the default configFile,
+            'so get/use the data in the second configFile
+            '(except ignore configFile if present in the second file)
             Dim savedConfigFile : savedConfigFile = configFile 'save
-            ExecuteConfigFile configFile, False
+            'read the second .config file
+            ExecuteConfigFile configFile, False 'False => second .config file
             configFile = savedConfigFile 'restore
         End If
     End Sub
+
+    'Read the .config file
+    'To do: parse the file rather than just execute it!
 
     Private Sub ExecuteConfigFile(ByVal file, FirstCall)
         file = sh.ExpandEnvironmentStrings(file)
@@ -116,13 +128,24 @@ Class WindowsUpdatesPauser
         Set stream = Nothing
     End Sub
 
-    Sub CreateConfigFile(file, FirstCall)
+    'Create a new .config file
+
+    Private Sub CreateConfigFile(file, FirstCall)
         Dim conf : Set conf = fso.OpenTextFile(file, ForWriting, CreateNew)
         If FirstCall Then
-            conf.WriteLine "'the configFile variable is optional. If it is specified, and it should be specified only in this file,"
-            conf.WriteLine "'then the other variables in this file are overwritten by any variables with the same name in the specified file."
-            conf.WriteLine format(Array( "''''%s = ""%s"" '%s", "configFile", "%UserProfile%\" & defaultConfigFile, "optional"))
+            'comments pertaining only to the first .config file,
+            'the one in the same folder as the calling script
+            conf.WriteLine "'WARNING:"
+            conf.WriteLine "'If the configFile variable is specified in this file,"
+            conf.WriteLine "'then any other variables in this file are ignored and"
+            conf.WriteLine "'may be safely deleted."
+        Else
+            'comments pertaining only to the second .config file, if any
+            conf.WriteLine "'WARNING:"
+            conf.WriteLine "'if a configFile variable is specified in this file,"
+            conf.WriteLine "'then it will be ignored"
         End If
+        'For each variable, write variableName = defaultValue ['comment]
         conf.WriteLine format(Array( "%s = ""%s"" '%s", "profileName", "My network name", "network name" ))
         conf.WriteLine format(Array( "%s = ""%s"" '%s", "srvcType", "wlan", "options: mbn (Mobile broadband), wlan (Wi-Fi)" ))
         conf.WriteLine format(Array( "%s = %s", "userInteractive", "True" ))
@@ -130,14 +153,17 @@ Class WindowsUpdatesPauser
         Set conf = Nothing
     End Sub
 
-    Sub ShowStatusError
+    'Log a status error, and if userInteractive, display it
+
+    Private Sub ShowStatusError
         Dim msg : msg = format(Array( _
             "The metered status of the connection %s could not be determined. %s" & _
-            "Check the profileName (network name) in %s" _
-            , L2 & profileName & L2, L, L2 & configFile))
+            "Check the profileName (network name) in %s", _
+            L2 & profileName & L2, L, L2 & configFile))
         log msg
         If Not userInteractive Then Exit Sub
-        Dim msg2 : msg2 = msg & format(Array("%s Would you like %s to open the file?", L2, appName))
+        Dim msg2 : msg2 = msg & format(Array( _
+            "%s Would you like %s to open the file?", L2, appName))
         If vbOK = MsgBox(msg2, vbQuestion + vbOKCancel, appName) Then
             sh.Run "notepad """ & configFile & """"
         End If
@@ -146,5 +172,7 @@ Class WindowsUpdatesPauser
     Sub Class_Terminate
         Set sh = Nothing
         Set fso = Nothing
+        format.Class_Terminate
+        log.Class_Terminate
     End Sub
 End Class
