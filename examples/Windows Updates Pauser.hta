@@ -8,12 +8,7 @@
         <input type="button" onclick="SelfClose()" id="close" value=" x " title="Close the Windows Updates Pauser" />
         <script language="VBScript">
 
-            With CreateObject("includer")
-                Execute(.read("WindowsUpdatesPauser"))
-            End With
-            Dim wup : Set wup = New WindowsUpdatesPauser
-
-            UpdateStatus(wup.GetStatus)
+            Dim wup 'WindowsUpdatePauser object
 
             Sub PauseUpdates
                 wup.PauseUpdates
@@ -45,6 +40,12 @@
             Sub Window_OnLoad
                 Self.ResizeTo 200, 30
                 Self.MoveTo 100, 0
+                With CreateObject("includer")
+                    Execute(.read("WindowsUpdatesPauser"))
+                End With
+                Set wup = New WindowsUpdatesPauser
+                document.title = wup.GetAppName
+                UpdateStatus(wup.GetStatus)
             End Sub
 
             Sub Window_OnUnload

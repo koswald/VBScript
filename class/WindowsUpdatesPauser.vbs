@@ -48,6 +48,12 @@ Class WindowsUpdatesPauser
         ShowStatusError
     End Function
 
+    'Function GetAppName
+    'Returns a string
+    'Remark: Returns the base name of the calling script
+
+    Function GetAppName : GetAppName = appName : End Function
+
     Private sh, fso, format, log 'objects
     Private thisFile
     Private appName
