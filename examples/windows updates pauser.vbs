@@ -5,7 +5,9 @@ End With
 Dim wup : Set wup = New WindowsUpdatesPauser
 
 With WScript.Arguments
-    If "/pause" = .item(0) Then
+    If 0 = .Count Then
+        MsgBox "One command-line argument is required.", vbInformation, WScript.ScriptName
+    ElseIf "/pause" = .item(0) Then
         wup.PauseUpdates
     ElseIf "/resume" = .item(0) Then
         wup.ResumeUpdates
@@ -20,5 +22,14 @@ Sub ShowStatus
         MsgBox "Windows Updates are paused."
     ElseIf "Unmetered" = status Then
         MsgBox "Windows Updates are enabled."
+    Else
+        'if userInteractive,
+        'an error message should appear,
+        'offering to open the .config file;
+
+        'whether or not userInteractive,
+        'makes a log entry that status
+        'could not be determined,
+        'probably due to invalid network name
     End If
 End Sub
