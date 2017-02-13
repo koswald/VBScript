@@ -92,4 +92,5 @@ Class StringFormatter
 
     Sub SetZeroPlural : zero = plural : End Sub
 
+    Sub Class_Terminate : End Sub
 End Class
