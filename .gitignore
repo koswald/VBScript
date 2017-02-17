@@ -5,3 +5,5 @@ TheDocs.html
 # shortcuts
 *.lnk
 
+# Windows customization
+desktop.ini
