@@ -79,13 +79,26 @@ With New TestingFramework
 
         .AssertEqual f.format(Array("Test ""%s"" %s", -1.45, -5.45)), "Test ""-1.45"" -5.45"
 
+    Dim errDescr 'error description
+
     .it "should raise an error if there are too many surrogates"
         On Error Resume Next
-            .AssertErrorRaised f.format(Array("Test ""%s"" %s %s", -1.45, -5.45))
+            f.format(Array("Test ""%s"" %s %s", -1.45, -5.45))
+            .AssertErrorRaised
+            errDescr = Err.Description
         On Error Goto 0
+
+    .it "should return the expected error description (too many)"
+        .AssertEqual errDescr, "There are too many instances of %s" & vbLf & "Pattern: Test ""%s"" %s %s"
 
     .it "should raise an error if there are too few surrogates"
         On Error Resume Next
-            .AssertErrorRaised f.format(Array("Test ""%s"" ", -1.45, -5.45))
+            f.format(Array("Test ""%s"" ", -1.45, -5.45))
+            .AssertErrorRaised
+            errDescr = Err.Description
         On Error Goto 0
+
+    .it "should return the expected error description (too few)"
+        .AssertEqual errDescr, "There are too few instances of %s" & vbLf & "Pattern: Test ""%s"" "
+
 End With
