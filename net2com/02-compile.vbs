@@ -52,11 +52,12 @@ Class NETCOMCompiler
 
         If Len(cmd) > 254 Then
             'string length exceeds InputBox limit, so use MsgBox
-            msg = "Verify arguments"
+            msg = "Verify command"
             If vbCancel = MsgBox(cmd, vbOKCancel, msg & " - " & WScript.ScriptName) Then Exit Sub
         Else
-            msg = "Verify/modify arguments"
-            If "" = InputBox(msg, scriptName, cmd) Then Exit Sub
+            msg = "Verify/modify command"
+            cmd = InputBox(msg, scriptName, cmd)
+            If "" = cmd Then Exit Sub
         End If
 
         'run the command
