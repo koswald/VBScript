@@ -1,6 +1,8 @@
 
 'drag a .cs file onto this script to compile a .dll (use .SetDLL) or .exe (class default)
 
+'http://stackoverflow.com/questions/4198583/how-do-i-register-a-com-dll-written-in-c-sharp-with-regsvr32
+
 With New NETCOMCompiler
     '.SetDebug
     '.SetNoWarn
@@ -16,8 +18,8 @@ Class NETCOMCompiler
 
     Sub Class_Initialize
         args = ""
-        exeFolder = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
-        'AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
+        exeFolder = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+        AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
         ext = "exe" 'default file extension
         'args = args & " /nologo"
         'args = args & " /platform:x86"

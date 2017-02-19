@@ -14,7 +14,7 @@ Class DLLRegistrar
     Private args, unregisterString, L, msg
 
     Sub Class_Initialize
-        exeFolder = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
+        exeFolder = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sa = CreateObject("Shell.Application")
         scriptName = WScript.ScriptName
