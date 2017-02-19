@@ -1,6 +1,8 @@
 
 'register or unregister the .dll by dragging it onto this script
 
+'http://stackoverflow.com/questions/4198583/how-do-i-register-a-com-dll-written-in-c-sharp-with-regsvr32
+
 With New DLLRegistrar
     .Register '.Register or .unRegister
 End With
@@ -48,13 +50,14 @@ Class DLLRegistrar
 
         'give an opt out
 
-        If Len(cmd) > 254 Then
+        If Len(args) > 254 Then
             'string length exceeds InputBox limit, so use MsgBox
             msg = "Verify arguments"
             If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & WScript.ScriptName) Then Exit Sub
         Else
             msg = "Verify/modify arguments"
-            If "" = InputBox(msg, scriptName, args) Then Exit Sub
+            args = InputBox(msg, scriptName, args)
+            If "" = args Then Exit Sub
         End If
 
         'run the command with elevated privileges

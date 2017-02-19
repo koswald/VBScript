@@ -7,3 +7,9 @@ TheDocs.html
 
 # Windows customization
 desktop.ini
+
+# compiled libraries
+net2com/*.dll
+
+# key files
+net2com/*.snk
