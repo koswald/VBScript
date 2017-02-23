@@ -3,9 +3,9 @@
 
 <hta:application scroll="No" icon="msdt.exe" border="None" innerborder="No">
     <body>
-        <input type="button" onclick="PauseUpdates()" id="pause" value="Pause" title="Pause Windows Updates" />
-        <input type="button" onclick="ResumeUpdates()" id="resume" value="Resume" title="Resume Windows Updates" />
-        <input type="button" onclick="SelfClose()" id="close" value=" x " title="Close the Windows Updates Pauser" />
+        <input type="button" onclick="PauseUpdates()" id="pauseButton" value="Pause" />
+        <input type="button" onclick="ResumeUpdates()" id="resumeButton" value="Resume" />
+        <input type="button" onclick="SelfClose()" id="closeButton" value=" x " />
         <script language="VBScript">
 
             Dim wup 'WindowsUpdatePauser object
@@ -22,18 +22,26 @@
 
             Sub UpdateStatus(status)
                 If "Metered" = status Then
-                    DisableById("pause") 'updates are already paused
-                    EnableById("resume")
+                    'updates are paused
+                    Enable "resumeButton"
+                    SetTitle "resumeButton", "Resume Windows Updates"
+                    Disable "pauseButton"
+                    SetTitle "pauseButton", ""
                 ElseIf "Unmetered" = status Then
-                    DisableById("resume") 'updates are already enabled
-                    EnableById("pause")
+                    'updates are enabled
+                    Enable "pauseButton"
+                    SetTitle "pauseButton", "Pause Windows Updates"
+                    Disable "resumeButton"
+                    SetTitle "resumeButton", ""
                 Else
                     self.close
                 End If
             End Sub
 
-            Sub EnableById(id) : document.getElementById(id).disabled = False : End Sub
-            Sub DisableById(id) : document.getElementById(id).disabled = True : End Sub
+            Sub Enable(id) : document.getElementById(id).disabled = False : End Sub
+            Sub Disable(id) : document.getElementById(id).disabled = True : End Sub
+
+            Sub SetTitle(id, title) : document.getElementById(id).title = title : End Sub
 
             Sub SelfClose : self.close : End Sub
 
@@ -45,6 +53,7 @@
                 End With
                 Set wup = New WindowsUpdatesPauser
                 document.title = wup.GetAppName
+                SetTitle "closeButton", "Close the Windows Updates Pauser"
                 UpdateStatus(wup.GetStatus)
             End Sub
 
@@ -62,13 +71,13 @@
         input {
             height: 100%;
         }
-        #pause {
+        #pauseButton {
             width: 37%;
         }
-        #resume {
+        #resumeButton {
             width: 47%;
         }
-        #close {
+        #closeButton {
             width: 12%;
             background-color: red;
             border-color: red;
