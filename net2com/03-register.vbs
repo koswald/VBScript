@@ -4,22 +4,26 @@
 'http://stackoverflow.com/questions/4198583/how-do-i-register-a-com-dll-written-in-c-sharp-with-regsvr32
 
 With New DLLRegistrar
+    '.SetBitness 32 'default = 64
     .Register '.Register or .unRegister
 End With
 
 Class DLLRegistrar
 
     Private fso, sa
-    Private exeFolder, filespec, baseName, scriptName
+    Private exeFolder, exeFolder64, exeFolder32
+    Private filespec, baseName, scriptName
     Private args, unregisterString, L, msg
 
     Sub Class_Initialize
-        exeFolder = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+        exeFolder64 = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+        exeFolder32 = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sa = CreateObject("Shell.Application")
         scriptName = WScript.ScriptName
         unregisterString = ""
         L = vbLf & vbTab
+        SetBitness 64
     End Sub
 
     Sub Unregister
@@ -41,7 +45,7 @@ Class DLLRegistrar
 
         args = "/c cd """ & fso.GetParentFolderName(WScript.ScriptFullName) & """"
         args = args & " & echo. "
-        args = args & " & """ & exeFolder & "\RegAsm"""
+        args = args & " & """ & exeFolder & "\RegAsm.exe"""
         'args = args & " /tlb:" & baseName & ".tlb" 'create a type library
         args = args & " /codebase" 'if not putting .dll in the GAC
         args = args & " """ & filespec & """"
@@ -55,14 +59,23 @@ Class DLLRegistrar
             msg = "Verify arguments"
             If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & WScript.ScriptName) Then Exit Sub
         Else
+            'use InputBox: give an oportunity to modify
             msg = "Verify/modify arguments"
             args = InputBox(msg, scriptName, args)
-            If "" = args Then Exit Sub
+            If "" = args Then Exit Sub 'user clicked Cancel or pressed Esc
         End If
 
         'run the command with elevated privileges
 
         sa.ShellExecute "cmd", args,, "runas"
+    End Sub
+
+    Sub SetBitness(bitness)
+        If 64 = bitness Then
+            exeFolder = exeFolder64
+        ElseIf 32 = bitness Then
+            exeFolder = exeFolder32
+        End If
     End Sub
 
     Sub Class_Terminate

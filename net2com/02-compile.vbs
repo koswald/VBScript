@@ -6,29 +6,30 @@
 With New NETCOMCompiler
     '.SetDebug
     '.SetNoWarn
-    .SetDLL
+    '.SetBitness 32 'default = 64
+    .SetDLL 'default is .exe
     .Compile
 End With
 
 Class NETCOMCompiler
 
     Private fso, sh
-    Private filespec, baseName, exeFolder, ext
+    Private filespec, baseName, ext
+    Private exeFolder, exeFolder64, exeFolder32
     Private args, cmd, L, scriptName, msg
 
     Sub Class_Initialize
         args = ""
-        exeFolder = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+        exeFolder64 = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
+        exeFolder32 = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
         AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
         ext = "exe" 'default file extension
         'args = args & " /nologo"
-        'args = args & " /platform:x86"
-        'args = args & " /platform:x64"
-        'args = args & " /platform:anycpu" 'default
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sh = CreateObject("WScript.Shell")
         scriptName = WScript.ScriptName
         L = vbLf & vbTab
+        SetBitness 64
     End Sub
 
     Sub Compile
@@ -46,7 +47,7 @@ Class NETCOMCompiler
         baseName = fso.GetBaseName(filespec)
         cmd = "%ComSpec% /c cd """ & fso.GetParentFolderName(WScript.ScriptFullName) & """"
         cmd = cmd & " & echo."
-        cmd = cmd & " & """ & exeFolder & "\csc"" /out:" & baseName & "." & ext & args & " """ & filespec & """"
+        cmd = cmd & " & """ & exeFolder & "\csc.exe"" /out:" & baseName & "." & ext & args & " """ & filespec & """"
         cmd = cmd & " & echo. & echo OK to ignore warning CS1699 and BC41008. & echo."
         cmd = cmd & " & pause"
 
@@ -71,6 +72,13 @@ Class NETCOMCompiler
     Sub SetDebug : args = args & " /debug" : End Sub
     Sub AddRef(ref) : args = args & " /r:""" & ref & """" : End Sub
 
+    Sub SetBitness(bitness)
+        If 64 = bitness Then
+            exeFolder = exeFolder64
+        ElseIf 32 = bitness Then
+            exeFolder = exeFolder32
+        End If
+    End Sub
 
     Sub SetDLL
         args = args & " /target:library"
