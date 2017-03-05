@@ -9,7 +9,7 @@ TheDocs.html
 desktop.ini
 
 # compiled libraries
-net2com/*.dll
+*.dll
 
 # key files
-net2com/*.snk
+*.snk
