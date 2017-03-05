@@ -188,7 +188,7 @@ Class VBSTestRunner
     'run a single test file
 
     Private Sub RunTest(filespec)
-        Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo " & filespec)
+        Dim Pipe : Set Pipe = fs.sh.Exec("%ComSpec% /c cscript //nologo """ & filespec & """")
         TimedOut = False
         Dim Line
         IncrementSpecFiles

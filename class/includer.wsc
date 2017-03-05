@@ -90,7 +90,7 @@
             'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
 
             Dim thisFile : thisFile = n.sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
-            thisFile = Replace(thisFile, "file:///", "") 'remove superfluous string
+            thisFile = Replace(Replace(Replace(thisFile, "file:///", ""), "%20", " "), "/", "\") 'remove superfluous string
             referencePath = n.fso.GetParentFolderName(thisFile)
             SetFormat c.tbAscii
         End Sub
