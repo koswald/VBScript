@@ -232,7 +232,7 @@ Class DocGenerator
     'Remark: Open the documentation file for viewing
 
     Sub View
-        fs.sh.Run docFile
+        fs.sh.Run """" & docFile & """"
     End Sub
 
     Private Sub WriteScriptSection(File)
