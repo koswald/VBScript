@@ -50,7 +50,7 @@ Class PrivilegeChecker
 
         'run the batch file and parse the output
 
-        Dim pipe : Set pipe = ts.sh.Exec("cmd /c """ & ts.fs.Expand(ts.GetFile) & """")
+        Dim pipe : Set pipe = ts.sh.Exec("%ComSpec% /c """ & ts.fs.Expand(ts.GetFile) & """")
         Dim line
         While Not pipe.StdOut.AtEndOfStream
             line = pipe.StdOut.ReadLine
@@ -60,12 +60,15 @@ Class PrivilegeChecker
                 Privileged = False
             End If
         Wend
-        If Privileged = undefined_ Then Err.Raise 1, WScript.ScriptName, "The PrivilegeChecker could not determine privileges"
         Set pipe = Nothing
 
         'delete the .bat file
 
         ts.Delete
+
+        'raise an error if privileges are undefined
+
+        If Privileged = undefined_ Then Err.Raise 1, WScript.ScriptName, "The PrivilegeChecker could not determine privileges"
     End Function
 
 End Class
