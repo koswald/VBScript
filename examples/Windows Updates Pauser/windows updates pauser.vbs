@@ -6,7 +6,8 @@ Dim wup : Set wup = New WindowsUpdatesPauser
 
 With WScript.Arguments
     If 0 = .Count Then
-        MsgBox "One command-line argument is required.", vbInformation, WScript.ScriptName
+        InfoBox "One command-line argument is required:" & vbLf & _
+            "/pause, /resume, or /getstatus"
     ElseIf "/pause" = .item(0) Then
         wup.PauseUpdates
     ElseIf "/resume" = .item(0) Then
@@ -16,12 +17,16 @@ With WScript.Arguments
     End If
 End With
 
+Sub InfoBox(msg)
+    MsgBox msg, vbInformation, WScript.ScriptName
+End Sub
+
 Sub ShowStatus
     Dim status : status = wup.GetStatus
     If "Metered" = status Then
-        MsgBox "Windows Updates are paused."
+        InfoBox "Windows Updates are paused."
     ElseIf "Unmetered" = status Then
-        MsgBox "Windows Updates are enabled."
+        InfoBox "Windows Updates are enabled."
     Else
         'if userInteractive,
         'an error message should appear,
