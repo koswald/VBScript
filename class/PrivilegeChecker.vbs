@@ -29,7 +29,7 @@ Class PrivilegeChecker
         'create a randomly-named .bat file on the desktop
 
         With CreateObject("includer")
-            ExecuteGlobal(.read("TextStreamer"))
+            Execute(.read("TextStreamer"))
         End With
         Dim ts : Set ts = New TextStreamer
         ts.SetFile ts.GetFile & ".bat"
@@ -67,4 +67,5 @@ Class PrivilegeChecker
 
         ts.Delete
     End Function
+
 End Class
