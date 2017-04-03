@@ -1,5 +1,6 @@
 
 'test RegistryUtility.vbs
+'intended to be run with standard or elevated privileges
 
 With CreateObject("includer")
     Execute(.read("RegistryUtility"))
