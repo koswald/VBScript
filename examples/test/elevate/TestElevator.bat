@@ -1,4 +1,4 @@
 
 :: start the test launcher with elevated privileges
 
-WScript //nologo TestElevator.vbs ensure_64-bit_exe %1
+TestElevator.vbs ensure_64-bit_exe %1

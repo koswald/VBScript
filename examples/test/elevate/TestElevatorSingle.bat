@@ -1,1 +1,1 @@
-TestElevator DotNetCompiler.spec.vbs
+TestElevator.vbs ensure_64-bit_exe DotNetCompiler.spec.elev.vbs

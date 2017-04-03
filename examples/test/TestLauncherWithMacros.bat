@@ -1,13 +1,12 @@
 
-:: prepare to manually launch a series of tests from a console window
+:: prepare to manually launch a series of tests
 
 @echo off
 
 :: define and display environment variables
 
 echo Environment variables & echo.
-set test0=%SystemRoot%\SysWoW64\cscript.exe //nologo TestLauncher.vbs
-set test0=%SystemRoot%\System32\cscript.exe //nologo TestLauncher.vbs
+set test0=cscript.exe //nologo TestLauncher.vbs ensure_64-bit_exe
 set test1=%test0% VBSTimer.spec.vbs
 echo %%test0%%=%test0%
 echo %%test1%%=%test1%
