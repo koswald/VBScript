@@ -1,8 +1,11 @@
 'test DotNetCompiler class
+'intended to be run with elevated privileges
 
 With CreateObject("includer")
     Execute(.read("DotNetCompiler"))
     Execute(.read("TestingFramework"))
+    Execute(.read("StringFormatter"))
+    Execute(.read("VBSLogger"))
 End With
 
 With New TestingFramework
@@ -14,8 +17,13 @@ With New TestingFramework
         Const verifyKeyDeletion = False
         Const synchronous = True
         Const hidden = 0
+        dnc.SetUserInteractive False
+        dnc.OnUserCancelQuitScript = True
+
         Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim sh : Set sh = CreateObject("WScript.Shell")
+        Dim format : Set format = New StringFormatter
+        Dim log : Set log = New VBSLogger
 
         Dim sourceFile1 : sourceFile1 = "fixture\.net\SourceCode1.cs"
         Dim baseName1 : baseName1 = fso.GetBaseName(sourceFile1)
@@ -27,7 +35,7 @@ With New TestingFramework
         Dim sourceFolder2 : sourceFolder2 = fso.GetParentFolderName(fso.GetAbsolutePathName(sourceFile2))
         Dim sourceBase2 : sourceBase2 = sourceFolder2 & "\" & baseName2
 
-        Dim keysToRemove : keysToRemove = Array( _
+        Dim testKeys : testKeys = Array( _
             "HKCR\Wow6432Node\CLSID\{2650C2AD-1AF8-495F-AB4D-6C61BD463EA4}", _
             "HKCR\Wow6432Node\CLSID\{2650C2AD-1BF8-495F-AB4D-6C61BD463EA4}", _
             "HKCR\Wow6432Node\CLSID\{2650C2AD-2AF8-495F-AB4D-6C61BD463EA4}", _
@@ -45,7 +53,7 @@ With New TestingFramework
         Dim key2a_x64 : key2a_x64 = 6 'progid    for 64-bit sourceFile2
         Dim key2b_x64 : key2b_x64 = 7 'interface for 64-bit sourceFile2
 
-        Dim filesToRemove : filesToRemove = Array( _
+        Dim testFiles : testFiles = Array( _
             sourceBase1 & ".snk", _
             sourceBase1 & ".dll", _
             sourceBase2 & ".snk", _
@@ -55,7 +63,7 @@ With New TestingFramework
         Dim iSnkFile2 : iSnkFile2 = 2
         Dim iDllFile2_x64 : iDllFile2_x64 = 3
 
-        Dim foldersToRemove : foldersToRemove = Array( _
+        Dim testFolders : testFolders = Array( _
             sourceFolder1 & "\createTargetFolderTest", _
             sourceFolder1 & "\lib\64", _
             sourceFolder1 & "\lib\32")
@@ -64,9 +72,7 @@ With New TestingFramework
         Dim iTargetFolder1_x86 : iTargetFolder1_x86 = 2
 
         Cleanup 'remove junk from past erring tests, if any
-        EnsureNoJunk
-        dnc.SetUserInteractive False
-        dnc.OnUserCancelQuitScript = True
+        'EnsureCleanupWorked
 
     .it "should fail to create a key pair without a sourceFile or targetName"
         On Error Resume Next
@@ -78,80 +84,117 @@ With New TestingFramework
         dnc.SetSourceFile sourceFile1
         dnc.GenerateKeyPair
 
-        .AssertEqual fso.FileExists(filesToRemove(iSnkFile1)), True
+        .AssertEqual fso.FileExists(testFiles(iSnkFile1)), True
 
     .it "should set the target folder"
-        dnc.SetTargetFolder foldersToRemove(iCreateFolderTestFolder1)
+        dnc.SetTargetFolder testFolders(iCreateFolderTestFolder1)
         .AssertEqual Err, 0
 
     .it "should create the target folder"
-        .AssertEqual fso.FolderExists(foldersToRemove(iCreateFolderTestFolder1)), True
+        .AssertEqual fso.FolderExists(testFolders(iCreateFolderTestFolder1)), True
 
     .it "should compile a .cs file"
         dnc.Compile
-        .AssertEqual fso.FileExists(filesToRemove(iDllFile1_x64)), True
+        .AssertEqual fso.FileExists(testFiles(iDllFile1_x64)), True
 
     .it "should register a .dll in a custom location"
-        dnc.SetTargetFolder foldersToRemove(iTargetFolder1_x64)
+        dnc.SetTargetFolder testFolders(iTargetFolder1_x64)
         dnc.Register
         On Error Resume Next
-            EnsureKeyExists keysToRemove(key1a_x64)
+            EnsureKeyExists testKeys(key1a_x64)
             .AssertEqual Err & ": " & Err.Description, "0: "
         On Error Goto 0
 
     .it "should compile and register a 32-bit .dll"
-        dnc.SetTargetFolder foldersToRemove(iTargetFolder1_x86)
-        dnc.SetTargetName baseName1 & "32"
+        dnc.SetTargetFolder testFolders(iTargetFolder1_x86)
+        dnc.SetTargetName baseName1 & "_32"
         dnc.SetBitness 32
         dnc.Compile
         dnc.Register
         On Error Resume Next
-            EnsureKeyExists keysToRemove(key1a_x86)
+            EnsureKeyExists testKeys(key1a_x86)
             .AssertEqual Err & ": " & Err.Description, "0: "
         On Error Goto 0
 
     .it "should add a reference"
+        dnc.SetSourceFile sourceFile2
+        dnc.GenerateKeyPair
+        dnc.SetTargetFolder testFolders(iTargetFolder2_x86)
+        dnc.SetTargetName dnc.GetTargetName & "_32"
+        dnc.AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
+        dnc.Compile
+        dnc.Register
+        On Error Resume Next
+            EnsureKeyExists testKeys(key2a_x86)
+            .AssertEqual Err & ": " & Err.Description, "0: "
+        On Error Goto 0
+
     .it "should unregister"
+        dnc.Unregister
+        On Error Resume Next
+            EnsureKeyIsGone(testKeys(key2a_x86))
+            EnsureKeyIsGone(testKeys(key2b_x86))
+            .AssertEqual Err & ": " & Err.Description, "0: "
+        On Error Goto 0
+
 End With
 
 'teardown
     Cleanup
-    EnsureNoJunk
+    'EnsureCleanupWorked
     Quit
 
 Sub Quit
-    CollectGarbage
+    EmptyTheTrash
     WScript.Quit
 End Sub
 
 'delete selected files, folders, and keys
 Sub Cleanup
     Dim i
-    For i = 0 To UBound(filesToRemove)
-        If fso.FileExists(filesToRemove(i)) Then fso.DeleteFile filesToRemove(i), True
+    For i = 0 To UBound(testFiles)
+        If fso.FileExists(testFiles(i)) Then fso.DeleteFile testFiles(i), True
     Next
-    For i = 0 To UBound(foldersToRemove)
-        If fso.FolderExists(foldersToRemove(i)) Then fso.DeleteFolder foldersToRemove(i), True
+    For i = 0 To UBound(testFolders)
+        RemoveFolder(testFolders(i))
     Next
-    For i = 0 To UBound(keysToRemove)
-        If verifyKeyDeletion Then If vbCancel = MsgBox("Delete " & keysToRemove(i) & "?", vbOKCancel + vbQuestion, WScript.ScriptName) Then Exit For
-        If keyExists(keysToRemove(i)) Then sh.Run "reg delete " & keysToRemove(i) & " /f", hidden, synchronous
+    For i = 0 To UBound(testKeys)
+        If verifyKeyDeletion Then If vbCancel = MsgBox("Delete " & testKeys(i) & "?", vbOKCancel + vbQuestion, WScript.ScriptName) Then Quit
+        If keyExists(testKeys(i)) Then sh.Run "reg delete " & testKeys(i) & " /f", hidden, synchronous
     Next
 End Sub
 
-'Raise an error if any of the specified files, folders, or keys
-'were not removed
-Sub EnsureNoJunk
+Sub RemoveFolder(folder)
+    If Not fso.FolderExists(folder) Then Exit Sub
+    On Error Resume Next
+        fso.DeleteFolder folder, True
+        If Err Then
+            Dim msg : msg = format(Array( _
+                "Error %s ( %s ) removing folder %s", _
+                Err.Number, Err.Description, folder))
+            log msg
+            'WScript.StdErr.WriteLine msg
+        End If
+    On Error Goto 0
+End Sub
+
+'Raise an error if any of the specified files,
+'folders, or keys were not removed
+Sub EnsureCleanupWorked
     Dim i
-    For i = 0 To UBound(filesToRemove)
-        If fso.FileExists(filesToRemove(i)) Then Err.Raise 1, WScript.ScriptName, "Could not clean up file " & fso.GetAbsolutePathName(filesToRemove(i))
+    For i = 0 To UBound(testFiles)
+        If fso.FileExists(testFiles(i)) Then Err.Raise 1, WScript.ScriptName, "Could not clean up file " & fso.GetAbsolutePathName(testFiles(i))
     Next
-    For i = 0 To UBound(foldersToRemove)
-        If fso.FolderExists(foldersToRemove(i)) Then Err.Raise 2, WScript.ScriptName, "Could not clean up folder " & fso.GetAbsolutePathName(foldersToRemove(i))
+    For i = 0 To UBound(testFolders)
+        If fso.FolderExists(testFolders(i)) Then Err.Raise 2, WScript.ScriptName, "Could not clean up folder " & fso.GetAbsolutePathName(testFolders(i))
     Next
-    For i = 0 To UBound(keysToRemove)
-        If keyExists(keysToRemove(i)) Then Err.Raise 3, WScript.ScriptName, "Could not clean up registry key " & keysToRemove(i)
+    For i = 0 To UBound(testKeys)
+        EnsureKeyIsGone(testKeys(i))
     Next
+End Sub
+
+Sub EnsureKeyIsGone(key)
+    If keyExists(key) Then Err.Raise 3, WScript.ScriptName, "Could not clean up registry key " & key
 End Sub
 
 'Return True if the given registry key exists
@@ -168,7 +211,7 @@ Sub EnsureKeyExists(key)
 End Sub
 
 'release memory associated with selected objects
-Sub CollectGarbage
+Sub EmptyTheTrash
     Set fso = Nothing
     Set sh = Nothing
 End Sub
