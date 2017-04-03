@@ -1,4 +1,4 @@
-// fixture for DotNetCompiler.spec.vbs
+// fixture for DotNetCompiler.spec.elev.vbs
 
 using System.Runtime.InteropServices;
 using System.Diagnostics;
