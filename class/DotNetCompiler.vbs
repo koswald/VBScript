@@ -68,17 +68,18 @@ Class DotNetCompiler
     'Remark: Elevates privileges if they are not already elevated. If userInteractive, first warns user that the User Account Control dialog will open.
     Sub RestartIfNotPrivileged
         If pc Then Exit Sub
-        If userInteractive Then If vbCancel = MsgBox("Restart " & WScript.ScriptName & " with elevated privileges?" & vbLf & "(User Account Control dialog will open.)", vbOKCancel + vbQuestion, WScript.ScriptName) Then CollectTheTrash : WScript.Quit
+        If userInteractive Then If vbCancel = MsgBox("Restart " & WScript.ScriptName & " with elevated privileges?" & vbLf & "(The User Account Control dialog will open.)", vbOKCancel + vbQuestion, WScript.ScriptName) Then CollectTheTrash : WScript.Quit
 
         'restart the script with elevated privileges
-        Dim sa : Set sa = CreateObject("Shell.Application")
-        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+        'Dim sa : Set sa = CreateObject("Shell.Application")
+        'Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim wsa : Set wsa = WScript.Arguments
         Dim arg : arg = ""
         If wsa.Count Then arg = """" & wsa.item(0) & """"
         sa.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ " & arg,, "runas"
-        Set sa = Nothing
-        Set fso = Nothing
+        'Set sa = Nothing
+        'Set fso = Nothing
+        CollectTheTrash
         Set wsa = Nothing
         WScript.Quit
     End Sub
@@ -106,8 +107,11 @@ Class DotNetCompiler
     Sub SetSourceFile(newSourceFile)
         sourceFile = fso.GetAbsolutePathName(newSourceFile)
         If Not fso.FileExists(sourceFile) Then
-            'couldn't find the source file, so assume it's a relative path, and
-            'try using the script's location as the reference for the relative path
+            'couldn't find the source file; this can happen when
+            'elevating privileges changes the current directory
+            'to C:\Windows\System32; so assume it's a relative path,
+            'and try using the script's location as the reference
+            'for the relative path
             sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
             sourceFile = fso.GetAbsolutePathName(newSourceFile)
         End If
@@ -122,7 +126,7 @@ Class DotNetCompiler
 
     'Method SetUserInteractive
     'Parameter: boolean
-    'Remark: Sets userInteractive value
+    'Remark: Sets userInteractive value. Setting to True can be useful for debugging. Default is True.
     Sub SetUserInteractive(newUserInteractive)
         userInteractive = newUserInteractive
         If userInteractive Then
@@ -131,6 +135,11 @@ Class DotNetCompiler
             visibility = hidden
         End If
     End SUb
+
+    'Property GetUserInteractive
+    'Returns: a boolean
+    'Remark: Returns the userInteractive value.
+    Property Get GetUserInteractive : GetUserInteractive = userInteractive : End Property
 
     'Method GenerateKeyPair
     'Remark: Generates a strong name key pair using Visual Studio's sn command. Requires Visual Studio to be installed. If the name for the .snk file is not specified, uses targetName.
