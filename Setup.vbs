@@ -9,7 +9,9 @@ End With
 
 Class VBSSetupUtility
 
-    Private sa, sh, fso, parent, includer, launcher
+    Private sa, sh, fso 'objects
+    Private parent 'absolute, resolved folder spec
+    Private includer, launcher 'relative folder specs
 
     Sub Class_Initialize
 
@@ -31,12 +33,12 @@ Class VBSSetupUtility
         'the host machine opens .vbs files with the 64-bit .exe
         Dim msg : msg = "Please use Setup.bat to launch the Setup.vbs script"
         If 0 = WScript.Arguments.Count Then Err.Raise 1, WScript.ScriptName, msg
-        If Not "Ensure_64-bit_executable" = WScript.Arguments(0) Then Err.Raise 1, WScript.ScriptName, msg
+        If Not "Ensure_64-bit_executable" = WScript.Arguments(0) Then Err.Raise 2, WScript.ScriptName, msg
 
         'verify that we can find the scriptlet
 
         If Not fso.FileExists(parent & "\" & includer) Then
-            Err.Raise 1, WScript.ScriptName, "Couldn't find the required scriptlet: " & includer
+            Err.Raise 3, WScript.ScriptName, "Couldn't find the required scriptlet: " & includer
         End If
 
         'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
@@ -55,8 +57,9 @@ Class VBSSetupUtility
 
     Sub Class_Terminate
         Set sa = Nothing
-        Set sh = Nothing
+        sh.PopUp fso.GetBaseName(WScript.ScriptName) & " is finished.", 5, WScript.ScriptName, vbInformation
         Set fso = Nothing
+        Set sh = Nothing
     End Sub
 
 End Class
