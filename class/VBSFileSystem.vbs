@@ -6,6 +6,7 @@ Class VBSFileSystem
     Private oVBSNatives, oVBSEnvironment, oVBSMessages
     Private referencePath, savedCurrentDirectory, savedReferencePath
     Private scriptName, scriptFullName
+    Private forceDelete
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next
@@ -24,6 +25,7 @@ Class VBSFileSystem
         scriptName = fso.GetFileName(scriptFullName)
         SetReferencePath defaultReferencePath
         SaveReferencePath
+        SetForceDelete False
     End Sub
 
     Property Get n : Set n = oVBSNatives : End Property
@@ -136,6 +138,28 @@ Class VBSFileSystem
 
     Sub Elevate(cmd, args_, workingFolder)
         n.sa.ShellExecute fs.Expand(cmd), fs.Expand(args_), fs.Expand(workingFolder), "runas"
+    End Sub
+
+    'Property FoldersAreTheSame
+    'Parameters: folder1, folder2
+    'Returns: a boolean
+    'Remark: Determines whether the two specified folders are the same. If so, returns True.
+    Property Get FoldersAreTheSame(folder1, folder2)
+        FoldersAreTheSame = CBool(LCase(Expand(folder1)) = LCase(Expand(folder2)))
+    End Property
+
+    'Method DeleteFile
+    'Parameter: filespec
+    'Remark: Deletes the specified file.
+    Sub DeleteFile(filespec)
+        n.fso.DeleteFile filespec, forceDelete
+    End Sub
+
+    'Method SetForceDelete
+    'Parameter: boolean
+    'Remark: Controls the behavior of the DeleteFile method: Specify True to force a file deletion. Optional. Default is False.
+    Sub SetForceDelete(newForceDelete)
+        forceDelete = newForceDelete
     End Sub
 
 End Class

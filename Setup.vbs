@@ -14,7 +14,7 @@ Class VBSSetupUtility
     Sub Class_Initialize
 
         includer = "class\includer.wsc"
-        launcher = "examples\TestLauncher.vbs"
+        launcher = "examples\test\TestLauncher.vbs"
 
         Set sa = CreateObject("Shell.Application")
         Set sh = CreateObject("WScript.Shell")
@@ -49,7 +49,7 @@ Class VBSSetupUtility
 
         If vbCancel = MsgBox(s, vbOKCancel + vbQuestion + vbSystemModal, WScript.ScriptName) Then Exit Sub
 
-        sh.Run "%ComSpec% /k cscript.exe //nologo " & launcher
+        sh.Run "%ComSpec% /k cscript.exe //nologo """ & launcher & """" & " ensure_64-bit_exe"
 
     End Sub
 

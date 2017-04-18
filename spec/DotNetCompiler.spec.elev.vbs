@@ -18,7 +18,7 @@ With New TestingFramework
         Const synchronous = True
         Const hidden = 0
         dnc.SetUserInteractive False
-        dnc.OnUserCancelQuitScript = True
+        dnc.SetOnUserCancelQuitScript True
 
         Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim sh : Set sh = CreateObject("WScript.Shell")

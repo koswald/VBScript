@@ -21,7 +21,7 @@ Class DotNetCompiler
     Private msg, L
     Private userInteractive
     Private synchronous, visibility, visible, hidden
-    Public OnUserCancelCloseHta, OnUserCancelQuitScript
+    Private OnUserCancelCloseHta, OnUserCancelQuitScript
 
     Sub Class_Initialize
         Set fso = CreateObject("Scripting.FileSystemObject")
@@ -31,6 +31,7 @@ Class DotNetCompiler
         batFile2 = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\VsDevCmd.bat"
         exeFolder64 = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
         exeFolder32 = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
+        'get the filespec of the calling script
         On Error Resume Next
             thisFile = WScript.ScriptFullName 'called by script
             SetSourceFile WScript.Arguments(0)
@@ -52,8 +53,8 @@ Class DotNetCompiler
         visible = 1
         unregistering = False 'defaults
         refs = ""
-        OnUserCancelCloseHta = False
-        OnUserCancelQuitScript = False
+        SetOnUserCancelCloseHta False
+        SetOnUserCancelQuitScript False
         SetExtension "dll"
         SetSupressWarnings False
         SetDebug False
@@ -62,6 +63,15 @@ Class DotNetCompiler
         SetTargetFolder sh.CurrentDirectory
         SetTargetName fso.GetBaseName(sourceFile)
         SetUserInteractive True
+        'add references from the command-line, if any
+        Dim args : Set args = WScript.Arguments
+        If args.Count > 1 Then
+            For i = 2 To args.Count
+               If "-ref" = LCase(args.item(i - 1)) Then AddRef args.item(i)
+            Next
+        End If
+        Set args = Nothing
+
     End Sub
 
     'Method RestartIfNotPrivileged
@@ -71,14 +81,14 @@ Class DotNetCompiler
         If userInteractive Then If vbCancel = MsgBox("Restart " & WScript.ScriptName & " with elevated privileges?" & vbLf & "(The User Account Control dialog will open.)", vbOKCancel + vbQuestion, WScript.ScriptName) Then CollectTheTrash : WScript.Quit
 
         'restart the script with elevated privileges
-        'Dim sa : Set sa = CreateObject("Shell.Application")
-        'Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim wsa : Set wsa = WScript.Arguments
-        Dim arg : arg = ""
-        If wsa.Count Then arg = """" & wsa.item(0) & """"
-        sa.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ " & arg,, "runas"
-        'Set sa = Nothing
-        'Set fso = Nothing
+        Dim i, args : args = ""
+        If wsa.Count Then
+            For i = 0 To wsa.Count - 1
+                args = args & " """ & wsa.item(i) & """"
+            Next
+        End If
+        sa.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ " & args,, "runas"
         CollectTheTrash
         Set wsa = Nothing
         WScript.Quit
@@ -94,7 +104,7 @@ Class DotNetCompiler
 
     'Method SetTargetName
     'Parameter: targetName
-    'Remark: Sets the base name of the .snk, .dll, or .exe file that will be created. E.g. To create a .dll named Vox32.dll, use "Vox32". E.g. To generate a .snk key pair named Vox.snk, use "Vox". Optional. Default is the base name (file name without extension) of the file passed in on the command line.
+    'Remark: Sets the base name of the .snk, .dll, or .exe file that will be created. E.g. To create a .dll named Vox32.dll, use "Vox32". E.g. To generate a .snk key pair named Vox.snk, use "Vox". Optional, if a filespec or file name is passed in on the command line. Required otherwise.
     Sub SetTargetName(newTargetName) : targetName = newTargetName : End Sub
 
     'Property GetTargetName
@@ -134,7 +144,21 @@ Class DotNetCompiler
         Else
             visibility = hidden
         End If
-    End SUb
+    End Sub
+
+    'Method SetOnUserCancelQuitScript
+    'Parameter: boolean
+    'Remark: Sets whether the calling script will quit if the user cancels out of a dialog
+    Sub SetOnUserCancelQuitScript(newOnUserCancelQuitScript)
+        OnUserCancelQuitScript = newOnUserCancelQuitScript
+    End Sub
+
+    'Method SetOnUserCancelCloseHta
+    'Parameter: boolean
+    'Remark: Sets whether the calling .hta will close if the user cancels out of a dialog
+    Sub SetOnUserCancelCloseHta(newOnUserCancelCloseHta)
+        OnUserCancelCloseHta = newOnUserCancelCloseHta
+    End Sub
 
     'Property GetUserInteractive
     'Returns: a boolean
@@ -236,7 +260,9 @@ Class DotNetCompiler
     'Method AddRef
     'Parameter: ref
     'Remark: Adds the specified assembly reference, a filespec, to the csc.exe compiler command prior to calling the Compile method. Optional.
-    Sub AddRef(ref) : refs = refs & " /r:""" & ref & """" : End Sub
+    Sub AddRef(ref)
+        refs = refs & " /r:""" & ref & """"
+    End Sub
 
     'Method Unregister
     'Remark: Uses RegAsm.exe to unregister the .dll file.
@@ -258,8 +284,13 @@ Class DotNetCompiler
         'move the .dll to the target folder
 
         Dim dllFile : dllFile = targetName & ".dll"
-        If Not fso.FileExists(targetFolder & "\" & dllFile) Then
-            fso.MoveFile sourceFolder & "\" & dllFile, targetFolder & "\" & dllFile
+        Dim sourceDllFile : sourceDllFile = sourceFolder & "\" & dllFile
+        Dim targetDllFile : targetDllFile = targetFolder & "\" & dllFile
+        If Not vfs.FoldersAreTheSame(sourceFolder, targetFolder) And Not unregistering Then
+            If fso.FileExists(targetDllFile) Then
+                vfs.DeleteFile targetDllFile
+            End If
+            fso.MoveFile sourceDllFile, targetDllFile
         End If
 
         'build the argument(s)
@@ -286,7 +317,7 @@ Class DotNetCompiler
 
     'Method SetBitness
     'Parameter: 64 or 32
-    'Remark: Sets the bitness for the compiler or registerer to 64 or 32. Optional. Default is 64.
+    'Remark: Sets the bitness for the compiler or registrar to 64 or 32. Optional. Default is 64.
     Sub SetBitness(bitness)
         If 64 = bitness Then
             exeFolder = exeFolder64
