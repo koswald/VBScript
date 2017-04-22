@@ -2,7 +2,7 @@
 
 #### Refactor applicable classes to ...
 
-- Support supressing user interactivity. Mitigating factor: most classes already do.  
+- Support supressing user interactivity, except for errors. Mitigating factor: most classes already do.  
 - Better support .hta files (WScript object is not available in .hta's).  
 - Support having a changeable working directory, where applicable. Current behavior: for many classes, the working directory is assumed to be the folder containing the calling script. Mitigating factor: usually this is OK.  
 - Support Visual Studio intellisense for native objects. (Don't use wrapped native objects.)  
