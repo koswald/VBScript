@@ -523,7 +523,7 @@ Class DocGenerator
         IndentDecrease
         WriteLine "</head>"
         WriteLine "<body onclick=""docScript.toggleDetail(event)"">"
-        WriteLine "<h3>Documentation for " & docTitle & " </h3>"
+        WriteLine "<h3>" & docTitle & "</h3>"
         doc.WriteLine ""
         IndentIncrease
     End Sub
