@@ -10,7 +10,7 @@ Class VBSEnvironment
 
     Sub Class_Initialize
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("VBSNatives"))
+            Execute(.read("VBSNatives"))
         End With : On Error Goto 0
 
         Set oVBSNatives = New VBSNatives

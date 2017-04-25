@@ -12,7 +12,7 @@ Class VBSClipboard
         Set sh = CreateObject("WScript.Shell")
         Set HtmlFile = CreateObject("htmlfile")
         With CreateObject("includer")
-            ExecuteGlobal(.read("StringFormatter"))
+            Execute(.read("StringFormatter"))
         End With
         Set formatter = New StringFormatter
         ClipExe = "%SystemRoot%\System32\clip.exe"
@@ -40,7 +40,7 @@ Class VBSClipboard
         'create a temp file with contents equal to newText,
         'then send the contents to clip.exe
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("TextStreamer"))
+            Execute(.read("TextStreamer"))
         End With : On Error Goto 0
         Dim ts : Set ts = New TextStreamer
         Dim stream : Set stream = ts.Open

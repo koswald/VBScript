@@ -233,7 +233,7 @@ Class Chooser
     Private Sub SetBFFileTerminator
         If 0 = BFFileTimeout Then Exit Sub
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("WMIUtility"))
+            Execute(.read("WMIUtility"))
         End With : On Error Goto 0
         Dim wmi : Set wmi = New WMIUtility
         wmi.TerminateProcessByIdAndNameDelayed LastBFFileExec.ProcessID, "mshta.exe", BFFileTimeout * 1000

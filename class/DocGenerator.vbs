@@ -8,7 +8,7 @@
 '' 'Usage Example
 '' '' 
 '' ''    With CreateObject("includer")
-'' ''        ExecuteGlobal(.read("DocGenerator"))
+'' ''        Execute(.read("DocGenerator"))
 '' ''    End With
 '' ''
 '' ''    With New DocGenerator
@@ -70,7 +70,7 @@ Class DocGenerator
 
     Sub Class_Initialize
         With CreateObject("includer")
-            ExecuteGlobal(.read("TextStreamer"))
+            Execute(.read("TextStreamer"))
         End With
 
         'prepare output streamer

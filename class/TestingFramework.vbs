@@ -4,7 +4,7 @@
 'Usage example
 '
 ''    With CreateObject("includer")
-''        Execute(.read("VBSValidator")) 'ExecuteGlobal if this code is wrapped in a function, class, etc.
+''        Execute(.read("VBSValidator")) 'Execute if this code is wrapped in a function, class, etc.
 ''        Execute(.read("TestingFramework"))
 ''    End With
 '' 

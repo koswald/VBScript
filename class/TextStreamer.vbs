@@ -13,8 +13,8 @@ Class TextStreamer
 
     Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next 'get class dependencies
-            ExecuteGlobal(.read("VBSFileSystem"))
-            ExecuteGlobal(.read("StreamConstants"))
+            Execute(.read("VBSFileSystem"))
+            Execute(.read("StreamConstants"))
         End With : On Error Goto 0
 
         Set oVBSFileSystem = New VBSFileSystem

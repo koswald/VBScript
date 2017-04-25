@@ -7,8 +7,8 @@ Class VBSExtracter
 
     Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next 'get dependencies
-            ExecuteGlobal(.read("RegExFunctions"))
-            ExecuteGlobal(.read("TextStreamer"))
+            Execute(.read("RegExFunctions"))
+            Execute(.read("TextStreamer"))
         End With : On Error Goto 0
         Set oRegExFunctions = New RegExFunctions
         Set oStreamer = New TextStreamer

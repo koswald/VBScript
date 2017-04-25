@@ -34,10 +34,10 @@ Class VBSTestRunner
         TestIsRunning = 0
         TestIsFinished = 1
         With CreateObject("includer")
-            ExecuteGlobal(.read("VBSFileSystem"))
-            ExecuteGlobal(.read("StringFormatter"))
-            ExecuteGlobal(.read("VBSTimer"))
-            ExecuteGlobal(.read("VBSlogger"))
+            Execute(.read("VBSFileSystem"))
+            Execute(.read("StringFormatter"))
+            Execute(.read("VBSTimer"))
+            Execute(.read("VBSlogger"))
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter

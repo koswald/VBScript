@@ -10,9 +10,9 @@ Class VBSFileSystem
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("VBSNatives"))
-            ExecuteGlobal(.read("VBSMessages"))
-            ExecuteGlobal(.read("VBSEnvironment"))
+            Execute(.read("VBSNatives"))
+            Execute(.read("VBSMessages"))
+            Execute(.read("VBSEnvironment"))
         End With : On Error Goto 0
         Set oVBSNatives = New VBSNatives
         Set oVBSEnvironment = New VBSEnvironment

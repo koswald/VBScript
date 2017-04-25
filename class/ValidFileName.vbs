@@ -4,7 +4,7 @@
 'Usage Example
 ''
 ''    With CreateObject("includer")
-''        ExecuteGlobal(.read("ValidFileName"))
+''        Execute(.read("ValidFileName"))
 ''    End With
 ''
 ''    MsgBox GetValidFileName("test\ing") 'test-ing

@@ -53,8 +53,8 @@ Class WMIUtility
     Sub TerminateProcessByIdAndNameDelayed(id, name, milliseconds)
         'create and run a .vbs script to end the process
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("TextStreamer"))
-            ExecuteGlobal(.read("StringFormatter"))
+            Execute(.read("TextStreamer"))
+            Execute(.read("StringFormatter"))
         End With : On Error Goto 0
         Dim ts : Set ts = New TextStreamer
         ts.SetFolder "%Temp%"

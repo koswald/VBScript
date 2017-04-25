@@ -4,7 +4,7 @@
 'Usage example
 '
 '' With CreateObject("includer")
-''     ExecuteGlobal(.read("RegExFunctions"))
+''     Execute(.read("RegExFunctions"))
 '' End With
 '' 
 '' Dim reg : Set reg = New RegExFunctions
@@ -25,7 +25,7 @@ Class RegExFunctions
 
     Sub Class_Initialize
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("VBSValidator"))
+            Execute(.read("VBSValidator"))
         End With : On Error Goto 0
         Set oRE = New RegExp
         Set v = New VBSValidator

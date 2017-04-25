@@ -3,7 +3,7 @@
 '
 'Usage example
 '' With CreateObject("includer")
-''     ExecuteGlobal(.read("StringFormatter"))
+''     Execute(.read("StringFormatter"))
 '' End With
 '' Dim fm : Set fm = New StringFormatter
 '' 

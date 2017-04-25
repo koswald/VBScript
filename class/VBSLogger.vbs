@@ -4,7 +4,7 @@
 '<fieldset> <legend> Instantiation </legend>
 ''
 ''    With CreateObject("includer")
-''        ExecuteGlobal(.read("VBSLogger"))
+''        Execute(.read("VBSLogger"))
 ''    End With
 ''    Dim log : Set log = New VBSLogger
 ''
@@ -32,8 +32,8 @@ Class VBSLogger 'Logger for use in VBScript files
 
     Sub Class_Initialize
         WIth CreateObject("includer") : On Error Resume Next 'get class dependencies
-            ExecuteGlobal(.read("TimeFunctions"))
-            ExecuteGlobal(.read("TextStreamer"))
+            Execute(.read("TimeFunctions"))
+            Execute(.read("TextStreamer"))
         End With : On Error Goto 0
 
         Set oTimeFunctions = New TimeFunctions

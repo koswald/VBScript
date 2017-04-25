@@ -8,7 +8,7 @@
 'Usage example:
 '
 '' With CreateObject("includer")
-''     ExecuteGlobal(.read("VBSEventLogger"))
+''     Execute(.read("VBSEventLogger"))
 '' End With
 '' 
 '' Dim logger : Set logger = New VBSEventLogger
@@ -35,7 +35,7 @@ Class VBSEventLogger
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
         With CreateObject("includer") : On Error Resume Next
-            ExecuteGlobal(.read("VBSFileSystem"))
+            Execute(.read("VBSFileSystem"))
             Execute(.read("VBSEventLogger.config"))
             VBScriptLibraryPath = .LibraryPath
         End With : On Error Goto 0

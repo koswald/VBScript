@@ -5,7 +5,7 @@ Option Explicit
 Main
 Sub Main
     With CreateObject("includer")
-        ExecuteGlobal(.read("VBSTestRunner"))
+        Execute(.read("VBSTestRunner"))
     End With
     Dim testRunner : Set testRunner = New VBSTestRunner
     With WScript.Arguments
