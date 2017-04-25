@@ -130,7 +130,15 @@ Class VBSLogger 'Logger for use in VBScript files
     'Remark: Opens the log file for viewing. Notepad is the default editor. See SetViewer.
 
     Sub View 'open the log file for viewing in a text editor
-        n.sh.Run """" & viewer & """ """ & logFile & """"
+        If fso.FileExists(GetLogFilePath) Then
+            n.sh.Run """" & viewer & """ """ & logFile & """"
+        Else
+            Dim msg : msg = "Today's log file hasn't been created " & _
+                "yet. Do you want to open the log folder?"
+            If vbOK = MsgBox(msg, vbOKCancel + vbQuestion, WScript.ScriptName) Then
+                ViewFolder
+            End If
+        End If
     End Sub
 
     'Method SetViewer
