@@ -16,7 +16,7 @@ Class VBSSetupUtility
     Sub Class_Initialize
 
         includer = "class\includer.wsc"
-        launcher = "examples\test\TestLauncher.vbs"
+        launcher = "examples\test launchers\TestLauncher.vbs"
 
         Set sa = CreateObject("Shell.Application")
         Set sh = CreateObject("WScript.Shell")
