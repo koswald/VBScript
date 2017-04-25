@@ -11,19 +11,13 @@
 '
 '    <h5> Usage example </h5>
 '
-''        With CreateObject("includer")
-''            ExecuteGlobal(.read("WMIUtility.vbs")) '.vbs may be omitted
-''            ExecuteGlobal(.read("VBSNatives"))
-''        End With
-'
-'        Or just <code> Execute(.read("VBSNatives"))</code> if the statement already has global scope, or if local scope is desired. Local scope may be desirable, for example, if reading a configuration file to populate local or class variables. Global scope should be used when reading/executing class files.
-'
-'        Within a Class block, it is recommended to add error-handling code to the above, in case a calling script includes two or more classes that share a dependency:
-'
-''        With CreateObject("includer") : On Error Resume Next
-''            ExecuteGlobal(.read("WMIUtility"))
-''            ExecuteGlobal(.read("VBSNatives"))
-''        End With : On Error Goto 0
+'' With CreateObject("includer")
+''     Execute(.read("WMIUtility.vbs")) '.vbs may be omitted
+''     Execute(.read("VBSNatives"))
+'' End With
+''
+'' Dim wmi : Set wmi = New WMIUtility
+'' Dim natives : Set natives = New VBSNatives
 '
 '        Relative paths may be used and are relative to this scriptlet's location
 

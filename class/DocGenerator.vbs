@@ -12,11 +12,11 @@
 '' ''    End With
 '' ''
 '' ''    With New DocGenerator
-'' ''        .SetTitle = "Karl's VBScript documentation"
-'' ''        .SetDocName = "doc.html"
+'' ''        .SetTitle = "VBScript Utility Classes Documentation"
+'' ''        .SetDocName = "TheDocs.html"
 '' ''        .SetFilesToDocument(".*\.(vbs|wsf|wsc)")
-'' ''        .SetScriptFolder = "../class"
-'' ''        .SetDocFolder = ".."
+'' ''        .SetScriptFolder = "..\..\class"
+'' ''        .SetDocFolder = "..\.."
 '' ''
 '' ''        .Generate
 '' ''        .View
