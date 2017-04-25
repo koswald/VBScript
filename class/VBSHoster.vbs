@@ -6,10 +6,10 @@ Class VBSHoster
     Private oVBSNatives, oVBSArguments, switch
 
     Private Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("VBSNatives"))
             Execute(.read("VBSArguments"))
-        End With : On Error Goto 0
+        End With
 
         Set oVBSNatives = New VBSNatives
         Set oVBSArguments = New VBSArguments

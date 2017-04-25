@@ -9,11 +9,11 @@ Class VBSFileSystem
     Private forceDelete
 
     Private Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("VBSNatives"))
             Execute(.read("VBSMessages"))
             Execute(.read("VBSEnvironment"))
-        End With : On Error Goto 0
+        End With
         Set oVBSNatives = New VBSNatives
         Set oVBSEnvironment = New VBSEnvironment
         Set oVBSMessages = New VBSMessages

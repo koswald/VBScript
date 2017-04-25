@@ -31,10 +31,10 @@ Class VBSLogger 'Logger for use in VBScript files
     Private scriptName, scriptFullName
 
     Sub Class_Initialize
-        WIth CreateObject("includer") : On Error Resume Next 'get class dependencies
+        WIth CreateObject("includer") 'get class dependencies
             Execute(.read("TimeFunctions"))
             Execute(.read("TextStreamer"))
-        End With : On Error Goto 0
+        End With
 
         Set oTimeFunctions = New TimeFunctions
         Set oTextStreamer = New TextStreamer

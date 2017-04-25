@@ -24,9 +24,9 @@ Class RegExFunctions
     Private oRE, Match, Matches, testString, class_, v, reader
 
     Sub Class_Initialize
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("VBSValidator"))
-        End With : On Error Goto 0
+        End With
         Set oRE = New RegExp
         Set v = New VBSValidator
         class_ = "RegExFunctions"

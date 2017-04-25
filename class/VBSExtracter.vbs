@@ -6,10 +6,10 @@ Class VBSExtracter
     Private file, oRegExFunctions, oStreamer
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") : On Error Resume Next 'get dependencies
+        With CreateObject("includer") 'get dependencies
             Execute(.read("RegExFunctions"))
             Execute(.read("TextStreamer"))
-        End With : On Error Goto 0
+        End With
         Set oRegExFunctions = New RegExFunctions
         Set oStreamer = New TextStreamer
         SetFile(vbNull)

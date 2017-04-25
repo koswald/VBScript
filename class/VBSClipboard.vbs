@@ -39,9 +39,9 @@ Class VBSClipboard
     Private Sub SetClipboardTextAlt(newText)
         'create a temp file with contents equal to newText,
         'then send the contents to clip.exe
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("TextStreamer"))
-        End With : On Error Goto 0
+        End With
         Dim ts : Set ts = New TextStreamer
         Dim stream : Set stream = ts.Open
         stream.Write newText

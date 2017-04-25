@@ -9,9 +9,9 @@ Class VBSEnvironment
     Private userEnv, sysEnv, proEnv, volEnv
 
     Sub Class_Initialize
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("VBSNatives"))
-        End With : On Error Goto 0
+        End With
 
         Set oVBSNatives = New VBSNatives
         defaults = GetDefaults

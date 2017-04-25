@@ -12,10 +12,10 @@ Class TextStreamer
     Private oStreamConstants, oVBSFileSystem
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") : On Error Resume Next 'get class dependencies
+        With CreateObject("includer") 'get class dependencies
             Execute(.read("VBSFileSystem"))
             Execute(.read("StreamConstants"))
-        End With : On Error Goto 0
+        End With
 
         Set oVBSFileSystem = New VBSFileSystem
         Set oStreamConstants = New StreamConstants

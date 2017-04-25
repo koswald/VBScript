@@ -34,11 +34,11 @@ Class VBSEventLogger
         logFile = "Application.evtx" 'event log file with WSH events
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
-        With CreateObject("includer") : On Error Resume Next
+        With CreateObject("includer")
             Execute(.read("VBSFileSystem"))
             Execute(.read("VBSEventLogger.config"))
             VBScriptLibraryPath = .LibraryPath
-        End With : On Error Goto 0
+        End With
         Set fs = New VBSFileSystem
 
         customViewFile = fs.ResolveTo(customViewFile, VBScriptLibraryPath) 'get the absolute path
