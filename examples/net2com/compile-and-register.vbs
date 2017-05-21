@@ -18,9 +18,7 @@ Sub Main
         .RestartIfNotPrivileged
         .SetOnUserCancelQuitScript True
 
-        'illustrate hardcoding the source file and reference;
-        'see compile-and-register-vox.bat for an example
-        'of how to use command-line arguments instead
+        'the following two lines illustrate hardcoding the source file and reference; for an example of how to use command-line arguments insteadm, see compile-and-register-vox.bat 
         '.SetSourceFile "Vox.cs"
         '.AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
 

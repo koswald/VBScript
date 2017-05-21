@@ -28,7 +28,7 @@ Class VBSSetupUtility
 
         'Verify the command-line token
         'This verifies that this script was called from the batch file of
-        'the same name, in order to ensure that it was started by
+        'the same name, in order to help ensure that it was started by
         'the 64-bit executable, if available, regardless of whether
         'the host machine opens .vbs files with the 64-bit .exe
         Dim msg : msg = "Please use Setup.bat to launch the Setup.vbs script"
