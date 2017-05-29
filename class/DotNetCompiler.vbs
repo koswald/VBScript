@@ -27,10 +27,6 @@ Class DotNetCompiler
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
-        batFile1 = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat"
-        batFile2 = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\Tools\VsDevCmd.bat"
-        exeFolder64 = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"
-        exeFolder32 = "C:\Windows\Microsoft.NET\Framework\v4.0.30319"
         'get the filespec of the calling script
         On Error Resume Next
             thisFile = WScript.ScriptFullName 'called by script
@@ -43,6 +39,7 @@ Class DotNetCompiler
         With CreateObject("includer")
             Execute(.read("VBSFileSystem"))
             Execute(.read("PrivilegeChecker"))
+            Execute(.read("DotNetCompiler.config"))
         End With
         Set vfs = New VBSFileSystem
         Set pc = New PrivilegeChecker
@@ -312,7 +309,7 @@ Class DotNetCompiler
 
         'register or unregister
 
-        sh.Run "cmd " & args, visibility, synchronous
+        sh.Run "%ComSpec% " & args, visibility, synchronous
     End Sub
 
     'Method SetBitness
