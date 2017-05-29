@@ -9,7 +9,6 @@ Class WindowsUpdatesPauser
 
     'Method PauseUpdates
     'Remark: Pauses Windows Updates.
-
     Sub PauseUpdates
         sh.Run format(Array( _
             "cmd /c netsh %s set profileparameter name=""%s"" cost=Fixed", _
@@ -18,7 +17,6 @@ Class WindowsUpdatesPauser
 
     'Method ResumeUpdates
     'Remark: Resumes Windows Updates.
-
     Sub ResumeUpdates
         sh.Run format(Array( _
             "cmd /c netsh %s set profileparameter name=""%s"" cost=Unrestricted", _
@@ -28,7 +26,6 @@ Class WindowsUpdatesPauser
     'Function GetStatus
     'Returns a string
     'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name AKA profileName.
-
     Function GetStatus
         Dim stat : Set stat = sh.Exec(format(Array( _
             "cmd /c netsh %s show profile name=""%s""", _
@@ -51,8 +48,12 @@ Class WindowsUpdatesPauser
     'Function GetAppName
     'Returns a string
     'Remark: Returns the base name of the calling script
-
     Function GetAppName : GetAppName = appName : End Function
+
+    'Function GetProfileName
+    'Returns a string
+    'Remark: Returns the name of the network. The name is set by editing WindowsUpdatesParser.config
+    Property Get GetProfileName : GetProfileName = profileName : End Property
 
     Private sh, fso, format, log 'objects
     Private thisFile
@@ -68,7 +69,10 @@ Class WindowsUpdatesPauser
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
         Set fso = CreateObject("Scripting.FileSystemObject")
-        userInteractive = True 'defaults
+
+        'defaults
+
+        userInteractive = True
         unmetered = "Unmetered" ' "enums"
         metered = "Metered"
         undefined = "Empty"
@@ -79,16 +83,19 @@ Class WindowsUpdatesPauser
         CreateNew = True
         L = vbLf 'other
         L2 = L & L
+
         Dim reader : Set reader = CreateObject("includer")
         Execute(reader.read("StringFormatter"))
         Execute(reader.read("VBSLogger"))
         Set format = New StringFormatter
         Set log = New VBSLogger
         Set reader = Nothing
+
         On Error Resume Next
             thisFile = Replace(Replace(document.location.href, "file:///", ""), "%20", " ") 'called by .hta
             If Err Then thisFile = WScript.ScriptFullName 'called by script
         On Error Goto 0
+
         appName = fso.GetBaseName(thisFile)
         defaultConfigFile = appName & ".config"
         ReadConfigFiles

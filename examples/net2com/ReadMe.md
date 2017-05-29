@@ -1,12 +1,15 @@
 # Description of the `net2com` folder
 
-This folder contains examples for creating and testing a `.dll` file that can be instantiated from a script. 
-It uses the .Net compiler and .Net registrar, csc.exe and regasm.exe respectively, which are present on most machines.
-The default location for these `.exe` files is hardcoded in the class file `DotNetCompiler.vbs` as 
+This folder contains examples for creating and testing a `.dll` file that
+can be instantiated from a script. 
+It uses the .Net compiler and .Net registrar, csc.exe and regasm.exe respectively,
+which are present on most machines.
+The default location for these `.exe` files is configurable in `DotNetCompiler.config`: 
 `C:\Windows\Microsoft.NET\Framework64\v4.0.30319` for the 64-bit versions and
 `C:\Windows\Microsoft.NET\Framework\v4.0.30319` for the 32-bit versions.
 
-If Visual Studio installed, then a strong-name key pair is generated without requiring Visual Studio to be opened.
+If Visual Studio installed, then a strong-name key pair is generated without 
+requiring Visual Studio to be opened.
 
 #### Links and References
 

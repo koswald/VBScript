@@ -33,7 +33,7 @@ Class PrivilegeChecker
         End With
         Dim ts : Set ts = New TextStreamer
         ts.SetFile ts.GetFile & ".bat"
-        Dim bf : Set bf = ts.Open
+        Dim bf : Set bf = ts.Open 'create the batch file; open for writing
         bf.WriteLine "@echo off"
         bf.WriteLine "call :isAdmin"
         bf.WriteLine "if %errorlevel% == 0 ("
