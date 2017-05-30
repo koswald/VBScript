@@ -7,7 +7,6 @@ msg = "Start " & WScript.ScriptName & " with the .bat file of the same name to e
 With WScript.Arguments
     If 0 = .Count Then Err.Raise 1, WScript.ScriptName, vbLf & msg
     If Not "ensure_64-bit_exe" = .item(0) Then Err.Raise 1, WScript.ScriptName, vbLf & msg
-    spec = "" : If .Count >= 2 Then spec = .item(1)
 End With
 
 'initialize
@@ -16,8 +15,10 @@ Set sa = CreateObject("Shell.Application")
 Set fso = CreateObject("Scripting.FileSystemObject")
 Set incl = CreateObject("includer")
 Execute(incl.read("VBSClipboard"))
+Execute(incl.read("VBSArguments"))
 Set incl = Nothing
 Set clip = New VBSClipboard
+Set args = New VBSArguments
 scriptParent = GetParent(WScript.ScriptFullName)
 
 'to facilitate rerunning the test, the main command is copied
@@ -25,9 +26,9 @@ scriptParent = GetParent(WScript.ScriptFullName)
 'a right click, and also echoed to the console where it can be
 'manually copied
 
-mainCommand = "cscript //nologo TestLauncherElevated.vbs"
+mainCommand = "cscript //nologo TestLauncherElevated.vbs " & args.GetArgumentsString
 clip.SetClipboardText mainCommand
-args = "/k echo " & mainCommand & " & cd """ & scriptParent & """ & " & mainCommand & " " & spec
+args = "/k echo " & mainCommand & " & cd """ & scriptParent & """ & " & mainCommand
 
 'elevate
 

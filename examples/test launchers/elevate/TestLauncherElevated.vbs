@@ -8,27 +8,24 @@ Sub Main
         Execute(.read("VBSTestRunner"))
     End With
     Dim testRunner : Set testRunner = New VBSTestRunner
+
+    'specify the reg ex pattern to match file types
+
+    testRunner.SetSpecPattern ".*\.spec\.elev\.vbs|.*\.spec\.elev\+std\.vbs"
+
     With WScript.Arguments
-        If .Count Then
+        If .Count > 1 Then
 
-            'if it is desired to run just a single test file, pass it in on the 
-            'command line, using a relative path, relative to the spec folder
+            'get the runCount and/or spec from the command-line
 
-            testRunner.SetSpecFile .item(0)
-
-            'get the runCount from the command-line, arg #2, if specified
-
-            If .Count >= 2 Then testRunner.SetRunCount .item(1)
+            SetCountOrPattern testRunner, 1
+            If .Count > 2 Then SetCountOrPattern testRunner, 2
        End If
     End With
 
     'specify the folder containing the tests; path is relative to this script
 
     testRunner.SetSpecFolder "../../../spec"
-
-    'specify the reg ex pattern to match file types
-
-    testRunner.SetSpecPattern ".*\.spec\.elev\.vbs|.*\.spec\.elev\+std\.vbs"
 
     'specify the time allotted for each test file to complete all of its specs, in seconds
 
@@ -45,3 +42,22 @@ Sub Main
         End If
     On Error Goto 0
 End Sub
+
+Sub SetCountOrPattern(runner, argIndex)
+    With WScript.Arguments
+        If IsInteger(.item(argIndex)) Then
+            'arg specifies how many times to repeat the test(s)
+            runner.SetRunCount .item(argIndex)
+        Else
+            'arg is a spec file: convert to regular expression: replace . with \. and + with \+
+            runner.SetSpecPattern Replace(Replace(.item(argIndex), ".", "\."), "+", "\+")
+        End If
+    End With
+End Sub
+
+Function IsInteger(var)
+    On Error Resume Next
+        Dim CIntVar : CIntVar = CInt(var)
+        IsInteger = Not CBool(Err)
+    On Error Goto 0
+End Function
