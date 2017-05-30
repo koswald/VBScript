@@ -24,13 +24,13 @@
                 If "Metered" = status Then
                     'updates are paused
                     Enable "resumeButton"
-                    SetTitle "resumeButton", "Resume Windows Updates"
+                    SetTitle "resumeButton", "Resume Windows Updates (" & wup.GetProfileName & ")"
                     Disable "pauseButton"
                     SetTitle "pauseButton", ""
                 ElseIf "Unmetered" = status Then
                     'updates are enabled
                     Enable "pauseButton"
-                    SetTitle "pauseButton", "Pause Windows Updates"
+                    SetTitle "pauseButton", "Pause Windows Updates (" & wup.GetProfileName & ")"
                     Disable "resumeButton"
                     SetTitle "resumeButton", ""
                 Else
