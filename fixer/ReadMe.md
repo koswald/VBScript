@@ -1,9 +1,9 @@
 
 # Having problems running .vbs, .wsf, and .hta scripts on your 64-bit machine?
 
-Fixer.hta mighht help with troubleshooting certain Windows&reg; configuration problems that may prevent `.wsf`, `.vbs`, or `.hta` scripts from running.  
+Fixer.hta might help with troubleshooting certain Windows&reg; configuration problems that may prevent `.wsf`, `.vbs`, or `.hta` scripts from running.  
 
-> Specifically, Fixer.hta may help to identify the source of a problem in the following situations:  
+> Fixer.hta may help to identify the source of a problem in the following situations:  
 > 1.) A script won't run at all, or  
 > 2.) A script can't instantiate a particular COM object.  
 
@@ -13,7 +13,7 @@ If a `.vbs` script attempts to instantiate a COM object that has been incorrectl
 
 This type of problem might be identified by using Fixer to change the registry entries that control the bitness of the executables that open `.vbs` files:  
  
-1) Double click `Fixer.bat`, which launches `Fixer.hta` with elevated privileges.  
+1) Double click `Fixer.bat`, which which call `Fixer.vbs` and help to ensure that `Fixer.hta` is opened with the 64-bit executable. `Fixer.vbs` will call `Fixer.hta` with elevated privileges.  
 
 2) In the `Fixer` window, in the `..\VBSFile\..` section, select `32-bit`, and then rerun the script.  
 
