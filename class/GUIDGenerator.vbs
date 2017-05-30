@@ -5,8 +5,8 @@
 
 '' With CreateObject("includer")
 ''     Execute(.read("GUIDGenerator"))
-''     InputBox "",, New GUIDGenerator
 '' End With
+'' InputBox "",, New GUIDGenerator
 '
 Class GUIDGenerator
 
