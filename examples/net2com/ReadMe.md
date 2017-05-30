@@ -3,7 +3,7 @@
 This folder contains examples for creating and testing a `.dll` file that
 can be instantiated from a script. 
 It uses the csc.exe to compile the `.dll` and regasm.exe to register it.
-The default location for these `.exe` files is configurable in [DotNetCompiler.config](../../../../blob/master/class/DotNetCompiler.config)
+The default location for these `.exe` files is configurable in [DotNetCompiler.config](../class/DotNetCompiler.config)
 
 If Visual Studio installed, then a strong-name key pair is generated without 
 requiring Visual Studio to be opened.
