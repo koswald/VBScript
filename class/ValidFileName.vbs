@@ -23,14 +23,16 @@ Function GetValidFileName(fileNameCandidate)
 
     'items 1 - 9: a Windows file name can't contain any of these
     'items 10 - 11: Chrome won't open a local .html file with %20 or # in the title
-    invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
+    Dim invalidItems : invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
 
+    Dim maxLength
     With CreateObject("includer")
         Execute(.read("ValidFileName.config")) 'get the maxLength variable
     End With
 
-    x = fileNameCandidate
+    Dim x : x = fileNameCandidate
 
+    Dim i
     For i = 0 to UBound(invalidItems)
 
         x = Replace(x, invalidItems(i), "-")
