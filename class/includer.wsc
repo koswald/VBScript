@@ -104,9 +104,7 @@
             'read the file, then restore the previous
             'StreamFormat setting
 
-            If c.tbUnicode = StreamFormat Then
-                Read = PrivateRead(file)
-            ElseIf analyzer.SetFile(Resolve(file)).isUTF16LE Then
+            If analyzer.SetFile(Resolve(file)).isUTF16LE Then
                 Dim savedStreamFormat
                 savedStreamFormat = StreamFormat
                 SetFormatUnicode
