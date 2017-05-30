@@ -1,7 +1,8 @@
 
 'Setup the VBScript utilities
 
-'Registers the dependency manager scriptlet, includer.wsc, if desired, runs the tests
+'Registers the dependency manager scriptlet, includer.wsc, 
+'and if desired, launches the standard tests
 
 With New VBSSetupUtility
     .Setup
@@ -43,7 +44,7 @@ Class VBSSetupUtility
 
         'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
 
-        sa.ShellExecute "cmd", "/c regsvr32 /s """ & parent & "\" & includer & """ & %SystemRoot%\SysWow64\regsvr32 /s """ & parent & "\" & includer & """", "", "runas"
+        sa.ShellExecute "cmd", "/c regsvr32 /s """ & parent & "\" & includer & """ & %SystemRoot%\SysWow64\regsvr32 /s """ & parent & "\" & includer & """",, "runas"
 
         'test the setup by running the tests, if desired
 
@@ -57,7 +58,7 @@ Class VBSSetupUtility
 
     Sub Class_Terminate
         Set sa = Nothing
-        sh.PopUp fso.GetBaseName(WScript.ScriptName) & " is finished.", 5, WScript.ScriptName, vbInformation
+        sh.PopUp fso.GetBaseName(WScript.ScriptName) & " is finished.", 2, WScript.ScriptName, vbInformation
         Set fso = Nothing
         Set sh = Nothing
     End Sub
