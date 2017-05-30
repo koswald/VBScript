@@ -13,7 +13,7 @@ If a `.vbs` script attempts to instantiate a COM object that has been incorrectl
 
 This type of problem might be identified by using Fixer to change the registry entries that control the bitness of the executables that open `.vbs` files:  
  
-1) Double click `Fixer.bat`, which which call `Fixer.vbs` and help to ensure that `Fixer.hta` is opened with the 64-bit executable. `Fixer.vbs` will call `Fixer.hta` with elevated privileges.  
+1) Double click `Fixer.bat`in order to launch `Fixer.hta`. The User Account Control dialog will open to verify elevating privileges for Microsoft (R) HTML Application host.  
 
 2) In the `Fixer` window, in the `..\VBSFile\..` section, select `32-bit`, and then rerun the script.  
 
