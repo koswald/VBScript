@@ -17,6 +17,7 @@ With New TestingFramework
         Const verifyKeyDeletion = False
         Const synchronous = True
         Const hidden = 0
+
         dnc.SetUserInteractive False
         dnc.SetOnUserCancelQuitScript True
 
@@ -64,15 +65,15 @@ With New TestingFramework
         Dim iDllFile2_x64 : iDllFile2_x64 = 3
 
         Dim testFolders : testFolders = Array( _
-            sourceFolder1 & "\createTargetFolderTest", _
-            sourceFolder1 & "\lib\64", _
-            sourceFolder1 & "\lib\32")
+            sourceFolder1 & "\" & GetPCName & "\createTargetFolderTest", _
+            sourceFolder1 & "\" & GetPCName & "\lib\64", _
+            sourceFolder1 & "\" & GetPCName & "\lib\32")
         Dim iCreateFolderTestFolder1 : iCreateFolderTestFolder1 = 0
         Dim iTargetFolder1_x64 : iTargetFolder1_x64 = 1
         Dim iTargetFolder1_x86 : iTargetFolder1_x86 = 2
 
         Cleanup 'remove junk from past erring tests, if any
-        'EnsureCleanupWorked
+        EnsureCleanupWorked
 
     .it "should fail to create a key pair without a sourceFile or targetName"
         On Error Resume Next
@@ -102,7 +103,7 @@ With New TestingFramework
         dnc.Register
         On Error Resume Next
             EnsureKeyExists testKeys(key1a_x64)
-            .AssertEqual Err & ": " & Err.Description, "0: "
+            .AssertEqual format(Array("%s: %s", Err, Err.Description)), "0: "
         On Error Goto 0
 
     .it "should compile and register a 32-bit .dll"
@@ -113,7 +114,7 @@ With New TestingFramework
         dnc.Register
         On Error Resume Next
             EnsureKeyExists testKeys(key1a_x86)
-            .AssertEqual Err & ": " & Err.Description, "0: "
+            .AssertEqual format(Array("%s: %s", Err, Err.Description)), "0: "
         On Error Goto 0
 
     .it "should add a reference"
@@ -141,7 +142,7 @@ End With
 
 'teardown
     Cleanup
-    'EnsureCleanupWorked
+    EnsureCleanupWorked
     Quit
 
 Sub Quit
@@ -209,6 +210,13 @@ End Function
 Sub EnsureKeyExists(key)
     sh.RegRead key & "\"
 End Sub
+
+'Get the computer name
+Function GetPCName
+    With CreateObject("WScript.Network")
+        GetPCName = .ComputerName
+    End With
+End Function
 
 'release memory associated with selected objects
 Sub EmptyTheTrash
