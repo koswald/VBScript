@@ -25,7 +25,10 @@ namespace vox
 
         public void say(string myLine)
         {
-            ed.Speak(myLine);
+            if (!string.IsNullOrWhiteSpace(myLine))
+            {
+                ed.Speak(myLine);
+            }
         }
     }
 }

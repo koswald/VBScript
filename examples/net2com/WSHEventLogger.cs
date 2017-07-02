@@ -22,8 +22,11 @@ namespace EventLogging
     {
         public void log(string message)
         {
-            EventLog logger = new EventLog("Application", ".", "WSH");
-            logger.WriteEntry(message);
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                EventLog logger = new EventLog("Application", ".", "WSH");
+                logger.WriteEntry(message);
+            }
         }
     }
 }
