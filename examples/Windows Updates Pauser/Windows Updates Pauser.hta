@@ -1,11 +1,11 @@
 
 <!-- Pause Windows Updates to get more bandwidth. Don't forget to resume. -->
 
-<hta:application scroll="No" icon="msdt.exe" border="None" innerborder="No">
+<hta:application scroll="No" icon="msdt.exe" border="None" innerborder="No" id="HtaObj">
     <body>
         <input type="button" onclick="PauseUpdates()" id="pauseButton" value="Pause" />
         <input type="button" onclick="ResumeUpdates()" id="resumeButton" value="Resume" />
-        <input type="button" onclick="SelfClose()" id="closeButton" value=" x " />
+        <input type="button" onclick="SelfClose()" id="closeButton" value="  x  " />
         <script language="VBScript">
 
             Dim wup 'WindowsUpdatePauser object

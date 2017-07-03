@@ -4,7 +4,7 @@
 'Usage example
 '
 ''    With CreateObject("includer")
-''        Execute(.read("VBSValidator")) 'Execute if this code is wrapped in a function, class, etc.
+''        Execute(.read("VBSValidator"))
 ''        Execute(.read("TestingFramework"))
 ''    End With
 '' 
@@ -50,7 +50,6 @@ Class TestingFramework
     'Method describe
     'Parameter: unit description
     'Remark: Sets the description for the unit under test. E.g. .describe "DocGenerator class"
-
     Sub describe(newUnit)
         ShowPendingResult
         unit = newUnit
@@ -60,7 +59,6 @@ Class TestingFramework
     'Method it
     'Parameter: an expectation
     'Remark: Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer"
-
     Sub it(newSpec)
         ShowPendingResult
         spec = newSpec
@@ -69,10 +67,11 @@ Class TestingFramework
     'Property GetSpec
     'Returns a string
     'Remark: Returns the specification string for the current spec.
-
     Property Get GetSpec : GetSpec = spec : End Property
 
-    Private Sub ShowPendingResult
+    'Method ShowPendingResult
+    'Remark: Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.
+    Sub ShowPendingResult
         If Not resultPending Then Exit Sub
         WriteLine result & T & spec
         If fail = result Then
@@ -84,7 +83,6 @@ Class TestingFramework
     'Method AssertEqual
     'Parameters: actual, expected
     'Remark: Asserts that the specified two variants, of any subtype, are equal.
-
     Sub AssertEqual(var1, var2)
         ShowPendingResult
        If var1 = var2 Then
@@ -98,7 +96,6 @@ Class TestingFramework
 
     'Method AssertErrorRaised
     'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.
-
     Sub AssertErrorRaised
         ShowPendingResult
         If Err Then
@@ -124,5 +121,4 @@ Class TestingFramework
     Sub Class_Terminate
         ShowPendingResult
     End Sub
-
 End Class

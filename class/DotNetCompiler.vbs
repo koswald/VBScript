@@ -10,85 +10,10 @@
 '
 Class DotNetCompiler
 
-    Private fso, sh, sa, vfs, pc
-    Private batFile, batFile1, batFile2
-    Private exeFolder, exeFolder64, exeFolder32
-    Private sourceFile, sourceFolder, targetFolder, targetName, ext
-    Private scriptName, thisFile
-    Private refs, args, cmd
-    Private supressWarnings, debug 'compiler settings
-    Private unregistering 'registration setting
-    Private msg, L
-    Private userInteractive
-    Private synchronous, visibility, visible, hidden
-    Private OnUserCancelCloseHta, OnUserCancelQuitScript
-
-    Sub Class_Initialize
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        Set sh = CreateObject("WScript.Shell")
-        Set sa = CreateObject("Shell.Application")
-        'get the filespec of the calling script
-        On Error Resume Next
-            thisFile = WScript.ScriptFullName 'called by script
-            SetSourceFile WScript.Arguments(0)
-            If Err Then
-                thisFile = Replace(Replace(Replace(document.location.href, "file:///", ""), "%20", " "), "/", "\") 'called by .hta
-                SetSourceFile Trim(Replace(oHta.CommandLine, """" & thisFile & """", ""))
-            End If
-        On Error Goto 0
-        With CreateObject("includer")
-            Execute(.read("VBSFileSystem"))
-            Execute(.read("PrivilegeChecker"))
-            Execute(.read("DotNetCompiler.config"))
-        End With
-        Set vfs = New VBSFileSystem
-        Set pc = New PrivilegeChecker
-        scriptName = fso.GetFileName(thisFile)
-        L = vbLf & vbTab
-        synchronous = True
-        hidden = 0
-        visible = 1
-        unregistering = False 'defaults
-        refs = ""
-        SetOnUserCancelCloseHta False
-        SetOnUserCancelQuitScript False
-        SetExtension "dll"
-        SetSupressWarnings False
-        SetDebug False
-        SetBitness 64
-        sh.CurrentDirectory = fso.GetParentFolderName(thisFile)
-        SetTargetFolder sh.CurrentDirectory
-        SetTargetName fso.GetBaseName(sourceFile)
-        SetUserInteractive True
-        'add references from the command-line, if any
-        Dim args : Set args = WScript.Arguments
-        If args.Count > 1 Then
-            For i = 2 To args.Count
-               If "-ref" = LCase(args.item(i - 1)) Then AddRef args.item(i)
-            Next
-        End If
-        Set args = Nothing
-
-    End Sub
-
     'Method RestartIfNotPrivileged
-    'Remark: Elevates privileges if they are not already elevated. If userInteractive, first warns user that the User Account Control dialog will open.
+    'Remark: Elevates privileges if they are not already elevated. If app.GetUserInteractive is True, the user is first warned that the User Account Control dialog will open.
     Sub RestartIfNotPrivileged
-        If pc Then Exit Sub
-        If userInteractive Then If vbCancel = MsgBox("Restart " & WScript.ScriptName & " with elevated privileges?" & vbLf & "(The User Account Control dialog will open.)", vbOKCancel + vbQuestion, WScript.ScriptName) Then CollectTheTrash : WScript.Quit
-
-        'restart the script with elevated privileges
-        Dim wsa : Set wsa = WScript.Arguments
-        Dim i, args : args = ""
-        If wsa.Count Then
-            For i = 0 To wsa.Count - 1
-                args = args & " """ & wsa.item(i) & """"
-            Next
-        End If
-        sa.ShellExecute "wscript.exe", """" & WScript.ScriptFullName & """ " & args,, "runas"
-        CollectTheTrash
-        Set wsa = Nothing
-        WScript.Quit
+        app.RestartIfNotPrivileged
     End Sub
 
     'Method SetTargetFolder
@@ -112,6 +37,7 @@ Class DotNetCompiler
     'Parameter: sourceFile
     'Remark: Sets the filespec of the source file. May use a relative path, relative to the location of the calling script. Optional if a valid file is specified on the command line. The .snk file will be created in the same folder.
     Sub SetSourceFile(newSourceFile)
+        If "" = newSourceFile Then sourceFile = "" : Exit Sub
         sourceFile = fso.GetAbsolutePathName(newSourceFile)
         If Not fso.FileExists(sourceFile) Then
             'couldn't find the source file; this can happen when
@@ -119,7 +45,7 @@ Class DotNetCompiler
             'to C:\Windows\System32; so assume it's a relative path,
             'and try using the script's location as the reference
             'for the relative path
-            sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
+            sh.CurrentDirectory = fso.GetParentFolderName(app.GetFullName)
             sourceFile = fso.GetAbsolutePathName(newSourceFile)
         End If
         SetTargetName fso.GetBaseName(sourceFile)
@@ -135,32 +61,27 @@ Class DotNetCompiler
     'Parameter: boolean
     'Remark: Sets userInteractive value. Setting to True can be useful for debugging. Default is True.
     Sub SetUserInteractive(newUserInteractive)
-        userInteractive = newUserInteractive
-        If userInteractive Then
-            visibility = visible
-        Else
-            visibility = hidden
-        End If
-    End Sub
-
-    'Method SetOnUserCancelQuitScript
-    'Parameter: boolean
-    'Remark: Sets whether the calling script will quit if the user cancels out of a dialog
-    Sub SetOnUserCancelQuitScript(newOnUserCancelQuitScript)
-        OnUserCancelQuitScript = newOnUserCancelQuitScript
-    End Sub
-
-    'Method SetOnUserCancelCloseHta
-    'Parameter: boolean
-    'Remark: Sets whether the calling .hta will close if the user cancels out of a dialog
-    Sub SetOnUserCancelCloseHta(newOnUserCancelCloseHta)
-        OnUserCancelCloseHta = newOnUserCancelCloseHta
+        app.SetUserInteractive newUserInteractive
     End Sub
 
     'Property GetUserInteractive
     'Returns: a boolean
     'Remark: Returns the userInteractive value.
-    Property Get GetUserInteractive : GetUserInteractive = userInteractive : End Property
+    Property Get GetUserInteractive : GetUserInteractive = app.GetUserInteractive : End Property
+    
+    'Method SetOnUserCancelQuitApp
+    'Parameter: boolean
+    'Remark: Sets whether the calling app will quit if the user cancels out of a dialog.
+    Sub SetOnUserCancelQuitApp(newOnUserCancelQuitApp)
+        app.SetOnUserCancelQuitApp newOnUserCancelQuitApp
+    End Sub
+
+    'Property GetOnUserCancelQuitApp
+    'Returns: boolean
+    'Remark: Retrieves the boolean setting specifying whether the calling app will quit if the user cancels out of a dialog.
+    Function GetOnUserCancelQuitApp
+        GetOnUserCancelQuitApp = app.GetOnUserCancelQuitApp
+    End Function
 
     'Method GenerateKeyPair
     'Remark: Generates a strong name key pair using Visual Studio's sn command. Requires Visual Studio to be installed. If the name for the .snk file is not specified, uses targetName.
@@ -176,16 +97,16 @@ Class DotNetCompiler
         args = "/c cd """ & sourceFolder & """"
         args = args & " & """ & batFile & """"
         args = args & " & sn -k " & targetName & ".snk"
-        If userInteractive Then args = args & " & echo. & pause"
+        If app.GetUserInteractive Then args = args & " & echo. & pause"
 
         'give an opt out
 
         msg = "Verify arguments for key generation"
-        If userInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
+        If app.GetUserInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'generate the strong name key pair
 
-        sh.Run "%ComSpec% " & args, visibility, synchronous
+        sh.Run "%ComSpec% " & args, app.GetVisibility, synchronous
 
     End Sub
 
@@ -232,16 +153,16 @@ Class DotNetCompiler
         cmd = cmd & " & echo."
         cmd = cmd & " & """ & exeFolder & "\csc.exe"" /out:" & targetName & "." & ext & refs & args & " """ & sourceFile & """"
         cmd = cmd & " & echo. & echo OK to ignore warning CS1699 and BC41008. & echo."
-        If userInteractive Then cmd = cmd & " & pause"
+        If app.GetUserInteractive Then cmd = cmd & " & pause"
 
         'give an opt out
 
         msg = "Verify command for compiling"
-        If userInteractive Then If vbCancel = MsgBox(cmd, vbOKCancel, msg & " - " & scriptName) Then Quit
+        If app.GetUserInteractive Then If vbCancel = MsgBox(cmd, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'compile
 
-        sh.Run cmd, visibility, synchronous
+        sh.Run cmd, app.GetVisibility, synchronous
     End Sub
 
     'Method SetSupressWarnings
@@ -299,17 +220,17 @@ Class DotNetCompiler
         args = args & " /codebase" 'if not putting .dll in the GAC
         args = args & " """ & dllFile & """"
         If unregistering Then args = args & " /unregister"
-        If userInteractive Then args = args & " & echo. & pause "
+        If app.GetUserInteractive Then args = args & " & echo. & pause "
 
         'give an opt out
 
         Dim action : If unregistering Then action = "unregistering" Else action = "registering"
         msg = "Verify arguments for " & action
-        If userInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
+        If app.GetUserInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'register or unregister
 
-        sh.Run "%ComSpec% " & args, visibility, synchronous
+        sh.Run "%ComSpec% " & args, app.GetVisibility, synchronous
     End Sub
 
     'Method SetBitness
@@ -323,20 +244,87 @@ Class DotNetCompiler
         End If
     End Sub
 
+    'Method Quit
+    'Remark: Gracefully quits the hta/script, if allowed by settings.
     Sub Quit
-        On Error Resume Next
-            If OnUserCancelQuitScript Then CollectTheTrash : WScript.Quit
-            If OnUserCancelCloseHta Then CollectTheTrash : self.close
-        On Error Goto 0
+        If app.GetOnUserCancelQuitApp Then 
+            ReleaseObjectMemory
+            app.Quit
+        End If
     End Sub
 
-    Private Sub CollectTheTrash
+    Private fso, sh, sa, vfs, pc, app
+    Private batFile, batFile1, batFile2
+    Private exeFolder, exeFolder64, exeFolder32
+    Private sourceFile, sourceFolder, targetFolder, targetName, ext
+    Private scriptName, thisFile
+    Private refs, args, cmd
+    Private supressWarnings, debug 'compiler settings
+    Private unregistering 'registration setting
+    Private msg, L
+    Private synchronous, visible, hidden
+
+    Sub Class_Initialize
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject("WScript.Shell")
+        Set sa = CreateObject("Shell.Application")
+        With CreateObject("includer")
+            Execute(.read("VBSFileSystem"))
+            Execute(.read("VBSApp"))
+            Execute(.read("PrivilegeChecker"))
+            Execute(.read("DotNetCompiler.config"))
+        End With
+        Set vfs = New VBSFileSystem
+        Set app = New VBSApp
+        Set pc = New PrivilegeChecker
+        'get the filespec of the calling script
+        thisFile = app.GetFullName
+        SetSourceFile ""
+        On Error Resume Next
+            SetSourceFile app.GetArg(0)
+        On Error Goto 0
+        batFile1 = sh.ExpandEnvironmentStrings(batFile1) 'support environment variables in the .config file
+        batFile2 = sh.ExpandEnvironmentStrings(batFile2)
+        exeFolder32 = sh.ExpandEnvironmentStrings(exeFolder32)
+        exeFolder64 = sh.ExpandEnvironmentStrings(exeFolder64)
+        scriptName = fso.GetFileName(thisFile)
+        L = vbLf & vbTab
+        synchronous = True
+        hidden = 0
+        visible = 1
+        unregistering = False 'defaults
+        refs = ""
+        app.SetOnUserCancelQuitApp True
+        SetExtension "dll"
+        SetSupressWarnings False
+        SetDebug False
+        SetBitness 64
+        sh.CurrentDirectory = fso.GetParentFolderName(thisFile)
+        SetTargetFolder sh.CurrentDirectory
+        SetTargetName fso.GetBaseName(sourceFile)
+        app.SetUserInteractive True
+        'add references from the command-line, if any
+        Dim args, nextArg : args = app.GetArgs
+        If UBound(args) > 0 Then
+            For i = 0 To UBound(args)
+                nextArg = ""
+                On Error Resume Next
+                    nextArg = app.GetArg(i + 1)
+                On Error Goto 0
+                If "-ref" = LCase(app.GetArg(i)) Then If fso.FileExists(nextArg) Then AddRef nextArg
+            Next
+        End If
+        Set args = Nothing
+
+    End Sub
+
+    Private Sub ReleaseObjectMemory
         Set fso = Nothing
         Set sa = Nothing
         Set sh = Nothing
     End Sub
 
     Sub Class_Terminate
-        CollectTheTrash
+        ReleaseObjectMemory
     End Sub
 End Class

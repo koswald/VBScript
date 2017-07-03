@@ -19,7 +19,7 @@ With New TestingFramework
         Const hidden = 0
 
         dnc.SetUserInteractive False
-        dnc.SetOnUserCancelQuitScript True
+        dnc.SetOnUserCancelQuitApp True
 
         Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim sh : Set sh = CreateObject("WScript.Shell")

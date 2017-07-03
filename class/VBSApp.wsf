@@ -1,0 +1,9 @@
+<!-- sleep: for use by the VBSApp class -->
+<job>
+    <script language="VBScript">
+        ErrMsg = "One command-line argument is required: milliseconds to sleep."
+        On Error Resume Next
+        WScript.Sleep WScript.Arguments(0)
+        If Err Then MsgBox ErrMsg, vbExclamation, WScript.ScriptName
+    </script>
+</job>

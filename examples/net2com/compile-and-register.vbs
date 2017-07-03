@@ -1,5 +1,6 @@
 
 'Example showing how to compile and register a .cs file
+'using the DotNetCompiler class
 
 'To illustrate, drag WSHEventLogger.cs onto this script
 
@@ -14,11 +15,11 @@ Sub Main
     With New DotNetCompiler
 
         'initialize
-        .SetUserInteractive False
+        .SetUserInteractive False 'set to True for debugging
         .RestartIfNotPrivileged
-        .SetOnUserCancelQuitScript True
+        .SetOnUserCancelQuitApp True
 
-        'the following two lines illustrate hardcoding the source file and reference; for an example of how to use command-line arguments insteadm, see compile-and-register-vox.bat 
+        'the following two lines illustrate hardcoding the source file and reference; for an example of how to use command-line arguments instead, see compile-and-register-vox.bat 
         '.SetSourceFile "Vox.cs"
         '.AddRef "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
 
@@ -41,9 +42,7 @@ End Sub
 
 'With the git repo on Google Drive, and compiling from
 'two computers sharing one Google account,
-'the folder name was adjusted in an unsuccessful attempt to
-'keep folders from being renamed with an appended (1) or (2), etc.
-'however, using this function helps to minimize confusion
+'the folder name is customized to avoid conflicts
 
 Function GetPCName
     Dim net : Set net = CreateObject("WScript.Network")

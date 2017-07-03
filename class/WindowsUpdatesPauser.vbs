@@ -48,16 +48,14 @@ Class WindowsUpdatesPauser
     'Function GetAppName
     'Returns a string
     'Remark: Returns the base name of the calling script
-    Function GetAppName : GetAppName = appName : End Function
+    Function GetAppName : GetAppName = app.GetBaseName : End Function
 
     'Function GetProfileName
     'Returns a string
     'Remark: Returns the name of the network. The name is set by editing WindowsUpdatesParser.config
     Property Get GetProfileName : GetProfileName = profileName : End Property
 
-    Private sh, fso, format, log 'objects
-    Private thisFile
-    Private appName
+    Private sh, fso, format, log, app 'objects
     Private profileName, srvcType, userInteractive, configFile 'data kept in .config file
     Private defaultConfigFile
     Private metered, unmetered, undefined ' "enums"
@@ -87,17 +85,12 @@ Class WindowsUpdatesPauser
         Dim reader : Set reader = CreateObject("includer")
         Execute(reader.read("StringFormatter"))
         Execute(reader.read("VBSLogger"))
+        Execute(reader.read("VBSApp"))
+        Set reader = Nothing
         Set format = New StringFormatter
         Set log = New VBSLogger
-        Set reader = Nothing
-
-        On Error Resume Next
-            thisFile = Replace(Replace(document.location.href, "file:///", ""), "%20", " ") 'called by .hta
-            If Err Then thisFile = WScript.ScriptFullName 'called by script
-        On Error Goto 0
-
-        appName = fso.GetBaseName(thisFile)
-        defaultConfigFile = appName & ".config"
+        Set app = New VBSApp
+        defaultConfigFile = app.GetBaseName & ".config"
         ReadConfigFiles
    End Sub
 
@@ -108,7 +101,7 @@ Class WindowsUpdatesPauser
         'make the current directory the parent folder of this file,
         'so that the first place to look for a .config file doesn't
         'depend on a shortcut's working directory
-        sh.CurrentDirectory = fso.GetParentFolderName(thisFile)
+        sh.CurrentDirectory = fso.GetParentFolderName(app.GetFullName)
         'read the default (first) .config file
         ExecuteConfigFile defaultConfigFile, True 'True => first .config file
         'determine whether the configFile variable was initialized
@@ -176,8 +169,8 @@ Class WindowsUpdatesPauser
         log msg
         If Not userInteractive Then Exit Sub
         Dim msg2 : msg2 = msg & format(Array( _
-            "%s Would you like %s to open the file?", L2, appName))
-        If vbOK = MsgBox(msg2, vbQuestion + vbOKCancel, appName) Then
+            "%s Would you like %s to open the file?", L2, app.GetBaseName))
+        If vbOK = MsgBox(msg2, vbQuestion + vbOKCancel, app.GetBaseName) Then
             sh.Run "notepad """ & configFile & """"
         End If
     End Sub
