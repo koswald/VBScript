@@ -1,7 +1,7 @@
 
 'Open a file as a text stream for reading, writing, or appending.
 
-'<h5> Methods for use with the text stream returned by the Open method: </h5>
+'<h5> Methods for use with the text stream that is returned by the Open method: </h5>
 
 '<p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>
 
@@ -76,35 +76,35 @@ Class TextStreamer
 
     'Method SetForReading
     'Remark Prepares the text stream to be opened for reading
-    Sub SetForReading : StreamMode = sc.iForReading : End Sub
+    Sub SetForReading : StreamMode = 1 : End Sub
 
     'Method SetForWriting
     'Remark Prepares the text stream to be opened for writing
-    Sub SetForWriting : StreamMode = sc.iForWriting : End Sub
+    Sub SetForWriting : StreamMode = 2 : End Sub
 
     'Method SetForAppending
-    'Remark Prepares the text stream to be opend for appending (default)
-    Sub SetForAppending : StreamMode = sc.iForAppending : End Sub
+    'Remark Prepares the text stream to be opened for appending (default)
+    Sub SetForAppending : StreamMode = 8 : End Sub
 
     'Method SetCreateNew
     'Remark: Allows a new file to be created (default)
-    Sub SetCreateNew : AllowToCreateNew = sc.bCreateNew : End Sub
+    Sub SetCreateNew : AllowToCreateNew = True : End Sub
 
     'Method SetDontCreateNew
     'Remark Prevents a new file from being created if the file doesn't already exist
-    Sub SetDontCreateNew : AllowToCreateNew = sc.bDontCreateNew : End Sub
+    Sub SetDontCreateNew : AllowToCreateNew = False : End Sub
 
     'Method SetAscii
     'Remark: Sets the expectation that the file will be Ascii (default)
-    Sub SetAscii : StreamFormat = sc.tbAscii : End Sub
+    Sub SetAscii : StreamFormat = 0 : End Sub
 
     'Method SetUnicode
     'Remark: Sets the expectation that the file will be Unicode
-    Sub SetUnicode : StreamFormat = sc.tbUnicode : End Sub
+    Sub SetUnicode : StreamFormat = -1 : End Sub
 
     'Method SetSystemDefault
     'Remark: Uses Ascii or Unicode according to the system default
-    Sub SetSystemDefault : StreamFormat = sc.tbSystemDefault : End Sub
+    Sub SetSystemDefault : StreamFormat = -2 : End Sub
 
     'Method View
     'Remark: Opens the file for viewing
