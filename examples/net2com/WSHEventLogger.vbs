@@ -23,7 +23,7 @@ Sub Main
 
     msg = "Done logging. Open the event viewer?"
     title = WScript.ScriptName
-    mode = vbSystemModal + vbInformation + vbOKCancel
+    mode = vbSystemModal + vbQuestion + vbOKCancel
     response = MsgBox(msg, mode, title)
     If vbOK = response Then
         sh.Run "EventVwr.msc"
