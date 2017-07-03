@@ -356,7 +356,7 @@
                   <td>RestartIfNotPrivileged</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Elevates privileges if they are not already elevated. If userInteractive, first warns user that the User Account Control dialog will open.</td>
+                  <td>Elevates privileges if they are not already elevated. If app.GetUserInteractive is True, the user is first warned that the User Account Control dialog will open.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -401,25 +401,25 @@
                   <td>Sets userInteractive value. Setting to True can be useful for debugging. Default is True.</td>
                </tr>
                <tr>
-                  <td>Method</td>
-                  <td>SetOnUserCancelQuitScript</td>
-                  <td>boolean</td>
-                  <td>N/A</td>
-                  <td>Sets whether the calling script will quit if the user cancels out of a dialog</td>
-               </tr>
-               <tr>
-                  <td>Method</td>
-                  <td>SetOnUserCancelCloseHta</td>
-                  <td>boolean</td>
-                  <td>N/A</td>
-                  <td>Sets whether the calling .hta will close if the user cancels out of a dialog</td>
-               </tr>
-               <tr>
                   <td>Property</td>
                   <td>GetUserInteractive</td>
                   <td>None</td>
                   <td>a boolean</td>
                   <td>Returns the userInteractive value.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>SetOnUserCancelQuitApp</td>
+                  <td>boolean</td>
+                  <td>N/A</td>
+                  <td>Sets whether the calling app will quit if the user cancels out of a dialog.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetOnUserCancelQuitApp</td>
+                  <td>None</td>
+                  <td>boolean</td>
+                  <td>Retrieves the boolean setting specifying whether the calling app will quit if the user cancels out of a dialog.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -476,6 +476,13 @@
                   <td>64 or 32</td>
                   <td>N/A</td>
                   <td>Sets the bitness for the compiler or registrar to 64 or 32. Optional. Default is 64.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Quit</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Gracefully quits the hta/script, if allowed by settings.</td>
                </tr>
             </table>
          </div>
@@ -1357,7 +1364,7 @@
             <p>Usage example</p>
             <p></p>
             <pre>    With CreateObject("includer")</pre>
-            <pre>        Execute(.read("VBSValidator")) 'Execute if this code is wrapped in a function, class, etc.</pre>
+            <pre>        Execute(.read("VBSValidator"))</pre>
             <pre>        Execute(.read("TestingFramework"))</pre>
             <pre>    End With</pre>
             <pre> </pre>
@@ -1417,6 +1424,13 @@
                </tr>
                <tr>
                   <td>Method</td>
+                  <td>ShowPendingResult</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
                   <td>AssertEqual</td>
                   <td>actual, expected</td>
                   <td>N/A</td>
@@ -1437,7 +1451,7 @@
          <h4 class="heading" id=16>TextStreamer</h4>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
-            <h5> Methods for use with the text stream returned by the Open method: </h5>
+            <h5> Methods for use with the text stream that is returned by the Open method: </h5>
             <p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>
             <table>
                <tr>
@@ -1494,7 +1508,7 @@
                   <td>SetForAppending</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Prepares the text stream to be opend for appending (default)</td>
+                  <td>Prepares the text stream to be opened for appending (default)</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -1702,7 +1716,168 @@
       </div>
 
       <div>
-         <h4 class="heading" id=19>VBSArguments</h4>
+         <h4 class="heading" id=19>VBSApp</h4>
+         <div class="detail">
+            <p>VBSApp class</p>
+            <p>Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.</p>
+            <p>This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments.</p>
+            <pre> 'test.vbs "arg one" "arg two"</pre>
+            <pre> With CreateObject("includer")</pre>
+            <pre>     Execute(.read("VBSApp"))</pre>
+            <pre> End With</pre>
+            <pre> Dim app : Set app = New VBSApp</pre>
+            <pre> MsgBox app.GetFullName,, "app.GetFullName" '..\test.vbs</pre>
+            <pre> MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two</pre>
+            <pre> MsgBox app.GetArgsCount,, "app.GetArgsCount" '2</pre>
+            <pre> app.Quit</pre>
+            <p></p>
+            <pre> &lt;!--test.hta "arg one" "arg two"--></pre>
+            <pre> &lt;hta:application id="oHta" icon="msdt.exe"> &lt;!--an id must be used for command-line args functionality--></pre>
+            <pre>     &lt;script language="VBScript"></pre>
+            <pre>         With CreateObject("includer")</pre>
+            <pre>             Execute(.read("VBSApp"))</pre>
+            <pre>         End With</pre>
+            <pre>         Dim app : Set app = New VBSApp</pre>
+            <pre>         MsgBox app.GetFullName,, "app.GetFullName" '..\test.hta</pre>
+            <pre>         MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two</pre>
+            <pre>         MsgBox app.GetArgsCount,, "app.GetArgsCount" '2</pre>
+            <pre>         app.Quit</pre>
+            <pre>     &lt;/script></pre>
+            <pre> &lt;/hta:application></pre>
+            <p></p>
+            <table>
+               <tr>
+                  <th>Procedure type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetArgs</td>
+                  <td>None</td>
+                  <td>array of strings</td>
+                  <td>Returns an array of command-line arguments.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetArgsString</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih quotes, which are stripped off as they are read back in. The return string has a leading space, by design, unless there are no arguments</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetArg</td>
+                  <td>an integer</td>
+                  <td>a string</td>
+                  <td>Returns the command-line argument having the specified zero-based index.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetArgsCount</td>
+                  <td>None</td>
+                  <td>an integer</td>
+                  <td>Returns the number of arguments.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetFullName</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns the filespec of the calling script or hta.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetFileName</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns the name of the calling script or hta, including the filename extension.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetBaseName</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns the name of the calling script or hta, without the filename extension.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetExtensionName</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns the filename extension of the calling script or hta.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetExe</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns "mshta.exe" to hta files, and "wscript.exe" or "cscript.exe" to scripts, depending on the host.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>RestartIfNotPrivileged</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Elevates privileges if they are not already elevated. If userInteractive, first warns user that the User Account Control dialog will open.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>SetUserInteractive</td>
+                  <td>boolean</td>
+                  <td>N/A</td>
+                  <td>Sets userInteractive value. Setting to True can be useful for debugging. Default is True.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetUserInteractive</td>
+                  <td>None</td>
+                  <td>boolean</td>
+                  <td>Returns the userInteractive setting. This setting also may affect the visibility of selected console windows.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>SetVisiblity</td>
+                  <td>0 (hidden) or 1 (normal)</td>
+                  <td>N/A</td>
+                  <td>Sets the visibility of selected command windows. SetUserInteractive also affects this setting. Default is True.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetVisibility</td>
+                  <td>None</td>
+                  <td>0 (hidden) or 1 (normal)</td>
+                  <td>Returns the current visibility setting. SetUserInteractive also affects this setting.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>SetOnUserCancelQuitApp</td>
+                  <td>boolean</td>
+                  <td>N/A</td>
+                  <td>Sets whether the calling app will quit if the user cancels out of a dialog. Default is True.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetOnUserCancelQuitApp</td>
+                  <td>None</td>
+                  <td>boolean</td>
+                  <td>Retrieves the boolean setting specifying whether the calling app will quit if the user cancels out of a dialog.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Quit</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Gracefully closes the hta/script, if allowed by settings.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=20>VBSArguments</h4>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments</p>
             <table>
@@ -1725,7 +1900,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=20>VBSArrays</h4>
+         <h4 class="heading" id=21>VBSArrays</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1742,12 +1917,26 @@
                   <td>an array</td>
                   <td>Returns an array with no duplicate items, given an array that may have some.</td>
                </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>RemoveFirstElement</td>
+                  <td>an array of strings</td>
+                  <td>an array of strings</td>
+                  <td>Returns a array without the first element of the specified array.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>CollectionToArray</td>
+                  <td>a collection of strings</td>
+                  <td>array of strings</td>
+                  <td>Can be used to convert the WScript.Arguments object to an array, for example.</td>
+               </tr>
             </table>
          </div>
       </div>
 
       <div>
-         <h4 class="heading" id=21>VBSClipboard</h4>
+         <h4 class="heading" id=22>VBSClipboard</h4>
          <div class="detail">
             <p>Clipboard procedures</p>
             <table>
@@ -1777,7 +1966,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=22>VBSEnvironment</h4>
+         <h4 class="heading" id=23>VBSEnvironment</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1869,7 +2058,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=23>VBSEventLogger</h4>
+         <h4 class="heading" id=24>VBSEventLogger</h4>
          <div class="detail">
             <p>Adds an event entry to a log file</p>
             <p></p>
@@ -1982,7 +2171,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=24>VBSExtracter</h4>
+         <h4 class="heading" id=25>VBSExtracter</h4>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <table>
@@ -2026,7 +2215,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=25>VBSFileSystem</h4>
+         <h4 class="heading" id=26>VBSFileSystem</h4>
          <div class="detail">
             <p>General utility functions</p>
             <table>
@@ -2140,8 +2329,9 @@
       </div>
 
       <div>
-         <h4 class="heading" id=26>VBSHoster</h4>
+         <h4 class="heading" id=27>VBSHoster</h4>
          <div class="detail">
+            <p>Deprecated. Use VBSApp.vbs</p>
             <p>Manage which script host is hosting the currently running script</p>
             <table>
                <tr>
@@ -2184,7 +2374,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=27>VBSLogger</h4>
+         <h4 class="heading" id=28>VBSLogger</h4>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
             <fieldset> <legend> Instantiation </legend>
@@ -2299,7 +2489,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=28>VBSNatives</h4>
+         <h4 class="heading" id=29>VBSNatives</h4>
          <div class="detail">
             <p>Wrap objects native to WScript/Windows</p>
             <table>
@@ -2371,7 +2561,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=29>VBSPower</h4>
+         <h4 class="heading" id=30>VBSPower</h4>
          <div class="detail">
             <p>Power functions: shutdown, restart, logoff, sleep, and hibernate.</p>
             <table>
@@ -2450,7 +2640,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=30>VBSTestRunner</h4>
+         <h4 class="heading" id=31>VBSTestRunner</h4>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -2538,7 +2728,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=31>VBSTimer</h4>
+         <h4 class="heading" id=32>VBSTimer</h4>
          <div class="detail">
             <p>A timer</p>
             <table>
@@ -2582,7 +2772,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=32>VBSValidator</h4>
+         <h4 class="heading" id=33>VBSValidator</h4>
          <div class="detail">
             <p>A simple, working example of how validation can be accomplished.</p>
             <table>
@@ -2647,7 +2837,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=33>WindowsUpdatesPauser</h4>
+         <h4 class="heading" id=34>WindowsUpdatesPauser</h4>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
             <p>For configuration settings, see the similarly named .config file in the same folder as the calling script/hta.</p>
@@ -2700,7 +2890,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=34>WMIUtility</h4>
+         <h4 class="heading" id=35>WMIUtility</h4>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object</p>
             <table>
@@ -2800,7 +2990,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=35>WoWChecker</h4>
+         <h4 class="heading" id=36>WoWChecker</h4>
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.</p>
             <p></p>
