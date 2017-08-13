@@ -38,38 +38,32 @@ Class RegExFunctions
     'Property re
     'Returns an object reference
     'Remark: Returns a reference to the RegExp object instance
-
     Property Get re : Set re = oRE : End Property
 
     'Method SetPattern
     'Parameter: a regex pattern
     'Remark: Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance
-
     Sub SetPattern(pPattern) : oRE.pattern = pPattern : End Sub
 
     'Method SetTestString
     'Parameter: a string
     'Remark: Required before calling FirstMatch or GetSubMatches. Specifies the string against which the regex pattern will be tested.
-
     Sub SetTestString(pString) : testString = pString : End Sub
 
     'Method SetIgnoreCase
     'Parameter: a boolean
     'Remark: Optional. Specifies whether the regex object will ignore case. Default is False.
-
     Sub SetIgnoreCase(pBool) : oRE.IgnoreCase = v.EnsureBoolean(pBool) : End Sub
 
     'Method SetGlobal
     'Parameter: a boolean
     'Remark: Optional. Specifies whether the pattern should match all occurrences in the search string or just the first one. Default is False.
-
     Sub SetGlobal(pBool) : oRE.Global = v.EnsureBoolean(pBool) : End Sub
 
     'Property GetSubMatches
     'Returns an object
     'Remark: Returns the RegExp SubMatches object for the specified pattern and test string. The matches can be accessed with a For Each loop. See general usage comments. Work in progress. You must handle errors in case there are no matches.
     'TODO: This is unwieldy. It would be better to return an array of strings, because a zero-length array could be more easily handled (?).
-
     Property Get GetSubMatches
         On Error Resume Next
         Dim oMatch, oMatches
@@ -88,7 +82,6 @@ Class RegExFunctions
     'Function FirstMatch
     'Returns a string
     'Remark: Regarding the string specified by SetTestString, returns the first substring in the string that matches the regex pattern specified by SetPattern.
-
     Function FirstMatch
         EnsureInitialized
         FirstMatch = ""

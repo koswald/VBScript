@@ -109,8 +109,12 @@ Class HTAApp
         End With
         Dim extracter : Set extracter = New VBSExtracter
         extracter.SetFile filespec
-        'extracter.SetMultiline True
-        extracter.SetPattern "<hta:application[\s\S]+id\s*=[\s\S]+"
+        ' [^]+ matches one or more of any char except >
+        ' \s* matches zero or more whitespace chars
+        ' ""? matches zero or one double quotes
+        ' [\w]+ matches one or more word characters including digits and underscore
+        ' [^]* matches zero or more of any char except >
+        extracter.SetPattern "<hta:application[^>]+id\s*=\s*""?[\w]+""?[^>]*>"
         Dim tag : tag = extracter.extract
 
         'extract the id from the tag

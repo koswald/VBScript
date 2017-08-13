@@ -1,0 +1,4 @@
+<!-- fixture for VBSExtracter.spec.vbs -->
+<hta:application
+	id="htaId" >
+</hta:application>

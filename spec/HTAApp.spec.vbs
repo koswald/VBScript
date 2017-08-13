@@ -22,7 +22,7 @@ With New TestingFramework
     .it "should raise an err if command-line args are used without an .hta id"
         sh.Run format(Array( _
             "cmd /c mshta ""%s"" arg_0 arg_1", _
-            fso.GetAbsolutePathName(htaFiles(iHtaNoIdHasArgs)) _
+            fso.GetAbsolutePathName(htaFiles(iHta_NoIdHasArgs)) _
         )), hidden, synchronous
         Set stream = fso.OpenTextFile(outputFiles(iOutput_NoIdHasArgs), ForReading)
         .AssertEqual stream.ReadLine, "For command-line argument functionality, an id property must be declared in the .hta file's hta:application element."
@@ -30,7 +30,7 @@ With New TestingFramework
     .it "should not require an id if command-line args aren't used"
         sh.Run format(Array( _
             "cmd /c mshta ""%s""", _
-            fso.GetAbsolutePathName(htaFiles(iHtaNoIdNoArgs)) _
+            fso.GetAbsolutePathName(htaFiles(iHta_NoIdNoArgs)) _
         )), hidden, synchronous
         Set stream = fso.OpenTextFile(outputFiles(iOutput_NoIdNoArgs), ForReading)
         .AssertEqual stream.ReadLine, ""
