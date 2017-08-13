@@ -15,40 +15,22 @@
 'Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.
 '
 Class Chooser
-    Private sh, sa
-    Private WindowTitle, WindowOptions, RootPath
-    Private SendKeysIsEnabled, patience, pause
-    Private BFFileTimeout, LastBFFileExec
-    Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
-        Set sa = CreateObject("Shell.Application")
-        SetWindowTitle "Please select the folder"
-        SetWindowOptions 0
-        SetRootPath ""
-        SetPatience 5
-        DisableSendKeys
-        SetPause 10
-        SetBFFileTimeout 0
-    End Sub
 
     'Function File
     'Returns a file path
     'Remark: Opens a Choose File dialog and returns the path of a file chosen by the user. Returns an empty string if no folder was selected. Note: The title bar text will say Choose File to Upload.
-
     Function File
         Dim oExec : Set oExec = sh.Exec("mshta.exe ""about:<input type=file id=FILE><script>FILE.click();new ActiveXObject('Scripting.FileSystemObject').GetStandardStream(1).WriteLine(FILE.value);close();resizeTo(0,0);</script>""")
-        Set LastBFFileExec = oExec
-        SetBFFileTerminator
-        If SendKeysIsEnabled Then GoToRootPath
+        SetMaxExecLifetime oExec, "mshta.exe", BFFileTimeout * 1000
+        If SendKeysIsUnwiselyEnabled Then GoToRootPath
         File = oExec.StdOut.ReadLine
         Set oExec = Nothing
-        If SendKeysIsEnabled Then MsgBox "" 'doesn't work with out this!
+        If SendKeysIsUnwiselyEnabled Then MsgBox "" 'doesn't work otherwise
     End Function
 
     'Function Folder
     'Returns a folder path
     'Remark: Opens a Browse For Folder dialog and returns the path of a folder chosen by the user. Returns an empty string if no folder was selected.
-
     Function Folder
         Dim fo : Set fo = FolderObject
         If TypeName(fo) = "Nothing" Then Folder = "" : Exit Function
@@ -58,7 +40,6 @@ Class Chooser
     'Function FolderTitle
     'Returns the folder title
     'Remark: Opens a Browse For Folder dialog and returns the title of a folder chosen by the user. The title for a normal folder is just the folder name. For a special folder like %UserProfile%, it may be something entirely different. Returns an empty string if no folder was selected.
-
     Function FolderTitle
         Dim fo : Set fo = FolderObject
         If TypeName(fo) = "Nothing" Then FolderTitle = "" : Exit Function
@@ -68,7 +49,6 @@ Class Chooser
     'Function FolderObject
     'Returns an object
     'Remark: Opens a Browse For Folder dialog and returns a Shell.Application BrowseForFolder object for a folder chosen by the user. This object has methods Title and Self.Path, corresponding to this classes FolderTitle and FolderPath, respectively. This method is recommended for when you need both the FolderTitle and FolderPath but only want the user to have to choose once. If no folder was selected, then TypeName(folderObj) = "Nothing" is True.
-
     Function FolderObject
         Const WINDOW_HANDLE = 0
         Set FolderObject = sa.BrowseForFolder(WINDOW_HANDLE, WindowTitle, WindowOptions, sh.ExpandEnvironmentStrings(RootPath))
@@ -77,7 +57,6 @@ Class Chooser
     'Method SetWindowTitle
     'Parameter: a string
     'Remark: Sets the title of the Browse For Folder window: i.e. the text below the titlebar.
-
     Sub SetWindowTitle(newWindowTitle)
         WindowTitle = newWindowTitle
     End Sub
@@ -85,7 +64,6 @@ Class Chooser
     'Method SetWindowOptions
     'Parameter: a hex value
     'Remark: Sets the behavior or behaviors for the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER.
-
     Sub SetWindowOptions(options)
         WindowOptions = options
     End Sub
@@ -93,7 +71,6 @@ Class Chooser
     'Method AddWindowOptions
     'Parameter: a hex value
     'Remark: Adds a behavior or behaviors to the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER.
-
     Sub AddWindowOptions(newOptions)
         WindowOptions = WindowOptions + newOptions
     End Sub
@@ -137,8 +114,7 @@ Class Chooser
 
     'Method SetRootPath
     'Parameter: a folder path
-    'Remark: Sets the root folder that the Browse For Folder window will allow browsing. Environment variables are allowed. See also the EnableSendKeys method.
-
+    'Remark: Sets the root folder that the Browse For Folder window will allow browsing. Environment variables are allowed. See also the UnwiselyEnableSendKeys method.
     Sub SetRootPath(newRootPath)
         RootPath = newRootPath
     End Sub
@@ -168,27 +144,23 @@ Class Chooser
     'Returns 36
     Property Get WINDOWS : WINDOWS = 36 : End Property
 
-    'Method EnableSendKeys
+    'Method UnwiselyEnableSendKeys
     'Remark: Optional. Not recommended. Enables sending keystrokes to the Choose File to Upload dialog in order to open at the RootFolder. There is a risk whenever using the WScript.Shell SendKeys method that keystrokes will be sent to the wrong window.
+    Sub UnwiselyEnableSendKeys : SendKeysIsUnwiselyEnabled = True : End Sub
 
-    Sub EnableSendKeys : SendKeysIsEnabled = True : End Sub
-
-    'Method DisableSendKeys
+    'Method WiselyDisableSendKeys
     'Remark: Default setting. Disables SendKeys. The Choose File to Upload dialog will open to the last place a file was selected, regardless of the RootFolder setting.
-
-    Sub DisableSendKeys : SendKeysIsEnabled = False : End Sub
+    Sub WiselyDisableSendKeys : SendKeysIsUnwiselyEnabled = False : End Sub
 
     'Method SetPatience
     'Parameter: time in seconds
-    'Remark: Sets the maximum time in seconds that the File method waits for the Choose File to Upload dialog to appear before abandoning attempts to open the dialog at the folder specified by RootFolder. Applies only when SendKeys is enabled.
-
+    'Remark: Sets the maximum time in seconds that the File method waits for the Choose File to Upload dialog to appear before abandoning attempts to open the dialog at the folder specified by RootFolder. Applies only when SendKeys is enabled. Default is 5 (seconds).
     Sub SetPatience(newPatience) : patience = newPatience : End Sub
 
     'Function DialogHasOpened
     'Parameter: a string or an object
     'Returns a boolean
     'Remark: Waits for the specified dialog to appear, then returns False if the specified doesn't appear within the time specified by SetPatience, by default 5 (seconds). Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder. Used internally and by the unit test.
-
     Function DialogHasOpened(ByVal ActivateBy)
         If Not "String" = TypeName(ActivateBy) Then ActivateBy = ActivateBy.ProcessId
         Const loopPause = 10 'milliseconds
@@ -196,21 +168,21 @@ Class Chooser
         Dim StartTime : StartTime = Now
         While patience > DateDiff("s", StartTime, Now)
             If sh.AppActivate(ActivateBy) Then Exit Function
-            WScript.Sleep loopPause
+            app.Sleep loopPause
         Wend
         DialogHasOpened = False
     End Function
 
     'Navigate the browse for file dialog to the specified RootPath
-
     Private Sub GoToRootPath
+        If Not SendKeysIsUnwiselyEnabled Then Exit Sub
         If DialogHasOpened(BFFileTitle) Then
             sh.AppActivate BFFileTitle
-            WScript.Sleep pause
+            app.Sleep pause
             sh.SendKeys "%n" 'Alt N => focus on file name field
-            WScript.Sleep pause
+            app.Sleep pause
             sh.SendKeys sh.ExpandEnvironmentStrings(RootPath)
-            WScript.Sleep pause
+            app.Sleep pause
             sh.SendKeys "{ENTER}"
         End If
     End Sub
@@ -221,22 +193,42 @@ Class Chooser
 
     'Method SetBFFileTimeout
     'Parameter: an integer
-    'Remark: Sets the time in seconds after which the Browse For File (Choose File to Upload) dialog will be terminated if a file has not been chosen. A timeout of 0 (default) will allow the dialog to remain open indefinitely. Intended to allow improved testing reliability.
-
+    'Remark: Sets the time in seconds after which the Browse For File (Choose File to Upload) dialog will be terminated if a file has not been chosen. A timeout of 0 will allow the dialog to remain open indefinitely. Intended to allow improved testing reliability. Default is 0.
     Sub SetBFFileTimeout(newBFFileTimeout)
         BFFileTimeout = newBFFileTimeout
     End Sub
 
-    'Private Method SetBFFileTerminator
-    'Remark: Terminate the most recently opened Browse For File dialog after the time in seconds set by SetBFFileTimeout, if not already closed, and if SetBFFileTimout has been changed from the default 0.
+    Private sh, sa, app
+    Private WindowTitle, WindowOptions, RootPath
+    Private SendKeysIsUnwiselyEnabled, patience, pause
+    Private BFFileTimeout
 
-    Private Sub SetBFFileTerminator
-        If 0 = BFFileTimeout Then Exit Sub
+    Sub Class_Initialize
+        Set sh = CreateObject("WScript.Shell")
+        Set sa = CreateObject("Shell.Application")
+        With CreateObject("includer")
+            Execute(.read("VBSApp"))
+        End With
+        Set app = New VBSApp
+        SetWindowTitle "Please select the folder"
+        SetWindowOptions 0
+        SetRootPath ""
+        SetPatience 5
+        WiselyDisableSendKeys
+        SetPause 10
+        SetBFFileTimeout 0
+    End Sub
+
+    'Method SetMaxExecLifetime
+    'Parameters: WShellExec object, exe, milliseconds
+    'Remark: Terminates a WShellExec process (the Browse for File window for example) after the specified time in milliseconds. Timeout of 0 prevents termination. An example of the exe: "mshta.exe".
+    Sub SetMaxExecLifetime(oExec, exe, timeout)
+        If 0 = timeout Then Exit Sub
         With CreateObject("includer")
             Execute(.read("WMIUtility"))
         End With
         Dim wmi : Set wmi = New WMIUtility
-        wmi.TerminateProcessByIdAndNameDelayed LastBFFileExec.ProcessID, "mshta.exe", BFFileTimeout * 1000
+        wmi.TerminateProcessByIdAndNameDelayed oExec.ProcessId, exe, timeout
     End Sub
 
     Sub Class_Terminate

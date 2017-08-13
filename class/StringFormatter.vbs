@@ -21,16 +21,12 @@
 Class StringFormatter
 
     Private zero, singular, plural
-    Private scriptName
     Private surrogate
 
     Sub Class_Initialize
         singular = "singular"
         plural = "plural"
         SetZeroPlural
-        On Error Resume Next
-            scriptName = WScript.ScriptName
-        On Error Goto 0
         SetSurrogate "%s"
     End Sub
 
@@ -45,10 +41,10 @@ Class StringFormatter
         Dim arr : arr = array_
         Dim i, pattern : pattern = arr(0)
         For i = 1 To UBound(arr)
-            If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 1, scriptName, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
+            If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 1,, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
             pattern = Replace(pattern, surrogate, arr(i), startPosition, replacemtCount)
         Next
-        If InStr(pattern, surrogate) Then Err.Raise 1, scriptName, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
+        If InStr(pattern, surrogate) Then Err.Raise 1,, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
         Format = pattern
     End Function
 

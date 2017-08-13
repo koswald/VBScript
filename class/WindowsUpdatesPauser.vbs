@@ -1,9 +1,7 @@
 
 'Pause Windows Updates to get more bandwidth. Don't forget to resume.
 
-'For configuration settings, see the similarly named .config file in the same folder as the calling script/hta.
-
-'You can use a configFile variable in the first .config file pointing to a second .config file in the location of your choosing, using environment variables, if desired.
+'For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.
 
 Class WindowsUpdatesPauser
 
@@ -25,16 +23,21 @@ Class WindowsUpdatesPauser
 
     'Function GetStatus
     'Returns a string
-    'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name AKA profileName.
+    'Remark: Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name (internal name: profileName).
     Function GetStatus
         Dim stat : Set stat = sh.Exec(format(Array( _
             "cmd /c netsh %s show profile name=""%s""", _
             srvcType, profileName)))
         Dim line
+        Dim currentProfile : currentProfile = False
         While Not stat.StdOut.AtEndOfStream
             'get the status by parsing the output of the show profile command
             line = stat.StdOut.ReadLine
-            If CBool(InStr(line, "Unrestricted")) And CBool(InStr(line, "Cost")) Then
+            If InStr(line, profileName) Then currentProfile = True
+            If Not currentProfile Then
+                'disregard other profiles; i.e. disregard the profile having the same name except with all upper case letters, if that name is not exactly the same as profileName;
+                'this is necessary because the show profile command may show two sets of results: if it does, then the first set, to be disregarded, is for a similarly named but distinct profile but with all upper case letters in the name.
+            ElseIf CBool(InStr(line, "Unrestricted")) And CBool(InStr(line, "Cost")) Then
                 GetStatus = unmetered
                 Exit Function
             ElseIf ( CBool(InStr(line, "Fixed")) Or CBool(InStr(line, "Variable")) ) And CBool(InStr(line, "Cost")) Then
@@ -52,12 +55,20 @@ Class WindowsUpdatesPauser
 
     'Function GetProfileName
     'Returns a string
-    'Remark: Returns the name of the network. The name is set by editing WindowsUpdatesParser.config
+    'Remark: Returns the name of the network. The name is set by editing WindowsUpdatesPauser.config
     Property Get GetProfileName : GetProfileName = profileName : End Property
+
+    'Function GetServiceType
+    'Returns a string
+    'Remark: Returns the service type
+    Function GetServiceType : GetServiceType = srvcType : End Function
+
+    'Method OpenConfigFile
+    'Remark: Opens the .config file
+    Sub OpenConfigFile : sh.Run "notepad """ & configFile & """" : End Sub
 
     Private sh, fso, format, log, app 'objects
     Private profileName, srvcType, userInteractive, configFile 'data kept in .config file
-    Private defaultConfigFile
     Private metered, unmetered, undefined ' "enums"
     Private hidden, synchronous 'Run params #2 & #3
     Private ForReading, ForWriting 'OpenTextFile param #2
@@ -69,7 +80,6 @@ Class WindowsUpdatesPauser
         Set fso = CreateObject("Scripting.FileSystemObject")
 
         'defaults
-
         userInteractive = True
         unmetered = "Unmetered" ' "enums"
         metered = "Metered"
@@ -90,44 +100,16 @@ Class WindowsUpdatesPauser
         Set format = New StringFormatter
         Set log = New VBSLogger
         Set app = New VBSApp
-        defaultConfigFile = app.GetBaseName & ".config"
-        ReadConfigFiles
+        configFile = format(Array("%LocalAppData%\%s.config", app.GetBaseName))
+        ReadConfigFile
    End Sub
 
-    'Sub ReadConfigFiles
-    'Remark: Read profileName, srvcType, userInteractive and, possibly, configFile from .config file(s)
-
-    Private Sub ReadConfigFiles
-        'make the current directory the parent folder of this file,
-        'so that the first place to look for a .config file doesn't
-        'depend on a shortcut's working directory
-        sh.CurrentDirectory = fso.GetParentFolderName(app.GetFullName)
-        'read the default (first) .config file
-        ExecuteConfigFile defaultConfigFile, True 'True => first .config file
-        'determine whether the configFile variable was initialized
-        If undefined = TypeName(configFile) Then
-            'a second configFile was not specified,
-            'and we should now have the necessary configFile data,
-            'so just resolve defaultConfigFile and use that.
-            configFile = fso.GetAbsolutePathName(defaultConfigFile)
-        Else
-            'a second configFile was specified in the default configFile,
-            'so get/use the data in the second configFile
-            '(except ignore configFile if present in the second file)
-            Dim savedConfigFile : savedConfigFile = configFile 'save
-            'read the second .config file
-            ExecuteConfigFile configFile, False 'False => second .config file
-            configFile = savedConfigFile 'restore
-        End If
-    End Sub
-
-    'Read the .config file
-    'To do: parse the file rather than just execute it!
-
-    Private Sub ExecuteConfigFile(ByVal file, FirstCall)
-        file = sh.ExpandEnvironmentStrings(file)
+    'Private method ReadConfigFile
+    'Remark: Read profileName, srvcType, userInteractive from the .config file
+    Private Sub ReadConfigFile
+        Dim file : file = sh.ExpandEnvironmentStrings(configFile)
         'if the file doesn't exist, then create it
-        If Not fso.FileExists(file) Then CreateConfigFile file, FirstCall
+        If Not fso.FileExists(file) Then CreateConfigFile file
         Dim stream : Set stream = fso.OpenTextFile(file, ForReading)
         Execute(stream.ReadAll)
         stream.Close
@@ -135,22 +117,8 @@ Class WindowsUpdatesPauser
     End Sub
 
     'Create a new .config file
-
-    Private Sub CreateConfigFile(file, FirstCall)
+    Private Sub CreateConfigFile(file)
         Dim conf : Set conf = fso.OpenTextFile(file, ForWriting, CreateNew)
-        If FirstCall Then
-            'comments pertaining only to the first .config file,
-            'the one in the same folder as the calling script
-            conf.WriteLine "'WARNING:"
-            conf.WriteLine "'If the configFile variable is specified in this file,"
-            conf.WriteLine "'then any other variables in this file are ignored and"
-            conf.WriteLine "'may be safely deleted."
-        Else
-            'comments pertaining only to the second .config file, if any
-            conf.WriteLine "'WARNING:"
-            conf.WriteLine "'if a configFile variable is specified in this file,"
-            conf.WriteLine "'then it will be ignored"
-        End If
         'For each variable, write variableName = defaultValue ['comment]
         conf.WriteLine format(Array( "%s = ""%s"" '%s", "profileName", "My network name", "network name" ))
         conf.WriteLine format(Array( "%s = ""%s"" '%s", "srvcType", "wlan", "options: mbn (Mobile broadband), wlan (Wi-Fi)" ))
@@ -160,7 +128,6 @@ Class WindowsUpdatesPauser
     End Sub
 
     'Log a status error, and if userInteractive, display it
-
     Private Sub ShowStatusError
         Dim msg : msg = format(Array( _
             "The metered status of the connection %s could not be determined. %s" & _
@@ -171,14 +138,12 @@ Class WindowsUpdatesPauser
         Dim msg2 : msg2 = msg & format(Array( _
             "%s Would you like %s to open the file?", L2, app.GetBaseName))
         If vbOK = MsgBox(msg2, vbQuestion + vbOKCancel, app.GetBaseName) Then
-            sh.Run "notepad """ & configFile & """"
+            OpenConfigFile
         End If
     End Sub
 
     Sub Class_Terminate
         Set sh = Nothing
         Set fso = Nothing
-        format.Class_Terminate
-        log.Class_Terminate
     End Sub
 End Class

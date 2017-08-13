@@ -63,7 +63,7 @@ Class VBSClipboard
                 Err.Clear
                 GetClipboardText = TrimHtmlFileData(HtmlFile.parentWindow.ClipboardData.GetData("text"))
                 tries = tries + 1
-                If tries > MaxTries Then Err.Raise 1, WScript.ScriptName, "VBSClipboard.GetClipboardText failed to get the clipboard text after " & MaxTries & " tries."
+                If tries > MaxTries Then Err.Raise 1,, "VBSClipboard.GetClipboardText failed to get the clipboard text after " & MaxTries & " tries."
             Wend
         On Error Goto 0
     End Property

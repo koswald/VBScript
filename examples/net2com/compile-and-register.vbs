@@ -43,7 +43,6 @@ End Sub
 'With the git repo on Google Drive, and compiling from
 'two computers sharing one Google account,
 'the folder name is customized to avoid conflicts
-
 Function GetPCName
     Dim net : Set net = CreateObject("WScript.Network")
     GetPCName = LCase(net.ComputerName)

@@ -3,7 +3,7 @@
 
 'Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.
 
-'This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments.
+'This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments and indentation.
 
 '' 'test.vbs "arg one" "arg two"
 '' With CreateObject("includer")
@@ -31,31 +31,69 @@
 '
 Class VBSApp
 
+    'Private Method InitializeHtaDependencies
+    'Remark: Initializes members required for .hta files.
+    Private Sub InitializeHtaDependencies
+        With CreateObject("includer")
+            Execute(.read("HTAApp"))
+        End With
+        Set hta = New HTAApp
+    End Sub
+
     'Property GetArgs
     'Returns: array of strings
     'Remark: Returns an array of command-line arguments.
-    Property Get GetArgs : GetArgs = arguments : End Property
+    Property Get GetArgs
+        If Not "Empty" = TypeName(arguments) Then
+            GetArgs = arguments
+            Exit Property
+        End If
+        With CreateObject("includer")
+            Execute(.read("VBSArrays"))
+        End With
+        Dim arrayUtility : Set arrayUtility = New VBSArrays
+        If IAmAnHta Then
+            hta.SetObj hta.GetId
+            'strip off the first argument, which is the filespec
+            arguments = arrayUtility.RemoveFirstElement(hta.GetArgs)
+        ElseIf IAmAScript Then
+            arguments = arrayUtility.CollectionToArray(WScript.Arguments)
+        End If
+        GetArgs = arguments
+    End Property
 
     'Property GetArgsString
     'Returns: a string
-    'Remark: Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih quotes, which are stripped off as they are read back in. The return string has a leading space, by design, unless there are no arguments
-    Property Get GetArgsString : GetArgsString = argumentsString : End Property
-
+    'Remark: Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih double quotes. The return string has a leading space, by design, unless there are no arguments.
+    Property Get GetArgsString
+        If Not "Empty" = TypeName(argumentsString) Then
+            GetArgsString = argumentsString
+            Exit Property
+        End If
+        Dim i, s, args : s = "" : args = GetArgs
+        For i = 0 To UBound(args)
+            s = s & " """ & args(i) & """"
+        Next
+        argumentsString = s
+        GetArgsString = s
+    End Property
+    
     'Property GetArg
     'Parameter: an integer
     'Returns: a string
     'Remark: Returns the command-line argument having the specified zero-based index.
     Property Get GetArg(index)
-        GetArg = ""
-        On Error Resume Next
-            GetArg = arguments(index)
-        On Error Goto 0
+        Dim args : args = GetArgs
+        GetArg = args(index)
     End Property
 
     'Property GetArgsCount
     'Returns: an integer
     'Remark: Returns the number of arguments.
-    Property Get GetArgsCount : GetArgsCount = UBound(arguments) + 1 : End Property
+    Property Get GetArgsCount
+        Dim args : args = GetArgs
+        GetArgsCount = UBound(args) + 1
+    End Property
 
     'Property GetFullName
     'Returns: a string
@@ -77,6 +115,11 @@ Class VBSApp
     'Remark: Returns the filename extension of the calling script or hta.
     Property Get GetExtensionName : GetExtensionName = fso.GetExtensionName(filespec) : End Property
     
+    'Property GetParentFolderName
+    'Returns: a string
+    'Remark: Returns the folder that contains the calling script or hta.
+    Property Get GetParentFolderName : GetParentFolderName = fso.GetParentFolderName(filespec) : End Property
+
     'Property GetExe
     'Returns: a string
     'Remark: Returns "mshta.exe" to hta files, and "wscript.exe" or "cscript.exe" to scripts, depending on the host.
@@ -84,10 +127,9 @@ Class VBSApp
         If IAmAnHta Then
             GetExe = "mshta.exe"
         ElseIf IAmAScript Then
-            If "cscript.exe" = LCase(Right(WScript.FullName, 11)) Then GetExe = "cscript.exe"
-            If "wscript.exe" = LCase(Right(WScript.FullName, 11)) Then GetExe = "wscript.exe"
+            GetExe = LCase(Right(WScript.FullName, 11))
         Else
-            Err.Raise 3, GetFileName, "Couldn't determine the host .exe; source: VBSApp.vbs::GetExe"
+            Err.Raise 3, GetFileName, "Couldn't determine the host .exe; source: VBSApp.GetExe"
         End If
     End Property
 
@@ -165,26 +207,26 @@ Class VBSApp
     'Method Sleep
     'Parameter: an integer
     'Remark: Pauses execution of the script or .hta for the specified number of milliseconds.
-    Sub Sleep(milliseconds)
-        sh.Run """" & libraryPath & "\VBSApp.wsf"" " & milliseconds, hidden, synchronous
+    Sub Sleep(ByVal milliseconds)
+        If IAmAScript Then
+            WScript.Sleep milliseconds
+        ElseIf IAmAnHta Then
+            hta.Sleep milliseconds
+        Else
+            Err.Raise 54,, "VBSApp.Sleep: unknown app type."
+        End If
     End Sub
-    
-    Private oHtaObject_400BFC32009942E895C3F39EA37103DF 'must differ from calling hta's id
+   
     Private fso, sh
+    Private hta
     Private filespec, arguments, argumentsString
     Private IAmAnHta, IAmAScript
-    Private HtaObjectErrMessage, MissingHtaIdErrMessage
     Private userInteractive, visibility, visible, hidden
     Private synchronous
     Private onUserCancelQuitApp
-    Private libraryPath
+    Private tmr, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
 
     Sub Class_Initialize
-        HtaObjectErrMessage = "The VBSApp class could not determine the hta file's id. A valid id must be specified in the hta:application element's id property. Source: VBSApp.vbs::"
-        MissingHtaIdErrMessage = "An id must be declared in the hta:application element of the .hta file."
-        With CreateObject("includer")
-            libraryPath = .LibraryPath
-        End With
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sh = CreateObject("WScript.Shell")
         hidden = 0
@@ -193,10 +235,8 @@ Class VBSApp
         SetUserInteractive True
         SetOnUserCancelQuitApp True
         InitializeAppTypes
-        arguments = PrivateGetArgs
-        argumentsString = PrivateGetArgsString
     End Sub
-
+    
     'Determine whether the source file is a script or an hta
     Private Sub InitializeAppTypes
         On Error Resume Next
@@ -207,108 +247,16 @@ Class VBSApp
         If IAmAScript Then
             filespec = WScript.ScriptFullName
         ElseIf IAmAnHta Then
-            filespec = Replace(Replace(Replace(document.location.href, "file:///", ""), "%20", " "), "/", "\")
-            SetHtaObj GetHtaId
+            InitializeHtaDependencies
+            filespec = hta.GetFilespec
         Else
-            Err.Raise 2, GetFileName, "VBSApp.vbs::InitializeFileTypes could not determine the type of file that is calling it."
+            Err.Raise 2, GetFileName, "VBSApp.InitializeAppTypes could not determine the type of file that is calling it."
         End If
     End Sub
-
-    'Private Method SetHtaObj
-    'Parameter: the HTA id
-    'Remark: Required for .hta files before accessing the arguments properties. The id is defined as a property of the .hta file's hta:application element.
-    Private Sub SetHtaObj(id)
-        Execute("Set oHtaObject_400BFC32009942E895C3F39EA37103DF = " & id)
-    End Sub
-
-    'extract the id from the hta file
-    Private Function GetHtaId
-        'extract from the file the tag that should contain the id
-        With CreateObject("includer")
-            Execute(.read("VBSExtracter"))
-        End With
-        Dim extracter : Set extracter = New VBSExtracter
-        extracter.SetFile filespec
-        extracter.SetPattern "<hta:application.+id=.+>"
-        Dim tag : tag = extracter.extract
-        'extract the id from the tag
-        Dim re : Set re = New RegExp
-        re.Pattern = "id ?= ?""?(\w+)""?" 'quotes are optional, hence the ?
-        re.IgnoreCase = True
-        Dim matches : Set matches = re.Execute(tag)
-        On Error Resume Next
-            Dim match : Set match = matches(0)
-            GetHtaId = match.Submatches(0)
-            If Err Then
-                If GetUserInteractive Then If vbOK = MsgBox(MissingHtaIdErrMessage & vbLf & vbLf & filespec & vbLf & vbLf & "Do you want to open the .hta file?", vbExclamation + vbOKCancel, GetFileName) Then sh.Run "notepad """ & GetFullName & """"
-                Quit
-            End If
-        On Error Goto 0
-        'release object memory
-        Set match = Nothing
-        Set matches = Nothing
-        Set re = Nothing
-    End Function
-
-    'Raise an error if the hta object wasn't properly initialized
-    Private Sub EnsureHtaObject(procedure)
-        If "HTMLGenericElement" = TypeName(oHtaObject_400BFC32009942E895C3F39EA37103DF) Then
-            Exit Sub
-        ElseIf "Empty" = TypeName(oHtaObject_400BFC32009942E895C3F39EA37103DF) Then
-            Err.Raise 1,, HtaObjectErrMessage & procedure
-        End If
-    End Sub
-
-    'Private Function GetHtaArgs
-    'Returns: an array
-    'Remark: Returns the mshta.exe command line args as an array, including the .hta filespec, which has index 0.
-    Private Function GetHtaArgs
-        EnsureHtaObject("GetHtaArgs")
-        Dim cl : cl = oHtaObject_400BFC32009942E895C3F39EA37103DF.CommandLine
-        'the command line may contain two spaces between the .hta filespec and the other args. See HKCR\htafile\Shell\Open\Command
-        'Todo: make this solution more robust!
-        cl = Replace(cl, """ """, """  """)
-        Dim args : args = Split(cl, """  """) 'note the double space
-        'remove the remaining double quotes
-        Dim i : For i = 0 To UBound(args)
-            args(i) = Replace(args(i), """", "")
-        Next
-        GetHtaArgs = args
-    End Function
-
-    'Private Property PrivateGetArgs
-    'Returns: array of strings
-    'Remark: Returns the command-line arguments
-    Private Property Get PrivateGetArgs
-        With CreateObject("includer")
-            Execute(.read("VBSArrays"))
-        End With
-        Dim arrayUtility : Set arrayUtility = New VBSArrays
-        Dim args
-        If IAmAnHta Then
-            args = GetHtaArgs
-            'strip off the first argument, which is the filespec
-            PrivateGetArgs = arrayUtility.RemoveFirstElement(args)
-        ElseIf IAmAScript Then
-            PrivateGetArgs = arrayUtility.CollectionToArray(WScript.Arguments)
-        End If
-    End Property
-
-    'Private Property PrivateGetArgsString
-    'Returns a string
-    'Remark: Returns the command-line arguments string with a leading space. For use when restarting a script, in order to retain the original arguments. Each argument is wrapped wih quotes, which are stripped off as they are read back in. The return string has a leading space, by design, unless there are no arguments
-    Private Property Get PrivateGetArgsString
-        Dim i, s, arg : s = "" : args = GetArgs
-        For i = 0 To UBound(args)
-            s = s & " """ & args(i) & """"
-        Next
-        PrivateGetArgsString = s
-    End Property
 
     Private Sub ReleaseObjectMemory
         Set fso = Nothing
         Set sh = Nothing
-        Set oHtaObject_400BFC32009942E895C3F39EA37103DF = Nothing
     End Sub
 
     Sub Class_Terminate

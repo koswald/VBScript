@@ -2,129 +2,94 @@
 'Test the VBSApp class
 
 With New VBSAppClassTester
-    .RunTest
+    .RunTests
 End With
 
 Class VBSAppClassTester
-    Sub RunTest
+
+    'Method RunTests
+    'Remark: Run a series of tests. 
+    'The intention of the class under test is
+    'for the VBScript code to be identical or nearly
+    'identical whether called from an .hta or .vbs file
+    Sub RunTests
+        tester.describe "VBSApp class"
+        RunTest "wsf", 1, "wscript.exe", 100
+        RunTest "wsf", 1, "wscript.exe", 1000
+        'Debug1
+        RunTest "hta", 0, "mshta.exe", 100
+        RunTest "hta", 0, "mshta.exe", 1000
+        'Debug1
+    End Sub
+
+    'run the specified fixture file (specified by file extension), output file (index), exe, and time (ms)
+    Private Sub RunTest(ext, index, exe, ms)
+        tester.ShowPendingResult
+        WScript.StdOut.WriteLine "          " & ext
+        sh.Run format(Array( _
+            "cmd /c %s%s ""arg zero"" ""arg one"" %s %s", _
+            base, ext, ms, ext _
+        )), hidden, Synchronous
+        If Not "Empty" = TypeName(stream) Then stream.Close 'close the previous test's text stream, unless this is the first test
+        Set stream = fso.OpenTextFile(outputFiles(index))
         With tester
-            .describe "VBSApp class"
-
-            Setup "hta", 0
             .it "should get command-line args"
-                .AssertEqual stream.ReadLine, "arg two" 'selected arg with space
+                .AssertEqual stream.ReadLine, "arg one" 'selected arg with space
             .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, " ""arg one"" ""arg two"""
+                .AssertEqual stream.ReadLine, format(Array(" ""arg zero"" ""arg one"" ""%s"" ""%s""", ms, ext))
             .it "should get the argument count"
-                .AssertEqual stream.ReadLine, "2"
+                .AssertEqual stream.ReadLine, "4"
             .it "should get app filespec"
-                .AssertEqual stream.ReadLine, fso.GetAbsolutePathName(base & "hta")
+                .AssertEqual stream.ReadLine, fso.GetAbsolutePathName(base & ext)
             .it "should get app name"
-                .AssertEqual stream.ReadLine, fso.GetFileName(base & "hta")
+                .AssertEqual stream.ReadLine, fso.GetFileName(base & ext)
             .it "should get the base app name"
-                .AssertEqual stream.ReadLine, fso.GetBaseName(base & "hta")
+                .AssertEqual stream.ReadLine, fso.GetBaseName(base & ext)
             .it "should get the app's filename extension"
-                .AssertEqual stream.ReadLine, fso.GetExtensionName(base & "hta")
+                .AssertEqual stream.ReadLine, fso.GetExtensionName(base & ext)
+            .it "should get the app's parent folder"
+                .AssertEqual stream.ReadLine, fso.GetParentFolderName(fso.GetAbsolutePathName(base & ext))
             .it "should get the app's host .exe"
-                .AssertEqual stream.ReadLine, "mshta.exe"
+                .AssertEqual stream.ReadLine, exe
             .it "should have a sleep method"
                 .AssertEqual stream.ReadLine, "0"
-            .it "should sleep for at least the min. time"
+
+                Dim minTime, maxTime
+                minTime = ms - minusSpec
+                maxTime = ms + plusSpec
+                
+            .it "should sleep for at least the min. time (" & minTime & "ms)"
                 actualSleep = stream.ReadLine * 1000
-                .AssertEqual actualSleep >= lowerLimit, True
-            .it "should sleep for at most the max. time"
-                .AssertEqual actualSleep <= upperLimit, True
-
-            'Debug1
-
-            Setup "vbs", 1
-            .it "should get command-line args"
-                .AssertEqual stream.ReadLine, "arg two"
-            .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, " ""arg one"" ""arg two"""
-            .it "should get the argument count"
-                .AssertEqual stream.ReadLine, "2"
-            .it "should get app filespec"
-                .AssertEqual stream.ReadLine, fso.GetAbsolutePathName(base & "vbs")
-            .it "should get app name"
-                .AssertEqual stream.ReadLine, fso.GetFileName(base & "vbs")
-            .it "should get the base app name"
-                .AssertEqual stream.ReadLine, fso.GetBaseName(base & "vbs")
-            .it "should get the app's filename extension"
-                .AssertEqual stream.ReadLine, fso.GetExtensionName(base & "vbs")
-            .it "should get the app's host .exe"
-                .AssertEqual stream.ReadLine, "wscript.exe"
-            .it "should have a sleep method"
-                .AssertEqual stream.ReadLine, "0"
-            .it "should sleep for at least the min. time"
-                actualSleep = stream.ReadLine * 1000
-                .AssertEqual actualSleep >= lowerLimit, True
-            .it "should sleep for at most the max. time"
-                .AssertEqual actualSleep <= upperLimit, True
-
-            'Debug1
-
-            Setup "wsf", 2
-            .it "should get command-line args"
-                .AssertEqual stream.ReadLine, "arg two"
-            .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, " ""arg one"" ""arg two"""
-            .it "should get the argument count"
-                .AssertEqual stream.ReadLine, "2"
-            .it "should get app filespec"
-                .AssertEqual stream.ReadLine, fso.GetAbsolutePathName(base & "wsf")
-            .it "should get app name"
-                .AssertEqual stream.ReadLine, fso.GetFileName(base & "wsf")
-            .it "should get the base app name"
-                .AssertEqual stream.ReadLine, fso.GetBaseName(base & "wsf")
-            .it "should get the app's filename extension"
-                .AssertEqual stream.ReadLine, fso.GetExtensionName(base & "wsf")
-            .it "should get the app's host .exe"
-                .AssertEqual stream.ReadLine, "wscript.exe"
-            .it "should have a sleep method"
-                .AssertEqual stream.ReadLine, "0"
-            .it "should sleep for at least the min. time"
-                actualSleep = stream.ReadLine * 1000
-                .AssertEqual actualSleep >= lowerLimit, True
-            .it "should sleep for at most the max. time"
-                .AssertEqual actualSleep <= upperLimit, True
-
-            'Debug1
-
+                .AssertEqual actualSleep >= minTime, True
+            .it "should sleep for at most the max. time (" & maxTime & "ms)"
+                .AssertEqual actualSleep <= maxTime, True
         End With
     End Sub
 
-    Private app, tester
+    Private app, tester, format
     Private sh, fso, stream
     Private ForReading, Synchronous, hidden
-    Private base, outputFiles
-    Private upperLimit, lowerLimit, testSleep, actualSleep
+    Private outputFiles
+    Private actualSleep
+    Private base, minusSpec, plusSpec 'defined in .config file
 
     Sub Class_Initialize
         With CreateObject("includer")
             Execute(.read("TestingFramework"))
+            Execute(.read("StringFormatter"))
             Execute(.read("..\spec\VBSApp.spec.config"))
         End With
         Set tester = New TestingFramework
+        Set format = New StringFormatter
         Set sh = CreateObject("WScript.Shell")
         Set fso = CreateObject("Scripting.FileSystemObject")
         ForReading = 1
         Synchronous = True
         hidden = 0
-        base = "fixture\VBSApp.fixture."
-        outputFiles = Array(base & "HtaOut.txt", _
-                            base & "VbsOut.txt", _
-                            base & "WsfOut.txt")
+        outputFiles = Array( _
+            base & "htaOut.txt", _
+            base & "wsfOut.txt")
         Delete(outputFiles)
-    End Sub
-
-    'run the fixture file for the specified file extension
-    Private Sub Setup(ext, index)
-        tester.ShowPendingResult
-        WScript.StdOut.WriteLine "          " & ext
-        sh.Run "cmd /c " & base & ext & " ""arg one"" ""arg two""", hidden, Synchronous
-        If Not "Empty" = TypeName(stream) Then stream.Close
-        Set stream = fso.OpenTextFile(outputFiles(index))
     End Sub
 
     Private Sub Delete(files)
@@ -137,9 +102,8 @@ Class VBSAppClassTester
     Sub Debug1
         tester.ShowPendingResult
         WScript.StdOut.WriteLine "actualSleep: " & actualSleep
-        WScript.StdOut.WriteLine "upperLimit: " & upperLimit
-        WScript.StdOut.WriteLine "lowerLimit: " & lowerLimit
-        WScript.StdOut.WriteLine "testSleep: " & testSleep
+        WScript.StdOut.WriteLine "plusSpec: " & plusSpec
+        WScript.StdOut.WriteLine "minusSpec: " & minusSpec
     End Sub
 
     Sub Class_Terminate

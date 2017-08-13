@@ -23,10 +23,6 @@ Class EncodingAnalyzer
     Sub Class_Initialize
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sh = CreateObject("WScript.Shell")
-        On Error Resume Next 'if called from a .wsc file, the WScript object is unlikely to be available
-            scriptName = WScript.ScriptName
-            SetCurrentDirectory(fso.GetParentFolderName(WScript.ScriptFullName))
-        On Error Goto 0
         fileHasBeenValidated = False
     End Sub
 
@@ -37,8 +33,7 @@ Class EncodingAnalyzer
     'Function SetFile
     'Parameter: a filespec
     'Returns an object self reference
-    'Remark: Required. Specifies the file whose encoding is to be determined. Relative paths are permitted, relative to the current directory. The current directory is by default the location of the calling script, but can be modified with the SetCurrentDirectory method.
-
+    'Remark: Required. Specifies the file whose encoding is to be determined. Relative paths are permitted, relative to the current directory.
     Function SetFile(file_)
         file = file_
         fileHasBeenValidated = False
@@ -51,7 +46,7 @@ Class EncodingAnalyzer
         If fileHasBeenValidated Then Exit Sub
         If Not fso.FileExists(file) Then
             file = file & ".vbs"
-            If Not fso.FileExists(file) Then Err.Raise 1, scriptName, "Couldn't find file " & file
+            If Not fso.FileExists(file) Then Err.Raise 1,, "The EncodingAnalyzer couldn't find file " & file
         End If
         fileHasBeenValidated = True
     End Sub
@@ -59,7 +54,6 @@ Class EncodingAnalyzer
     'Function isUTF16LE
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode Little Endian, <strong> aka Unicode</strong>.
-
     Function isUTF16LE
         ValidateFile
         If byte0 = &Hff And byte1 = &Hfe Then isUTF16LE = True Else isUTF16LE = False
@@ -68,7 +62,6 @@ Class EncodingAnalyzer
     'Function isUTF16BE
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is Unicode Big Endian.
-
     Function isUTF16BE
         ValidateFile
         If byte0 = &Hfe And byte1 = &Hff Then isUTF16BE = True Else isUTF16BE = False
@@ -77,7 +70,6 @@ Class EncodingAnalyzer
     'Function isUTF7
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is UTF7.
-
     Function isUTF7
         ValidateFile
         If byte0 = &H2b And byte1 = &H2f And byte2 = &H76 Then isUTF7 = True Else isUTF7 = False
@@ -86,7 +78,6 @@ Class EncodingAnalyzer
     'Function isUTF8
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is UTF8.
-
     Function isUTF8
         ValidateFile
         If byte0 = &Hef And byte1 = &Hbb And byte2 = &Hbf Then isUTF8 = True Else isUTF8 = False
@@ -95,7 +86,6 @@ Class EncodingAnalyzer
     'Function isUTF32
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is UTF32.
-
     Function isUTF32
         ValidateFile
         If byte0 = 0 And byte1 = 0 And byte2 = &Hfe And byte3 = &Hff Then isUTF32 = True Else isUTF32 = False
@@ -104,7 +94,6 @@ Class EncodingAnalyzer
     'Function isAscii
     'Returns a boolean
     'Remark: Returns a boolean indicating whether the file specified by SetFile is Ascii.
-
     Function isAscii
         ValidateFile
         isAscii = True
@@ -118,7 +107,6 @@ Class EncodingAnalyzer
     'Function GetType
     'Returns a string
     'Remark: Returns one of the following strings according the format of the file set by SetFile: Ascii, UTF16LE, UTF16BE, UTF7, UTF8, UTF32.
-
     Function GetType
         ValidateFile
         GetType = "Ascii"
@@ -131,7 +119,6 @@ Class EncodingAnalyzer
 
     'Read the first four bytes from the specified file:
     'prepare for analysis
-
     Private Sub GetBytes
         ValidateFile
         ResetBytes
@@ -147,7 +134,6 @@ Class EncodingAnalyzer
     'Function GetCurrentDirectory
     'Returns a folder
     'Remarks: Returns the current directory
-
     Function GetCurrentDirectory
         GetCurrentDirectory = sh.CurrentDirectory
     End Function
@@ -155,7 +141,6 @@ Class EncodingAnalyzer
     'Method SetCurrentDirectory
     'Parameter: a folder
     'Remarks: Sets the current directory.
-
     Sub SetCurrentDirectory(dir)
         sh.CurrentDirectory = dir
     End Sub
@@ -164,7 +149,6 @@ Class EncodingAnalyzer
     'Parameter: BOM byte number
     'Returns an integer
     'Remark: Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark (BOM).
-
     Function GetByte(i)
         ValidateFile
         Execute("GetByte = byte" & i)

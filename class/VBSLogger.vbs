@@ -135,7 +135,7 @@ Class VBSLogger 'Logger for use in VBScript files
         Else
             Dim msg : msg = "Today's log file hasn't been created " & _
                 "yet. Do you want to open the log folder?"
-            If vbOK = MsgBox(msg, vbOKCancel + vbQuestion, WScript.ScriptName) Then
+            If vbOK = MsgBox(msg, vbOKCancel + vbQuestion) Then
                 ViewFolder
             End If
         End If

@@ -68,7 +68,7 @@ Class PrivilegeChecker
 
         'raise an error if privileges are undefined
 
-        If Privileged = undefined_ Then Err.Raise 1, WScript.ScriptName, "The PrivilegeChecker could not determine privileges"
+        If Privileged = undefined_ Then Err.Raise 1,, "The PrivilegeChecker could not determine privileges"
     End Function
 
 End Class

@@ -47,7 +47,7 @@ With New TestingFramework
 
     .it "should give the expected, descriptive, Err.Description"
 
-        .AssertEqual errDescr, WScript.ScriptName & ": " & CStr(nonBool) & val.ErrDescrBool
+        .AssertEqual errDescr, CStr(nonBool) & val.ErrDescrBool
 
     .it "should give the expected Err.Source"
 

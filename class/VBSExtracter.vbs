@@ -26,19 +26,21 @@ Class VBSExtracter
     'Method SetFile
     'Parameter: filespec
     'Remark: Specifies the file to extract text from
-
     Sub SetFile(pFile) : file = fs.Expand(pFile) : End Sub
-
 
     Private Sub SetTestString(pStr) : re.SetTestString(pStr) : End Sub
 
     'Method SetIgnoreCase
     'Parameter: a boolean
     'Remark: Set whether to ignore case when matching text (default=False)
-
     Sub SetIgnoreCase(pBool) : re.SetIgnoreCase(pBool) : End Sub
 
-    'Sub SetGlobal(pBool) : re.SetGlobal(pBool) : End Sub
+    ''Method SetMultiline
+    ''Parameter: a boolean
+    ''Remark: Set whether the RegExp object multiline property is set.
+    'Sub SetMultiline(pBool) : re.Multiline = True : End Sub    
+
+    'Sub SetGlobal(pBool) : re.Global(pBool) : End Sub
 
     'wrap included objects for convenience
 

@@ -1,3 +1,5 @@
+'demonstrate the functionality of the WindowsUpdatesPauser class 
+
 With CreateObject("includer")
     Execute(.read("WindowsUpdatesPauser"))
 End With
@@ -24,9 +26,9 @@ End Sub
 Sub ShowStatus
     Dim status : status = wup.GetStatus
     If "Metered" = status Then
-        InfoBox "Windows Updates are paused."
+        InfoBox "Windows Updates are paused (" & wup.GetProfileName & ")."
     ElseIf "Unmetered" = status Then
-        InfoBox "Windows Updates are enabled."
+        InfoBox "Windows Updates are enabled (" & wup.GetProfileName & ")."
     Else
         'if userInteractive,
         'an error message should appear,

@@ -107,6 +107,18 @@ Class TestingFramework
         SetResultPending True
     End Sub
 
+    'Method DeleteFiles
+    'Parameter: an array
+    'Remark: Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used.
+    Sub DeleteFiles(files)
+        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+        Dim file
+        For each file in files
+            If fso.FileExists(file) Then fso.DeleteFile(file)
+        Next
+        Set fso = Nothing
+    End Sub
+
     Private Sub SetResult(newResult)
         result = newResult
     End Sub

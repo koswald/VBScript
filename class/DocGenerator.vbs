@@ -438,7 +438,7 @@ Class DocGenerator
 
     End Sub
 
-    Private Sub RaiseContentError(msg) : Err.Raise 1, WScript.ScriptName & "::" & File.Name & "::" & routineName, vbLf & msg : End Sub
+    Private Sub RaiseContentError(msg) : Err.Raise 1,, File.Name & "::" & routineName & ": " & msg : End Sub
 
     'Get help content from a line
 
