@@ -41,6 +41,11 @@ Class TestingFramework
     Private Sub Class_Initialize 'event fires on object instantiation
         SetResultPending False
         pass = "Pass" : fail = "Fail" : T = "      "
+        With CreateObject("includer")
+            Execute .Read("VBSHoster")
+            Dim hoster : Set hoster = New VBSHoster
+            hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
+        End With
     End Sub
 
     Private Sub WriteLine(str)
