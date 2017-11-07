@@ -15,7 +15,7 @@ Class VBSMessages
     Property Get ReqdArgFile : SetItem(file) : ReqdArgFile = ReqdArg & "a " & item & "." & L & DragAndDrop : End Property
     Property Get ReqdArgFolder : SetItem(folder) : ReqdArgFolder = ReqdArg & "a " & item & "." & L & DragAndDrop : End Property
     Property Get ReqdArgPattern : ReqdArgPattern = ReqdArg & "a regex pattern." : End Property
-    Private Property Get DragAndDrop : DragAndDrop = "You can drag the " & item & " onto this script or onto " & L & "a shortcut to this script, or place the shorcut in " & L & "the SendTo folder." : End Property
+    Private Property Get DragAndDrop : DragAndDrop = "You can drag the " & item & " onto this script or onto " & L & "a shortcut to this script, or place the shortcut in " & L & "the SendTo folder." : End Property
 
     Private Property Get ErrRaiseLineBreak : ErrRaiseLineBreak = vbLf & vbTab : End Property 'for Err.Raise descriptions (arg #3)
     Sub SetLineBreak(newLineBreak) : L = newLineBreak : End Sub
