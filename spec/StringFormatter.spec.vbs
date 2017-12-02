@@ -1,6 +1,6 @@
 With CreateObject("includer")
-    Execute(.read("TestingFramework"))
-    Execute(.read("StringFormatter"))
+    Execute .read("TestingFramework")
+    Execute .read("StringFormatter")
 End With
 
 With New TestingFramework

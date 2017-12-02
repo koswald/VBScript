@@ -2,8 +2,8 @@
 'test EncodingAnalyzer.vbs
 
 With CreateObject("includer")
-    Execute(.read("EncodingAnalyzer"))
-    Execute(.read("TestingFramework"))
+    Execute .read("EncodingAnalyzer")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

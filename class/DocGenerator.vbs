@@ -8,7 +8,7 @@
 '' 'Usage Example
 '' '' 
 '' ''    With CreateObject("includer")
-'' ''        Execute(.read("DocGenerator"))
+'' ''        Execute .read("DocGenerator")
 '' ''    End With
 '' ''
 '' ''    With New DocGenerator
@@ -50,10 +50,16 @@
 
 Class DocGenerator
 
-    Private outputStreamer, inputStreamer, docFile
-    Private File, fs, indentUnit, indent_
+    Private outputStreamer, inputStreamer 'streamer objects
     Private script, doc 'input and output text streams
-    Private re
+    Private File 'fso File object
+    Private fs 'FileSystem object
+    Private re 'RegExp object
+    Private sh, fso
+
+    Private indentUnit
+    Private indent_ 'current indentation
+    Private docFile
     Private methodPattern, propertyPattern, parametersPattern, returnsPattern, remarksPattern
     Private classPattern, altClassPattern, generalPattern, prePattern, ignorePattern
     Private routinePattern, routineType
@@ -70,32 +76,34 @@ Class DocGenerator
 
     Sub Class_Initialize
         With CreateObject("includer")
-            Execute(.read("TextStreamer"))
+            Execute .read("TextStreamer")
+            Execute .read("VBSFileSystem")
         End With
 
         'prepare output streamer
-
         Set outputStreamer = New TextStreamer
         outputStreamer.SetForWriting
 
         'prepare input streamer
-
         Set inputStreamer = New TextStreamer
         inputStreamer.SetForReading
 
         'more initialization
-
-        Set fs = outputStreamer.fs
+        Set fs = New VBSFileSystem
         Set re = New RegExp
         re.IgnoreCase = True
+        Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
         InitializeLiterals
+        indentUnit = "   "
+        indent_ = ""
         ResetHelpContent
         SetFilesToDocument(defaultFilesToDocument)
         status = preClassStatement
         id = 0
-        SetDocName("")
+        SetDocName ""
         scriptFolder = "" 'don't use the setter yet, or else an empty string will be resolved to an existing folder before being validated
-        SetTitle("")
+        SetTitle ""
     End Sub
 
     Private Sub InitializeDocFile
@@ -107,7 +115,6 @@ Class DocGenerator
     Private Sub InitializeLiterals
 
         'regex patterns that identify lines commented out in the code
-
         methodPattern     = "^\s*'\s*Method\s*:?\s*(.*)\s*$"
         propertyPattern   = "^\s*'\s*(?:Property|Function)\s*:?\s*(.*)\s*$"
         parametersPattern = "^\s*'\s*Parameters?\s*:?\s*(.*)\s*$"
@@ -124,11 +131,9 @@ Class DocGenerator
         altClassPattern = "^\s*''''(.*)$"
 
         'other regex patterns
-
         defaultFilesToDocument = ".*\.vbs" 'file types to document, by name
 
-        'enum
-
+        'enums
         method = "Method"
         property_ = "Property"
         parameters = "parameters"
@@ -139,11 +144,6 @@ Class DocGenerator
         ignore = "ignore"
         preClassStatement = "preClassStatement"
         postClassStatement = "postClassStatement"
-
-        'other
-
-        indentUnit = "   "
-        indent_ = ""
     End Sub
 
     Private Sub ResetHelpContent
@@ -159,80 +159,61 @@ Class DocGenerator
     'Method SetScriptFolder
     'Parameter: a folder
     'Remark: Required. Must be set before calling the Generate method. Sets the folder containing the scripts to include in the generated documentation. Environment variables OK. Relative paths OK.
-
     Sub SetScriptFolder(newScriptFolder) : scriptFolder = fs.Resolve(newScriptFolder) : End Sub
 
     'Method SetDocFolder
     'Parameter: a folder
     'Remark: Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK.
-
     Sub SetDocFolder(newDocFolder) : docFolder = fs.Resolve(newDocFolder) : End Sub
 
     'Method SetDocName
     'Parameter: a filename
     'Remark: Required. Must be set before calling the Generate method. Specifies the name of the documentation file, including the filename extension (.html suggested).
-
     Sub SetDocName(newDocName) : docName = newDocName : End Sub
 
     'Method SetTitle
     'Parameter: a string
     'Remark: Required. Must be set before calling the Generate method. Sets the title for the documentation.
-
     Sub SetTitle(newDocTitle) : docTitle = newDocTitle : End Sub
 
     'Method SetFilesToDocument
     'Parameter: A regular expression
     'Remark: Optional. Specifies which files to document: default is <strong> .*\.vbs </strong>
-
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = newFilesToDocument : End Sub
 
     Private Sub ValidateConfiguration
         Dim msg
-
         msg = "A title for the document must be set using SetTitle."
-
-        If "" = docTitle Then Err.Raise 1, fs.SName, msg
+        If "" = docTitle Then Err.Raise 41, fs.SName, msg
 
         msg = "An existing folder containing the scripts to document must be specified with SetScriptFolder."
-
-        If Not fs.fso.FolderExists(scriptFolder) Then Err.Raise 1, fs.SName, msg
+        If Not fso.FolderExists(scriptFolder) Then Err.Raise 42, fs.SName, msg
 
         msg = "An existing folder to contain the document must be specified with SetDocFolder."
-
-        If Not fs.fso.FolderExists(docFolder) Then Err.Raise 1, fs.SName, msg
+        If Not fso.FolderExists(docFolder) Then Err.Raise 43, fs.SName, msg
 
         msg = "The name of the doc file must be specified with SetDocName."
-
-        If "" = docName Then Err.Raise 1, fs.SName, msg
-
+        If "" = docName Then Err.Raise 44, fs.SName, msg
         InitializeDocFile
     End Sub
 
     'Method Generate
     'Remark: Generate comment-based documentation for the scripts in the specified folder.
-
     Sub Generate
-
         ValidateConfiguration
-
         WriteTopSection
-
         'for each class file, look through the file for comments to add to the documentation
-
-        For Each File In fs.fso.GetFolder(scriptFolder).Files
+        For Each File In fso.GetFolder(scriptFolder).Files
             re.Pattern = filesToDocument
             If re.Test(File.Name) Then WriteScriptSection(File)
         Next
-
         WriteBottomSection
-
     End Sub
 
     'Method View
     'Remark: Open the documentation file for viewing
-
     Sub View
-        fs.sh.Run """" & docFile & """"
+        sh.Run """" & docFile & """"
     End Sub
 
     Private Sub WriteScriptSection(File)
@@ -259,11 +240,11 @@ Class DocGenerator
         script.Close
     End Sub
 
+    'Look for "help content"
+    'That is, look for comments intended to be included in the
+    'documnetation: Method or Property, Parameters, Returns, Remarks;
+    'also look for routines: Sub, Property, Function
     Private Sub ProcessLine(line)
-
-        'look for help: Method or Property, Parameters, Returns, Remarks
-        'also look for routines: Sub, Property, Function
-
         If LineStartsAClass(line) Then
             status = postClassStatement
             ResetHelpContent
@@ -274,19 +255,15 @@ Class DocGenerator
         Else
             GetAnyHelpContent(line)
         End If
-
     End Sub
 
+    'Write the initial html for the current script, not including the general comments nor the table header
     Private Sub WriteScriptHeader
-
-        'Write the initial html for the current script, not including the general comments nor the table header
-
         doc.WriteLine ""
         WriteLine "<div>"
         IndentIncrease
-        WriteLine "<h4 class=""heading"" id=" & id & ">" & fs.fso.GetBaseName(File.Name) & "</h4>"
+        WriteLine "<h4 class=""heading"" id=" & id & ">" & fso.GetBaseName(File.Name) & "</h4>"
         WriteLine "<div class=""detail"">"
-
         ScriptHeaderWritten = True
     End Sub
 
@@ -296,14 +273,11 @@ Class DocGenerator
         WriteLine "</div>"
     End Sub
 
+    'Write the table header, which immediately follows the script header and general comments, if any
     Private Sub WriteTableHeader
-
-        'Write the table header, which immediately follows the script header and general comments, if any
-
         If Not ScriptHeaderWritten Then
             WriteScriptHeader
         End If
-
         IndentIncrease
         WriteLine "<table>"
         IndentIncrease
@@ -316,7 +290,6 @@ Class DocGenerator
         WriteLine "<th>Comment</th>"
         IndentDecrease
         WriteLine "</tr>"
-
         TableHeaderWritten = True
     End Sub
 
@@ -326,14 +299,13 @@ Class DocGenerator
         IndentDecrease
     End Sub
 
+
+    'Write the general help content to file; don't include <p> tags if line already contains html
     Private Sub WriteGeneralContentToDoc
         If postClassStatement = status Then Exit Sub
         If Not ScriptHeaderWritten Then
             WriteScriptHeader
         End If
-
-        'write the general help content to file; don't include <p> tags if line already contains html
-
         IndentIncrease
         If Instr(generalContent, "<") Then
             WriteLine generalContent
@@ -353,16 +325,12 @@ Class DocGenerator
         IndentDecrease
     End Sub
 
+    'Write the help content for the current routine in the current script
     Private Sub WriteHelpContentToDoc
-
         If NoComments Then Exit Sub 'don't require comments
-
         If Not TableHeaderWritten Then
             WriteTableHeader
         End If
-
-        'Write the help content for the current routine in the current script
-
         WriteLine "<tr>"
         IndentIncrease
         WriteLine "<td>" & routineType & "</td>"
@@ -398,15 +366,12 @@ Class DocGenerator
 
     Private Sub ValidateHelpContent
         Dim msg
-
         If NoComments Then Exit Sub 'don't require comments
 
-        msg = "Content can't have both Method and Property content"
-
+        msg = "Content can't have both Method and Property content."
         If Len(methodContent) And Len(propertyContent) Then RaiseContentError msg
 
-        msg = "The help content descriptor of the method or property or function should equal the method or property or function name"
-
+        msg = "The help content descriptor of the method or property or function should equal the method or property or function name."
         If Len(methodContent) Then
             routineType = method
             routineContent = methodContent
@@ -414,23 +379,17 @@ Class DocGenerator
             routineType = property_
             routineContent = propertyContent
         End If
-
         If Not routineName = routineContent Then RaiseContentError msg
-
         If method = routineType Then
 
-            msg = "Methods may have parameters; may not have Returns; must have Remarks"
-
+            msg = "Methods may have parameters; may not have Returns; must have Remarks."
             If "" = remarksContent Then RaiseContentError msg
             If Len(returnsContent) Then RaiseContentError msg Else returnsContent = "N/A"
             If "" = parametersContent Then parametersContent = "None"
-
         ElseIf property_ =  routineType Then
 
             msg = "Properties may have parameters; may have Remarks; must have Returns. NOTE: Property Set and Property Let do not require a return value but still must have a 'Return or 'Returns comment."
-
             'TODO: allow Property Let and Property Set to have no return comment
-
             If "" = returnsContent Then RaiseContentError msg
             If "" = parametersContent Then parametersContent = "None"
             If "" = remarksContent Then remarksContent = "None"
@@ -441,9 +400,7 @@ Class DocGenerator
     Private Sub RaiseContentError(msg) : Err.Raise 1,, File.Name & "::" & routineName & ": " & msg : End Sub
 
     'Get help content from a line
-
     Private Sub GetAnyHelpContent(line)
-
         If HasHelpContent(method, line) And postClassStatement = status Then
             methodContent = subs(0)
         ElseIf HasHelpContent(property_, line)  And postClassStatement = status Then
@@ -463,12 +420,10 @@ Class DocGenerator
             generalContent = subs(0)
             WriteGeneralContentToDoc
         End If
-
     End Sub
 
     'Return True if a line has help content
     'Set the submatches object, which contains the help content
-
     Private Property Get HasHelpContent(helpType, line)
         If method = helpType Then
             re.Pattern = methodPattern
@@ -496,7 +451,6 @@ Class DocGenerator
     End Property
 
     'Return the desired content from a line, exclusive of white space and help-topic method
-
     Private Property Get GetSubMatches(line)
         're pattern has been set already in Property HasHelpContent
         Set oMatches = re.Execute(line)

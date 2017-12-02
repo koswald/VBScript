@@ -1,42 +1,16 @@
+<!doctype html>
 
 <!-- Generate one or more GUID values -->
 
-<hta:application icon="msdt.exe" scroll="No" innerBorder="No">
+<html>
+    <head>
+        <hta:application icon="msdt.exe" scroll="No" innerBorder="No">
+        <link rel="stylesheet" href="href/guid generator.css" />
+        <script language="VBScript" src="src/guid generator.vbs"> </script>
+    </head>
     <body>
-        <input type="text" class="guid" />
+        <input type="text" class="guid">
         <input type="button" class="button"
-            onclick="Generate()" value="Regenerate" />
-        <script language="VBScript">
-            Option Explicit
-            Dim generator, output
-            Sub Window_OnLoad
-                Self.ResizeTo 550, 140
-                document.title = "GUID Generator"
-                With CreateObject("includer")
-                    Execute(.read("GUIDGenerator"))
-                End With
-                Set generator = New GUIDGenerator
-                Set output = document.getElementsByTagName("input")(0)
-                Generate
-            End Sub
-            Sub Generate
-                output.value = generator
-                output.select
-            End Sub
-            Sub Window_OnUnLoad
-                Set output = Nothing
-                Set generator = Nothing
-            End Sub
-        </script>
+            onclick="Generate()" value="Regenerate">
     </body>
-    <style>
-        .guid {
-            width: 70%;
-            margin: 3%;
-        }
-        .button {
-            width: 20%;
-            margin: 3%;
-        }
-    </style>
-</hta:application>
+</html>

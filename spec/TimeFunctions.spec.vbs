@@ -4,8 +4,8 @@
 Option Explicit
 
 With CreateObject("includer") 'get dependencies
-    Execute(.read("TimeFunctions"))
-    Execute(.read("TestingFramework"))
+    Execute .read("TimeFunctions")
+    Execute .read("TestingFramework")
 End With
 
 Dim tf : Set tf = New TimeFunctions

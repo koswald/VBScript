@@ -4,10 +4,10 @@
 'Usage example
 '
 '' With CreateObject("includer")
-''     Execute(.read("Chooser"))
+''     Execute .read("Chooser")
 '' End With
 '' 
-'' Dim choose : choose = New Chooser
+'' Dim choose : Set choose = New Chooser
 '' MsgBox choose.folder
 '' MsgBox choose.file
 '
@@ -161,13 +161,18 @@ Class Chooser
     'Parameter: a string or an object
     'Returns a boolean
     'Remark: Waits for the specified dialog to appear, then returns False if the specified doesn't appear within the time specified by SetPatience, by default 5 (seconds). Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder. Used internally and by the unit test.
-    Function DialogHasOpened(ByVal ActivateBy)
-        If Not "String" = TypeName(ActivateBy) Then ActivateBy = ActivateBy.ProcessId
+    Function DialogHasOpened(ActivateBy)
+        Dim pActivateBy 'parsed ActivateBy
+        If "String" = TypeName(ActivateBy) Then
+            pActivateBy = ActivateBy
+        Else
+            pActivateBy = ActivateBy.ProcessId
+        End If
         Const loopPause = 10 'milliseconds
         DialogHasOpened = True
         Dim StartTime : StartTime = Now
         While patience > DateDiff("s", StartTime, Now)
-            If sh.AppActivate(ActivateBy) Then Exit Function
+            If sh.AppActivate(pActivateBy) Then Exit Function
             app.Sleep loopPause
         Wend
         DialogHasOpened = False
@@ -207,7 +212,7 @@ Class Chooser
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
         With CreateObject("includer")
-            Execute(.read("VBSApp"))
+            Execute .read("VBSApp")
         End With
         Set app = New VBSApp
         SetWindowTitle "Please select the folder"
@@ -225,7 +230,7 @@ Class Chooser
     Sub SetMaxExecLifetime(oExec, exe, timeout)
         If 0 = timeout Then Exit Sub
         With CreateObject("includer")
-            Execute(.read("WMIUtility"))
+            Execute .read("WMIUtility")
         End With
         Dim wmi : Set wmi = New WMIUtility
         wmi.TerminateProcessByIdAndNameDelayed oExec.ProcessId, exe, timeout

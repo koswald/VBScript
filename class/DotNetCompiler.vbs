@@ -11,9 +11,10 @@
 Class DotNetCompiler
 
     'Method RestartIfNotPrivileged
+    'Parameters: #1: "wscript.exe", "cscript.exe", or "mshta.exe"; #2: "/k" or "/c" (cmd.exe switch)
     'Remark: Elevates privileges if they are not already elevated. If app.GetUserInteractive is True, the user is first warned that the User Account Control dialog will open.
-    Sub RestartIfNotPrivileged
-        app.RestartIfNotPrivileged
+    Sub RestartIfNotPrivileged(host, switch)
+        app.RestartWith host, switch, False
     End Sub
 
     'Method SetTargetFolder
@@ -52,14 +53,25 @@ Class DotNetCompiler
         sourceFolder = fso.GetParentFolderName(sourceFile)
     End Sub
 
-    'Method SetExtension
-    'Parameter: newExt
-    'Remark: Sets the filename extension for the file to be compiled. Should be dll or exe. Optional. Default is dll.
-    Sub SetExtension(newExt) : ext = newExt : End Sub
+    'Method SetTargetType
+    'Parameter: newTargetType
+    'Remark: Sets the target type for the compiled file. Should be library, exe (console app), winexe, or module. Optional. Default is library.
+    Sub SetTargetType(newTargetType)
+        targetType = newTargetType
+        If "library" = LCase(targetType) Then
+            ext = "dll"
+        ElseIf "module" = LCase(targetType) Then
+            ext = "module"
+        ElseIf "winexe" = LCase(targetType) Or "exe" = LCase(targetType) Then
+            ext = "exe"
+        Else
+            Err.Raise 93,, app.GetFileName & ": Unexpected target type " & targetType
+        End If
+    End Sub
 
     'Method SetUserInteractive
     'Parameter: boolean
-    'Remark: Sets userInteractive value. Setting to True can be useful for debugging. Default is True.
+    'Remark: Sets userInteractive value. Setting to True can be useful for debugging. Default is False. Using the command-line argument -debug sets this value to True.
     Sub SetUserInteractive(newUserInteractive)
         app.SetUserInteractive newUserInteractive
     End Sub
@@ -68,65 +80,71 @@ Class DotNetCompiler
     'Returns: a boolean
     'Remark: Returns the userInteractive value.
     Property Get GetUserInteractive : GetUserInteractive = app.GetUserInteractive : End Property
-    
-    'Method SetOnUserCancelQuitApp
-    'Parameter: boolean
-    'Remark: Sets whether the calling app will quit if the user cancels out of a dialog.
-    Sub SetOnUserCancelQuitApp(newOnUserCancelQuitApp)
-        app.SetOnUserCancelQuitApp newOnUserCancelQuitApp
-    End Sub
-
-    'Property GetOnUserCancelQuitApp
-    'Returns: boolean
-    'Remark: Retrieves the boolean setting specifying whether the calling app will quit if the user cancels out of a dialog.
-    Function GetOnUserCancelQuitApp
-        GetOnUserCancelQuitApp = app.GetOnUserCancelQuitApp
-    End Function
 
     'Method GenerateKeyPair
-    'Remark: Generates a strong name key pair using Visual Studio's sn command. Requires Visual Studio to be installed. If the name for the .snk file is not specified, uses targetName.
+    'Remark: Generates a strong name key pair using Visual Studio's sn command. Requires Visual Studio to be installed. Requires the SetKeyFile(keyFile) method to have been called to set the location and filename of the key file.
     Sub GenerateKeyPair
 
         'validate
-
-        ValidateName
         ValidateVisualStudio
+        Dim msg
+        If "Empty" = TypeName(keyFile) Then
+            msg = "Use the SetKeyFile(keyFile) method to designate the key file location and name prior to calling GenerateKeyFile. Environment variables are allowed."
+            If "wscript.exe" = LCase(Right(WScript.FullName, 11)) Then sh.PopUp msg, 60, app.GetBaseName, vbSystemModal + vbExclamation
+            If "cscript.exe" = LCase(Right(WScript.FullName, 11)) Then Err.Raise 254,, msg
+            Exit Sub
+        End If
+        Dim parent : parent = Expand(fso.GetParentFolderName(fso.GetAbsolutePathName(keyFile)))
+        vfs.MakeFolder(parent)
 
         'build the arguments
-
-        args = "/c cd """ & sourceFolder & """"
-        args = args & " & """ & batFile & """"
-        args = args & " & sn -k " & targetName & ".snk"
+        args = format(Array( _
+            "/c @echo on & ""%s"" & sn -k ""%s""", _
+            batFile, keyFile _
+        ))
         If app.GetUserInteractive Then args = args & " & echo. & pause"
 
         'give an opt out
-
         msg = "Verify arguments for key generation"
         If app.GetUserInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'generate the strong name key pair
-
         sh.Run "%ComSpec% " & args, app.GetVisibility, synchronous
 
     End Sub
 
+    'initialize the variable batFile
+    'using values from DotNetCompilier.config
     Private Sub ValidateVisualStudio
-        If fso.FileExists(batFile1) Then
-            batFile = batFile1
-        ElseIf fso.FileExists(batFile2) Then
-            batFile = batFile2
-        Else
-            Err.Raise 1, scriptName, "Couldn't find either of the batch files hardcoded in """ & scriptName & """, which enable the Visual Studio strong name tool. If you don't have Visual Studio, but you have some version of the .NET framework in C:\Windows\Microsoft.NET\Framework, then you can still compile and register without a strong name: Remove or comment out the line in the .cs file with AssemblyKeyFileAttribute. You will receive a warning message when registering the .dll."
-        End If
+        Dim i
+        For i = 1 To UBound(batFiles)
+            batFile = Expand(batFiles(i))
+            If fso.FileExists(batFile) Then Exit Sub
+        Next
+        Err.Raise 25, scriptName, "Couldn't find any of the batch files configured in DotNetCompiler.config, which enable the Visual Studio strong name tool. If you don't have Visual Studio, but you have some version of the .NET framework in C:\Windows\Microsoft.NET\Framework, then you can still compile and register without a strong name: Remove or comment out the line in the .cs file with AssemblyKeyFileAttribute. You will receive a warning message when registering the .dll."
     End Sub
+
+    'expand environment variables
+    Function Expand(str)
+        Expand = sh.ExpandEnvironmentStrings(str)
+    End Function
 
     Private Sub ValidateName
         If "" = targetName Then SetTargetName fso.GetBaseName(sourceFile)
-        If "" = targetName Then Err.Raise 1, scriptName, scriptName & " needs a name. Use SetTargetName targetName, or pass in the name or the source file on the command line."
+        If "" = targetName Then Err.Raise 63, scriptName, scriptName & " needs a name. Use SetTargetName <targetName>, or pass in the name or the source file on the command line."
     End Sub
 
-    Private Sub RequireFolder(folder, message)
-        If Not fso.FolderExists(folder) Then Err.Raise 1, scriptName, message
+    'initialize the variables exeFolder32 and exeFolder64
+    'using values from DotNetCompiler.config
+    Private Sub ValidateDotNetFolders
+        Dim i, folders
+        For i = 1 To UBound(exeFolders)
+            folders = Split(exeFolders(i), "|")
+            exeFolder64 = Trim(Expand(folders(0)))
+            exeFolder32 = Trim(Expand(folders(1)))
+            If fso.FolderExists(exeFolder64) And fso.FolderExists(exeFolder32) Then Exit Sub
+        Next
+        Err.Raise 1, scriptName, "Couldn't verify the location of any of the .NET executables folder pairs in DotNetCompiler.config."
     End Sub
 
     'Method Compile
@@ -134,34 +152,32 @@ Class DotNetCompiler
     Sub Compile
 
         'validate
-
         If Not fso.FileExists(sourceFile) Then Err.Raise 1, scriptName, "Couldn't find the source file """ & sourceFile & """. Use SetSourceFile sourceFile, or pass in the source file on the command line."
         If Not "cs" = LCase(fso.GetExtensionName(sourceFile)) Then Err.Raise 1, scriptName, "A .cs file is required for compiling."
-        RequireFolder exeFolder, "Couldn't find the .NET executables folder, " & L & exeFolder
         ValidateName
 
         'build the command arguments
-
-        args = ""
-        If "dll" = LCase(ext) Then args = args & " /target:library"
+        Dim args : args = args & " /target:" & targetType
         If supressWarnings Then args = args & " /warn:0"
         If debug Then args = args & " /debug"
+        If Not "Empty" = TypeName(keyFile) Then
+            args = args & " /keyfile:""" & keyFile & """"
+        Else
+            args = args & " /delaysign"
+        End If
 
         'build the commmand string
-
-        cmd = "%ComSpec% /c cd """ & sourceFolder & """"
-        cmd = cmd & " & echo."
-        cmd = cmd & " & """ & exeFolder & "\csc.exe"" /out:" & targetName & "." & ext & refs & args & " """ & sourceFile & """"
-        cmd = cmd & " & echo. & echo OK to ignore warning CS1699 and BC41008. & echo."
+        Dim cmd : cmd = format(Array( _
+            "%ComSpec% /c cd ""%s"" & echo. & ""%s\csc.exe"" /out:%s.%s %s %s ""%s"" & echo.", _
+            sourceFolder, exeFolder, targetName, ext, refs, args, sourceFile _
+        ))
         If app.GetUserInteractive Then cmd = cmd & " & pause"
 
         'give an opt out
-
         msg = "Verify command for compiling"
         If app.GetUserInteractive Then If vbCancel = MsgBox(cmd, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'compile
-
         sh.Run cmd, app.GetVisibility, synchronous
     End Sub
 
@@ -194,16 +210,12 @@ Class DotNetCompiler
     Sub Register
 
         'validate
-
-        RequireFolder exeFolder, "Couldn't find the .NET executables folder, " & L & exeFolder
         If Not pc.Privileged Then Err.Raise 1, scriptName, "Registering a .dll requires elevated privileges."
         ValidateName
 
         'move the .dll to the target folder
-
-        Dim dllFile : dllFile = targetName & ".dll"
-        Dim sourceDllFile : sourceDllFile = sourceFolder & "\" & dllFile
-        Dim targetDllFile : targetDllFile = targetFolder & "\" & dllFile
+        Dim sourceDllFile : sourceDllFile = sourceFolder & "\" & targetName & ".dll"
+        Dim targetDllFile : targetDllFile = targetFolder & "\" & targetName & ".dll"
         If Not vfs.FoldersAreTheSame(sourceFolder, targetFolder) And Not unregistering Then
             If fso.FileExists(targetDllFile) Then
                 vfs.DeleteFile targetDllFile
@@ -212,24 +224,21 @@ Class DotNetCompiler
         End If
 
         'build the argument(s)
-
-        args = "/c cd """ & targetFolder & """"
-        args = args & " & echo. "
-        args = args & " & """ & exeFolder & "\RegAsm.exe"""
+        Dim args : args = format(Array( _
+            "/c cd ""%s"" & echo. & ""%s\RegAsm.exe"" %s.dll", _
+            targetFolder, exeFolder, targetName _
+        ))
         'args = args & " /tlb:" & targetName & ".tlb" 'create a type library
         args = args & " /codebase" 'if not putting .dll in the GAC
-        args = args & " """ & dllFile & """"
         If unregistering Then args = args & " /unregister"
         If app.GetUserInteractive Then args = args & " & echo. & pause "
 
         'give an opt out
-
         Dim action : If unregistering Then action = "unregistering" Else action = "registering"
         msg = "Verify arguments for " & action
         If app.GetUserInteractive Then If vbCancel = MsgBox(args, vbOKCancel, msg & " - " & scriptName) Then Quit
 
         'register or unregister
-
         sh.Run "%ComSpec% " & args, app.GetVisibility, synchronous
     End Sub
 
@@ -237,6 +246,7 @@ Class DotNetCompiler
     'Parameter: 64 or 32
     'Remark: Sets the bitness for the compiler or registrar to 64 or 32. Optional. Default is 64.
     Sub SetBitness(bitness)
+        ValidateDotNetFolders
         If 64 = bitness Then
             exeFolder = exeFolder64
         ElseIf 32 = bitness Then
@@ -244,49 +254,60 @@ Class DotNetCompiler
         End If
     End Sub
 
+    'Method SetKeyFile
+    'Parameter: keyFile
+    'Remark: Sets the location and name of the stong-name key pair file (.snk).
+    Sub SetKeyFile(newKeyFile)
+        keyFile = fso.GetAbsolutePathName(newKeyFile)
+    End Sub
+        
     'Method Quit
     'Remark: Gracefully quits the hta/script, if allowed by settings.
     Sub Quit
-        If app.GetOnUserCancelQuitApp Then 
-            ReleaseObjectMemory
-            app.Quit
-        End If
+        ReleaseObjectMemory
+        app.Quit
     End Sub
 
-    Private fso, sh, sa, vfs, pc, app
-    Private batFile, batFile1, batFile2
-    Private exeFolder, exeFolder64, exeFolder32
-    Private sourceFile, sourceFolder, targetFolder, targetName, ext
+    Private fso 'Scripting.FileSystemObject
+    Private sh 'WScript.Shell object
+    Private sa 'Shell.Application object
+    Private vfs 'VBSFileSystem object
+    Private pc 'PrivilegeChecker object
+    Private app 'VBSApp object
+    Private format 'StringFormatter object
+    Private batFile, batfiles
+    Private exeFolders, exeFolder, exeFolder64, exeFolder32
+    Private sourceFile, sourceFolder, targetFolder, targetName
+    Private ext, targetType
     Private scriptName, thisFile
     Private refs, args, cmd
     Private supressWarnings, debug 'compiler settings
     Private unregistering 'registration setting
     Private msg, L
     Private synchronous, visible, hidden
+    Private keyFile
 
     Sub Class_Initialize
         Set fso = CreateObject("Scripting.FileSystemObject")
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
         With CreateObject("includer")
-            Execute(.read("VBSFileSystem"))
-            Execute(.read("VBSApp"))
-            Execute(.read("PrivilegeChecker"))
+            Execute .read("VBSFileSystem")
+            Execute .read("PrivilegeChecker")
+            Execute .read("VBSApp")
             Execute(.read("DotNetCompiler.config"))
+            Execute .read("StringFormatter")
         End With
         Set vfs = New VBSFileSystem
-        Set app = New VBSApp
         Set pc = New PrivilegeChecker
+        Set app = New VBSApp
+        Set format = New StringFormatter
         'get the filespec of the calling script
         thisFile = app.GetFullName
         SetSourceFile ""
         On Error Resume Next
             SetSourceFile app.GetArg(0)
         On Error Goto 0
-        batFile1 = sh.ExpandEnvironmentStrings(batFile1) 'support environment variables in the .config file
-        batFile2 = sh.ExpandEnvironmentStrings(batFile2)
-        exeFolder32 = sh.ExpandEnvironmentStrings(exeFolder32)
-        exeFolder64 = sh.ExpandEnvironmentStrings(exeFolder64)
         scriptName = fso.GetFileName(thisFile)
         L = vbLf & vbTab
         synchronous = True
@@ -294,15 +315,14 @@ Class DotNetCompiler
         visible = 1
         unregistering = False 'defaults
         refs = ""
-        app.SetOnUserCancelQuitApp True
-        SetExtension "dll"
+        SetTargetType "library"
         SetSupressWarnings False
         SetDebug False
         SetBitness 64
         sh.CurrentDirectory = fso.GetParentFolderName(thisFile)
         SetTargetFolder sh.CurrentDirectory
         SetTargetName fso.GetBaseName(sourceFile)
-        app.SetUserInteractive True
+        app.SetUserInteractive False
         'add references from the command-line, if any
         Dim args, nextArg : args = app.GetArgs
         If UBound(args) > 0 Then
@@ -312,9 +332,9 @@ Class DotNetCompiler
                     nextArg = app.GetArg(i + 1)
                 On Error Goto 0
                 If "-ref" = LCase(app.GetArg(i)) Then If fso.FileExists(nextArg) Then AddRef nextArg
+                If "-debug" = LCase(app.GetArg(i)) Then app.SetUserInteractive True
             Next
         End If
-        Set args = Nothing
 
     End Sub
 

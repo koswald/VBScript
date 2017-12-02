@@ -1,0 +1,10 @@
+/* stylesheet for "guid generator.hta" */
+
+.guid {
+    width: 70%;
+    margin: 3%;
+}
+.button {
+    width: 20%;
+    margin: 3%;
+}

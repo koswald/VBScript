@@ -1,0 +1,9 @@
+
+# csc.exe switches for IconExtractor.cs
+
+/target:module
+/out:..\lib\IconExtractor.module
+
+# Create an XML doc
+/doc:..\lib\IconExtractor.xml
+

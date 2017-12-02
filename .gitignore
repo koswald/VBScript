@@ -5,11 +5,20 @@
 # Windows customization
 desktop.ini
 
-# compiled libraries
+# compiled files
 *.dll
+*.exe
+*.module
 
 # key files
 *.snk
 
-# documentation
-TheDocs.html
+# Visual Studio folders
+.vs
+bin
+obj
+
+# Visual Studio files
+*.csproj
+*.csproj.user
+*.sln

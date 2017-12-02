@@ -2,10 +2,10 @@
 'intended to be run with elevated privileges
 
 With CreateObject("includer")
-    Execute(.read("DotNetCompiler"))
-    Execute(.read("TestingFramework"))
-    Execute(.read("StringFormatter"))
-    Execute(.read("VBSLogger"))
+    Execute .read("DotNetCompiler")
+    Execute .read("TestingFramework")
+    Execute .read("StringFormatter")
+    Execute .read("VBSLogger")
 End With
 
 With New TestingFramework
@@ -18,8 +18,7 @@ With New TestingFramework
         Const synchronous = True
         Const hidden = 0
 
-        dnc.SetUserInteractive False
-        dnc.SetOnUserCancelQuitApp True
+        dnc.SetUserInteractive False 'set to True for debugging
 
         Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim sh : Set sh = CreateObject("WScript.Shell")
@@ -55,9 +54,9 @@ With New TestingFramework
         Dim key2b_x64 : key2b_x64 = 7 'interface for 64-bit sourceFile2
 
         Dim testFiles : testFiles = Array( _
-            sourceBase1 & ".snk", _
+            "fixture\.net\DotNetCompiler.snk", _
             sourceBase1 & ".dll", _
-            sourceBase2 & ".snk", _
+            "fixture\.net\DotNetCompiler.snk", _
             sourceBase2 & ".dll")
         Dim iSnkFile1 : iSnkFile1 = 0
         Dim iDllFile1_x64 : iDllFile1_x64 = 1
@@ -83,8 +82,8 @@ With New TestingFramework
 
     .it "should create a strong name key pair"
         dnc.SetSourceFile sourceFile1
+        dnc.SetKeyFile testFiles(iSnkFile1)
         dnc.GenerateKeyPair
-
         .AssertEqual fso.FileExists(testFiles(iSnkFile1)), True
 
     .it "should set the target folder"
@@ -102,7 +101,7 @@ With New TestingFramework
         dnc.SetTargetFolder testFolders(iTargetFolder1_x64)
         dnc.Register
         On Error Resume Next
-            EnsureKeyExists testKeys(key1a_x64)
+            EnsureKeyExists(testKeys(key1a_x64))
             .AssertEqual format(Array("%s: %s", Err, Err.Description)), "0: "
         On Error Goto 0
 
@@ -174,7 +173,6 @@ Sub RemoveFolder(folder)
                 "Error %s ( %s ) removing folder %s", _
                 Err.Number, Err.Description, folder))
             log msg
-            'WScript.StdErr.WriteLine msg
         End If
     On Error Goto 0
 End Sub
@@ -207,9 +205,9 @@ Function keyExists(key)
 End Function
 
 'Raise an error if the registry key doesn't exist
-Sub EnsureKeyExists(key)
-    sh.RegRead key & "\"
-End Sub
+Function EnsureKeyExists(key)
+    EnsureKeyExists = sh.RegRead(key & "\")
+End Function
 
 'Get the computer name
 Function GetPCName

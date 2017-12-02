@@ -2,8 +2,8 @@
 'test GUIDGenerator.vbs
 
 With CreateObject("includer")
-    Execute(.read("GUIDGenerator"))
-    Execute(.read("TestingFramework"))
+    Execute .read("GUIDGenerator")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

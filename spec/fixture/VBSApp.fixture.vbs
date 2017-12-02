@@ -67,8 +67,8 @@ End Sub
         With CreateObject("includer")
             Dim base
             Execute(.read("..\spec\VBSApp.spec.config"))
-            Execute(.read("VBSApp"))
-            Execute(.read("VBSTimer"))
+            Execute .read("VBSApp")
+            Execute .read("VBSTimer")
         End With
         Set app = New VBSApp
         Set tmr = New VBSTimer

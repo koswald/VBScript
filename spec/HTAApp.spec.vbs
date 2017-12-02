@@ -3,8 +3,8 @@
 'already tested with VBSApp.spec.vbs
 
 With CreateObject("includer")
-    Execute(.read("TestingFramework"))
-    Execute(.read("StringFormatter"))
+    Execute .read("TestingFramework")
+    Execute .read("StringFormatter")
     Dim outputFiles, htaFiles
     Execute(.read("..\spec\HTAApp.spec.config"))
 End With

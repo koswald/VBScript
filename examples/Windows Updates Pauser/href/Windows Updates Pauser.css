@@ -1,0 +1,30 @@
+
+/* stylesheet for "Windows Updates Pauser.hta*/
+
+body {
+    margin: 1%;
+    padding-left: 1%;
+    background-color: Background;
+}
+
+input {
+    height: 100%;
+}
+
+.pause {
+    width: 32%;
+}
+
+.resume {
+    width: 42%;
+}
+
+.config {
+    width: 9%;
+}
+
+.close {
+    width: 11%;
+    background-color: red;
+    border-color: red;
+}

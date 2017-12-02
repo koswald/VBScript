@@ -2,8 +2,8 @@
 'test the VBSPower class
 
 With CreateObject("includer")
-    Execute(.read("VBSPower"))
-    Execute(.read("TestingFramework"))
+    Execute .read("VBSPower")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

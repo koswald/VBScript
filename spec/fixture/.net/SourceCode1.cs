@@ -4,9 +4,6 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
 
-// remove or comment the following line if compiling without Visual Studio installed
-[assembly:AssemblyKeyFileAttribute("SourceCode1.snk")]
-
 namespace EventLogging
 {
     [Guid("2650C2AD-1BF8-495F-AB4D-6C61BD463EA4")]

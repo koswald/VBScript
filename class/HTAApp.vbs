@@ -56,7 +56,7 @@ Class HTAApp
         Set re = New RegExp
         With CreateObject("includer")
             Execute(.read("HTAApp.config"))
-            Execute(.read("StringFormatter"))
+            Execute .read("StringFormatter")
         End With
         Set format = New StringFormatter
         hidden = 0
@@ -77,7 +77,7 @@ Class HTAApp
     'Remark: Required before calling the Sleep method when AlwaysPrepareToSleep is False in HTAApp.config.
     Sub PrepareToSleep
         With CreateObject("includer")
-            Execute(.read("VBSTimer"))
+            Execute .read("VBSTimer")
             libraryPath = .LibraryPath
         End With
         Set tmr = New VBSTimer
@@ -105,7 +105,7 @@ Class HTAApp
 
         'extract from the file the tag that should contain the id
         With CreateObject("includer")
-            Execute(.read("VBSExtracter"))
+            Execute .read("VBSExtracter")
         End With
         Dim extracter : Set extracter = New VBSExtracter
         extracter.SetFile filespec

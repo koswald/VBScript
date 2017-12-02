@@ -8,7 +8,7 @@
 'Usage example:
 '
 '' With CreateObject("includer")
-''     Execute(.read("VBSEventLogger"))
+''     Execute .read("VBSEventLogger")
 '' End With
 '' 
 '' Dim logger : Set logger = New VBSEventLogger
@@ -23,6 +23,7 @@
 Class VBSEventLogger
 
     Private fs 'file system utilities
+    Private sh, fso, sa
     Private viewsFolder, VBScriptLibraryPath
     Private customViewFile, configFolder, logFile, logFolder
 
@@ -35,11 +36,16 @@ Class VBSEventLogger
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
         With CreateObject("includer")
-            Execute(.read("VBSFileSystem"))
-            Execute(.read("VBSEventLogger.config"))
+            Execute .read("VBSFileSystem")
+            On Error Resume Next
+                Execute(.read("VBSEventLogger.config"))
+            On Error Goto 0
             VBScriptLibraryPath = .LibraryPath
         End With
         Set fs = New VBSFileSystem
+        Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sa = CreateObject("Shell.Application")
 
         customViewFile = fs.ResolveTo(customViewFile, VBScriptLibraryPath) 'get the absolute path
         viewsFolder = fs.Expand(configFolder & "\Views")
@@ -48,25 +54,22 @@ Class VBSEventLogger
     'Method Log
     'Parameters: eventType, message
     'Remark: Adds an event entry to a log file with the specified message. This is the default method, so the method name is optional.
-
     Public Default Sub Log(eventType, message)
-        fs.sh.LogEvent eventType, message
+        sh.LogEvent eventType, message
     End Sub
 
     'Method CreateCustomView
     'Remark: Creates a Custom View in the Event Viewer, eventvwr.msc, named WSH Logs. The User Account Control dialog will open, in order to confirm elevation of privileges. Based on VBSEventLoggerCustomView.xml.
-
     Sub CreateCustomView
-        If Not fs.fso.FileExists(customViewFile) Then Err.Raise 1,, "Can't find source file, " & customViewFile
-        If Not fs.fso.FolderExists(viewsFolder) Then Err.Raise 1,, "Can't find target folder, " & viewsFolder
-        fs.n.sa.ShellExecute "cmd.exe", "/c copy /y """ & customViewFile & """ """ & viewsFolder & """",, "runas"
+        If Not fso.FileExists(customViewFile) Then Err.Raise 1,, "Can't find source file, " & customViewFile
+        If Not fso.FolderExists(viewsFolder) Then Err.Raise 1,, "Can't find target folder, " & viewsFolder
+        sa.ShellExecute "cmd.exe", "/c copy /y """ & customViewFile & """ """ & viewsFolder & """",, "runas"
     End Sub
 
     'Method OpenViewer
     'Remark: Opens the Windows&reg; Event Viewer, eventvwr.msc
-
     Sub OpenViewer
-        fs.sh.Run "eventvwr.msc"
+        sh.Run "eventvwr.msc"
     End Sub
 
     'Property SUCCESS
@@ -101,16 +104,19 @@ Class VBSEventLogger
 
     'Method OpenConfigFolder
     'Remark: Opens the Event Viewer configuration folder, by default "%ProgramData%\Microsoft\Event Viewer". The Views subfolder contains the .xml files defining the custom views.
-
     Sub OpenConfigFolder
-        fs.sh.Run "explorer " & configFolder
+        sh.Run "explorer " & configFolder
     End Sub
 
     'Method OpenLogFolder
     'Remark: Opens the folder with the .evtx files that contain the event logs, by default "%SystemRoot%\System32\Winevt\Logs". Application.evtx holds the WSH data.
-
     Sub OpenLogFolder
-        fs.sh.Run "explorer " & logFolder
+        sh.Run "explorer " & logFolder
     End Sub
 
+    Sub Class_Terminate
+        Set sh = Nothing
+        Set sa = Nothing
+        Set fso = Nothing
+    End Sub
 End Class

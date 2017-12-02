@@ -4,8 +4,8 @@
 'Usage example
 '
 ''    With CreateObject("includer")
-''        Execute(.read("VBSValidator"))
-''        Execute(.read("TestingFramework"))
+''        Execute .read("VBSValidator")
+''        Execute .read("TestingFramework")
 ''    End With
 '' 
 ''    Dim val : Set val = New VBSValidator 'Class Under Test
@@ -34,19 +34,6 @@
 ' See also VBSTestRunner
 '
 Class TestingFramework
-
-    Private unit, spec, T, explanation
-    Private pass, fail, result, resultPending
-
-    Private Sub Class_Initialize 'event fires on object instantiation
-        SetResultPending False
-        pass = "Pass" : fail = "Fail" : T = "      "
-        With CreateObject("includer")
-            Execute .Read("VBSHoster")
-            Dim hoster : Set hoster = New VBSHoster
-            hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
-        End With
-    End Sub
 
     Private Sub WriteLine(str)
         If Len(str) Then WScript.StdOut.WriteLine str
@@ -124,6 +111,23 @@ Class TestingFramework
         Set fso = Nothing
     End Sub
 
+    'Function MessageAppeared
+    'Paramater: a string
+    'Returns: a boolean
+    'Remaark: Waits for a dialog with the specified title-bar text (caption). If the dialog appears, acknowlege it and return True
+    Function MessageAppeared(caption, seconds, keys)
+        Dim i : i = 0
+        While (Not sh.AppActivate(caption)) And i < seconds * 250
+            WScript.Sleep 4
+            i = i + 1
+        Wend
+        If sh.AppActivate(caption) Then
+            sh.SendKeys keys
+            MessageAppeared = True
+        Else MessageAppeared = False
+        End If
+    End Function
+
     Private Sub SetResult(newResult)
         result = newResult
     End Sub
@@ -135,7 +139,25 @@ Class TestingFramework
         End If
     End Sub
 
+    Private unit, spec, T, explanation
+    Private pass, fail, result, resultPending
+    Private sh, log
+
+    Private Sub Class_Initialize 'event fires on object instantiation
+        SetResultPending False
+        pass = "Pass" : fail = "Fail" : T = "      "
+        With CreateObject("includer")
+            Execute .Read("VBSHoster")
+            Execute .Read("VBSEventLogger")
+            Dim hoster : Set hoster = New VBSHoster
+            hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
+        End With
+        Set sh = CreateObject("WScript.Shell")
+        Set log = New VBSEventLogger
+    End Sub
+
     Sub Class_Terminate
         ShowPendingResult
+        Set sh = Nothing
     End Sub
 End Class

@@ -4,34 +4,25 @@ Class VBSEnvironment
     'TODO sort array so that longer variables get expanded first:
     'Expected: %ProgramFiles%; Actual: %HOMEDRIVE%\Program Files
 
-    Private oVBSNatives, oVBSLogger
     Private defaults, filtered, nonFiltered
     Private userEnv, sysEnv, proEnv, volEnv
+    Private sh
 
     Sub Class_Initialize
-        With CreateObject("includer")
-            Execute(.read("VBSNatives"))
-        End With
-
-        Set oVBSNatives = New VBSNatives
         defaults = GetDefaults
         filtered = "filtered"
         nonFiltered = "nonFiltered"
+        Set sh = CreateObject("WScript.Shell")
         Set userEnv = sh.Environment("user")
         Set sysEnv = sh.Environment("system")
         Set proEnv = sh.Environment("process")
         Set volEnv = sh.Environment("volatile")
     End Sub
 
-    Property Get log : Set log = oVBSLogger : End Property
-    Property Get n : Set n = oVBSNatives : End Property
-    Property Get sh : Set sh = n.sh : End Property
-
     'Function Expand
     'Parameter: a string
     'Returns a string
     'Remark: Expands environment variable(s); e.g. convert %UserProfile% to C:\Users\user42
-
     Function Expand(string_)
         Expand = sh.ExpandEnvironmentStrings(string_)
     End Function
@@ -40,25 +31,20 @@ Class VBSEnvironment
     'Parameters: a string
     'Returns: a string
     'Remark: Collapses a string that may contain one or more substrings that can be shortened to an environment variable.
-
     Function Collapse(str)
-
         Dim varName, s : s = str
 
         'collapse user and system variables first, filtering out the default
         'variables, intending to collapse the ones of the most interest/import
-
         s = CollapseByVarType(s, "user", filtered)
         s = CollapseByVarType(s, "system", filtered)
         s = CollapseByVarType(s, "process", filtered)
-
         Collapse = s
     End Function
 
     'Method: CreateUserVar
     'Parameters: varName, varValue
     'Remarks: Create or set a user environment variable
-
     Sub CreateUserVar(varName, varValue)
         userEnv(varName) = varValue
     End Sub
@@ -66,20 +52,17 @@ Class VBSEnvironment
     'Method: SetUserVar
     'Parameters: varName, varValue
     'Remarks: Set or create a user environment variable
-
     Sub SetUserVar(varName, varValue) : CreateUserVar varName, varValue : End Sub
 
     'Property GetUserVar
     'Parameter: a variable name
     'Returns the variable value
     'Remark: Returns the value of the specified user environment variable
-
     Property Get GetUserVar(varName) : GetUserVar = userEnv(varName) : End Property
 
     'Method RemoveUserVar
     'Parameter: varName
     'Remark: Removes a user environment variable
-
     Sub RemoveUserVar(varName)
         userEnv.remove varName
     End Sub
@@ -87,7 +70,6 @@ Class VBSEnvironment
     'Method: CreateProcessVar
     'Parameters: varName, varValue
     'Remarks: Create a process variable
-
     Sub CreateProcessVar(varName, varValue)
         proEnv(varName) = varValue
     End Sub
@@ -95,20 +77,17 @@ Class VBSEnvironment
     'Method: SetProcessVar
     'Parameters: varName, varValue
     'Remarks: Sets or creates a process environment variable
-
     Sub SetProcessVar(varName, varValue) : CreateProcessVar varName, varValue : End Sub
 
     'Property GetProcessVar
     'Parameter: varName
     'Returns: the variable value
     'Remark: Returns the value of the specified environment variable
-
     Property Get GetProcessVar(varName) : GetProcessVar = proEnv(varName) : End Property
 
     'Method RemoveProcessVar
     'Parameter: varName
     'Remark: Removes the specified process environment variable
-
     Sub RemoveProcessVar(varName)
         proEnv.remove varName
     End Sub
@@ -116,7 +95,6 @@ Class VBSEnvironment
     'Property GetDefaults
     'Returns an array
     'Remark: Returns an array of common environment variables pre-installed with some versions of Windows&reg;. Not exhaustive.
-
     Property Get GetDefaults 'variables that often come pre-installed with Windows
         GetDefaults = Array( _
             "tmp", "temp", "AllUsersProfile", _
@@ -196,6 +174,7 @@ Class VBSEnvironment
     End Function
 
     Sub Class_Terminate
+        Set sh = Nothing
         Set userEnv = Nothing
         Set sysEnv = Nothing
         Set proEnv = Nothing

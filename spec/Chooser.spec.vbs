@@ -2,8 +2,8 @@
 'test Chooser.vbs
 
 With CreateObject("includer")
-    Execute(.read("Chooser"))
-    Execute(.read("TestingFramework"))
+    Execute .read("Chooser")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

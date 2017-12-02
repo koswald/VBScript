@@ -2,8 +2,8 @@
 'test MathConstants.vbs
 
 With CreateObject("includer")
-    Execute(.read("MathConstants"))
-    Execute(.read("TestingFramework"))
+    Execute .read("MathConstants")
+    Execute .read("TestingFramework")
 End With
 Set c = New MathConstants
 

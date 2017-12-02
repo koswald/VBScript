@@ -9,6 +9,7 @@ Class VBSHoster
     'Remark: Restart the script hosted with CScript if it isn't already hosted with CScript.exe
     Sub EnsureCScriptHost
         If Not "cscript.exe" = LCase(Right(WScript.FullName,11)) Then
+            SetSwitch "/k"
             RestartWith("cscript.exe")
         End If
     End Sub
@@ -22,47 +23,45 @@ Class VBSHoster
 
     'Method SetDefaultHostWScript
     'Remark: Sets wscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges.
-    Sub SetDefaultHostWScript : n.sa.ShellExecute "wscript.exe", "//h:wscript", "", "runas" : End Sub
+    Sub SetDefaultHostWScript : sa.ShellExecute "wscript.exe", "//h:wscript", "", "runas" : End Sub
 
     'Method SetDefaultHostCScript
     'Remark: Sets cscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges.
-    Sub SetDefaultHostCScript : n.sa.ShellExecute "wscript.exe", "//h:cscript", "", "runas" : End Sub
+    Sub SetDefaultHostCScript : sa.ShellExecute "wscript.exe", "//h:cscript", "", "runas" : End Sub
 
-    Property Get n : Set n = oVBSNatives : End Property
-
-    Private oVBSNatives, oVBSArguments, switch
+    Private args
+    Private sh, sa
+    Private switch
+    Private format
 
     Private Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer")
-            Execute(.read("VBSNatives"))
-            Execute(.read("VBSArguments"))
+            Execute .read("VBSArguments")
+            Execute .read("StringFormatter")
         End With
-        Set oVBSNatives = New VBSNatives
-        Set oVBSArguments = New VBSArguments
+        Set args = New VBSArguments
+        Set format = New StringFormatter
+        Set sh = CreateObject("WScript.Shell")
+        Set sa = CreateObject("Shell.Application")
         SetSwitch "/c"
     End Sub
 
-    'helpful when restarting the script, you likely want to pass along the original arguments...
+    'get the command-line arguments
     Private Property Get GetArgsString
-        GetArgsString = oVBSArguments.GetArgumentsString
+        GetArgsString = args.GetArgumentsString
     End Property
 
-    'restart the script with the specified host
+    'restart the script with the specified host, preserving the arguments
     Private Sub RestartWith(host)
-        Select Case LCase(host)
-        Case "cscript.exe"
-            'notify the user that something kinda weird is going on and how to fix it
-            MsgBox "This should work, but ideally, " _
-                & WScript.ScriptName & " should be started from a " _
-                & "command window with cscript." & vbLf & vbLf _
-                & "E.g. cscript //nologo " & WScript.ScriptName _
-                , vbInformation + vbSystemModal _
-                , WScript.ScriptName
-        End Select
-        n.sh.Run "%ComSpec% " & switch & " " & host & " //nologo " & WScript.ScriptName & GetArgsString
+        sh.Run format (Array( _
+            "%ComSpec% %s %s //nologo %s %s", _
+            switch, host, WScript.ScriptName, GetArgsString _
+        ))
         WScript.Quit
     End Sub
 
     Sub Class_Terminate
+        Set sh = Nothing
+        Set sa = Nothing
     End Sub
 End Class

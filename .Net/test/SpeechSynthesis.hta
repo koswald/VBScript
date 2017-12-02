@@ -1,0 +1,21 @@
+
+<!-- convert text to sound -->
+
+<!-- requires compiling third-party source code;
+     the code, instructions, and helper scripts are available at
+     https://github.com/koswald/VBScript/tree/master/examples/net2com -->
+<!-- requires "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll" or similar -->
+<!-- requires "C:\Windows\Microsoft.NET\Framework\v4.0.30319" or similar -->
+
+<hta:application
+    ApplicationName="Text to voice converter"
+    SingleInstance="Yes" 
+    scroll="no"
+    icon="msdt.exe"
+    innerborder="No"
+    id="oHta"
+    >
+
+    <script src="src/SpeechSynthesis.vbs" language="VBScript"> </script>
+
+</hta:application>

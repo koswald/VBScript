@@ -1,0 +1,10 @@
+
+# csc.exe switches for SpeechSynthesis.cs
+
+/target:library
+/out:..\lib\SpeechSynthesis.dll
+/reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
+
+# Create an XML doc
+/doc:..\lib\SpeechSynthesis.xml
+

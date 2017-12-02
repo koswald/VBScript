@@ -2,8 +2,8 @@
 'test Function123.vbs
 
 With CreateObject("includer")
-    Execute(.read("TestingFramework"))
-    Execute(.read("Function123"))
+    Execute .read("TestingFramework")
+    Execute .read("Function123")
 End With
 Dim f : Set f = New Function123
 

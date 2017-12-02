@@ -3,10 +3,9 @@
 'intended to be run with standard or elevated privileges
 
 With CreateObject("includer")
-    Execute(.read("RegistryUtility"))
-    Execute(.read("TestingFramework"))
-    Execute(.read("PrivilegeChecker"))
-    Execute(.read("VBSNatives"))
+    Execute .read("RegistryUtility")
+    Execute .read("TestingFramework")
+    Execute .read("PrivilegeChecker")
 End With
 
 With New TestingFramework
@@ -30,28 +29,29 @@ With New TestingFramework
             rootKeyName = "HKCU"
             subKey = "Software\VBScripts\AA_RegistryUtility.spec.vbs_Test_Delete_Me"
         End If
-        Dim n : Set n = New VBSNatives
+        Dim sh : Set sh = CreateObject("WScript.Shell")
+        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim valueName : valueName = "" 'an empty string specifies the key's "default value"
-        Dim valueName2 : valueName2 = n.fso.GetTempName
-        Dim value : value = n.fso.GetTempName
-        Dim value2 : value2 = n.fso.GetTempName
+        Dim valueName2 : valueName2 = fso.GetTempName
+        Dim value : value = fso.GetTempName
+        Dim value2 : value2 = fso.GetTempName
         Dim key : key = rootKeyName & "\" & subKey & "\" 'registry key format used by WScript.Shell RegRead, RegWrite, & RegDelete; this format is not used by the class under test
 
         'delete the test key, in case a previous erring test prevented its deletion
 
         On Error Resume Next
-            n.sh.RegDelete key
+            sh.RegDelete key
         On Error Goto 0
 
         'create the base test key
 
-        n.sh.RegWrite key, 1, "REG_DWORD"
+        sh.RegWrite key, 1, "REG_DWORD"
 
     .it "should write a registry string (REG_SZ) value"
 
         r.SetStringValue rootKey, subKey, valueName, value
 
-        .AssertEqual n.sh.RegRead(key), value
+        .AssertEqual sh.RegRead(key), value
 
     .it "should enumerate a key with just one value (the default value)"
 
@@ -64,7 +64,7 @@ With New TestingFramework
 
         r.SetExpandedStringValue rootKey, subKey, valueName2, value2
 
-        .AssertEqual n.sh.RegRead(key & valueName2), value2
+        .AssertEqual sh.RegRead(key & valueName2), value2
 
     .it "should read a registry string (REG_SZ) value"
 
@@ -102,4 +102,4 @@ End With
 
 'delete the test key
 
-n.sh.RegDelete key
+sh.RegDelete key

@@ -2,9 +2,8 @@
 'test RegExFunctions.vbs
 
 With CreateObject("includer")
-    Execute(.read("RegExFunctions"))
-    Execute(.read("TestingFramework"))
-    Execute(.read("VBSNatives"))
+    Execute .read("RegExFunctions")
+    Execute .read("TestingFramework")
 End With
 
 Dim r : Set r = New RegExFunctions

@@ -2,8 +2,8 @@
 'test the VBSExtracter class
 
 With CreateObject("includer")
-    Execute(.read("TestingFramework"))
-    Execute(.read("VBSExtracter"))
+    Execute .read("TestingFramework")
+    Execute .read("VBSExtracter")
     Dim inputFile
     Execute(.read("..\spec\VBSExtracter.spec.config"))
 End With

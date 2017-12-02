@@ -3,12 +3,11 @@
 'intended to be run with 64-bit cscript.exe
 
 With CreateObject("includer")
-    Execute(.read("TestingFramework"))
-    Execute(.read("WoWChecker"))
-    Execute(.read("VBSNatives"))
+    Execute .read("TestingFramework")
+    Execute .read("WoWChecker")
 End With
 
-Dim n : Set n = New VBSNatives
+Dim sh : Set sh = CreateObject("WScript.Shell")
 
 With New TestingFramework
 
@@ -30,11 +29,11 @@ With New TestingFramework
         .AssertEqual chkr, False
 
     .it "should return True with a 32-bit process on isWoW call"
-        Dim pipe : Set pipe = n.sh.Exec("%SystemRoot%\SysWoW64\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
+        Dim pipe : Set pipe = sh.Exec("%SystemRoot%\SysWoW64\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
         .AssertEqual pipe.StdOut.ReadLine, "True"
 
     .it "should return False with a 64-bit process on isWoW call"
-        Set pipe = n.sh.Exec("%SystemRoot%\System32\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
+        Set pipe = sh.Exec("%SystemRoot%\System32\cscript.exe //nologo fixture\WoWChecker.GetWoW.vbs")
         .AssertEqual pipe.StdOut.ReadLine, "False"
 
 End With

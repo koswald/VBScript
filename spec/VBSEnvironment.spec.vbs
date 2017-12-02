@@ -2,12 +2,11 @@
 'test the VBSEnvironment class
 
 With CreateObject("includer")
-    Execute(.read("VBSEnvironment"))
-    Execute(.read("VBSNatives"))
-    Execute(.read("TestingFramework"))
+    Execute .read("VBSEnvironment")
+    Execute .read("TestingFramework")
 End With
-
-Dim n : Set n = New VBSNatives
+Dim sh : Set sh = CreateObject("WScript.Shell")
+Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
 
 With New TestingFramework
 
@@ -17,18 +16,18 @@ With New TestingFramework
 
     .it "should create a user variable"
 
-        Dim varName : varName = n.fso.GetBaseName(n.fso.GetTempName)
-        Dim varValue : varValue = n.fso.GetBaseName(n.fso.GetTempName)
+        Dim varName : varName = fso.GetBaseName(fso.GetTempName)
+        Dim varValue : varValue = fso.GetBaseName(fso.GetTempName)
         'with Android Studio running on emulator,
         'creating a variable may be very slow
-        Dim userEnv : Set userEnv = n.sh.Environment("user")
+        Dim userEnv : Set userEnv = sh.Environment("user")
         env.CreateUserVar varName, varValue
 
         .AssertEqual userEnv(varName), varValue
 
-    .it "should collapse a the user variable"
+    .it "should collapse a user variable"
 
-        .AssertEqual env.collapse(n.sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
+        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
 
     .it "should remove a user variable"
 
@@ -38,9 +37,9 @@ With New TestingFramework
 
     .it "should create a process variable"
 
-        varName = n.fso.GetBaseName(n.fso.GetTempName)
-        varValue = n.fso.GetBaseName(n.fso.GetTempName)
-        Dim proEnv : Set proEnv = n.sh.Environment("process")
+        varName = fso.GetBaseName(fso.GetTempName)
+        varValue = fso.GetBaseName(fso.GetTempName)
+        Dim proEnv : Set proEnv = sh.Environment("process")
         env.CreateProcessVar varName, varValue
 
         .AssertEqual proEnv(varName), varValue
@@ -53,12 +52,14 @@ With New TestingFramework
 
     .it "should expand an environment variable"
 
-        .AssertEqual n.sh.ExpandEnvironmentStrings("%SystemRoot%"), env.Expand("%SystemRoot%")
+        .AssertEqual sh.ExpandEnvironmentStrings("%SystemRoot%"), env.Expand("%SystemRoot%")
 
 
     'garbage collection
 
         Set userEnv = Nothing
         Set proEnv = Nothing
+        Set sh = Nothing
+        Set fso = Nothing
 
 End With

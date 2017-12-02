@@ -4,8 +4,6 @@ using System.Speech.Synthesis;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-[assembly:AssemblyKeyFileAttribute("SourceCode2.snk")]
-
 namespace vox
 {
     [Guid("2650C2AD-2BF8-495F-AB4D-6C61BD463EA4")]

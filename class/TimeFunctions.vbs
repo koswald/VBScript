@@ -5,7 +5,7 @@ Class TimeFunctions
 
     Sub Class_Initialize
         With CreateObject("includer")'
-            Execute(.read("VBSValidator")) 'get class dependencies
+            Execute .read("VBSValidator") 'get class dependencies
         End With
         Set oVBSValidator = New VBSValidator
 

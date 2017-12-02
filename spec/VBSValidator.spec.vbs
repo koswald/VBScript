@@ -1,7 +1,7 @@
 
 With CreateObject("includer")
-    Execute(.read("VBSValidator"))
-    Execute(.read("TestingFramework"))
+    Execute .read("VBSValidator")
+    Execute .read("TestingFramework")
 End With
 
 Dim val : Set val = New VBSValidator 'Class Under Test

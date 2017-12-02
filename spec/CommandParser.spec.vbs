@@ -2,8 +2,8 @@
 'test the CommandParser class
 
 With CreateObject("includer")
-    Execute(.read("CommandParser"))
-    Execute(.read("TestingFramework"))
+    Execute .read("CommandParser")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

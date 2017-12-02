@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <members>
+        <member name="T:VBScripting.ComEvent">
+            <summary> Invoke VBS methods from C#. </summary>
+        </member>
+        <member name="M:VBScripting.ComEvent.InvokeComCallback(System.Object)">
+            <summary> Invokes a VBScript method. </summary>
+            <remarks> This method is not callable from VBScript. </remarks>
+            <param name="callbackRef"> A reference to a VBScript method. </param> 
+        </member>
+    </members>
+</doc>

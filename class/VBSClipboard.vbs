@@ -12,7 +12,7 @@ Class VBSClipboard
         Set sh = CreateObject("WScript.Shell")
         Set HtmlFile = CreateObject("htmlfile")
         With CreateObject("includer")
-            Execute(.read("StringFormatter"))
+            Execute .read("StringFormatter")
         End With
         Set formatter = New StringFormatter
         ClipExe = "%SystemRoot%\System32\clip.exe"
@@ -22,7 +22,6 @@ Class VBSClipboard
     'Method SetClipboardText
     'Parameter: a string
     'Remark: Copies the specified string to the clipboard. Uses clip.exe, which shipped with Windows&reg; Vista / Server 2003 through Windows 10.
-
     Sub SetClipboardText(ByVal newText)
         If newText = "" Then
             newText = "off" ' "echo off | clip" clears the clipboard
@@ -35,12 +34,11 @@ Class VBSClipboard
 
     'Private method SetClipboardTextAlt
     'Slower alternate method intended for when Trim(LCase(TheTextToCopyToTheClipboard)) = "off"
-
     Private Sub SetClipboardTextAlt(newText)
         'create a temp file with contents equal to newText,
         'then send the contents to clip.exe
         With CreateObject("includer")
-            Execute(.read("TextStreamer"))
+            Execute .read("TextStreamer")
         End With
         Dim ts : Set ts = New TextStreamer
         Dim stream : Set stream = ts.Open
@@ -54,7 +52,6 @@ Class VBSClipboard
     'Property GetClipboardText
     'Returns a string
     'Remark: Returns text from the clipboard
-
     Property Get GetClipboardText
         Const MaxTries = 5
         Dim tries : tries = 0
@@ -70,7 +67,6 @@ Class VBSClipboard
 
     'Private Function TrimHtmlFileData
     'Trims the spurious characters added to the clipboard text by the htmlfile object. Used internally and by the unit test.
-
     Private Function TrimHtmlFileData(ByVal text)
         Dim k : k = Len(TextToCut)
         If Right(text, k) = TextToCut Then text = Left(text, Len(text) - k)

@@ -1,0 +1,9 @@
+
+# csc.exe switches for ProgressBar.cs
+
+/target:library
+/out:..\lib\ProgressBar.dll
+/addmodule:..\lib\IconExtractor.module
+
+# Create an XML doc
+/doc:..\lib\ProgressBar.xml

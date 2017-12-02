@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpeechSynthesis</name>
+    </assembly>
+    <members>
+        <member name="T:VBScripting.SpeechSynthesis">
+            <summary> Provide a wrapper for the .Net speech synthesizer 
+            for VBScript, for demonstration purposes. </summary>
+        </member>
+        <member name="T:VBScripting.ISpeechSynthesis">
+            <summary> The COM interface for <see cref="T:VBScripting.SpeechSynthesis"/>. </summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.Speak(System.String)">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.Speak(System.String)"/></summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.SpeakAsync(System.String)">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.SpeakAsync(System.String)"/></summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.Pause">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.Pause"/></summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.Resume">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.Resume"/></summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.Voices">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.Voices"/></summary>
+        </member>
+        <member name="M:VBScripting.ISpeechSynthesis.Dispose">
+            <summary> COM interface member for <see cref="M:VBScripting.ISpeechSynthesis.Dispose"/></summary>
+        </member>
+        <member name="P:VBScripting.ISpeechSynthesis.Voice">
+            <summary> COM interface member for <see cref="P:VBScripting.ISpeechSynthesis.Voice"/></summary>
+        </member>
+        <member name="P:VBScripting.ISpeechSynthesis.SynthesizerState">
+            <summary> COM interface member for <see cref="P:VBScripting.ISpeechSynthesis.SynthesizerState"/></summary>
+        </member>
+        <member name="P:VBScripting.ISpeechSynthesis.State">
+            <summary> COM interface member for <see cref="P:VBScripting.ISpeechSynthesis.State"/></summary>
+        </member>
+        <member name="P:VBScripting.ISpeechSynthesis.Volume">
+            <summary> COM interface member for <see cref="P:VBScripting.ISpeechSynthesis.Volume"/></summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.#ctor">
+            <summary> Constructor </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.Speak(System.String)">
+            <summary> Convert text to speech. 
+            <para> This method is synchronous. </para> </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.SpeakAsync(System.String)">
+            <summary> Convert text to speech. 
+            <para> This method is asynchronous. </para> </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.Pause">
+            <summary> Pause speech synthesis. </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.Resume">
+            <summary> Resume speech synthesis. </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.Voices">
+            <summary> Gets an array of the names of the installed, enabled voides. 
+            <para> Each element of the array can be used to set <see cref="P:VBScripting.SpeechSynthesis.Voice"/> </para> </summary>
+        </member>
+        <member name="M:VBScripting.SpeechSynthesis.Dispose">
+            <summary> Disposes the SpeechSynthesis object's resources. </summary>
+        </member>
+        <member name="P:VBScripting.SpeechSynthesis.Voice">
+            <summary> Gets or sets the current voice by name. 
+            <para> A string. One of the names from the Voices array. </para> </summary>
+        </member>
+        <member name="P:VBScripting.SpeechSynthesis.SynthesizerState">
+            <summary> Gets the state of the SpeechSynthesizer. 
+            <para> Read only. Returns an integer equal to one of 
+            the <see cref="P:VBScripting.SpeechSynthesis.State"/> method return values. </para> </summary>
+        </member>
+        <member name="P:VBScripting.SpeechSynthesis.Volume">
+            <summary> Gets or sets the volume. 
+            <para> An integer from 0 to 100. </para> </summary>
+        </member>
+        <member name="P:VBScripting.SpeechSynthesis.State">
+            <summary> Provides an object whose methods (Ready, Paused, and Speaking) provide return values useful in VBScript for comparing to <see cref="P:VBScripting.SpeechSynthesis.SynthesizerState"/>. </summary>
+        </member>
+        <member name="T:VBScripting.SynthesizerState">
+            <summary> C# enum not intended for use by VBScript. 
+            <para> Corresponds to but not equivalent to System.Speech.Synthesis.SynthesizerState. </para> </summary>
+        </member>
+        <member name="F:VBScripting.SynthesizerState.Ready">
+            <summary> Return value can be cast to an int: 1 </summary>
+        </member>
+        <member name="F:VBScripting.SynthesizerState.Paused">
+            <summary> Return value can be cast to an int: 2 </summary>
+        </member>
+        <member name="F:VBScripting.SynthesizerState.Speaking">
+            <summary> Return value can be cast to an int: 3 </summary>
+        </member>
+        <member name="F:VBScripting.SynthesizerState.Unexpected">
+            <summary> Return value can be cast to an int: 4 </summary>
+        </member>
+        <member name="T:VBScripting.SynthesizerStateT">
+            <summary> Supplies the type required by <see cref="P:VBScripting.SpeechSynthesis.State"/>
+            <para> Not intended for use in VBScript. </para> </summary>
+        </member>
+        <member name="M:VBScripting.SynthesizerStateT.#ctor">
+            <summary> Constructor </summary>
+        </member>
+        <member name="P:VBScripting.SynthesizerStateT.Ready">
+            <summary> Returns an integer: 1 </summary>
+        </member>
+        <member name="P:VBScripting.SynthesizerStateT.Paused">
+            <summary> Returns an integer: 2 </summary>
+        </member>
+        <member name="P:VBScripting.SynthesizerStateT.Speaking">
+            <summary> Returns an integer: 3 </summary>
+        </member>
+        <member name="P:VBScripting.SynthesizerStateT.Unexpected">
+            <summary> Returns an integer: 4 </summary>
+        </member>
+    </members>
+</doc>

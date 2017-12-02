@@ -11,7 +11,7 @@ Class CommandParser
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
         With CreateObject("includer")
-            Execute(.read("GUIDGenerator"))
+            Execute .read("GUIDGenerator")
         End With
         Dim newGuid : Set newGuid = New GUIDGenerator 'provides a unique string
         SetCommand ""

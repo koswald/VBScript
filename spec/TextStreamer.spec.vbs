@@ -2,12 +2,14 @@
 'test TextStreamer.vbs
 
 With CreateObject("includer")
-    Execute(.read("TextStreamer"))
-    Execute(.read("TestingFramework"))
-    Execute(.read("VBSNatives"))
+    Execute .read("TextStreamer")
+    Execute .read("TestingFramework")
+    Execute .read("StreamConstants")
 End With
 Dim ts : Set ts = New TextStreamer
-Dim n : Set n = New VBSNatives
+Dim sc : Set sc = New StreamConstants
+Dim sh : Set sh = CreateObject("WScript.Shell")
+Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
 
 With New TestingFramework
 
@@ -15,27 +17,27 @@ With New TestingFramework
 
     .it "should expose an instance of the StreamConstants object"
 
-        .AssertEqual ts.sc.tbSystemDefault, -2
+        .AssertEqual sc.tbSystemDefault, -2
 
     .it "should expose an instance of the Scripting.FileSystemObject object"
 
-        .AssertEqual ts.fso.FileExists(WScript.ScriptFullName), True
+        .AssertEqual fso.FileExists(WScript.ScriptFullName), True
 
     .it "should expose an instance of the WScript.Shell object"
 
-        .AssertEqual ts.sh.ExpandEnvironmentStrings("%SystemRoot%"), ts.sh.ExpandEnvironmentStrings("%WinDir%")
+        .AssertEqual sh.ExpandEnvironmentStrings("%SystemRoot%"), sh.ExpandEnvironmentStrings("%WinDir%")
 
     .it "should default to Ascii format"
 
-        .AssertEqual ts.GetStreamFormat, ts.sc.tbAscii
+        .AssertEqual ts.GetStreamFormat, sc.tbAscii
 
     .it "should default to create a new file"
 
-        .AssertEqual ts.GetCreateMode, ts.sc.bCreateNew
+        .AssertEqual ts.GetCreateMode, sc.bCreateNew
 
     .it "should default to append"
 
-        .AssertEqual ts.GetStreamMode, ts.sc.iForAppending
+        .AssertEqual ts.GetStreamMode, sc.iForAppending
 
     .it "should open a file for appending and for reading"
 
@@ -64,5 +66,9 @@ With New TestingFramework
 
         stream.Close
         ts.Delete
+
+    'garbage collection
+        Set sh = Nothing
+        Set fso = Nothing
 
 End With

@@ -10,7 +10,7 @@ expected output: an empty string -->
 <hta:application>
     <script language="VBScript">
         With CreateObject("includer")
-            Execute(.read("HTAApp"))
+            Execute .read("HTAApp")
             Dim outputFiles
             Execute(.read("..\spec\HTAApp.spec.config"))
         End With

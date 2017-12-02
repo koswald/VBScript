@@ -4,7 +4,7 @@
 'Usage example
 
 ''With CreateObject("includer")
-''    Execute(.read("EncodingAnalyzer"))
+''    Execute .read("EncodingAnalyzer")
 ''End With
 '' 
 ''With New EncodingAnalyzer.SetFile(WScript.Arguments(0))

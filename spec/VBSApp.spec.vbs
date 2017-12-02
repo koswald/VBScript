@@ -22,13 +22,13 @@ Class VBSAppClassTester
         'Debug1
     End Sub
 
-    'run the specified fixture file (specified by file extension), output file (index), exe, and time (ms)
-    Private Sub RunTest(ext, index, exe, ms)
+    'run the specified fixture file (specified by file extension), output file (index), exe, and time (milliseconds)
+    Private Sub RunTest(ext, index, exe, milliseconds)
         tester.ShowPendingResult
         WScript.StdOut.WriteLine "          " & ext
         sh.Run format(Array( _
             "cmd /c %s%s ""arg zero"" ""arg one"" %s %s", _
-            base, ext, ms, ext _
+            base, ext, milliseconds, ext _
         )), hidden, Synchronous
         If Not "Empty" = TypeName(stream) Then stream.Close 'close the previous test's text stream, unless this is the first test
         Set stream = fso.OpenTextFile(outputFiles(index))
@@ -36,7 +36,7 @@ Class VBSAppClassTester
             .it "should get command-line args"
                 .AssertEqual stream.ReadLine, "arg one" 'selected arg with space
             .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, format(Array(" ""arg zero"" ""arg one"" ""%s"" ""%s""", ms, ext))
+                .AssertEqual stream.ReadLine, format(Array(" ""arg zero"" ""arg one"" ""%s"" ""%s""", milliseconds, ext))
             .it "should get the argument count"
                 .AssertEqual stream.ReadLine, "4"
             .it "should get app filespec"
@@ -55,13 +55,13 @@ Class VBSAppClassTester
                 .AssertEqual stream.ReadLine, "0"
 
                 Dim minTime, maxTime
-                minTime = ms - minusSpec
-                maxTime = ms + plusSpec
+                minTime = milliseconds - minusSpec
+                maxTime = milliseconds + plusSpec
                 
-            .it "should sleep for at least the min. time (" & minTime & "ms)"
+            .it "should sleep for at least the min. time (" & minTime & " ms)"
                 actualSleep = stream.ReadLine * 1000
                 .AssertEqual actualSleep >= minTime, True
-            .it "should sleep for at most the max. time (" & maxTime & "ms)"
+            .it "should sleep for at most the max. time (" & maxTime & " ms)"
                 .AssertEqual actualSleep <= maxTime, True
         End With
     End Sub
@@ -75,8 +75,8 @@ Class VBSAppClassTester
 
     Sub Class_Initialize
         With CreateObject("includer")
-            Execute(.read("TestingFramework"))
-            Execute(.read("StringFormatter"))
+            Execute .read("TestingFramework")
+            Execute .read("StringFormatter")
             Execute(.read("..\spec\VBSApp.spec.config"))
         End With
         Set tester = New TestingFramework

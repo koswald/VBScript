@@ -7,18 +7,17 @@
 
 Class TextStreamer
 
+    Private fs, fso, sh
     Private file, folder, fileName
     Private StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
-    Private oStreamConstants, oVBSFileSystem
 
     Sub Class_Initialize 'event fires on object instantiation
         With CreateObject("includer") 'get class dependencies
-            Execute(.read("VBSFileSystem"))
-            Execute(.read("StreamConstants"))
+            Execute .read("VBSFileSystem")
         End With
-
-        Set oVBSFileSystem = New VBSFileSystem
-        Set oStreamConstants = New StreamConstants
+        Set fs = New VBSFileSystem
+        Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
 
         SetForAppending 'set defaults for Private members
         SetCreateNew
@@ -27,19 +26,6 @@ Class TextStreamer
         SetFolder "%UserProfile%\Desktop"
         SetFileName fso.GetBaseName(fso.GetTempName) & ".txt"
     End Sub
-
-    Property Get fs : Set fs = oVBSFileSystem : End Property
-    Property Get sc : Set sc = oStreamConstants : End Property
-
-    Property Get n : Set n = fs.n : End Property
-
-    Property Get shell : Set shell = fs.sh : End Property
-    Property Get sh : Set sh = fs.sh : End Property
-
-    Property Get fso : Set fso = fs.fso : End Property
-
-    Property Get args : Set args = a : End Property
-    Property Get a : Set a = fs.a : End Property
 
     'Property Open
     'Returns an object

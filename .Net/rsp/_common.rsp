@@ -1,0 +1,11 @@
+# In-common csc.exe switches
+
+# Your strong-name key-pair file:
+# Use a name that is unique to you
+# and a location that is not in the git project.
+/keyfile:..\..\..\..\KarlOswald.snk
+
+# If you don't want to use a keyfile, 
+# then you can comment or delete the /keyfile line above
+# and uncomment /delaysign below.
+# /delaysign

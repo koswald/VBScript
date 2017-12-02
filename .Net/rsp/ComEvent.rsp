@@ -1,0 +1,10 @@
+
+# csc.exe switches for ComEvent.cs
+
+/target:module
+/out:..\lib\ComEvent.module
+/r:..\lib\Admin.dll
+
+# Create an XML doc
+/doc:..\lib\ComEvent.xml
+

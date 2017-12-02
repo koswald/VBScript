@@ -4,63 +4,49 @@
 'Registers the dependency manager scriptlet, includer.wsc, 
 'and if desired, launches the standard tests
 
+Option Explicit
+Const includer = "class\includer.wsc" 'scriptlet relative path
+Const launcher = "examples\test launchers\TestLauncherStandard.vbs"
 With New VBSSetupUtility
     .Setup
 End With
-
 Class VBSSetupUtility
+    Sub Setup
 
+        'verify that we can find the scriptlet
+        If Not fso.FileExists(scriptlet) Then
+            Err.Raise 1,, "Couldn't find the required scriptlet: " & scriptlet
+        End If
+
+        'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
+        Dim args : args = "/c " & _
+            "%SystemRoot%\System32\regsvr32 /s """ & scriptlet & """ & " & _
+            "%SystemRoot%\SysWow64\regsvr32 /s """ & scriptlet & """"
+        sa.ShellExecute "cmd", args,, "runas" 'elevate privileges
+
+        'test the setup by running the tests, if desired
+        Dim msg : msg = "Setup is finished." & vbLf & vbLf & "Before closing, Setup can run the standard tests, which may take about 30 seconds."
+        Dim mode : mode = vbOKCancel + vbInformation + vbSystemModal
+        Dim caption : caption = WScript.ScriptName
+        If vbCancel = MsgBox(msg, mode, caption) Then Exit Sub
+        sh.Run "%ComSpec% /k cscript.exe //nologo """ & launcher & """"
+    End Sub
+
+    Private scriptlet
     Private sa, sh, fso 'objects
     Private parent 'absolute, resolved folder spec
-    Private includer, launcher 'relative folder specs
 
     Sub Class_Initialize
-
-        includer = "class\includer.wsc"
-        launcher = "examples\test launchers\TestLauncher.vbs"
-
         Set sa = CreateObject("Shell.Application")
         Set sh = CreateObject("WScript.Shell")
         Set fso = CreateObject("Scripting.FileSystemObject")
         parent = fso.GetParentFolderName(WScript.ScriptFullName)
-    End Sub
-
-    Sub Setup
-
-        'Verify the command-line token
-        'This verifies that this script was called from the batch file of
-        'the same name, in order to help ensure that it was started by
-        'the 64-bit executable, if available, regardless of whether
-        'the host machine opens .vbs files with the 64-bit .exe
-        Dim msg : msg = "Please use Setup.bat to launch the Setup.vbs script"
-        If 0 = WScript.Arguments.Count Then Err.Raise 1, WScript.ScriptName, msg
-        If Not "Ensure_64-bit_executable" = WScript.Arguments(0) Then Err.Raise 2, WScript.ScriptName, msg
-
-        'verify that we can find the scriptlet
-
-        If Not fso.FileExists(parent & "\" & includer) Then
-            Err.Raise 3, WScript.ScriptName, "Couldn't find the required scriptlet: " & includer
-        End If
-
-        'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
-
-        sa.ShellExecute "cmd", "/c regsvr32 /s """ & parent & "\" & includer & """ & %SystemRoot%\SysWow64\regsvr32 /s """ & parent & "\" & includer & """",, "runas"
-
-        'test the setup by running the tests, if desired
-
-        s = "Do you want to run the tests?"
-
-        If vbCancel = MsgBox(s, vbOKCancel + vbQuestion + vbSystemModal, WScript.ScriptName) Then Exit Sub
-
-        sh.Run "%ComSpec% /k cscript.exe //nologo """ & launcher & """" & " ensure_64-bit_exe"
-
+        scriptlet = fso.GetAbsolutePathName(parent & "\" & includer)
     End Sub
 
     Sub Class_Terminate
         Set sa = Nothing
-        sh.PopUp fso.GetBaseName(WScript.ScriptName) & " is finished.", 2, WScript.ScriptName, vbInformation
-        Set fso = Nothing
         Set sh = Nothing
+        Set fso = Nothing
     End Sub
-
 End Class

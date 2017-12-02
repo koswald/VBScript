@@ -11,7 +11,7 @@ expected output: the err msg defined in the HTAApp class
 <hta:application>
     <script language="VBScript">
         With CreateObject("includer")
-            Execute(.read("HTAApp"))
+            Execute .read("HTAApp")
             Dim outputFiles
             Execute(.read("..\spec\HTAApp.spec.config"))
         End With
@@ -26,7 +26,7 @@ expected output: the err msg defined in the HTAApp class
         
         Set fso = Nothing
         stream.Close
-        Set stream = Nothing's
+        Set stream = Nothing
         Self.close
     </script>
 </hta:application>

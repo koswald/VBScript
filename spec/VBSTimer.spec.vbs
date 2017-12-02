@@ -2,8 +2,8 @@
 'test VBSTimer.vbs
 
 With CreateObject("includer")
-    Execute(.read("VBSTimer"))
-    Execute(.read("TestingFramework"))
+    Execute .read("VBSTimer")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework

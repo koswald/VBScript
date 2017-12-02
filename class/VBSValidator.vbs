@@ -33,7 +33,6 @@ Class VBSValidator
     'Parameter: an integer candidate
     'Returns a boolean
     'Remark: Returns True if the parameter is an integer subtype; False if not.
-
     Function IsInteger(pInt)
         If vbInteger = VarType(pInt) Then
             IsInteger = True

@@ -7,7 +7,7 @@
 
 '' 'test.vbs "arg one" "arg two"
 '' With CreateObject("includer")
-''     Execute(.read("VBSApp"))
+''     Execute .read("VBSApp")
 '' End With
 '' Dim app : Set app = New VBSApp
 '' MsgBox app.GetFullName,, "app.GetFullName" '..\test.vbs
@@ -19,7 +19,7 @@
 '' &lt;hta:application id="oHta" icon="msdt.exe"> &lt;!--an id must be used for command-line args functionality-->
 ''     &lt;script language="VBScript">
 ''         With CreateObject("includer")
-''             Execute(.read("VBSApp"))
+''             Execute .read("VBSApp")
 ''         End With
 ''         Dim app : Set app = New VBSApp
 ''         MsgBox app.GetFullName,, "app.GetFullName" '..\test.hta
@@ -35,7 +35,7 @@ Class VBSApp
     'Remark: Initializes members required for .hta files.
     Private Sub InitializeHtaDependencies
         With CreateObject("includer")
-            Execute(.read("HTAApp"))
+            Execute .read("HTAApp")
         End With
         Set hta = New HTAApp
     End Sub
@@ -49,7 +49,7 @@ Class VBSApp
             Exit Property
         End If
         With CreateObject("includer")
-            Execute(.read("VBSArrays"))
+            Execute .read("VBSArrays")
         End With
         Dim arrayUtility : Set arrayUtility = New VBSArrays
         If IAmAnHta Then
@@ -133,19 +133,34 @@ Class VBSApp
         End If
     End Property
 
-    'Method RestartIfNotPrivileged
-    'Remark: Elevates privileges if they are not already elevated. If userInteractive, first warns user that the User Account Control dialog will open.
-    Sub RestartIfNotPrivileged
+    'Method RestartWith
+    'Parameters: #1: host; #2: switch; #3: elevating"
+    'Remark: Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
+    Sub RestartWith(host, switch, elevating)
         With CreateObject("includer")
-            Execute(.read("PrivilegeChecker"))
+            Execute .read("VBSApp")
+            Execute .read("StringFormatter")
         End With
-        Dim pc : Set pc = New PrivilegeChecker
-        'if already privileged, skip the rest
-        If pc Then Exit Sub
-        If userInteractive Then If vbCancel = MsgBox("Restart " & GetFileName & " with elevated privileges?" & vbLf & "(The User Account Control dialog may open.)", vbOKCancel + vbQuestion, GetBaseName) Then Quit
-        'start a new instance of this script with elevated privileges
+        Dim app : Set app = New VBSApp
+        Dim format : Set format = New StringFormatter
+        Dim privileges : If elevating Then privileges = "runas" Else privileges = ""
+        Dim start
+        If "cscript" = LCase(fso.GetBaseName(host)) Then
+            start = ""
+        Else 
+            'prevent console window from needlessly persisting
+            start = "start"
+        End If
+        If elevating And userInteractive Then If vbCancel = MsgBox(format(Array( _
+            " Restart %s with elevated privileges? %s (The User Account Control dialog may open.)", _
+            GetFileName, vbLf _
+        )), vbOKCancel + vbQuestion, GetBaseName) Then Quit
+        Dim args : args = format(Array( _
+            "%s cd ""%s"" & %s %s ""%s"" %s", _
+             switch, GetParentFolderName, start, host, me.GetFullName, GetArgsString _
+        ))
         With CreateObject("Shell.Application")
-            .ShellExecute GetExe, """" & GetFullName & """ " & GetArgsString,, "runas"
+            .ShellExecute "cmd", args, GetParentFolderName, privileges
         End With
         'close the current instance of this script
         Quit
@@ -178,24 +193,9 @@ Class VBSApp
     'Remark: Returns the current visibility setting. SetUserInteractive also affects this setting.
     Property Get GetVisibility : GetVisibility = visibility : End Property
     
-    'Method SetOnUserCancelQuitApp
-    'Parameter: boolean
-    'Remark: Sets whether the calling app will quit if the user cancels out of a dialog. Default is True.
-    Sub SetOnUserCancelQuitApp(newOnUserCancelQuitApp)
-        onUserCancelQuitApp = newOnUserCancelQuitApp
-    End Sub
-
-    'Property GetOnUserCancelQuitApp
-    'Returns: boolean
-    'Remark: Retrieves the boolean setting specifying whether the calling app will quit if the user cancels out of a dialog.
-    Function GetOnUserCancelQuitApp
-        GetOnUserCancelQuitApp = onUserCancelQuitApp
-    End Function
-    
     'Method Quit
-    'Remark: Gracefully closes the hta/script, if allowed by settings.
+    'Remark: Gracefully closes the hta/script.
     Sub Quit
-        If Not GetOnUserCancelQuitApp Then Exit Sub
         ReleaseObjectMemory
         If IAmAnHta Then
             Self.close
@@ -216,24 +216,34 @@ Class VBSApp
             Err.Raise 54,, "VBSApp.Sleep: unknown app type."
         End If
     End Sub
+    
+    'Property WScriptHost
+    'Returns: "wscript.exe"
+    'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
+    Public Property Get WScriptHost : WSCriptHost = "wscript.exe" : End Property
+    
+    'Property CScriptHost
+    'Returns: "cscript.exe"
+    'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
+    Public Property Get CScriptHost : CSCriptHost = "cscript.exe" : End Property
+    
+    'Property GetHost
+    'Returns: "wscript.exe" or "cscript.exe" or "mshta.exe"
+    'Remark: Returns the current host. Can be used as an argument for the method RestartIfNotPrivileged.
+    Public Property Get GetHost : GetHost = GetExe : End Property
    
-    Private fso, sh
+    Private fso
     Private hta
     Private filespec, arguments, argumentsString
     Private IAmAnHta, IAmAScript
     Private userInteractive, visibility, visible, hidden
-    Private synchronous
-    Private onUserCancelQuitApp
-    Private tmr, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
 
     Sub Class_Initialize
         Set fso = CreateObject("Scripting.FileSystemObject")
-        Set sh = CreateObject("WScript.Shell")
         hidden = 0
         visible = 1
-        synchronous = True
+
         SetUserInteractive True
-        SetOnUserCancelQuitApp True
         InitializeAppTypes
     End Sub
     
@@ -256,7 +266,6 @@ Class VBSApp
 
     Private Sub ReleaseObjectMemory
         Set fso = Nothing
-        Set sh = Nothing
     End Sub
 
     Sub Class_Terminate

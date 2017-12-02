@@ -4,7 +4,7 @@
 'Usage example
 '
 '' With CreateObject("includer")
-''     Execute(.read("PrivilegeChecker"))
+''     Execute .read("PrivilegeChecker")
 '' End With
 '' MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker
 '
@@ -20,6 +20,7 @@ Class PrivilegeChecker
 
     Public Default Function Privileged
 
+        Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim privileged_, unprivileged_, undefined_
         privileged_ = "privileged"
         unprivileged_ = "unprivilegd"
@@ -29,7 +30,7 @@ Class PrivilegeChecker
         'create a randomly-named .bat file on the desktop
 
         With CreateObject("includer")
-            Execute(.read("TextStreamer"))
+            Execute .read("TextStreamer")
         End With
         Dim ts : Set ts = New TextStreamer
         ts.SetFile ts.GetFile & ".bat"
@@ -50,7 +51,7 @@ Class PrivilegeChecker
 
         'run the batch file and parse the output
 
-        Dim pipe : Set pipe = ts.sh.Exec("%ComSpec% /c """ & ts.fs.Expand(ts.GetFile) & """")
+        Dim pipe : Set pipe = sh.Exec("%ComSpec% /c """ & sh.ExpandEnvironmentStrings(ts.GetFile) & """")
         Dim line
         While Not pipe.StdOut.AtEndOfStream
             line = pipe.StdOut.ReadLine
@@ -60,14 +61,13 @@ Class PrivilegeChecker
                 Privileged = False
             End If
         Wend
+
+        'cleanup
         Set pipe = Nothing
-
-        'delete the .bat file
-
         ts.Delete
+        Set sh = Nothing
 
         'raise an error if privileges are undefined
-
         If Privileged = undefined_ Then Err.Raise 1,, "The PrivilegeChecker could not determine privileges"
     End Function
 

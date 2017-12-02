@@ -3,40 +3,9 @@
 
 <scriptlet> <!--
 
-'A dependency manager. Can be used in a .wsf or .vbs script.
-'
-'    <h5> How it works </h5>
-'
-'        The Read method returns the contents of a .vbs class file -- or any other text file.
-'
-'    <h5> Usage example </h5>
-'
-'' With CreateObject("includer")
-''     Execute(.read("WMIUtility.vbs")) '.vbs may be omitted
-''     Execute(.read("VBSNatives"))
-'' End With
-''
-'' Dim wmi : Set wmi = New WMIUtility
-'' Dim natives : Set natives = New VBSNatives
-'
-'        Relative paths may be used and are relative to this scriptlet's location
-
-'
-'    <h5> Registration </h5>
-'
-'        Windows&reg Script Component files must be registered. Right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>.
-'
-'        Instead,
-'        1) run the Setup.vbs in the project folder, or
-'        2) run the following commands in a command window with elevated privileges
-'
-''            regsvr32 &lt;absolute\path\to&gt;\includer.wsc
-''            %SystemRoot%\SysWow64\regsvr32 &lt;absolute\path\to&gt;\includer.wsc
-'
-''''
 -->
     <registration
-        description="VBScript includer scriptlet by Karl Oswald"
+        description="VBScript includer scriptlet"
         progid="includer"
         classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
     </registration>
@@ -44,6 +13,7 @@
     <public>
         <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
         <property name="readFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
+        <property name="GetObj" /> <!-- return an object instance given the class name -->
         <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
         <method name="SetFormatAscii" /> <!-- Set the stream format to tbAscii -->
         <method name="SetFormatUnicode" /> <!-- Set the stream format to tbUnicode -->
@@ -56,128 +26,6 @@
 
     <script language="VBScript" src="StreamConstants.vbs" />
     <script language="VBScript" src="EncodingAnalyzer.vbs" />
-    <script language="VBScript">
+    <script language="VBScript" src="includer.vbs" />
 
-        Option Explicit 'Require the declaration of variables
-
-        Const sVersion = "0.0.0"
-        Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid above
-
-        Dim n, oStreamConstants, StreamFormat, analyzer
-        Dim savedCurrentDirectory
-        Dim referencePath
-
-        InitializeMembers
-
-        Function c : Set c = oStreamConstants : End Function
-
-        Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
-        Sub SetFormatAscii : SetFormat c.tbAscii : End Sub
-        Sub SetFormatUnicode : SetFormat c.tbUnicode : End Sub
-        Sub SetFormatSystemDefault : SetFormat c.tbSystemDefault : End Sub
-
-        Private Sub InitializeMembers
-            Set n = New VBSNatives 'objects native to VBScript
-            Set oStreamConstants = New StreamConstants
-            Set analyzer = New EncodingAnalyzer
-
-            'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
-
-            Dim thisFile : thisFile = n.sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
-            thisFile = Replace(Replace(Replace(thisFile, "file:///", ""), "%20", " "), "/", "\") 'remove superfluous string
-            referencePath = n.fso.GetParentFolderName(thisFile)
-            SetFormat c.tbAscii
-        End Sub
-
-        'Function Read
-        'Parameter: a file
-        'Return the file contents
-        'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the folder where this .wsc file resides, named <code> class</code> by default. The file name extension may be omitted for .vbs files.
-
-        Function Read(file)
-
-            'Expect Ascii and Unicode file formats to be mixed together in the script library...
-
-            'If the file format is Unicode,
-            'but the StreamFormat has not been set to Unicode,
-            'then temporarily set the StreamFormat to Unicode,
-            'read the file, then restore the previous
-            'StreamFormat setting
-
-            If analyzer.SetFile(Resolve(file)).isUTF16LE Then
-                Dim savedStreamFormat
-                savedStreamFormat = StreamFormat
-                SetFormatUnicode
-                Read = PrivateRead(file)
-                StreamFormat = savedStreamFormat
-            Else
-                Read = PrivateRead(file)
-            End If
-        End Function
-
-        'Function ReadFrom
-        'Parameters: file, path
-        'Returns: file contents
-        'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files.
-
-        Function ReadFrom(relativePath, tempReferencePath)
-            Dim savedReferencePath : savedReferencePath = me.referencePath
-            me.referencePath = tempReferencePath
-            ReadFrom = Read(relativePath)
-            me.referencePath = savedReferencePath
-        End Function
-
-        'return the contents of a file
-
-        Private Function PrivateRead(file_)
-            Dim file : file = Resolve(file_)
-            If Not n.fso.FileExists(file) Then
-                file = file & ".vbs" 'add the .vbs file extension and try again
-                If Not n.fso.FileExists(file) Then
-                    Read = "MsgBox ""Couldn't find file "" & """ & file & """, vbExclamation"
-                    Exit Function
-                End If
-            End If
-            Dim stream : Set stream = n.fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
-            PrivateRead = stream.ReadAll
-            stream.Close
-            Set stream = Nothing
-        End Function
-
-        'resolve a relative path ("../lib/WMI.vbs") or no path => expanded, absolute path
-
-        Private Function Resolve(path)
-            SaveCurrentDirectory
-            n.sh.CurrentDirectory = referencePath  'set the reference folder relative paths
-
-            Resolve = n.fso.GetAbsolutePathName(n.sh.ExpandEnvironmentStrings(path))
-            RestoreCurrentDirectory
-        End Function
-
-        'Function LibraryPath
-        'Returns a folder path
-        'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read method.
-
-        Function LibraryPath : LibraryPath = referencePath : End Function
-
-        Private Sub SaveCurrentDirectory : savedCurrentDirectory = n.sh.CurrentDirectory : End Sub
-        Private Sub RestoreCurrentDirectory : n.sh.CurrentDirectory = savedCurrentDirectory : End Sub
-
-        'Wrap selected objects native to WScript/Windows
-
-        Class VBSNatives
-            Private oSh, oFSO
-            Sub Class_Initialize
-                Set oSh = CreateObject("WScript.Shell")
-                Set oFSO = CreateObject("Scripting.FileSystemObject")
-            End Sub
-            Property Get sh : Set sh = oSh : End Property
-            Property Get fso : Set fso = oFSO : End Property
-            Sub Class_Terminate 'event fires when the object instance goes out of scope
-                Set oSh = Nothing
-                Set oFSO = Nothing
-            End Sub
-        End Class
-
-    </script>
 </scriptlet>

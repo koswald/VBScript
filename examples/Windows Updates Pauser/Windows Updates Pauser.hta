@@ -1,95 +1,22 @@
+<!doctype html>
 
-<!-- Pause Windows Updates to get more bandwidth. Don't forget to resume. -->
+<!-- Pause Windows Updates to get more bandwidth.
+     Don't forget to resume. -->
 
-<hta:application id="HtaObj" 
-    scroll="No" icon="msdt.exe" border="None" innerborder="No" 
-    SingleInstance="Yes" 
-    ApplicationName="a name is required for SingleInstance" >
-
+<html>
+    <head>
+        <hta:application id="HtaObj" 
+            scroll="No" icon="msdt.exe" border="None" innerborder="No" 
+            SingleInstance="Yes" 
+            ApplicationName="a name is required for SingleInstance" >
+    </head>
     <body>
         <input type="button" value="Pause" onclick="PauseUpdates()" />
         <input type="button" value="Resume" onclick="ResumeUpdates()" />
-        <input type="button" value =" ... " onclick="wup.OpenConfigFile()" />
+        <input type="button" value =" ... " onclick="OpenConfigFile()" />
         <input type="button" value="  x  " onclick="SelfClose()" />
-        <script language="VBScript">
 
-            Sub PauseUpdates
-                wup.PauseUpdates
-                UpdateStatus(wup.GetStatus)
-            End Sub
-
-            Sub ResumeUpdates
-                wup.ResumeUpdates
-                UpdateStatus(wup.GetStatus)
-            End Sub
-
-            Sub UpdateStatus(status)
-                If "Metered" = status Then 'updates are paused
-                    Enable iResume
-                    SetTitle iResume, "Resume Windows Updates (" & wup.GetProfileName & ")"
-                    Disable iPause
-                    SetTitle iPause, ""
-                ElseIf "Unmetered" = status Then 'updates are enabled
-                    Enable iPause
-                    SetTitle iPause, "Pause Windows Updates (" & wup.GetProfileName & ")"
-                    Disable iResume
-                    SetTitle iResume, ""
-                Else
-                    self.close
-                End If
-            End Sub
-
-            Function GetInput(i) : Set GetInput = document.getElementsByTagName("input")(i) : End Function
-            Sub Enable(i) : GetInput(i).disabled = False : End Sub
-            Sub Disable(i) : GetInput(i).disabled = True : End Sub
-            Sub SetTitle(i, title) : GetInput(i).title = title : End Sub
-            Sub SetClass(i, name) : GetInput(i).className = name : End Sub
-            Sub SelfClose : self.close : End Sub
-
-            Dim wup 'WindowsUpdatesPauser
-            Const iPause = 0, iResume = 1, iConfig = 2, iClose = 3
-
-            Sub Window_OnLoad
-                Self.ResizeTo 238, 30
-                Self.MoveTo 100, 0
-                With CreateObject("includer")
-                    Execute(.read("WindowsUpdatesPauser"))
-                End With
-                Set wup = New WindowsUpdatesPauser
-                document.title = wup.GetAppName
-                SetTitle iClose, "Close the Windows Updates Pauser"
-                SetTitle iConfig, "Open the .config file"
-                SetClass iPause, "pause"
-                SetClass iResume, "resume"
-                SetClass iConfig, "config"
-                SetClass iClose, "close"
-                UpdateStatus wup.GetStatus
-            End Sub
-
-        </script>
+        <script language="VBScript" src="src/Windows Updates Pauser.vbs"> </script>
+        <link rel="stylesheet" href="href/Windows Updates Pauser.css" />
     </body>
-    <style>
-        body {
-            margin: 1%;
-            padding-left: 1%;
-            background-color: Background;
-        }
-        input {
-            height: 100%;
-        }
-        .pause {
-            width: 32%;
-        }
-        .resume {
-            width: 42%;
-        }
-        .config {
-            width: 9%;
-        }
-        .close {
-            width: 11%;
-            background-color: red;
-            border-color: red;
-        }
-    </style>
-</hta:application>
+</html>

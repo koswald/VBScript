@@ -4,7 +4,7 @@
 'Usage example
 '
 '' With CreateObject("includer")
-''     Execute(.read("RegistryUtility"))
+''     Execute .read("RegistryUtility")
 '' End With
 '' Dim reg : Set reg = New RegistryUtility
 '' Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion"

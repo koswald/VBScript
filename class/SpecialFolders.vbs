@@ -4,7 +4,7 @@
 'Usage example
 '
 ''    With CreateObject("includer")
-''        Execute(.read("SpecialFolders"))
+''        Execute .read("SpecialFolders")
 ''    End With
 '' 
 ''    Dim sf : Set sf = New SpecialFolders

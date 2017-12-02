@@ -16,8 +16,8 @@ Class VBSTroubleshooter
     
     Sub Class_Initialize
         With CreateObject("includer")
-            Execute(.read("VBSLogger"))
-            Execute(.read("StringFormatter"))
+            Execute .read("VBSLogger")
+            Execute .read("StringFormatter")
         End With
         Set log = New VBSLogger
         Set format = New StringFormatter

@@ -2,8 +2,8 @@
 'test VBSClipboard.vbs
 
 With CreateObject("includer")
-    Execute(.read("VBSClipboard"))
-    Execute(.read("TestingFramework"))
+    Execute .read("VBSClipboard")
+    Execute .read("TestingFramework")
 End With
 
 With New TestingFramework
