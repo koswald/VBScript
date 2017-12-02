@@ -29,6 +29,6 @@ Read or edit the [wiki](../../wiki)
 [logger]: class/VBSLogger.vbs
 [.wsc]: class/includer.wsc
 [.vbs]: class/includer.vbs
-[Examples]: examples/ReadMe.md
-[.NET to COM examples]: .NetToCom/ReadMe.md
+[Examples]: examples
+[.NET to COM examples]: .NetToCom
 [Setup.vbs]: Setup.vbs
