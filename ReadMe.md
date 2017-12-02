@@ -30,5 +30,5 @@ Read or edit the [wiki](../../wiki)
 [.wsc]: class/includer.wsc
 [.vbs]: class/includer.vbs
 [Examples]: examples
-[.NET to COM examples]: .NetToCom
+[.NET to COM examples]: .Net
 [Setup.vbs]: Setup.vbs
