@@ -22,3 +22,6 @@ obj
 *.csproj
 *.csproj.user
 *.sln
+
+# selected .config file(s)
+Admin.spec.config

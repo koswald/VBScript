@@ -320,7 +320,7 @@
                   <td>SetFilesToDocument</td>
                   <td>A regular expression</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which files to document: default is <strong> .*\.vbs </strong></td>
+                  <td>Optional. Specifies which files to document: default is <strong> *.vbs </strong></td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -881,6 +881,13 @@
                   <th>Parameter(s)</th>
                   <th>Return value</th>
                   <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Pattern</td>
+                  <td>wildcard</td>
+                  <td>a regex expression</td>
+                  <td>Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -1546,6 +1553,13 @@
                   <td>an array</td>
                   <td>N/A</td>
                   <td>Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>MessageAppeared</td>
+                  <td>None</td>
+                  <td>a boolean</td>
+                  <td>None</td>
                </tr>
             </table>
          </div>
@@ -2746,7 +2760,7 @@
                   <td>SetSpecPattern</td>
                   <td>a regular expression</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which file types to run. Default is .*\.spec\.vbs</td>
+                  <td>Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with | delimiter.</td>
                </tr>
                <tr>
                   <td>Method</td>

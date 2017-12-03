@@ -53,7 +53,8 @@ Class DocGenerator
     Private outputStreamer, inputStreamer 'streamer objects
     Private script, doc 'input and output text streams
     Private File 'fso File object
-    Private fs 'FileSystem object
+    Private fs 'VBSFileSystem object
+    Private rf 'RegExFunctions object
     Private re 'RegExp object
     Private sh, fso
 
@@ -78,6 +79,7 @@ Class DocGenerator
         With CreateObject("includer")
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")
+            Execute .read("RegExFunctions")
         End With
 
         'prepare output streamer
@@ -90,6 +92,7 @@ Class DocGenerator
 
         'more initialization
         Set fs = New VBSFileSystem
+        Set rf = New RegExFunctions
         Set re = New RegExp
         re.IgnoreCase = True
         Set sh = CreateObject("WScript.Shell")
@@ -130,8 +133,8 @@ Class DocGenerator
         classPattern   = "^[^'(?:End)]*(?:Class\s+)(\w+).*$"
         altClassPattern = "^\s*''''(.*)$"
 
-        'other regex patterns
-        defaultFilesToDocument = ".*\.vbs" 'file types to document, by name
+        'wildcard pattern(s)
+        defaultFilesToDocument = "*.vbs" 'file types to document, by name
 
         'enums
         method = "Method"
@@ -178,8 +181,8 @@ Class DocGenerator
 
     'Method SetFilesToDocument
     'Parameter: A regular expression
-    'Remark: Optional. Specifies which files to document: default is <strong> .*\.vbs </strong>
-    Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = newFilesToDocument : End Sub
+    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>
+    Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
     Private Sub ValidateConfiguration
         Dim msg
