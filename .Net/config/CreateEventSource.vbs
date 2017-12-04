@@ -24,9 +24,11 @@ Sub ReleaseObjectMemory
 End Sub
 
 Sub OpenTheConfigFile
-    Dim msg : msg = "If the source was created " & _
-        "successfully, then change the source in the " & _
-        "file " & configFile & " to " & source & "."
+    Dim msg : msg = format(Array( _
+        "If the source was created successfully, " & _
+        "then edit %s and change the source to %s.", _
+        configFile, source _
+    ))
     Dim mode : mode = vbInformation + vbSystemModal + vbOKCancel
     Dim caption : caption = WScript.ScriptName
     If vbOK = MsgBox(msg, mode, caption) Then
@@ -34,11 +36,15 @@ Sub OpenTheConfigFile
     End If
 End Sub
 
-Dim va, sh
+Dim va, sh, format
 
 Sub Initialize
     Set va = CreateObject("VBScripting.Admin")
     Set sh = CreateObject("WScript.Shell")
+    With CreateObject("includer")
+        Execute .read("StringFormatter")
+    End With
+    Set format = New StringFormatter
 
     If va.PrivilegesAreElevated Then Exit Sub
 
