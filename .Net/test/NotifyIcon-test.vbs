@@ -48,15 +48,15 @@ Sub OpenNotepad
 End Sub
 
 Sub ChangeTheIcon
+    If iconIndex > UBound(icons) Then iconIndex = 1
     Dim i : i = iconIndex
-    iconIndex = i + 4
-    If i > UBound(icons) Then i = 1
     ni.SetIconByDllFile icons(i), icons(i + 1), icons(i + 2)
     'change tooltip to show icon description, filename, and index
     ni.Text = format(Array( _
         "%s: %s index %s", _
         icons(i + 3), fso.GetFileName(icons(i)) , icons(i + 1) _
     ))
+    iconIndex = iconIndex + 4
 End Sub
 
 Sub CloseAndExit

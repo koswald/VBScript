@@ -37,4 +37,4 @@ bitness of the executables that open `.vbs` files:
 For intructions on one way to compile and register, 
 see the `build` folder [ReadMe].
 
-[ReadMe]: ../.NetToCom/build/ReadMe.md
+[ReadMe]: ../.Net/build/ReadMe.md
