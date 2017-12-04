@@ -25,3 +25,6 @@ obj
 
 # selected .config file(s)
 Admin.spec.config
+
+# work in progress
+SandBox*
