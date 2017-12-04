@@ -63,9 +63,8 @@ With New TestingFramework
     .it "should return multiple filespecs"
         caption = "Choose two files"
         fc.Title = caption
-        fixtureBase = "fixture\FileChooserGetFiles"
-        txtFixture = fixtureBase & ".txt"
-        vbsFixture = fixtureBase & ".vbs"
+        txtFixture = fixtureBase & "s.txt"
+        vbsFixture = fixtureBase & "s.vbs"
         anyFile = WScript.ScriptFullName
         anotherFile = fso.GetAbsolutePathName(vbsFixture)
         'run the fixture file to open the dialog
@@ -78,6 +77,7 @@ With New TestingFramework
         'prepare the input text stream
         input_.Close
         Set input_ = fso.OpenTextFile(txtFixture, ForReading)
+        'read the file and converrt contents to array of filespecs
         files = Split(input_.ReadAll, vbCrLf)
         .AssertEqual files(0) & files(1), anyFile & anotherFile
 
@@ -86,6 +86,15 @@ End With
 Cleanup
 
 Sub Cleanup
+    input_.Close
+    Dim files : files = Array("" _
+        , fixtureBase & ".txt" _
+        , fixtureBase & "s.txt" _
+    )
+    Dim i
+    For i = 1 To UBound(files)
+        If fso.FileExists(files(i)) Then fso.DeleteFile(files(i))
+    Next
     input_.Close
     Set input_ = Nothing
     Set fc = Nothing

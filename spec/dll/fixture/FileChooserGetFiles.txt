@@ -1,2 +1,0 @@
-C:\Users\test\git\v\spec\dll\FileChooser.spec.vbs
-C:\Users\test\git\v\spec\dll\fixture\FileChooserGetFiles.vbs

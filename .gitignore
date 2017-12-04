@@ -23,8 +23,8 @@ obj
 *.csproj.user
 *.sln
 
-# selected .config file(s)
-Admin.spec.config
+# .config file(s)
+*.config
 
 # work in progress
 SandBox*
