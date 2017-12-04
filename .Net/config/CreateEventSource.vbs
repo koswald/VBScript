@@ -1,5 +1,5 @@
 
-'Add the VBScripting source to the Applications log
+'Add the VBScripting source to the Application log
 
 Option Explicit : Initialize
 
