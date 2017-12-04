@@ -24,7 +24,7 @@ obj
 *.sln
 
 # .config file(s)
-# *.config
+*.config
 
 # work in progress
 SandBox*
