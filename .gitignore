@@ -23,8 +23,5 @@ obj
 *.csproj.user
 *.sln
 
-# .config file(s)
-*.config
-
 # work in progress
 SandBox*

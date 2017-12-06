@@ -3,7 +3,7 @@
 # Your strong-name key-pair file:
 # Use a name that is unique to you
 # and a location that is not in the git project.
-/keyfile:..\..\..\..\..\KarlOswald.snk
+/keyfile:..\..\..\..\..\MyName.snk
 
 # If you don't want to use a keyfile, 
 # then you can comment or delete the /keyfile line above

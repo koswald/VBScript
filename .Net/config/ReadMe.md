@@ -16,6 +16,28 @@ is recommended in order for errors to be
 logged with the `VBScripting` source name, rather 
 than with the somewhat misleading `WSH` source name.
 
+### Recommended git configuration
+
+If and when you change configurations files, it is 
+recommended that you don't check in the change 
+into the remote `git` repository.  
+
+The following command is recommended to be run 
+from git bash for that purpose, before staging the change(s).
+
+```
+git update-index --assume-unchanged **/*.config **/**/*.config **/**/exeLocations.bat **/**/generate-key-pair.vbs
+```
+
+To see the affected files, run
+
+```
+git ls-files -v | grep '^h'
+```
+
+To undo the index update, run the `update-index` command as above except with `--no-assume-unchanged`
+
+
 [exeLocations]: ./exeLocations.bat
 [DotNetCompiler.config]: ../../class/DotNetCompiler.config
 [CreateEventSource]: ./CreateEventSource.vbs

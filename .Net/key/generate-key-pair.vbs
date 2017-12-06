@@ -6,6 +6,6 @@ With CreateObject("includer")
 End With
 With New DotNetCompiler
     .SetUserInteractive True
-    .SetKeyFile "%UserProfile%\KarlOswald.snk"
+    .SetKeyFile "%UserProfile%\MyName.snk"
     .GenerateKeyPair
 End With
