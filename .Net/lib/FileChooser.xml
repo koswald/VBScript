@@ -37,6 +37,12 @@
         <member name="P:VBScripting.IFileChooser.DefaultExt">
             <summary> COM interface member for <see cref="P:VBScripting.FileChooser.DefaultExt"/>. </summary>
         </member>
+        <member name="P:VBScripting.IFileChooser.ValidateNames">
+            <summary> COM interface for <see cref="P:VBScripting.FileChooser.ValidateNames"/> </summary>
+        </member>
+        <member name="P:VBScripting.IFileChooser.CheckFileExists">
+            <summary> COM interface member for <see cref="P:VBScripting.FileChooser.CheckFileExists"/> </summary>
+        </member>
         <member name="M:VBScripting.FileChooser.#ctor">
             <summary> Constructor </summary>
         </member>
@@ -80,6 +86,12 @@
         <member name="P:VBScripting.FileChooser.DefaultExt">
             <summary> Gets or sets the file extension name that is automatically supplied when one is not specified.
             <para> A string. The default is "txt". </para> </summary>
+        </member>
+        <member name="P:VBScripting.FileChooser.ValidateNames">
+            <summary> Gets or sets whether to validate the file name(s). </summary>
+        </member>
+        <member name="P:VBScripting.FileChooser.CheckFileExists">
+            <summary> Gets or sets whether to check that the file exists. </summary>
         </member>
     </members>
 </doc>

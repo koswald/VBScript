@@ -44,7 +44,10 @@ namespace VBScripting
                     return string.Empty;
                 }
             }
-            private set { }
+            set
+            {
+                chooser.FileName = value;
+            }
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. <para> 
@@ -66,7 +69,6 @@ namespace VBScripting
                     return new string[] { }.Cast<object>().ToArray();
                 }
             }
-            private set { }
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. <para> 
@@ -88,7 +90,6 @@ namespace VBScripting
                     return string.Empty;
                 }
             }
-            private set { }
         }
 
         /// <summary> Gets or sets the selectable file types. The default is "All files (*.*)|*.*" <para>
@@ -177,6 +178,32 @@ namespace VBScripting
                 this.chooser.DefaultExt = value;
             }
         }
+
+        /// <summary> Gets or sets whether to validate the file name(s). </summary>
+        public bool ValidateNames
+        {
+            get
+            {
+                return this.chooser.ValidateNames;
+            }
+            set
+            {
+                this.chooser.ValidateNames = value;
+            }
+        }
+
+        /// <summary> Gets or sets whether to check that the file exists. </summary>
+        public bool CheckFileExists
+        {
+            get
+            {
+                return this.chooser.CheckFileExists;
+            }
+            set
+            {
+                this.chooser.CheckFileExists = value;
+            }
+        }
     }
 
     /// <summary> The COM interface for <see cref="FileChooser"/>. </summary>
@@ -186,7 +213,7 @@ namespace VBScripting
     {
         /// <summary> COM interface member for <see cref="FileChooser.FileName"/>. </summary>
         [DispId(1)]
-        string FileName { get; }
+        string FileName { get; set; }
 
         /// <summary> COM interface member for <see cref="FileChooser.FileNames"/>. </summary>
         [DispId(2)]
@@ -219,5 +246,13 @@ namespace VBScripting
         /// <summary> COM interface member for <see cref="FileChooser.DefaultExt"/>. </summary>
         [DispId(9)]
         string DefaultExt { get; set; }
+
+        /// <summary> COM interface for <see cref="FileChooser.ValidateNames"/> </summary>
+        [DispId(10)]
+        bool ValidateNames { get; set; }
+
+        /// <summary> COM interface member for <see cref="FileChooser.CheckFileExists"/> </summary>
+        [DispId(11)]
+        bool CheckFileExists { get; set; }
     }
 }

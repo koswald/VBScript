@@ -2,51 +2,41 @@
 'Setup the VBScript utilities
 
 'Registers the dependency manager scriptlet, includer.wsc, 
-'and if desired, launches the standard tests
+'and if desired, runs the standard tests
 
-Option Explicit
-Const includer = "class\includer.wsc" 'scriptlet relative path
-Const launcher = "examples\test launchers\TestLauncherStandard.vbs"
-With New VBSSetupUtility
-    .Setup
-End With
-Class VBSSetupUtility
-    Sub Setup
+Option Explicit : Initialize
 
-        'verify that we can find the scriptlet
-        If Not fso.FileExists(scriptlet) Then
-            Err.Raise 1,, "Couldn't find the required scriptlet: " & scriptlet
-        End If
+Const includer = "class\includer.wsc" 'dependency manager scriptlet
+Const tests = "examples\test launchers\TestLauncherStandard.vbs"
 
-        'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
-        Dim args : args = "/c " & _
-            "%SystemRoot%\System32\regsvr32 /s """ & scriptlet & """ & " & _
-            "%SystemRoot%\SysWow64\regsvr32 /s """ & scriptlet & """"
-        sa.ShellExecute "cmd", args,, "runas" 'elevate privileges
+'verify that we can find the scriptlet
+If Not fso.FileExists(scriptlet) Then
+    Err.Raise 1,, "Couldn't find the required scriptlet: " & scriptlet
+End If
 
-        'test the setup by running the tests, if desired
-        Dim msg : msg = "Setup is finished." & vbLf & vbLf & "Before closing, Setup can run the standard tests, which may take about 30 seconds."
-        Dim mode : mode = vbOKCancel + vbInformation + vbSystemModal
-        Dim caption : caption = WScript.ScriptName
-        If vbCancel = MsgBox(msg, mode, caption) Then Exit Sub
-        sh.Run "%ComSpec% /k cscript.exe //nologo """ & launcher & """"
-    End Sub
+'register the scriptlet for both x86 (32-bit) and x64 (64-bit)
+args = "/c " & _
+    "%SystemRoot%\System32\regsvr32 /s """ & scriptlet & """ & " & _
+    "%SystemRoot%\SysWow64\regsvr32 /s """ & scriptlet & """"
+sa.ShellExecute "cmd", args,, "runas" 'elevate privileges
 
-    Private scriptlet
-    Private sa, sh, fso 'objects
-    Private parent 'absolute, resolved folder spec
+'test the setup by running the tests, if desired
+msg = "Setup is finished." & vbLf & vbLf & "Before closing, Setup can run the standard tests, which may take about 30 seconds."
+If vbOK = MsgBox(msg, vbOKCancel + vbInformation + vbSystemModal, WScript.ScriptName) Then
+    sh.Run "%ComSpec% /k cscript.exe //nologo """ & tests & """"
+End If
 
-    Sub Class_Initialize
-        Set sa = CreateObject("Shell.Application")
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        parent = fso.GetParentFolderName(WScript.ScriptFullName)
-        scriptlet = fso.GetAbsolutePathName(parent & "\" & includer)
-    End Sub
+'Release object memory
+Set sa = Nothing
+Set sh = Nothing
+Set fso = Nothing
 
-    Sub Class_Terminate
-        Set sa = Nothing
-        Set sh = Nothing
-        Set fso = Nothing
-    End Sub
-End Class
+Dim scriptlet, args, msg
+Dim sa, sh, fso
+
+Sub Initialize
+    Set sa = CreateObject("Shell.Application")
+    Set sh = CreateObject("WScript.Shell")
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    scriptlet = fso.GetAbsolutePathName(includer)
+End Sub

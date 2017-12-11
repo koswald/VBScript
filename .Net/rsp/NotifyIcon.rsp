@@ -3,12 +3,11 @@
 
 /target:library
 /out:..\lib\NotifyIcon.dll
+
+# add module(s) and reference(s)
 /addmodule:..\lib\IconExtractor.module
 /addmodule:..\lib\ComEvent.module
 /r:..\lib\Admin.dll
-
-# add reference for MouseEventArgs
-#/reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\PresentationCore.dll"
 
 # Create an XML doc
 /doc:..\lib\NotifyIcon.xml
