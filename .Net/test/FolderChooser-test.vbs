@@ -3,12 +3,16 @@
 
 With CreateObject("VBScripting.FolderChooser")
     .Title = "Select a folder - " & WScript.ScriptName
-    .InitialDirectory = "..\.."
+    .InitialDirectory = "%UserProfile%"
     folder = .FolderName
     If "" = folder Then
-        MsgBox "Dialog cancelled"
+        ShowMsg "Dialog cancelled"
     Else
-        MsgBox "Chosen folder: " & vbLf & folder
+        ShowMsg "Chosen folder: " & vbLf & folder
     End If
 End With
+
+Sub ShowMsg(msg)
+    MsgBox msg, vbInformation, WScript.ScriptName
+End Sub
 

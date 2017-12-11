@@ -57,9 +57,10 @@ namespace VBScripting
         /// <returns>true if the user clicks OK</returns>
         private bool Show(IntPtr hWndOwner)
         {
+            var dir1 = Environment.ExpandEnvironmentVariables(_initialDirectory);
             var result = Environment.OSVersion.Version.Major >= 6
-                ? VistaDialog.Show(hWndOwner, InitialDirectory, Title)
-                : ShowXpDialog(hWndOwner, InitialDirectory, Title);
+                ? VistaDialog.Show(hWndOwner, dir1, Title)
+                : ShowXpDialog(hWndOwner, dir1, Title);
             _fileName = result.FileName;
             return result.Result;
         }
