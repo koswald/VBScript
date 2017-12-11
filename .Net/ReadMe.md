@@ -43,7 +43,7 @@ to the [ReadMe] in the `build` folder.
 [Calling back to VBScript from C#](https://stackoverflow.com/questions/1044872/calling-back-to-vbscript-from-c-sharp "stackoverflow.com")  
 [Extracting an icon from a .dll file](https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project "stackoverflow.com")  
 [Invoking the NotifyIcon context menu](https://stackoverflow.com/questions/2208690/invoke-notifyicons-context-menu "stackoverflow.com")  
-
+[Browse for a directory in C#](https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043 "stackoverflow.com")  
 
 ##### Compiler-supported code comments
 

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FolderChooser</name>
+    </assembly>
+    <members>
+        <member name="T:VBScripting.IFolderChooser">
+            <summary> COM interface for <see cref="T:VBScripting.FolderChooser"/> </summary>
+        </member>
+        <member name="P:VBScripting.IFolderChooser.InitialDirectory">
+            <summary> COM interface member for <see cref="P:VBScripting.FolderChooser.InitialDirectory"/> </summary>
+        </member>
+        <member name="P:VBScripting.IFolderChooser.Title">
+            <summary> COM interface member for <see cref="P:VBScripting.FolderChooser.Title"/> </summary>
+        </member>
+        <member name="P:VBScripting.IFolderChooser.FolderName">
+            <summary> COM interface member for <see cref="P:VBScripting.FolderChooser.FolderName"/> </summary>
+        </member>
+        <member name="T:VBScripting.FolderChooser">
+            <summary> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions </summary>
+        </member>
+        <member name="M:VBScripting.FolderChooser.Show(System.IntPtr)">
+            <param name="hWndOwner">Handle of the control or window to be the parent of the file dialog</param>
+            <returns>true if the user clicks OK</returns>
+        </member>
+        <member name="P:VBScripting.FolderChooser.InitialDirectory">
+            <summary> Gets or sets the folder at which the dialog opens. </summary>
+        </member>
+        <member name="P:VBScripting.FolderChooser.Title">
+            <summary> Gets or sets the dialog title/caption. </summary>
+        </member>
+        <member name="P:VBScripting.FolderChooser.FolderName">
+            <summary> Opens a dialog and returns the folder selected by the user. </summary>
+        </member>
+    </members>
+</doc>
