@@ -14,27 +14,27 @@ With New TestingFramework
     .it "should show message on new-source SourceExists call"
         sh.Run "fixture\AdminNonExistentSourceExists.vbs"
         .AssertEqual .MessageAppeared( _
-            "Failed to find event source", .5, "{Enter}"), True
+            "Failed to find event source", 5, "{Enter}"), True
 
     .it "should show message on new-source CreateEventSource call"
         sh.Run "fixture\AdminCreateNonExistentSource.vbs"
         .AssertEqual .MessageAppeared( _
-            "Failed to find event source", .5, "{Enter}"), True
+            "Failed to find event source", 5, "{Enter}"), True
 
     .it "should show message on known-source CreateEventSource call"
         sh.Run "fixture\AdminCreateExistingSource.vbs"
         .AssertEqual .MessageAppeared( _
-            "Source exists", .5, "{Enter}"), True
+            "Source exists", 5, "{Enter}"), True
 
     .it "should show message on deleting non-existent source"
         sh.Run "fixture\AdminDeleteNonExistentSource.vbs"
         .AssertEqual .MessageAppeared( _
-            "Failed to find event source", .5, "{Enter}"), True
+            "Failed to find event source", 5, "{Enter}"), True
 
     .it "should show message on deleting an existing source"
         sh.Run "fixture\AdminDeleteExistingSource.vbs"
         .AssertEqual .MessageAppeared( _
-            "Couldn't delete source", .5, "{Enter}"), True
+            "Couldn't delete source", 5, "{Enter}"), True
 
     .it "should read from the event log"
         Dim guid : guid = gg.Generate
