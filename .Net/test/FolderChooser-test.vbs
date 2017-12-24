@@ -4,6 +4,8 @@
 With CreateObject("VBScripting.FolderChooser")
     .Title = "Select a folder - " & WScript.ScriptName
     .InitialDirectory = "%UserProfile%"
+    .InitialDirectory = ".."
+    .InitialDirectory = "../../.."
     folder = .FolderName
     If "" = folder Then
         ShowMsg "Dialog cancelled"

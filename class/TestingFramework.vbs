@@ -139,21 +139,38 @@ Class TestingFramework
         End If
     End Sub
 
+    'Method ShowSendKeysWarning
+    'Remark: Shows a SendKeys warning: a warning message to not make mouse clicks or key presses.
+    Sub ShowSendKeysWarning
+        With CreateObject("includer")
+            Execute .read("StringFormatter")
+	        Set sendKeysWarning = sh.Exec((New StringFormatter)(Array( _
+                "wscript ""%s\TestingFramework.fixture.vbs"" ""%s""", _
+                .LibraryPath, WScript.ScriptName _
+            )))
+        End With
+    End Sub
+
+    'Method CloseSendKeysWarning
+    'Remark: Closes the SendKeys warning.
+    Sub CloseSendKeysWarning
+        sendKeysWarning.Terminate
+    End Sub
+
     Private unit, spec, T, explanation
     Private pass, fail, result, resultPending
-    Private sh, log
+    Private sh
+    Private sendKeysWarning
 
     Private Sub Class_Initialize 'event fires on object instantiation
         SetResultPending False
         pass = "Pass" : fail = "Fail" : T = "      "
         With CreateObject("includer")
             Execute .Read("VBSHoster")
-            Execute .Read("VBSEventLogger")
             Dim hoster : Set hoster = New VBSHoster
             hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
         End With
         Set sh = CreateObject("WScript.Shell")
-        Set log = New VBSEventLogger
     End Sub
 
     Sub Class_Terminate

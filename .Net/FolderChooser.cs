@@ -1,13 +1,14 @@
 
-// Wraps the VistaDialog for VBScript:
-// Opens a dialog for selecting a folder
+// Provides a user-friendly folder chooser for VBSxript
 
-// adapted slightly from https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp
+// adapted from https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043
+// by EricE https://stackoverflow.com/users/57611/erike
 
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VBScripting
 {
@@ -33,16 +34,16 @@ namespace VBScripting
         private string _title;
         private string _fileName = "";
 
-        /// <summary> Gets or sets the folder at which the dialog opens. </summary>
+        /// <summary> Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. </summary>
         public string InitialDirectory
         {
             get { return string.IsNullOrEmpty(_initialDirectory) ? Environment.CurrentDirectory : _initialDirectory; }
             set { _initialDirectory = value; }
         }
-        /// <summary> Gets or sets the dialog title/caption. </summary>
+        /// <summary> Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder". </summary>
         public string Title
         {
-            get { return _title ?? "Select a folder"; }
+            get { return string.IsNullOrEmpty(_title) ? "Select a folder" : _title; }
             set { _title = value; }
         }
         /// <summary> Opens a dialog and returns the folder selected by the user. </summary>
@@ -57,7 +58,7 @@ namespace VBScripting
         /// <returns>true if the user clicks OK</returns>
         private bool Show(IntPtr hWndOwner)
         {
-            var dir1 = Environment.ExpandEnvironmentVariables(InitialDirectory);
+            var dir1 = Path.GetFullPath(Environment.ExpandEnvironmentVariables(InitialDirectory));
             var result = Environment.OSVersion.Version.Major >= 6
                 ? VistaDialog.Show(hWndOwner, dir1, Title)
                 : ShowXpDialog(hWndOwner, dir1, Title);

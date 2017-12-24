@@ -24,10 +24,10 @@
             <returns>true if the user clicks OK</returns>
         </member>
         <member name="P:VBScripting.FolderChooser.InitialDirectory">
-            <summary> Gets or sets the folder at which the dialog opens. </summary>
+            <summary> Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. </summary>
         </member>
         <member name="P:VBScripting.FolderChooser.Title">
-            <summary> Gets or sets the dialog title/caption. </summary>
+            <summary> Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder". </summary>
         </member>
         <member name="P:VBScripting.FolderChooser.FolderName">
             <summary> Opens a dialog and returns the folder selected by the user. </summary>
