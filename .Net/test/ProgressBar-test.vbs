@@ -21,7 +21,7 @@ Sub Initialize
     Set pb = CreateObject("VBScripting.ProgressBar")
     pb.Debug = True
     pb.Caption = "testing - VBScripting.ProgressBar"
-    pb.SetIconByIcoFile "%drop%\h\+\BlueStarSVG.ico"
+    pb.SetIconByIcoFile "fixture\star.ico"
     pb.SetIconByDllFile "%SystemRoot%\System32\shell32.dll", 42
     pb.SetIconByDllFile "%SystemRoot%\System32\msdt.exe", 0
     pb.FormBorderStyle pb.BorderStyle.FixedDialog 'Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable, SizableToolWindow 
