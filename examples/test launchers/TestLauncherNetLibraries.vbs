@@ -26,9 +26,6 @@ Sub Main
        End If
     End With
 
-    'specify the time allotted for each test file to complete all of its specs, in seconds
-    testRunner.SetTimeout 4 'default is 0; 0 => indefinite
-
     'run the tests
     testRunner.Run
 End Sub
