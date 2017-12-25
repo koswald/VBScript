@@ -28,6 +28,9 @@
         <member name="P:VBScripting.IAdmin.privilegesAreElevated">
             <summary> COM interface for <see cref="P:VBScripting.Admin.privilegesAreElevated"/> </summary>
         </member>
+        <member name="P:VBScripting.IAdmin.Result">
+            <summary> COM interface for <see cref="P:VBScripting.Admin.Result"/> </summary>
+        </member>
         <member name="F:VBScripting.Admin.desiredEventSource">
             <summary> Name of the preferred event source for this namespace. </summary>
         </member>
@@ -65,6 +68,42 @@
         </member>
         <member name="P:VBScripting.Admin.privilegesAreElevated">
             <summary> VBScript wrapper for the static <see cref="P:VBScripting.Admin.PrivilegesAreElevated"/> property. </summary>
+        </member>
+        <member name="P:VBScripting.Admin.Result">
+            <summary> Returns the behavior enum object to VBScript as a property. </summary>
+        </member>
+        <member name="T:VBScripting.EventLogResultT">
+            <summary> Provides an enum of sorts for VBScript for reporting class behaviors. </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceFound">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceNotFoundLowPrivileges">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceNotFoundHighPrivileges">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceAlreadyExists">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceCreated">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceNotCreated">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceDoesNotExist">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceDeleted">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceFoundInAnotherLog">
+            <summary>  </summary>
+        </member>
+        <member name="P:VBScripting.EventLogResultT.SourceNotDeleted">
+            <summary>  </summary>
         </member>
     </members>
 </doc>

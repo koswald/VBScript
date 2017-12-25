@@ -8,33 +8,39 @@ With New TestingFramework
     .describe "Admin.dll non-elevated privileges"
         Set va = CreateObject("VBScripting.Admin")
 
+    .it "should indicate that privileges are not elevated"
+        .AssertEqual va.PrivilegesAreElevated, False
+
     .it "should verify that an EventLog source is installed"
         .AssertEqual va.SourceExists(source), True
 
-    .it "should show message on new-source SourceExists call"
-        sh.Run "fixture\AdminNonExistentSourceExists.vbs"
-        .AssertEqual .MessageAppeared( _
-            "Failed to find event source", 5, "{Enter}"), True
+    .it "should raise an error on new-source SourceExists call" 'because of low privileges
+        On Error Resume Next
+            Dim result : result = va.SourceExists("VBScripting2")
+            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+        On Error Goto 0
 
-    .it "should show message on new-source CreateEventSource call"
-        sh.Run "fixture\AdminCreateNonExistentSource.vbs"
-        .AssertEqual .MessageAppeared( _
-            "Failed to find event source", 5, "{Enter}"), True
+    .it "should raise an error on new-source CreateEventSource call"
+        On Error Resume Next
+            result = va.CreateEventSource("VBScripting2")
+            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+        On Error Goto 0
 
-    .it "should show message on known-source CreateEventSource call"
-        sh.Run "fixture\AdminCreateExistingSource.vbs"
-        .AssertEqual .MessageAppeared( _
-            "Source exists", 5, "{Enter}"), True
+    .it "should indicate a known source on CreateEventSource call"
+        result = va.CreateEventSource("WSH")
+        .AssertEqual result(1), va.Result.SourceAlreadyExists
 
-    .it "should show message on deleting non-existent source"
-        sh.Run "fixture\AdminDeleteNonExistentSource.vbs"
-        .AssertEqual .MessageAppeared( _
-            "Failed to find event source", 5, "{Enter}"), True
+    .it "should raise an error on deleting non-existent source"
+        On Error Resume Next
+            result = va.DeleteEventSource("VBScripting2")
+            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+        On Error Goto 0
 
-    .it "should show message on deleting an existing source"
-        sh.Run "fixture\AdminDeleteExistingSource.vbs"
-        .AssertEqual .MessageAppeared( _
-            "Couldn't delete source", 5, "{Enter}"), True
+    .it "should raise an error attempting to delete an existing source"
+        On Error Resume Next
+            result = va.DeleteEventSource("VBScripting")
+        .AssertEqual Err.Description, "Requested registry access is not allowed."
+        On Error Goto 0
 
     .it "should read from the event log"
         Dim guid : guid = gg.Generate
@@ -44,9 +50,6 @@ With New TestingFramework
         If UBound(logs) = -1 Then ShowLogNotFoundMessage
         .AssertEqual logs(0), "Testing VBScipting.Admin..." & _
             vbLf & "unique search string: " & guid
-
-    .it "should indicate that privileges are not elevated"
-        .AssertEqual va.PrivilegesAreElevated, False
 End With
 
 Quit
