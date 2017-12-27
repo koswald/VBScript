@@ -14,9 +14,7 @@ With New TestingFramework
 
     'setup
         Dim sh : Set sh = CreateObject("WScript.Shell")
-
-    .it "should return True, with a correctly configured test"
-        .AssertEqual chkr.isWoW, True
+        If Not chkr.isWoW Then WScript.StdOut.WriteLine "This test must be launched with the 32-bit cscript.exe." : WScript.Quit
 
     .it "should return an obj self reference on ByCheckSum call"
         Set chkr = New WowChecker.ByCheckSum
