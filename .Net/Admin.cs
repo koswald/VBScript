@@ -1,6 +1,5 @@
 
 // Miscellaneous admin functions
-// Not all may be available to VBScript
 
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -44,10 +43,8 @@ namespace VBScripting
 
         # region EventLogs
 
-        /// <summary> Name of the preferred event source for this namespace. </summary>
-        private const string desiredEventSource = "VBScripting";
-        /// <summary> Name of the default event source provided for WScript. </summary>
-        private const string alternateEventSource = "WSH";
+        /// <summary> Name of the event source for this namespace. </summary>
+        private const string eventSource = "VBScripting";
         /// <summary> Name of the log to which events will be logged. </summary>
         private const string logName = "Application";
 
@@ -56,13 +53,9 @@ namespace VBScripting
         {
             try
             {
-                new EventLog(logName, ".", desiredEventSource).WriteEntry(msg);
+                new EventLog(logName, ".", eventSource).WriteEntry(msg);
             }
-            catch(Exception e)
-            {
-                string ex = e.Message;
-                new EventLog(logName, ".", alternateEventSource).WriteEntry(msg);
-            }
+            catch { }
         }
 
         /// <summary> VBScript wrapper for the static <see cref="Log(string)"/> method. </summary>
@@ -116,7 +109,7 @@ namespace VBScripting
 
         /// <summary> Create an EventLog source. </summary>
         /// <param name="source"></param>
-        public object CreateEventSource(string source)
+        public VBScriptResult CreateEventSource(string source)
         {
             string msg;
 
@@ -127,11 +120,11 @@ namespace VBScripting
                     "The source \"{0}\" already exists.",
                     source
                 );
-                return VBScriptArrayResult
-                (
-                    msg, 
-                    this.Result.SourceAlreadyExists
-                );
+                return new VBScriptResult
+                {
+                    Message = msg,
+                    Result = this.Result.SourceAlreadyExists
+                };
             }
             // privileges already checked on this.SourceExists call
             // create the source
@@ -144,11 +137,11 @@ namespace VBScripting
                         "The EventLog source \"{0}\" has been created.",
                         source
                     );
-                    return VBScriptArrayResult
-                    (
-                        msg,
-                        this.Result.SourceCreated
-                    );
+                    return new VBScriptResult
+                    {
+                        Message = msg,
+                        Result = this.Result.SourceCreated
+                    };
                 }
                 catch (Exception e)
                 {
@@ -160,36 +153,26 @@ namespace VBScripting
                 }
             }
         }
-        // convert two result strings into a VBScript array
-        private object VBScriptArrayResult(string msg, string result)
-        {
-            List<string> list = new List<string>();
-            list.Add(msg);
-            list.Add(result);
-            return list.Cast<object>().ToArray();
-        }
         /// <summary> Delete an EventLog source and all of its logs. </summary>
         /// <param name="source"></param>
-        public object DeleteEventSource(string source)
+        public VBScriptResult DeleteEventSource(string source)
         {
             string expectedLogName = logName;
             string msg;
 
-            // check if event source exists
-            // this also checks privileges
+            // check if event source exists, and check privileges
             if (!this.SourceExists(source))
             {
                 msg = string.Format(
                     "The source \"{0}\" does not exist.",
                     source
                 );
-                return VBScriptArrayResult
-                (
-                    msg,
-                    this.Result.SourceDoesNotExist
-                );
+                return new VBScriptResult
+                {
+                    Message = msg,
+                    Result = this.Result.SourceDoesNotExist
+                };
             }
-
             // check that the source is in the expected log
             if (EventLog.LogNameFromSourceName(source, ".") != expectedLogName)
             {
@@ -198,11 +181,11 @@ namespace VBScripting
                     "but not in the expected log, \"{1}\"",
                     source, expectedLogName
                 );
-                return VBScriptArrayResult
-                (
-                    msg,
-                    this.Result.SourceFoundInAnotherLog
-                );
+                return new VBScriptResult
+                {
+                    Message = msg,
+                    Result = this.Result.SourceFoundInAnotherLog
+                };
             }
             // delete the source
             else
@@ -214,11 +197,11 @@ namespace VBScripting
                         "The EventLog source \"{0}\" has been deleted.",
                         source
                     );
-                    return VBScriptArrayResult
-                    (
-                        msg,
-                        this.Result.SourceDeleted
-                    );
+                    return new VBScriptResult
+                    {
+                        Message = msg,
+                        Result = this.Result.SourceDeleted
+                    };
                 }
                 catch (Exception e)
                 {
@@ -244,27 +227,43 @@ namespace VBScripting
     public class EventLogResultT // T for Type
     {
         /// <summary>  </summary>
-        public string SourceFound { get { return "Source was found."; } } // when checking existence
+        public string SourceFound {
+            get { return "Source was found"; } } // when checking existence
         /// <summary>  </summary>
-        public string SourceNotFoundLowPrivileges { get { return "Source not found; privileges are not elevated."; } } // Can't determine whether source exists
+        public string SourceNotFoundLowPrivileges {
+            get { return "Source not found; privileges are not elevated"; } } // Can't determine whether source exists
         /// <summary>  </summary>
-        public string SourceNotFoundHighPrivileges { get { return "Source not found; privileges are elevated."; } } // source doesn't exist
-
+        public string SourceNotFoundHighPrivileges {
+            get { return "Source not found; privileges are elevated"; } } // source doesn't exist
         /// <summary>  </summary>
-        public string SourceAlreadyExists { get { return "Source already exists."; } } // when attempting to create
+        public string SourceAlreadyExists {
+            get { return "Source already exists"; } } // when attempting to create
         /// <summary>  </summary>
-        public string SourceCreated { get { return "Source was created."; } }
+        public string SourceCreated {
+            get { return "Source was created"; } }
         /// <summary>  </summary>
-        public string SourceNotCreated { get { return "Source was not created."; } }
-
+        public string SourceNotCreated {
+            get { return "Source was not created"; } }
         /// <summary>  </summary>
-        public string SourceDoesNotExist { get { return "Source does not exist."; } } // attempting to delete
+        public string SourceDoesNotExist {
+            get { return "Source does not exist"; } } // attempting to delete
         /// <summary>  </summary>
-        public string SourceDeleted { get { return "Source was deleted successfully."; } }
+        public string SourceDeleted {
+            get { return "Source was deleted successfully"; } }
         /// <summary>  </summary>
-        public string SourceFoundInAnotherLog { get { return "Source was found in another log."; } }
+        public string SourceFoundInAnotherLog {
+            get { return "Source was found in another log"; } }
         /// <summary>  </summary>
-        public string SourceNotDeleted { get { return "Source was not deleted."; } }
+        public string SourceNotDeleted {
+            get { return "Source was not deleted"; } }
+    }
+    /// <summary> Result for returning to VBScript. </summary>
+    public class VBScriptResult
+    {
+        /// <summary>  </summary>
+        public string Message { get; set; }
+        /// <summary>  </summary>
+        public string Result { get; set; }
     }
 
     /// <summary> COM interface for <see cref="Admin"/> </summary>
@@ -274,11 +273,11 @@ namespace VBScripting
     {
         /// <summary> COM interface member for <see cref="Admin.CreateEventSource(string)"/> </summary>
         [DispId(1)]
-        object CreateEventSource(string source);
+        VBScriptResult CreateEventSource(string source);
 
         /// <summary> COM interface member for <see cref="Admin.DeleteEventSource(string)"/> </summary>
         [DispId(2)]
-        object DeleteEventSource(string source);
+        VBScriptResult DeleteEventSource(string source);
 
         /// <summary> ComInterface member for <see cref="Admin.SourceExists(string)"/> </summary>
         [DispId(3)]

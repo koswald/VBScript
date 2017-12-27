@@ -7,28 +7,34 @@ With New TestingFramework
 
     .describe "Admin.dll elevated privileges"
 
+    .it "should indicate privileges are elevated"
+        .AssertEqual va.PrivilegesAreElevated, True
+
     .it "should verify that an EventLog source is installed"
         .AssertEqual va.SourceExists(source), True
 
-    .it "should show error message on known-source CreateEventSource call"
-        sh.Run "fixture\AdminCreateExistingSource.vbs"
-        .AssertEqual .MessageAppeared("Source exists", .5, "{Enter}"), True
+    .it "should indicate if a source already exists on CreateEventSource call"
+        Set result = va.CreateEventSource("WSH")
+        .AssertEqual result.Result, va.Result.SourceAlreadyExists
 
-    .it "should show a success message after creating a source"
-        sh.Run "fixture\AdminCreateNonExistentSource.vbs"
-        .AssertEqual .MessageAppeared("Source created", .5, "{Enter}"), True
+    .it "should indicate if a source doesn't exist on DeleteEventSource call"
+        Set result = va.DeleteEventSource("VBScripting2")
+        .AssertEqual result.Result, va.Result.SourceDoesNotExist
 
-    .it "should indicate privileges are elevated"
-        .AssertEqual va.PrivilegesAreElevated, True
+    .it "should indicate success after creating a source"
+        Set result = va.CreateEventSource("VBScripting2")
+        .AssertEqual result.Result, va.Result.SourceCreated
+
+    .it "should indicate success after deleting a source"
+        Set result = va.DeleteEventSource("VBScripting2")
+        .AssertEqual result.Result, va.Result.SourceDeleted
 End With
 
 Quit
 
 Sub Cleanup
     If va.SourceExists("VBScripting2") Then
-        sh.Run "fixture\AdminDeleteTestSource.vbs"
-        Dim tf : Set tf = New TestingFramework
-        Dim x : x = tf.MessageAppeared("Source deleted", 1, "{Enter}")
+        va.DeleteEventSource "VBScripting2"
     End If
 End Sub
 
@@ -41,11 +47,13 @@ End Sub
 Sub ReleaseObjectMemory
     Set va = Nothing
     Set sh = Nothing
+    Set result = Nothing
 End Sub
 
-Dim va, sh, log
-Dim source 'initialized from Admin.spec.config
+Const source = "VBScripting"
 Const elevated = True
+Dim va, sh, log
+Dim result
 
 Sub Initialize
     With CreateObject("includer")
@@ -53,7 +61,6 @@ Sub Initialize
         Execute .read("VBSEventLogger")
         Execute .read("VBSApp")
         ExecuteGlobal .read("TestingFramework")
-        Execute .read("../spec/dll/Admin.spec.config")
     End With
     Dim pc : Set pc = New PrivilegeChecker
     Set log = New VBSEventLogger
