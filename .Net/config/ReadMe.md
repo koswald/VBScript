@@ -6,15 +6,15 @@
 
 The locations of `csc.exe` and `regasm.exe` 
 are configurable in [exeLocations].bat
-and [DotNetCompiler.config].
+and [DotNetCompiler.config]. 
 
 ### CreateEventSource.vbs
 
-After compiling and registering the libraries (see 
-the `build` folder [ReadMe]), running [CreateEventSource].vbs 
-is recommended in order for errors to be 
-logged with the `VBScripting` source name, rather 
-than with the somewhat misleading `WSH` source name.
+`CreateEventSource.vbs` is called automatically by running 
+`Setup.vbs` in the project's root folder, adding the event 
+log source `VBScripting` to the Application log. 
+It can be run again as a quick way to verify that the 
+source has been added.
 
 ### Recommended git configuration
 

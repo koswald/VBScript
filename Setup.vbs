@@ -1,7 +1,11 @@
 
 'Setup the VBScript utilities
 
-'Registers the dependency manager scriptlet, includer.wsc
+'Registers the dependency manager scriptlet, includer.wsc,
+'and builds the VBScript extension libraries.
+
+'The User Account Control dialog will open
+'to verify elevation of privileges.
 
 Option Explicit : Initialize
 

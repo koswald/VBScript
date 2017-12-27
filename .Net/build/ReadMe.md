@@ -22,11 +22,12 @@ The location of these `.exe` files is configurable in
 by running the required `Setup.vbs` in the project 
 folder.  
 
-2. To (re)compile and (re)register one or more `.cs` files, 
+2. To (re)compile and (re)register one or more of the `.cs` files, 
 open the `build` folder and drag and drop the `.bat` file(s) 
-having the same name as the `.cs` file(s) onto `build.vbs`. 
-Or else double-click `build.vbs` to (re)compile and (re)register 
-all.  
+having the same name as the `.cs` file(s) onto `build.vbs`.  
+
+3. To (re)compile and (re)register 
+all, double-click `build.vbs`.  
 
 By default, the compiler doesn't sign the output files, as 
 recommended by Microsoft, so (ignorable) warnings will be 
@@ -48,7 +49,7 @@ In order to sign the output files,
 [DotNetCompiler.config]: ../../class/DotNetCompiler.config "../../class/DotNetCompiler.config"
 [exeLocations.bat]: ../config/exeLocations.bat "../config/exeLocations.bat"
 [_common.rsp]: ../rsp/_common.rsp
-[config folder ReadMe]: ../config/ReadMe.md
+[config folder ReadMe]: ../config/ReadMe.md#recommended-git-configuration
 
 ### Links
 

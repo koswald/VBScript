@@ -10,11 +10,11 @@ The `.Net` folder contains C# examples for creating
 Among the options for building (compiling and registering) the class libraries are
  
 1. Use Visual Studio.  
-1. Run [Setup.vbs] in the project folder.  
-1. Run `build.vbs` in the [build] folder.  
-1. Run one or more of the `.bat` scripts in the [build] folder from an elevated 
+2. Run [Setup.vbs] in the project folder.  
+3. Run `build.vbs` in the [build] folder.  
+4. Run one or more of the `.bat` scripts in the [build] folder from an elevated 
    command prompt.  
-1. Drag one or more of the `.bat` scripts in the [build] folder 
+5. Drag one or more of the `.bat` scripts in the [build] folder 
    onto `build.vbs`.
 
 #### Features
@@ -22,17 +22,17 @@ Among the options for building (compiling and registering) the class libraries a
 Features include the following:  
 
 1) [Manual tests] that demonstrate functionality.
-1) For an example of a COM event, or callback, see [NotifyIcon.cs]
+2) For an example of a COM event, or callback, see [NotifyIcon.cs]
    and [NotifyIcon-test.vbs].
-1) For an example of a progress bar (for illustration only), 
+3) For an example of a progress bar (for illustration only), 
    see [ProgressBar.cs] and [ProgressBar-test.vbs]. 
-1) For a simple example of making a C# method available to 
+4) For a simple example of making a C# method available to 
    VBScript, see [EventLogger.cs].
-1) For an example of a class requiring an assembly reference, and 
+5) For an example of a class requiring an assembly reference, and 
    an illustration of how to do it, see [SpeechSynthesis.cs],
    [SpeechSynthesis.rsp].
-1) For a user-friendly file chooser dialog, see [FileChooser.cs].
-1) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
+6) For a user-friendly file chooser dialog, see [FileChooser.cs].
+7) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
    and [FolderChooser2.cs]. These two files are adapted from 
    stackoverflow.com posts. The exposed features of the two are 
    identical. `FolderChooser2` is a backup in case `FolderChooser.cs`
