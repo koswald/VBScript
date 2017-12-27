@@ -1,8 +1,14 @@
 # Since this is a Windows project, and not cross-platform, 
 # it is desirable to have crlf line endings in the working tree,
 # particularly when the project is downloaded in .zip format.
-* text eol=crlf
+*       text eol=crlf
 
-# Don't normalize certain files.
-*.png -text
-*.jpg -text
+# Don't normalize certain files
+*.png  -text
+*.jpg  -text
+*.docx -text diff=astextplain
+*.DOCX -text diff=astextplain
+
+# Specially handled diffs
+*.cs    text diff=csharp
+*.html  text diff=html
