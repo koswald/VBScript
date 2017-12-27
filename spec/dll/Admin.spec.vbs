@@ -22,13 +22,13 @@ With New TestingFramework
 
     .it "should raise an error on new-source CreateEventSource call"
         On Error Resume Next
-            result = va.CreateEventSource("VBScripting2")
+            Set result = va.CreateEventSource("VBScripting2")
             .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
         On Error Goto 0
 
     .it "should indicate a known source on CreateEventSource call"
-        result = va.CreateEventSource("WSH")
-        .AssertEqual result(1), va.Result.SourceAlreadyExists
+        Set result = va.CreateEventSource("WSH")
+        .AssertEqual result.Result, va.Result.SourceAlreadyExists
 
     .it "should raise an error on deleting non-existent source"
         On Error Resume Next
@@ -39,13 +39,13 @@ With New TestingFramework
     .it "should raise an error attempting to delete an existing source"
         On Error Resume Next
             result = va.DeleteEventSource("VBScripting")
-        .AssertEqual Err.Description, "Requested registry access is not allowed."
+            .AssertEqual Err.Description, "Requested registry access is not allowed."
         On Error Goto 0
 
     .it "should read from the event log"
         Dim guid : guid = gg.Generate
-        va.Log "Testing VBScipting.Admin..." & _
-            vbLf & "unique search string: " & guid
+        va.Log "Testing VBScipting.Admin..." & vbLf & _
+            "unique search string: " & guid
         Dim logs : logs = va.GetLogs(source, guid)
         If UBound(logs) = -1 Then ShowLogNotFoundMessage
         .AssertEqual logs(0), "Testing VBScipting.Admin..." & _
@@ -72,9 +72,8 @@ Sub ShowLogNotFoundMessage
     WScript.StdOut.WriteLine msg
 End Sub
 
+Const source = "VBScripting"
 Dim va, sh, log, gg
-Dim source
-Const configFile = "../spec/dll/Admin.spec.config"
 
 Sub Initialize
     With CreateObject("includer")
@@ -82,7 +81,6 @@ Sub Initialize
         Execute .read("VBSEventLogger")
         Execute .read("GuidGenerator")
         ExecuteGlobal .read("TestingFramework")
-        Execute .read(configFile)
     End With
     Dim pc : Set pc = New PrivilegeChecker
     Set gg = New GuidGenerator
