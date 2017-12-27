@@ -4,16 +4,18 @@
 Option Explicit : Initialize
 
 Const source = "VBScripting"
-Const configFile = "../../spec/dll/Admin.spec.config"
 
 Call Main
+
 Sub Main
 
     'create the source
-    va.CreateEventSource source
+    Dim result : Set result = va.CreateEventSource(source)
 
-    'option to open the .config file
-    OpenTheConfigFile
+    'show the result
+    If Not quiet Then
+        MsgBox "Result: " & result.Message, vbInformation, result.Result
+    End If
 
     ReleaseObjectMemory
 End Sub
@@ -23,20 +25,8 @@ Sub ReleaseObjectMemory
     Set sh = Nothing
 End Sub
 
-Sub OpenTheConfigFile
-    Dim msg : msg = format(Array( _
-        "If the source was created successfully, " & _
-        "then edit %s and change the source to %s.", _
-        configFile, source _
-    ))
-    Dim mode : mode = vbInformation + vbSystemModal + vbOKCancel
-    Dim caption : caption = WScript.ScriptName
-    If vbOK = MsgBox(msg, mode, caption) Then
-        sh.Run "notepad " & configFile
-    End If
-End Sub
-
 Dim va, sh, format
+Dim quiet
 
 Sub Initialize
     Set va = CreateObject("VBScripting.Admin")
@@ -45,6 +35,16 @@ Sub Initialize
         Execute .read("StringFormatter")
     End With
     Set format = New StringFormatter
+
+    'check for /quiet flag on the command line
+    quiet = False
+    Dim args : Set args = WScript.Arguments
+    If args.Count Then
+        Dim i
+        For i = 0 To args.Count - 1
+            If "/quiet" = LCase(args.item(i)) Then quiet = True
+        Next
+    End If
 
     If va.PrivilegesAreElevated Then Exit Sub
 

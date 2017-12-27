@@ -13,5 +13,7 @@ call ..\config\exeLocations.bat
 @echo Registering .dll for 32-bit apps
 %net32%\regasm.exe /codebase %1 ..\lib\ProgressBar.dll
 
-@echo. & @echo Registering .dll for 64-bit apps
-%net64%\regasm.exe /codebase %1 ..\lib\ProgressBar.dll
+if exist %net64% (
+    @echo. & @echo Registering .dll for 64-bit apps
+    %net64%\regasm.exe /codebase %1 ..\lib\ProgressBar.dll
+)

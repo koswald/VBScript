@@ -26,7 +26,7 @@ The following command is recommended to be run
 from git bash for that purpose, before staging the change(s).
 
 ```
-git update-index --assume-unchanged **/*.config **/**/*.config .Net/config/exeLocations.bat .Net/key/generate-key-pair.vbs .Net/rsp/_common.rsp
+git update-index --assume-unchanged **/*.config **/**/*.config .Net/config/exeLocations.bat .Net/rsp/_common.rsp
 ```
 
 To see the affected files, run
