@@ -22,7 +22,7 @@ ni.SetBalloonTipIcon ni.ToolTipIcon.Info 'Error, Info, None, Warning
 
 'add menu items / callbacks
 ni.AddMenuItem "Show balloon tip", GetRef("ShowBalloonTip")
-ni.AddMenuItem "Open Notepad", GetRef("OpenNotepad")
+ni.AddMenuItem "Open test file in Notepad", GetRef("OpenNotepad")
 ni.AddMenuItem "Change the icon", GetRef("ChangeTheIcon")
 ni.AddMenuItem "E&xit", GetRef("CloseAndExit")
 ni.Visible = True
@@ -44,7 +44,7 @@ Sub ShowBalloonTip
 End Sub
 
 Sub OpenNotepad
-    sh.Run "Notepad"
+    sh.Run "Notepad """ & WScript.ScriptFullName & """"
 End Sub
 
 Sub ChangeTheIcon

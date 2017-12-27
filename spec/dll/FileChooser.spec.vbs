@@ -4,6 +4,7 @@
 Option Explicit : Initialize
 
 With New TestingFramework
+    .ShowSendKeysWarning
 
     .describe "FileChooser.dll"
 
@@ -81,6 +82,7 @@ With New TestingFramework
         files = Split(input_.ReadAll, vbCrLf)
         .AssertEqual files(0) & files(1), anyFile & anotherFile
 
+    .CloseSendKeysWarning
 End With
 
 Cleanup

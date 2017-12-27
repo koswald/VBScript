@@ -16,9 +16,9 @@ With New TestingFramework
         Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
 
-        'rig for busy CPU, as at startup
+        'rig for busy CPU, as in just after startup
         pause = 60
-        ch.SetPatience 30
+        ch.SetPatience 60
 
     .it "should open a browse for file window"
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
