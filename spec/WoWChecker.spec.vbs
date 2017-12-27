@@ -14,6 +14,8 @@ With New TestingFramework
     .describe "WoWChecker class"
         Dim chkr : Set chkr = New WoWChecker
 
+    If Not chkr.OSIs64Bit Then WScript.StdOut.WriteLine "OS is 32-bit. This spec is not applicable." : WScript.Quit
+
     .it "should return False, with a correctly configured test"
         .AssertEqual chkr.isWoW, False
 
@@ -41,3 +43,4 @@ End With
 'garbage collection
 Set chkr = Nothing
 Set pipe = Nothing
+Set sh = Nothing
