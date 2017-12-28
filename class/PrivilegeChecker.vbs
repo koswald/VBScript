@@ -17,24 +17,19 @@ Class PrivilegeChecker
     'Function Privileged
     'Returns a boolean
     'Remark: Returns True if the calling script is running with elevated privileges, False if not. Privileged is the default property.
-
     Public Default Function Privileged
 
         Dim sh : Set sh = CreateObject("WScript.Shell")
+        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim privileged_, unprivileged_, undefined_
         privileged_ = "privileged"
-        unprivileged_ = "unprivilegd"
+        unprivileged_ = "unprivilegd" 'intentionally misspelled for unique search results
         undefined_ = "undefined"
         Privileged = undefined_
 
-        'create a randomly-named .bat file on the desktop
-
-        With CreateObject("includer")
-            Execute .read("TextStreamer")
-        End With
-        Dim ts : Set ts = New TextStreamer
-        ts.SetFile ts.GetFile & ".bat"
-        Dim bf : Set bf = ts.Open 'create the batch file; open for writing
+        'create a randomly-named .bat file
+        Dim tempFile : tempFile = sh.ExpandEnvironmentStrings("%temp%\" & fso.GetTempName & ".bat")
+        Dim bf : Set bf = fso.OpenTextFile(tempFile, 2, True) 'create the batch file; open for writing
         bf.WriteLine "@echo off"
         bf.WriteLine "call :isAdmin"
         bf.WriteLine "if %errorlevel% == 0 ("
@@ -50,8 +45,7 @@ Class PrivilegeChecker
         Set bf = Nothing
 
         'run the batch file and parse the output
-
-        Dim pipe : Set pipe = sh.Exec("%ComSpec% /c """ & sh.ExpandEnvironmentStrings(ts.GetFile) & """")
+        Dim pipe : Set pipe = sh.Exec("%ComSpec% /c """ & tempFile & """")
         Dim line
         While Not pipe.StdOut.AtEndOfStream
             line = pipe.StdOut.ReadLine
@@ -64,8 +58,9 @@ Class PrivilegeChecker
 
         'cleanup
         Set pipe = Nothing
-        ts.Delete
+        fso.DeleteFile(tempFile)
         Set sh = Nothing
+        Set fso = Nothing
 
         'raise an error if privileges are undefined
         If Privileged = undefined_ Then Err.Raise 1,, "The PrivilegeChecker could not determine privileges"

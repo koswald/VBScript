@@ -33,7 +33,7 @@ namespace VBScripting
         {
             if (!string.IsNullOrWhiteSpace(message))
             {
-                EventLog logger = new EventLog("Application", ".", "WSH");
+                EventLog logger = new EventLog("Application", ".", "VBScripting");
                 logger.WriteEntry(message);
             }
         }

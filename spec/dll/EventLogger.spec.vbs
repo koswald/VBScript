@@ -10,7 +10,7 @@ With New TestingFramework
     .it "should write to the event log"
         Dim guid : guid = gg.Generate
         el.log "Testing EventLogger.dll... " & guid
-        Dim logs : logs = ad.GetLogs("WSH", guid)
+        Dim logs : logs = ad.GetLogs("VBScripting", guid)
         .AssertEqual "Testing EventLogger.dll... " & guid, logs(0)
 
 End With
