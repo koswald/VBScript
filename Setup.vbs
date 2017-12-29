@@ -105,7 +105,7 @@ End Sub
 'regsvr32.exe may show a success message on unregister
 'without removing the registry keys.
 Sub DeleteScriptletKeys
-    'The WScript.Shell RegDelete requires subkeys to be removed first
+    'WScript.Shell RegDelete requires subkeys to be removed first
     Dim keys : keys = Array( _
         "HKEY_CLASSES_ROOT\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}\InprocServer32\", _
         "HKEY_CLASSES_ROOT\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}\ProgID\", _

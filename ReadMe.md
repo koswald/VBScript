@@ -17,8 +17,8 @@ Windows 10, 8, 7, Vista, Server 20xx, ... 98.
 
 Clone the repo and double-click [Setup.vbs]. 
 This will register the required Windows Script Component 
-file (.wsc) used to manage dependencies. You will be 
-prompted to elevate privileges.
+file (.wsc) used to manage dependencies, and build the 
+[VBScript extensions]. You will be prompted to elevate privileges.
 
 ---
 
@@ -32,3 +32,4 @@ Read or edit the [wiki](../../wiki)
 [Examples]: examples
 [C# examples]: .Net
 [Setup.vbs]: Setup.vbs
+[VBScript extensions]: .Net
