@@ -9,6 +9,6 @@
 *.docx -text diff=astextplain
 *.DOCX -text diff=astextplain
 
-# Specially handled diffs
+# other specially handled diffs
 *.cs    text diff=csharp
 *.html  text diff=html
