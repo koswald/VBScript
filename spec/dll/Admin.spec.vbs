@@ -12,17 +12,17 @@ With New TestingFramework
         .AssertEqual va.PrivilegesAreElevated, False
 
     .it "should verify that an EventLog source is installed"
-        .AssertEqual va.SourceExists(source), True
+        .AssertEqual va.SourceExists(va.EventSource), True
 
     .it "should raise an error on new-source SourceExists call" 'because of low privileges
         On Error Resume Next
-            Dim result : result = va.SourceExists("VBScripting2")
+            Dim result : result = va.SourceExists(va.EventSource & "2")
             .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
         On Error Goto 0
 
     .it "should raise an error on new-source CreateEventSource call"
         On Error Resume Next
-            Set result = va.CreateEventSource("VBScripting2")
+            Set result = va.CreateEventSource(va.EventSource & "2")
             .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
         On Error Goto 0
 
@@ -32,21 +32,23 @@ With New TestingFramework
 
     .it "should raise an error on deleting non-existent source"
         On Error Resume Next
-            result = va.DeleteEventSource("VBScripting2")
+            result = va.DeleteEventSource(va.EventSource & "2")
             .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
         On Error Goto 0
 
-    .it "should raise an error attempting to delete an existing source"
-        On Error Resume Next
-            result = va.DeleteEventSource("VBScripting")
-            .AssertEqual Err.Description, "Requested registry access is not allowed."
-        On Error Goto 0
+    .it "should fail to delete an existing source without elevated privileges"
+        Set result = va.DeleteEventSource(va.EventSource)
+        .AssertEqual result.Result, va.Result.SourceDeletionException
+
+    .it "should return a SourceExists boolean in the result"
+        .AssertEqual TypeName(result.SourceExists), "Boolean"
+        .ShowPendingResult 'help to clarify which spec is causing the delay (reading from the log below)
 
     .it "should read from the event log"
         Dim guid : guid = gg.Generate
         va.Log "Testing VBScipting.Admin..." & vbLf & _
             "unique search string: " & guid
-        Dim logs : logs = va.GetLogs(source, guid)
+        Dim logs : logs = va.GetLogs(va.EventSource, guid)
         If UBound(logs) = -1 Then ShowLogNotFoundMessage
         .AssertEqual logs(0), "Testing VBScipting.Admin..." & _
             vbLf & "unique search string: " & guid
@@ -66,13 +68,10 @@ End Sub
 
 Sub ShowLogNotFoundMessage
     Dim msg : msg = vbLf & _
-        "Couldn't find the log. Do you have the source " & vbLf & _
-        "configured correctly in " & configFile & "? " & vbLf & _
-        "Current value: " & source & vbLf
+        "Couldn't find the log." & vbLf
     WScript.StdOut.WriteLine msg
 End Sub
 
-Const source = "VBScripting"
 Dim va, sh, log, gg
 
 Sub Initialize

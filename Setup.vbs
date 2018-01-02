@@ -26,8 +26,8 @@ Sub Main
         PrepWscRegistrationX64
         PrepWscRegistrationX86
         PrepDllRegistration
-        PrepCreateEventSource
         RunCommands
+        CreateEventLogSource
         TestOption
     ElseIf uninstalling Then
         DeleteEventLogSource
@@ -79,26 +79,25 @@ Sub PrepDllRegistration
     Next
 End Sub
 
-'prepare commands for creating the event log source
-Sub PrepCreateEventSource
-    args = format(Array("%s & echo. & " & _
-        "echo Creating the event log source VBScripting & " & _
-        """%s"" /quiet", args, sourceCreator_ _
-    ))
-End Sub
-
 'run the setup/uninstall commands
 Sub RunCommands
     sh.Run "cmd " & args,, synchronous
 End Sub
 
+Sub CreateEventLogSource
+    On Error Resume Next
+        Dim va : Set va = CreateObject("VBScripting.Admin")
+        va.CreateEventSource va.EventSource
+        Set va = Nothing
+    On Error Goto 0
+End Sub
+
 Sub DeleteEventLogSource
     On Error Resume Next
-    Dim va : Set va = CreateObject("VBScripting.Admin")
-    Dim result : Set result = va.DeleteEventSource("VBScripting")
-    'sh.PopUp result.Message, 20, result.Result, vbInformation + vbSystemModal
-    Set va = Nothing
-    Set result = Nothing
+        Dim va : Set va = CreateObject("VBScripting.Admin")
+        va.DeleteEventSource va.EventSource
+        Set va = Nothing
+    On Error Goto 0
 End Sub
 
 'Remove the registry keys associated with the scriptlet;
