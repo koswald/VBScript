@@ -15,7 +15,7 @@ Sub Main
 
     'handle command-line arguments, if any
     With WScript.Arguments
-        If .Count > 0 Then
+        If .Count Then
 
             'if it is desired to run just a single test file, pass it in on the
             'command line, using a relative path, relative to the spec folder

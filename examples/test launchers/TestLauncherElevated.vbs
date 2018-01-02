@@ -15,7 +15,7 @@ Sub Main
 
     'handle command-line arguments, if any
     With WScript.Arguments
-        If .Count > 0 Then
+        If .Count Then
 
             'if it is desired to run just a single test file, pass it in on the
             'command line, using a relative path, relative to the spec folder
@@ -30,6 +30,8 @@ Sub Main
     testRunner.Run
 End Sub
 
+Const privilegesElevated = True
+Const privilegesNotElevated = False
 Dim testRunner
 
 Sub Initialize
@@ -41,11 +43,10 @@ Sub Initialize
     Set testRunner = New VBSTestRunner
     Dim app : Set app = New VBSApp
     Dim pc : Set pc = New PrivilegeChecker
-    Const elevated = True
 
     'if required, restart the script with elevated privileges
     If (Not pc) Or (Not "cscript.exe" = app.GetHost) Then
         app.SetUserInteractive False
-        app.RestartWith "cscript.exe", "/k", elevated
+        app.RestartWith "cscript.exe", "/k", privilegesElevated
     End If
 End Sub
