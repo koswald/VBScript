@@ -67,43 +67,6 @@ Class WindowsUpdatesPauser
     'Remark: Opens the .config file
     Sub OpenConfigFile : sh.Run "notepad """ & configFile & """" : End Sub
 
-    Private sh, fso, format, log, app 'objects
-    Private profileName, srvcType, userInteractive, configFile 'data kept in .config file
-    Private metered, unmetered, undefined ' "enums"
-    Private hidden, synchronous 'Run params #2 & #3
-    Private ForReading, ForWriting 'OpenTextFile param #2
-    Private CreateNew 'OpenTextFile param #3
-    Private L, L2
-
-    Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
-
-        'defaults
-        userInteractive = True
-        unmetered = "Unmetered" ' "enums"
-        metered = "Metered"
-        undefined = "Empty"
-        hidden = 0 'constants
-        synchronous = True
-        ForReading = 1
-        ForWriting = 2
-        CreateNew = True
-        L = vbLf 'other
-        L2 = L & L
-
-        Dim reader : Set reader = CreateObject("includer")
-        Execute(reader.read("StringFormatter"))
-        Execute(reader.read("VBSLogger"))
-        Execute(reader.read("VBSApp"))
-        Set reader = Nothing
-        Set format = New StringFormatter
-        Set log = New VBSLogger
-        Set app = New VBSApp
-        configFile = format(Array("%LocalAppData%\%s.config", app.GetBaseName))
-        ReadConfigFile
-   End Sub
-
     'Private method ReadConfigFile
     'Remark: Read profileName, srvcType, userInteractive from the .config file
     Private Sub ReadConfigFile
@@ -141,6 +104,43 @@ Class WindowsUpdatesPauser
             OpenConfigFile
         End If
     End Sub
+
+    Private sh, fso, format, log, app 'objects
+    Private profileName, srvcType, userInteractive, configFile 'data kept in .config file
+    Private metered, unmetered, undefined ' "enums"
+    Private hidden, synchronous 'Run params #2 & #3
+    Private ForReading, ForWriting 'OpenTextFile param #2
+    Private CreateNew 'OpenTextFile param #3
+    Private L, L2
+
+    Sub Class_Initialize
+        Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
+
+        'defaults
+        userInteractive = True
+        unmetered = "Unmetered" ' "enums"
+        metered = "Metered"
+        undefined = "Empty"
+        hidden = 0 'constants
+        synchronous = True
+        ForReading = 1
+        ForWriting = 2
+        CreateNew = True
+        L = vbLf 'other
+        L2 = L & L
+
+        With CreateObject("includer")
+            Execute .read("StringFormatter")
+            Execute .read("VBSLogger")
+            Execute .read("VBSApp")
+        End With
+        Set format = New StringFormatter
+        Set log = New VBSLogger
+        Set app = New VBSApp
+        configFile = format(Array("%LocalAppData%\%s.config", app.GetBaseName))
+        ReadConfigFile
+   End Sub
 
     Sub Class_Terminate
         Set sh = Nothing
