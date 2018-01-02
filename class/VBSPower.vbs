@@ -3,16 +3,6 @@
 
 Class VBSPower
 
-    Private debug, sh, sa
-    Private force
-
-    Sub Class_Initialize
-        SetDebug False
-        SetForce False
-        Set sh = CreateObject("WScript.Shell")
-        Set sa = CreateObject("Shell.Application")
-    End Sub
-
     'Property Shutdown
     'Returns a boolean
     'Remark: Shuts down the computer. Returns True if the operation completes with no errors.
@@ -70,17 +60,17 @@ Class VBSPower
 
     'Method EnableHibernation
     'Remark: Enables hibernation. The User Account Control dialog will open to request elevated privileges.
-    Sub EnableHibernation : SetHibernationEnabled True : End Sub
+    Sub EnableHibernation : SetHibernatable "on" : End Sub
 
     'Method DisableHibernation
     'Remark: Disables hibernation. The User Account Control dialog will open to request elevated privileges.
-    Sub DisableHibernation : SetHibernationEnabled False : End Sub
+    Sub DisableHibernation : SetHibernatable "off" : End Sub
 
-    'Private Method SetHibernationEnabled
-    Private Sub SetHibernationEnabled(ByVal enabled)
+    'Private Method SetHibernatable
+    'Parameter: "on" or "off"
+    Private Sub SetHibernatable(setting)
         If debug Then Exit Sub
-        If enabled Then enabled = "on" Else enabled = "off"
-        sa.ShellExecute "cmd", "/c powercfg.exe /hibernate " & enabled,, "runas"
+        sa.ShellExecute "cmd", "/c powercfg.exe /hibernate " & setting,, "runas"
 
         'when the Hibernate method is called immediately following,
         'some kind of pause is necessary;
@@ -96,8 +86,18 @@ Class VBSPower
 
     'Method SetDebug
     'Parameter: a boolean
-    'Remark: Used for testing. Prevents the computer from actually shutting down, etc., during testing. Default is False.
+    'Remark: Used for testing. True prevents the computer from actually shutting down, etc., during testing. Default is False.
     Sub SetDebug(newDebug) : debug = newDebug : End Sub
+
+    Private sh, sa
+    Private force, debug
+
+    Sub Class_Initialize
+        SetDebug False
+        SetForce False
+        Set sh = CreateObject("WScript.Shell")
+        Set sa = CreateObject("Shell.Application")
+    End Sub
 
     Sub Class_Terminate
         Set sh = Nothing
