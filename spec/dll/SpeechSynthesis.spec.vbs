@@ -65,15 +65,6 @@ With New TestingFramework
             ss.Voice = voices(0)
             .AssertEqual Err.Description, ""
         On Error Goto 0
-        
-    .ShowSendKeysWarning
-
-    .it "should show a message on setting an invalid voice"
-        sh.Run "fixture\SpeechSynthesis.invalid-voice.vbs"
-        .AssertEqual .MessageAppeared( _
-            "SpeechSynthesis class", 2, "{Enter}"), True
-
-    .CloseSendKeysWarning   
 End With
 
 Cleanup
