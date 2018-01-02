@@ -10,8 +10,8 @@ With New TestingFramework
 
     .describe "Chooser class"
         Dim ch : Set ch = New Chooser
-
     'setup
+
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
