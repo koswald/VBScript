@@ -57,7 +57,7 @@ probably not available on most Vista machines.
 [FolderChooser2.cs]: FolderChooser2.cs
 [Reflection]: https://docs.microsoft.com/en-us/dotnet/api/system.reflection?view=netframework-4.7.1 "docs.microsoft.com"
 [Setup.vbs]: ../Setup.vbs
-[Manual tests]: test/ReadMe.md
+[Manual tests]: test
 
 #### Links and References
 

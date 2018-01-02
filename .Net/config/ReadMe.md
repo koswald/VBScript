@@ -7,14 +7,6 @@
 The locations of `csc.exe` and `regasm.exe` 
 are configurable in [exeLocations].bat. 
 
-### CreateEventSource.vbs
-
-`CreateEventSource.vbs` is called automatically by running 
-`Setup.vbs` in the project's root folder, adding the event 
-log source `VBScripting` to the Application log. 
-It can be run again as a quick way to verify that the 
-source has been added.
-
 ### Recommended git configuration
 
 If and when you change configurations files, it is 
