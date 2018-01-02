@@ -14,7 +14,7 @@ In 64-bit systems, each of these `.exe` files have a
 This project uses the 32-bit `csc.exe` and both 
 `regasm.exe` files, when both are available.
 The location of these `.exe` files is configurable in 
-[DotNetCompiler.config] and [exeLocations.bat].
+[exeLocations.bat].
 
 #### Options for compiling and registering the class libraries.
 

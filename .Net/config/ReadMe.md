@@ -5,8 +5,7 @@
 ### exeLocations.bat
 
 The locations of `csc.exe` and `regasm.exe` 
-are configurable in [exeLocations].bat
-and [DotNetCompiler.config]. 
+are configurable in [exeLocations].bat. 
 
 ### CreateEventSource.vbs
 
@@ -39,6 +38,5 @@ To undo the index update, run the `update-index` command as above except with `-
 
 
 [exeLocations]: ./exeLocations.bat
-[DotNetCompiler.config]: ../../class/DotNetCompiler.config
 [CreateEventSource]: ./CreateEventSource.vbs
 [ReadMe]: ../build/ReadMe.md
