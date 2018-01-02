@@ -13,7 +13,6 @@
     <public>
         <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
         <property name="readFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
-        <property name="GetObj" /> <!-- return an object instance given the class name -->
         <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
         <method name="SetFormatAscii" /> <!-- Set the stream format to tbAscii -->
         <method name="SetFormatUnicode" /> <!-- Set the stream format to tbUnicode -->
