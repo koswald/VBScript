@@ -129,7 +129,7 @@ End Sub
 'run some tests, if desired
 Sub TestOption
     If runTests Then
-        msg = "Setup can run the standard tests, which may take about 30 seconds."
+        msg = "Click OK to run the standard tests."
         mode = vbOKCancel + vbInformation + vbSystemModal
         If vbOK = MsgBox(msg, mode, WScript.ScriptName) Then
             sh.Run "%ComSpec% /k cscript.exe //nologo """ & tests_ & """"
