@@ -2,7 +2,6 @@
 // Miscellaneous admin functions
 
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
 using System;
@@ -228,23 +227,11 @@ namespace VBScripting
     public class EventLogResultT
     {
         /// <summary>  </summary>
-        public string SourceFound {
-            get { return "Source found"; } } // when checking existence
-        /// <summary>  </summary>
-        public string SourceNotFoundLowPrivileges {
-            get { return "Source not found; priv. not elevated"; } } // Can't determine whether source exists
-        /// <summary>  </summary>
-        public string SourceNotFoundHighPrivileges {
-            get { return "Source not found; priv. elevated"; } } // source doesn't exist
-        /// <summary>  </summary>
         public string SourceAlreadyExists {
-            get { return "Source already exists"; } } // when attempting to create
+            get { return "Source already exists"; } } // attempting to create
         /// <summary>  </summary>
         public string SourceCreated {
             get { return "Source created"; } }
-        /// <summary>  </summary>
-        public string SourceNotCreated {
-            get { return "Source not created"; } }
         /// <summary>  </summary>
         public string SourceCreationException {
             get { return "Source creation error"; } }
@@ -255,15 +242,8 @@ namespace VBScripting
         public string SourceDeleted {
             get { return "Source deleted"; } }
         /// <summary>  </summary>
-        public string SourceFoundInAnotherLog {
-            get { return "Source found in another log"; } }
-        /// <summary>  </summary>
-        public string SourceNotDeleted {
-            get { return "Source not deleted"; } }
-        /// <summary>  </summary>
         public string SourceDeletionException {
-            get { return "Source deletion error"; }
-        }
+            get { return "Source deletion error"; } }
     }
     /// <summary> Result for returning to VBScript. </summary>
     public class EventLogSourceResult
