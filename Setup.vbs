@@ -23,6 +23,7 @@ Sub Main
         PrepWscRegistrationX64
         PrepWscRegistrationX86
         PrepDllRegistration
+        FinalInstruction
         RunCommands
         CreateEventLogSource
     ElseIf uninstalling Then
@@ -30,6 +31,7 @@ Sub Main
         PrepDllRegistration
         PrepWscRegistrationX64
         PrepWscRegistrationX86
+        FinalInstruction
         RunCommands
         DeleteScriptletKeys
     End If
@@ -73,6 +75,12 @@ Sub PrepDllRegistration
             args = format(Array("%s & ""%s"" %s", args, file.Name, dllUnregisterFlag))
         End If
     Next
+End Sub
+
+Sub FinalInstruction
+    args = format(Array("%s & echo. & " & _
+        "echo Close this command prompt window to finish %s.", _
+        args, setupNoun))
 End Sub
 
 'run the setup/uninstall commands
@@ -130,11 +138,11 @@ End Sub
 Const synchronous = True
 Dim args, msg, mode
 Dim projectFolder
-Dim installing, uninstalling, registerVerb
+Dim installing, uninstalling, registerVerb, setupNoun
 Dim wscUnregisterFlag, dllUnregisterFlag
 Dim sa, sh, fso
 Dim format
-Dim scriptlet_, buildFolder_, sourceCreator_, tests_
+Dim scriptlet_, buildFolder_
 
 Sub Initialize
     Set sa = CreateObject("Shell.Application")
@@ -147,9 +155,7 @@ Sub Initialize
     projectFolder = fso.GetParentFolderName(WScript.ScriptFullName)
     sh.CurrentDirectory = projectFolder
     scriptlet_ = fso.GetAbsolutePathName(scriptlet)
-    tests_ = fso.GetAbsolutePathName(tests)
     buildFolder_ = fso.GetAbsolutePathName(buildFolder)
-    sourceCreator_ = fso.GetAbsolutePathName(sourceCreator)
 
     'look for /u on the command line
     With WScript.Arguments
@@ -161,11 +167,13 @@ Sub Initialize
         If uninstalling Then
             uninstallFlag = "/u"
             registerVerb = "Unregistering"
+            setupNoun = "uninstalling"
             wscUnregisterFlag = "/u"
             dllUnregisterFlag = "/unregister"
         Else
             uninstallFlag = ""
             registerVerb = "Registering"
+            setupNoun = "setup"
             wscUnregisterFlag = ""
             dllUnregisterFlag = ""
             installing = True
