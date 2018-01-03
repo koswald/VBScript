@@ -75,10 +75,11 @@ Sub PrepDllRegistration
             args = format(Array("%s & ""%s"" %s", args, file.Name, dllFlag))
         End If
     Next
+    args = format(Array("%s & echo.", args))
 End Sub
 
 Sub FinalInstruction
-    args = format(Array("%s & echo. & " & _
+    args = format(Array("%s & " & _
         "echo Close this command prompt window to finish %s.", _
         args, setupNoun))
 End Sub
