@@ -51,7 +51,7 @@ Sub PrepWscRegistrationX64
         "%s & echo. & " & _
         "echo %s scriptlet & " & _
         "%SystemRoot%\System32\regsvr32 %s /s ""%s""", _
-        args, registerVerb, wscUnregisterFlag, scriptlet_ _
+        args, registerVerb, wscFlag, scriptlet_ _
     ))
 End Sub
 
@@ -61,7 +61,7 @@ Sub PrepWscRegistrationX86
         args = format(Array("%s & echo. & " & _
             "echo %s scriptlet for 32-bit apps & echo. & " & _
             "%SystemRoot%\SysWow64\regsvr32 %s /s ""%s""", _
-            args, registerVerb, wscUnregisterFlag, scriptlet_ _
+            args, registerVerb, wscFlag, scriptlet_ _
         ))
     End If
 End Sub
@@ -72,7 +72,7 @@ Sub PrepDllRegistration
     Dim file
     For Each file In fso.GetFolder(buildFolder_).Files
         If "bat" = fso.GetExtensionName(file) Then
-            args = format(Array("%s & ""%s"" %s", args, file.Name, dllUnregisterFlag))
+            args = format(Array("%s & ""%s"" %s", args, file.Name, dllFlag))
         End If
     Next
 End Sub
@@ -139,7 +139,7 @@ Const synchronous = True
 Dim args, msg, mode
 Dim projectFolder
 Dim installing, uninstalling, registerVerb, setupNoun
-Dim wscUnregisterFlag, dllUnregisterFlag
+Dim wscFlag, dllFlag
 Dim sa, sh, fso
 Dim format
 Dim scriptlet_, buildFolder_
@@ -163,19 +163,19 @@ Sub Initialize
         Dim i : For i = 0 To .Count - 1
             If "/u" = LCase(.item(i)) Then uninstalling = True
         Next
-        Dim uninstallFlag 'flag for restarting this script
+        Dim setupFlag 'flag for restarting this script
         If uninstalling Then
-            uninstallFlag = "/u"
+            setupFlag = "/u"
             registerVerb = "Unregistering"
             setupNoun = "uninstalling"
-            wscUnregisterFlag = "/u"
-            dllUnregisterFlag = "/unregister"
+            wscFlag = "/u"
+            dllFlag = "/unregister"
         Else
-            uninstallFlag = ""
+            setupFlag = ""
             registerVerb = "Registering"
             setupNoun = "setup"
-            wscUnregisterFlag = ""
-            dllUnregisterFlag = ""
+            wscFlag = ""
+            dllFlag = ""
             installing = True
         End If
     End With
@@ -184,7 +184,7 @@ Sub Initialize
         'restart this script to elevate privileges
         Dim restartArgs : restartArgs = format(Array( _
             "/c cd ""%s"" & start wscript ""%s"" %s", _
-            projectFolder, WScript.ScriptFullName, uninstallFlag _
+            projectFolder, WScript.ScriptFullName, setupFlag _
         ))
         sa.ShellExecute "cmd", restartArgs,, "runas"
         ReleaseObjectMemory
