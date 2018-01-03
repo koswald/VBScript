@@ -5,7 +5,6 @@ This project has a number of facets:
 - An [automatic documentation generator]
 - A lightweight [testing framework]
 - A [logger]
-- A dependency manager ([.wsc], [.vbs])
 - [Examples]  
 - Working [C# examples] for extending the power of VBScript.
 
@@ -27,8 +26,6 @@ Read or edit the [wiki](../../wiki)
 [automatic documentation generator]: examples/documentation%20generator/Generate-the-docs.vbs 
 [testing framework]: class/TestingFramework.vbs
 [logger]: class/VBSLogger.vbs
-[.wsc]: class/includer.wsc
-[.vbs]: class/includer.vbs
 [Examples]: examples
 [C# examples]: .Net
 [Setup.vbs]: Setup.vbs

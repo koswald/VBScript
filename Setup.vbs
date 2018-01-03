@@ -13,9 +13,6 @@ Option Explicit : Initialize
 
 Const scriptlet = "class\includer.wsc" 'dependency manager scriptlet
 Const buildFolder = ".Net\build"
-Const sourceCreator = ".Net\config\CreateEventSource.vbs"
-Const tests = "examples\test launchers\TestLauncherStandard.vbs"
-Const runTests = False
 
 Main
 ReleaseObjectMemory
@@ -28,7 +25,6 @@ Sub Main
         PrepDllRegistration
         RunCommands
         CreateEventLogSource
-        TestOption
     ElseIf uninstalling Then
         DeleteEventLogSource
         PrepDllRegistration
@@ -123,17 +119,6 @@ Sub DeleteScriptletKeys
             sh.RegDelete keys(i)
         On Error Goto 0
     Next
-End Sub
-
-'run some tests, if desired
-Sub TestOption
-    If runTests Then
-        msg = "Click OK to run the standard tests."
-        mode = vbOKCancel + vbInformation + vbSystemModal
-        If vbOK = MsgBox(msg, mode, WScript.ScriptName) Then
-            sh.Run "%ComSpec% /k cscript.exe //nologo """ & tests_ & """"
-        End If
-    End If
 End Sub
 
 Sub ReleaseObjectMemory
