@@ -223,7 +223,7 @@ namespace VBScripting
         }
         # endregion EventLogs
     }
-    /// <summary> A set of terse behavior/result descriptions suitable for VBScript MsgBox captions. </summary>
+    /// <summary> A set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
     public class EventLogResultT
     {
         /// <summary>  </summary>
