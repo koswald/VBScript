@@ -4,7 +4,8 @@
 using System.Windows.Forms; // for OpenFileDialog
 using System.Runtime.InteropServices;
 using System.Reflection;
-using System.Linq; // for FileNames Cast
+using System.Linq; // for Cast<object>
+using System.IO; // for Path
 
 namespace VBScripting
 {
@@ -15,6 +16,8 @@ namespace VBScripting
     public class FileChooser : IFileChooser
     {
         private OpenFileDialog chooser;
+        private string _initialDirectory;
+        private string _expandedResolvedInitialDirectory;
 
         /// <summary> Constructor </summary>
         public FileChooser()
@@ -25,6 +28,7 @@ namespace VBScripting
             this.Title = "Browse for a file";
             this.DereferenceLinks = false;
             this.DefaultExt = "txt";
+            this.InitialDirectory = System.Environment.CurrentDirectory;
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose a file. <para>
@@ -92,6 +96,33 @@ namespace VBScripting
             }
         }
 
+        /// <summary> Gets or sets directory at which the dialog opens. </summary>
+        public string InitialDirectory
+        {
+            get
+            {
+                return this._initialDirectory;
+            }
+            set
+            {
+                this._initialDirectory = value;
+                this.ExpandedResolvedInitialDirectory = value;
+                this.chooser.InitialDirectory = ExpandedResolvedInitialDirectory;
+            }
+        }
+        /// <summary> Gets the initial directory with relative path resolved and environment variables expanded. </summary>
+        /// <remarks> Improves testability. </remarks>
+        public string ExpandedResolvedInitialDirectory
+        {
+            get
+            {
+                return this._expandedResolvedInitialDirectory;
+            }
+            private set
+            {
+                this._expandedResolvedInitialDirectory = Path.GetFullPath(System.Environment.ExpandEnvironmentVariables(value));
+            }
+        }
         /// <summary> Gets or sets the selectable file types. The default is "All files (*.*)|*.*" <para>
         /// <example> Example #1: <code> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" </code> </example> </para>
         /// <example> Example #2: <code> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </code> </example> </summary>
@@ -254,5 +285,13 @@ namespace VBScripting
         /// <summary> COM interface member for <see cref="FileChooser.CheckFileExists"/> </summary>
         [DispId(11)]
         bool CheckFileExists { get; set; }
+
+        /// <summary> COM interface member for <see cref="FileChooser.InitialDirectory"/> </summary>
+        [DispId(12)]
+        string InitialDirectory { get; set; }
+
+        /// <summary> COM interface member for <see cref="FileChooser.ExpandedResolvedInitialDirectory"/> </summary>
+        [DispId(12)]
+        string ExpandedResolvedInitialDirectory { get; }
     }
 }
