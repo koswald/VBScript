@@ -4,41 +4,10 @@
 Option Explicit : Initialize
 
 With New TestingFramework
+
+    .describe "FileChooser.dll (uses SendKeys)"
+
     .ShowSendKeysWarning
-
-    .describe "FileChooser.dll"
-
-    .it "should have a Title property"
-        On Error Resume Next
-            x = fc.Title
-            fc.Title = x
-            .AssertEqual Err.Description, ""
-    .it "should have a Multiselect property"
-        Err.Clear
-            x = fc.Multiselect
-            fc.Multiselect = x
-            .AssertEqual Err.Description, ""
-    .it "should have a DereferenceLinks property"
-        Err.Clear
-            x = fc.DereferenceLinks
-            fc.DereferenceLinks = x
-            .AssertEqual Err.Description, ""
-    .it "should have a DefaultExt property"
-        Err.Clear
-            x = fc.DefaultExt
-            fc.DefaultExt = x
-            .AssertEqual Err.Description, ""
-    .it "should have a Filter property"
-        Err.Clear
-            x = fc.Filter
-            fc.Filter = x
-            .AssertEqual Err.Description, ""
-    .it "should have a FilterIndex property"
-        Err.Clear
-            x = fc.FilterIndex
-            fc.FilterIndex = x
-            .AssertEqual Err.Description, ""
-        On Error Goto 0
 
     .it "should open a chooser dialog"
         caption = "Choose a single file"
@@ -56,7 +25,7 @@ With New TestingFramework
     .it "should return a single filespec"
         'wait for fixture to write result to file
         'and close the text stream
-        WScript.Sleep 500
+        WScript.Sleep 1000
         'prepare the input text stream
         Set input_ = fso.OpenTextFile(txtFixture, ForReading)
         .AssertEqual input_.ReadLine, anyFile
@@ -74,7 +43,7 @@ With New TestingFramework
         .MessageAppeared caption, 5, "%n%n""" & anyFile & """ """ & anotherFile & """{Enter}"
         'wait for fixture to write result to file
         'and close the text stream
-        WScript.Sleep 500
+        WScript.Sleep 1000
         'prepare the input text stream
         input_.Close
         Set input_ = fso.OpenTextFile(txtFixture, ForReading)
