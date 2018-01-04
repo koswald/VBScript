@@ -11,7 +11,7 @@ Sub Main
     testRunner.SetSpecPattern "*.spec.vbs | *.spec.elev+std.vbs"
 
     'specify the folder containing the tests; path is relative to this script
-    testRunner.SetSpecFolder "..\..\spec"
+    testRunner.SetSpecFolder "..\spec"
 
     'handle command-line arguments, if any
     With WScript.Arguments

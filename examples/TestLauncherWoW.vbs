@@ -11,7 +11,7 @@ Sub Main
     testRunner.SetSpecPattern "*.spec.wow.vbs"
  
     'specify the folder containing the tests; path is relative to this script
-    testRunner.SetSpecFolder "..\..\spec\wow"
+    testRunner.SetSpecFolder "..\spec\wow"
 
     'handle command-line arguments, if any
     With WScript.Arguments

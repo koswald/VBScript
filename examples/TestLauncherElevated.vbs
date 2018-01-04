@@ -1,5 +1,5 @@
 
-'Launch the test runner for .dll libraries
+'Launch the test runner for tests designated elevated or elevated and standard
 
 Option Explicit : Initialize
 
@@ -8,10 +8,10 @@ Call Main
 Sub Main
 
     'specify the file types
-    testRunner.SetSpecPattern "*.spec.vbs"
+    testRunner.SetSpecPattern "*.spec.elev.vbs | *.spec.elev+std.vbs"
 
     'specify the folder containing the tests; path is relative to this script
-    testRunner.SetSpecFolder "..\..\spec\dll"
+    testRunner.SetSpecFolder "..\spec"
 
     'handle command-line arguments, if any
     With WScript.Arguments
@@ -38,13 +38,15 @@ Sub Initialize
     With CreateObject("includer")
         Execute .read("VBSTestRunner")
         Execute .read("VBSApp")
+        Execute .read("PrivilegeChecker")
     End With
     Set testRunner = New VBSTestRunner
     Dim app : Set app = New VBSApp
+    Dim pc : Set pc = New PrivilegeChecker
 
-    'if required, restart the script with cscript.exe
-    If Not "cscript.exe" = app.GetHost Then
+    'if required, restart the script with elevated privileges
+    If (Not pc) Or (Not "cscript.exe" = app.GetHost) Then
         app.SetUserInteractive False
-        app.RestartWith "cscript.exe", "/k", privilegesNotElevated
+        app.RestartWith "cscript.exe", "/k", privilegesElevated
     End If
 End Sub
