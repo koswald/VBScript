@@ -13,12 +13,13 @@ With New TestingFramework
     'setup
 
         Dim sh : Set sh = CreateObject("WScript.Shell")
-        Dim warning : Set warning = sh.Exec("wscript fixture/Chooser.warn.vbs")
         Dim pipe, pause
 
         'rig for busy CPU, as in just after startup
         pause = 60
         ch.SetPatience 60
+
+    .ShowSendKeysWarning
 
     .it "should open a browse for file window"
         Set pipe = sh.Exec("cscript //nologo fixture/Chooser.file.vbs")
@@ -111,11 +112,10 @@ With New TestingFramework
         End If
         .AssertEqual pipe.StdOut.ReadLine, "Nothing"
 
+    .CloseSendKeysWarning
 End With
 
 'breakdown
 
 Set pipe = Nothing
 Set sh = Nothing
-warning.Terminate
-Set warning = Nothing
