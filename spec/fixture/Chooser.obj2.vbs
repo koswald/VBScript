@@ -5,6 +5,11 @@
 
 'requires the calling script to simulate user action
 
+'specifically,
+'when the user cancels out of the dialog, 
+'then the following statement is True
+'TypeName(obj) = "Nothing"
+
 With CreateObject("includer")
     Execute .read("Chooser")
 End With
