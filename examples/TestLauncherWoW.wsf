@@ -1,6 +1,10 @@
 
 <!-- Launch the test runner for 32-bit (x86) tests -->
 
+<!-- .wsf example
+     Dependencies could have been handled the same way as in
+     the .vbs files, but another way is used here for demonstration -->
+
 <job id=".wsf example">
     <script language="VBScript" src="../class/WoWChecker.vbs"></script>
     <script language="VBScript" src="../class/VBSTestRunner.vbs"></script>
