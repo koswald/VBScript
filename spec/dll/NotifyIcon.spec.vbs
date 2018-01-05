@@ -50,13 +50,6 @@ With New TestingFramework
             .AssertEqual Err.Description, ""
         On Error Goto 0
 
-    .it "should have a BalloonTipText property"
-        On Error Resume Next
-            x = ni.BalloonTipText
-            ni.BalloonTipText = x
-            .AssertEqual Err.Description, ""
-        On Error Goto 0
-
     .it "should return a ToolTipIcon object"
         .AssertEqual TypeName(ni.ToolTipIcon), "ToolTipIconT"
 

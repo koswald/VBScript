@@ -5,7 +5,6 @@ Option Explicit : Initialize
 
 'initialize
 Set ni = CreateObject("VBScripting.NotifyIcon")
-'ni.Debug = True
 
 'test three ways to set the icon
 ni.SetIconByIcoFile "fixture\star.ico"
