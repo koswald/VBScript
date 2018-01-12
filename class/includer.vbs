@@ -36,8 +36,10 @@ Option Explicit : Initialize
 'Function GetObj
 'Parameter: className
 'Returns: An object
-'Remark: Returns an object based on the VBScript class with the specified name. Requires a .wsc scriptlet. Does not work with scripts such as VBSApp.vbs or TestingFrameework.vbs, which have a dependency on the WScript object/keywork. See StringFormatter for an example.
+'Remark: Returns an object based on the VBScript class with the specified name. Requires a .wsc scriptlet. Does not work with scripts such as VBSApp.vbs or TestingFrameework.vbs, which have a dependency on the WScript object/keywork. See StringFormatter.wsc for an example.
 Function GetObj(className)
+    'The GetObject method doesn't require that a scriptlet 
+    'be registered, but it does require an absolute path.
     Set GetObj = GetObject("script:" & LibraryPath & "\" & className & ".wsc")
 End Function
 
