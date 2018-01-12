@@ -1,12 +1,19 @@
+
+''' StringFormatter.vbs is the script for StringFormatter.wsc
 '
 'Provides string formatting functions
 '
-'Usage example
+'Two instantiation examples
 '' With CreateObject("includer")
 ''     Execute .read("StringFormatter")
+''     Dim fm : Set fm = New StringFormatter
 '' End With
-'' Dim fm : Set fm = New StringFormatter
-'' 
+'or
+'' With CreateObject("includer")
+''     Dim fm : Set fm = .GetObj("StringFormatter")
+'' End With
+'
+'Usage examples
 '' WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1
 '' 
 '' WScript.Echo fm.pluralize(3, "dog") '3 dogs
@@ -83,5 +90,4 @@ Class StringFormatter
     'Remark: Optional. Restores the default behavior of considering a count of zero to be plural.
     Sub SetZeroPlural : zero = plural : End Sub
 
-    Sub Class_Terminate : End Sub
 End Class
