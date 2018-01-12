@@ -22,7 +22,7 @@
 '
 '    <h5> Registration </h5>
 '
-'        Although Windows&reg Script Component files must be registered, right clicking <code> includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
+'        Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
 '        1) Run the Setup.vbs in the project folder. Or,
 '        2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.
 '
@@ -33,6 +33,14 @@
 
 Option Explicit : Initialize
 
+'Function GetObj
+'Parameter: className
+'Returns: An object
+'Remark: Returns an object based on the VBScript class with the specified name. Requires a .wsc scriptlet. Does not work with scripts such as VBSApp.vbs or TestingFrameework.vbs, which have a dependency on the WScript object/keywork. See StringFormatter for an example.
+Function GetObj(className)
+    Set GetObj = GetObject("script:" & LibraryPath & "\" & className & ".wsc")
+End Function
+
 'Function Read
 'Parameter: a file
 'Return the file contents
@@ -40,7 +48,6 @@ Option Explicit : Initialize
 Function Read(file)
 
     'Expect Ascii and Unicode file formats to be mixed together in the script library...
-
     'If the file format is Unicode,
     'but the StreamFormat has not been set to Unicode,
     'then temporarily set the StreamFormat to Unicode,
@@ -70,13 +77,13 @@ End Function
 
 'Function LibraryPath
 'Returns a folder path
-'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read method.
+'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.
 Function LibraryPath : LibraryPath = referencePath : End Function
 
 Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
-Sub SetFormatAscii : SetFormat c.tbAscii : End Sub
-Sub SetFormatUnicode : SetFormat c.tbUnicode : End Sub
-Sub SetFormatSystemDefault : SetFormat c.tbSystemDefault : End Sub
+Sub SetFormatAscii : SetFormat Ascii : End Sub
+Sub SetFormatUnicode : SetFormat Unicode : End Sub
+Sub SetFormatSystemDefault : SetFormat SystemDefault : End Sub
 
 'Return the contents of a file
 Private Function PrivateRead(file_)
@@ -84,11 +91,11 @@ Private Function PrivateRead(file_)
     If Not fso.FileExists(file) Then
         file = file & ".vbs" 'add the .vbs file extension and try again
         If Not fso.FileExists(file) Then
-            Read = "MsgBox ""Couldn't find file "" & """ & file & """, vbExclamation"
+            Err.Raise 1,, "Couldn't find file """ & file & """"
             Exit Function
         End If
     End If
-    Dim stream : Set stream = fso.OpenTextFile(file, c.iForReading, c.bDontCreateNew, StreamFormat)
+    Dim stream : Set stream = fso.OpenTextFile(file, ForReading, DontCreateNew, StreamFormat)
     PrivateRead = stream.ReadAll
     stream.Close
     Set stream = Nothing
@@ -98,7 +105,6 @@ End Function
 Private Function Resolve(path)
     SaveCurrentDirectory
     sh.CurrentDirectory = referencePath  'set the reference folder relative paths
-
     Resolve = fso.GetAbsolutePathName(sh.ExpandEnvironmentStrings(path))
     RestoreCurrentDirectory
 End Function
@@ -108,20 +114,25 @@ Private Sub RestoreCurrentDirectory : sh.CurrentDirectory = savedCurrentDirector
 
 Const sVersion = "0.0.0"
 Const sWscID = "{ADCEC089-30DE-11D7-86BF-00606744568C}" 'must match the classid
+Const ForReading = 1
+Const Ascii = 0
+Const Unicode = - 1
+Const SystemDefault = - 2
+Const CreateNew = True
+Const DontCreateNew = False
 
-Dim sh, fso, c, StreamFormat, analyzer
+Dim sh, fso, StreamFormat, analyzer
 Dim savedCurrentDirectory
 Dim referencePath
 
 Private Sub Initialize
     Set sh = CreateObject("WScript.Shell")
     Set fso = CreateObject("Scripting.FileSystemObject")
-    Set c = New StreamConstants
     Set analyzer = New EncodingAnalyzer
 
     'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
     Dim thisFile : thisFile = sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
     thisFile = Replace(Replace(Replace(thisFile, "file:///", ""), "%20", " "), "/", "\") 'remove superfluous string
     referencePath = fso.GetParentFolderName(thisFile)
-    SetFormat c.tbAscii
+    SetFormat Ascii
 End Sub

@@ -1,30 +1,20 @@
-
 <?component error="true"?> <!-- <?component error="true"?> allows line numbers to display on error -->
+<scriptlet> 
 
-<scriptlet> <!--
+  <registration
+    description="VBScript includer scriptlet"
+    progid="includer"
+    classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
+  </registration>
 
--->
-    <registration
-        description="VBScript includer scriptlet"
-        progid="includer"
-        classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
-    </registration>
+  <public>
+    <property name="GetObj" /> <!-- return an object based on one of the project classes -->
+    <property name="Read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
+    <property name="ReadFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
+    <property name="LibraryPath" /> <!-- get the folder containing this .wsc file -->
+  </public>
 
-    <public>
-        <property name="read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to this .wsc file) -->
-        <property name="readFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
-        <method name="SetFormat" /> <!-- includer.c.tbAscii, .c.tbUnicode, or .c.tbSystemDefault -->
-        <method name="SetFormatAscii" /> <!-- Set the stream format to tbAscii -->
-        <method name="SetFormatUnicode" /> <!-- Set the stream format to tbUnicode -->
-        <method name="SetFormatSystemDefault" /> <!-- Set the stream format to tbSystemDefault -->
-        <property name="c" /> <!-- get text stream constants, iForReading, iForAppending, iForWriting, bCreateNew, bDontCreateNew, plus SetFormat parameters as above -->
-        <property name="LibraryPath" /> <!-- get the folder containing this .wsc file -->
-        <property name="Version" internalname="sVersion" />
-        <property name="UUID" internalname="sWscID" />
-    </public>
-
-    <script language="VBScript" src="StreamConstants.vbs" />
-    <script language="VBScript" src="EncodingAnalyzer.vbs" />
-    <script language="VBScript" src="includer.vbs" />
-
+  <script language="VBScript" src="EncodingAnalyzer.vbs" />
+  <script language="VBScript" src="includer.vbs" />
+  
 </scriptlet>

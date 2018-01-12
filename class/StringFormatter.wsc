@@ -1,0 +1,24 @@
+<?component error="true"?> <!-- <?component error="true"?> allows line numbers to display on error -->
+<scriptlet>
+
+  <public>
+    <property name="Format" dispid="0"/> <!-- Returns a formatted string. The parameter is an array whose first element contains the pattern of the returned string. The first %s in the pattern is replaced by the next element in the array. The second %s in the pattern is replaced by the next element in the array, and so on. Variant subtypes tested OK with %s include string, integer, and single. Format is the default property for the class, so the property name is optional. If there are too many or too few %s instances, then an error will be raised. -->
+    <method name="SetSurrogate" />
+    <property name="Pluralize" />
+    <method name="SetZeroSingular" />
+    <method name="SetZeroPlural" />
+  </public>
+  
+  <script language="VBScript" src="StringFormatter.vbs" />
+  
+  <script language="VBScript">
+    Dim sf : Set sf = New StringFormatter
+    
+    Function Format(arr) : Format = sf.Format(arr) : End Function
+    Sub SetSurrogate(str) : sf.SetSurrogate str : End Sub
+    Function Pluralize(i, v) : Pluralize = sf.Pluralize(i, v) : End Function
+    Sub SetZeroSingular : sf.SetZeroSingular : End Sub
+    Sub SetZeroPlural : sf.SetZeroPlural : End Sub
+    
+  </script>
+</scriptlet>

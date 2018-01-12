@@ -1,13 +1,11 @@
 With CreateObject("includer")
     Execute .read("TestingFramework")
-    Execute .read("StringFormatter")
+    Dim f : Set f = .GetObj("StringFormatter")
 End With
 
 With New TestingFramework
 
     .describe "StringFormatter class"
-
-        Dim f : Set f = New StringFormatter
 
     .it "should pluralize a regular noun with a count of 0, by default"
 
