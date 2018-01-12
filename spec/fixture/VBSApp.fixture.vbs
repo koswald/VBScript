@@ -11,10 +11,6 @@ End With
 
 Class Test
 
-Sub Window_OnLoad
-    Self.ResizeTo 30, 60
-End Sub
-
     Sub Run
 
         'output selected command-line argument
