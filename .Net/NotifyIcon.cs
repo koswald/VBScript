@@ -29,6 +29,7 @@ namespace VBScripting
             this.contextMenu = new ContextMenu();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon();
             this.notifyIcon.MouseUp += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseUp);
+            this.notifyIcon.BalloonTipClicked += new EventHandler(this.notifyIcon_BalloonTipClicked);
             this.notifyIcon.ContextMenu = this.contextMenu;
         }
         
@@ -196,6 +197,23 @@ namespace VBScripting
             MethodInfo mi = typeof(System.Windows.Forms.NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             mi.Invoke(notifyIcon, null);
         }
+
+        private void notifyIcon_BalloonTipClicked(object Sender, EventArgs e)
+        {
+            if (balloonTipCallback != null)
+            {
+                ComEvent.InvokeComCallback(balloonTipCallback);
+            }
+        }
+
+        private object balloonTipCallback;
+        
+        /// <summary> Sets the VBScript callback Sub or Function reference. </summary>
+        /// <example> VBScript: <code>.obj.SetBalloonTipCallback(GetRef("ProcedureName")) </code>. </example>
+        public void SetBalloonTipCallback(object callbackRef)
+        {
+            this.balloonTipCallback = callbackRef;
+        }
     }
 
     /// <summary> The COM interface for <see cref="NotifyIcon"/>. </summary>
@@ -258,6 +276,10 @@ namespace VBScripting
         /// <summary> COM interface member for <see cref="ShowContextMenu"/> </summary>
         [DispId(15)]
         void ShowContextMenu();
+
+        /// <summary> COM interface member for <see cref="SetBalloonTipCallback"/> </summary>
+        [DispId(16)]
+        void SetBalloonTipCallback(object callbackRef);
     }
 
     /// <summary> C# enum not intended for use by VBScript. 

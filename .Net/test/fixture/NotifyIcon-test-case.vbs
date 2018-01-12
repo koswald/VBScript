@@ -3,7 +3,7 @@
 
 'intended to be called automatically
 
-L = vbLf : T = "       " : LT = L & T : LTT = LT & T
+L = vbLf : T = "       " : LT = L & T : LTT = LT & T
 
 test = _
 "Launch NotifyIcon-test.vbs" & LT & _
@@ -15,7 +15,9 @@ test = _
 "Left click the icon" & LT & _
     "The same context menu should appear" & L & _
 "Select Show balloon tip from the context menu" & LT & _
-    "A notification should appear" & L & _
+    "A notification (formerly balloon tip) should appear" & L & _
+"Click the notification (formerly balloon tip)" & LT & _
+    "A message should appear: BalloonTip clicked" & L & _
 "Select Exit from the context menu" & LT & _
     "The icon and this dialog should disappear"
 

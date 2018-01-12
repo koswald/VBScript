@@ -26,6 +26,9 @@ ni.AddMenuItem "Change the icon", GetRef("ChangeTheIcon")
 ni.AddMenuItem "E&xit", GetRef("CloseAndExit")
 ni.Visible = True
 
+'set callback for the balloon tip (notification) click
+ni.SetBalloonTipCallback GetRef("BalloonTipClicked")
+
 ListenForCallbacks
 
 'Keep the script running in order to listen for callbacks,
@@ -40,6 +43,10 @@ End Sub
 
 Sub ShowBalloonTip
     ni.ShowBalloonTip
+End Sub
+
+Sub BalloonTipClicked
+   sh.PopUp "BalloonTip clicked", 20, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
 
 Sub OpenNotepad
