@@ -3,15 +3,12 @@
 var docScript = { 
 
     // use firstClick to prevent unresponsive first click
-
     firstClick: {}, 
 
     // pixels to scrolldown on click when showing detail
-
     scrollBy: 0, 
 
     // toggle visibility of details
-
     toggleDetail: function(e) {
 
         // get the element id, with cross-browser support
@@ -29,7 +26,6 @@ var docScript = {
 
             // show the detail
             // use 'block' here if the .css specifies none (hidden)
-
             detail.style.display = 'block';
 
             window.scrollBy(0, this.scrollBy);
@@ -37,14 +33,12 @@ var docScript = {
         } else {
 
             // hide the detail
-
             detail.style.display = 'none';
         }
         this.firstClick[id] = false;
     },
 
     // show selected output while debugging
-
     out: function(str) {
         document.getElementsByClassName("debugOutput")[0].innerHTML += ', ' + str;
     }

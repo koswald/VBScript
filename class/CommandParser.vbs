@@ -22,12 +22,12 @@ Class CommandParser
     
     'Method SetCommand
     'Parameter: newCmd
-    'Remark: Sets the command to run whose output will be analyzed/parsed.
+    'Remark: Sets the command to run whose output will be searched. Required before calling GetResult.
     Sub SetCommand(newCmd) : cmd = newCmd : End Sub
 
     'Method SetSearchPhrase
     'Parameter: newSearchPhrase
-    'Remark: Sets a phase to search for in the command's output
+    'Remark: Sets a phase to search for in the command's output. Required before calling GetResult.
     Sub SetSearchPhrase(newSearchPhrase) : searchPhrase = newSearchPhrase : End Sub
 
     Property Get GetCommand : GetCommand = cmd : End Property

@@ -23,7 +23,7 @@ file (.wsc) used to manage dependencies, and build the
 
 Read or edit the [wiki](../../wiki)
 
-[automatic documentation generator]: examples/documentation%20generator/Generate-the-docs.vbs 
+[automatic documentation generator]: examples/Generate-the-docs.vbs 
 [testing framework]: class/TestingFramework.vbs
 [logger]: class/VBSLogger.vbs
 [Examples]: examples

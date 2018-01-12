@@ -5,7 +5,7 @@
 
 To generate project documentation based 
 on script comments, run [Generate-the-docs.vbs]. 
-Its output file, `TheDocs.html`, should appear here 
+Its `.html` output file should appear 
 in this folder.
 
-[Generate-the-docs.vbs]: ../examples/documentation%20generator/Generate-the-docs.vbs
+[Generate-the-docs.vbs]: ../examples/Generate-the-docs.vbs
