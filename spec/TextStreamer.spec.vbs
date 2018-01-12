@@ -4,40 +4,31 @@
 With CreateObject("includer")
     Execute .read("TextStreamer")
     Execute .read("TestingFramework")
-    Execute .read("StreamConstants")
 End With
 Dim ts : Set ts = New TextStreamer
-Dim sc : Set sc = New StreamConstants
 Dim sh : Set sh = CreateObject("WScript.Shell")
 Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+Const Ascii = 0
+Const Unicode = -1
+Const SystemDefault = -2
+Const ForAppending = 8
+Const CreateNew = True
 
 With New TestingFramework
 
     .describe "TextStreamer class"
 
-    .it "should expose an instance of the StreamConstants object"
-
-        .AssertEqual sc.tbSystemDefault, -2
-
-    .it "should expose an instance of the Scripting.FileSystemObject object"
-
-        .AssertEqual fso.FileExists(WScript.ScriptFullName), True
-
-    .it "should expose an instance of the WScript.Shell object"
-
-        .AssertEqual sh.ExpandEnvironmentStrings("%SystemRoot%"), sh.ExpandEnvironmentStrings("%WinDir%")
-
     .it "should default to Ascii format"
 
-        .AssertEqual ts.GetStreamFormat, sc.tbAscii
+        .AssertEqual ts.GetStreamFormat, Ascii
 
     .it "should default to create a new file"
 
-        .AssertEqual ts.GetCreateMode, sc.bCreateNew
+        .AssertEqual ts.GetCreateMode, CreateNew
 
     .it "should default to append"
 
-        .AssertEqual ts.GetStreamMode, sc.iForAppending
+        .AssertEqual ts.GetStreamMode, ForAppending
 
     .it "should open a file for appending and for reading"
 
