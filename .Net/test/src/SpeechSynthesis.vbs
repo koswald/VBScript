@@ -19,13 +19,15 @@ Sub ChangeVoice
     voiceIndex = voiceIndex + 1
     If voiceIndex > UBound(voices) Then voiceIndex = 0
     ss.Voice = voices(voiceIndex)
+    voiceButton.Title = "Current voice: " & voices(voiceIndex)
     words.select
 End Sub
 
 Const width = 30, height = 30 'window size in percent of screen
 Const xPos = 50, yPos = 50 'window position in percent of screen
 Const EnterKey = 13
-Dim words, ss
+Dim words, voiceButton 'html elements
+Dim ss 'speech synthesis object
 Dim voices, voiceIndex, nVoices
 
 'initialize html elements and the ss object
@@ -42,19 +44,6 @@ Sub Window_OnLoad
             (.availWidth - pxWidth) * xPos * .01005, _
             (.availHeight - pxHeight) * yPos * .0102
     End With
-
-    'get the speech synthesizer
-    On Error Resume Next
-        Set ss = CreateObject("VBScripting.SpeechSynthesis")
-        If Err Then
-            MsgBox "Failed to find or initiailize the SpeechSynthesis library.", vbCritical, "Initialization failure"
-            Self.close
-        End If
-    On Error Goto 0
-    voices = ss.Voices
-    voiceIndex = 0
-    nVoices = UBound(voices) + 1 'number of installed, enabled voices
-    If nVoices > 0 Then ss.Voice = voices(voiceIndex)
 
     'create a container for the button
     Dim ctnr1 : Set ctnr1 = document.createElement("div")
@@ -79,8 +68,8 @@ Sub Window_OnLoad
     ctnr1.insertBefore button
 
     'create the change voice button
-    Dim button2 : Set button2 = document.createElement("input")
-    With button2
+    Set voiceButton = document.createElement("input")
+    With voiceButton
         .type = "button"
         .value = "Change voice"
         Set .onClick = GetRef("ChangeVoice")
@@ -90,9 +79,8 @@ Sub Window_OnLoad
             .width = "40%"
             .marginLeft = "10%"
         End With
-        If nVoices < 2 Then .disabled = True
     End With
-    ctnr1.insertBefore button2
+    ctnr1.insertBefore voiceButton
 
     'create a container for the text area
     Dim ctnr2 : Set ctnr2 = document.createElement("div")
@@ -114,6 +102,23 @@ Sub Window_OnLoad
         .overflow = "auto"
     End With
     ctnr2.insertBefore words
+
+    'get the speech synthesizer
+    On Error Resume Next
+        Set ss = CreateObject("VBScripting.SpeechSynthesis")
+        If Err Then
+            MsgBox "Failed to find or initiailize the SpeechSynthesis library.", vbCritical, "Initialization failure"
+            Self.close
+        End If
+    On Error Goto 0
+    voices = ss.Voices
+    voiceIndex = 0
+    nVoices = UBound(voices) + 1 'number of installed, enabled voices
+    If nVoices > 0 Then
+        ss.Voice = voices(voiceIndex)
+        voiceButton.Title = "Current voice: " & voices(voiceIndex)
+    End If
+    If nVoices < 2 Then voiceButton.disabled = True
 
     'put focus on the text area; prepare to type some words
     words.focus
