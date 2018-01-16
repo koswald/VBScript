@@ -1,7 +1,7 @@
 
-''' includer.vbs is the script for includer.wsc
+''' Includer.vbs is the script for Includer.wsc
 '
-'The includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.
+'The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.
 '
 '    <h5> How it works </h5>
 '
@@ -9,7 +9,7 @@
 '
 '    <h5> Usage example </h5>
 '
-'' With CreateObject("includer")
+'' With CreateObject("Includer")
 ''     Execute .read("WMIUtility.vbs")
 ''     Execute .read("TextStreamer") '.vbs may be omitted
 '' End With
@@ -17,17 +17,17 @@
 '' Dim wmi : Set wmi = New WMIUtility
 '' Dim streamer : Set streamer = New TextStreamer
 '
-'        Relative paths may be used and are relative to the location of includer.wsc.
+'        Relative paths may be used and are relative to the location of Includer.wsc.
 
 '
 '    <h5> Registration </h5>
 '
-'        Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
+'        Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
 '        1) Run the Setup.vbs in the project folder. Or,
 '        2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.
 '
-''       %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\includer.wsc
-''       %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\includer.wsc
+''       %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc
+''       %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc
 '
 ''''
 
@@ -40,13 +40,13 @@ Option Explicit : Initialize
 Function GetObj(className)
     'The GetObject method doesn't require that a scriptlet 
     'be registered, but it does require an absolute path.
-    Set GetObj = GetObject("script:" & LibraryPath & "\" & className & ".wsc")
+    Set GetObj = GetObject("script:" & LibraryPath & "\wsc\" & className & ".wsc")
 End Function
 
 'Function Read
 'Parameter: a file
 'Return the file contents
-'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the folder where this .wsc file resides, named <code> class</code> by default. The file name extension may be omitted for .vbs files.
+'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the <code> class</code> folder. The file name extension may be omitted for .vbs files.
 Function Read(file)
 
     'Expect Ascii and Unicode file formats to be mixed together in the script library...
@@ -79,7 +79,7 @@ End Function
 
 'Function LibraryPath
 'Returns a folder path
-'Remark: Returns the resolved, absolute path of the folder that contains includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.
+'Remark: Returns the resolved, absolute path of the folder that contains Includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.
 Function LibraryPath : LibraryPath = referencePath : End Function
 
 Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
@@ -111,6 +111,11 @@ Private Function Resolve(path)
     RestoreCurrentDirectory
 End Function
 
+'Get parent folder
+Private Function Parent(str)
+    Parent = fso.GetParentFolderName(str)
+End Function
+
 Private Sub SaveCurrentDirectory : savedCurrentDirectory = sh.CurrentDirectory : End Sub
 Private Sub RestoreCurrentDirectory : sh.CurrentDirectory = savedCurrentDirectory : End Sub
 
@@ -132,9 +137,9 @@ Private Sub Initialize
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set analyzer = New EncodingAnalyzer
 
-    'set the path against which relative paths will be referenced, i.e. the folder containing this scriptlet
+    'set the path against which relative paths will be referenced, i.e. the folder named "class".
     Dim thisFile : thisFile = sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
     thisFile = Replace(Replace(Replace(thisFile, "file:///", ""), "%20", " "), "/", "\") 'remove superfluous string
-    referencePath = fso.GetParentFolderName(thisFile)
+    referencePath = Parent(Parent(thisFile))
     SetFormat Ascii
 End Sub

@@ -11,7 +11,7 @@
 
 Option Explicit : Initialize
 
-Const scriptlet = "class\includer.wsc" 'dependency manager scriptlet
+Const scriptlet = "class\wsc\includer.wsc" 'dependency manager scriptlet
 Const buildFolder = ".Net\build"
 
 Main
