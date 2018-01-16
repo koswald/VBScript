@@ -3,7 +3,7 @@
 
 Option Explicit : Initialize
 
-'initialize
+'Create the object
 Set ni = CreateObject("VBScripting.NotifyIcon")
 
 'test three ways to set the icon
@@ -16,7 +16,7 @@ ni.Text = "VBScripting.NotifyIcon" & vbLf & "test"
 
 'balloon tip / notification
 ni.BalloonTipTitle = "NotifyIcon test"
-ni.BalloonTipText = "This message will self-destruct."
+ni.BalloonTipText = "Notification message, AKA balloon tip text."
 ni.SetBalloonTipIcon ni.ToolTipIcon.Info 'Error, Info, None, Warning
 
 'add menu items / callbacks
