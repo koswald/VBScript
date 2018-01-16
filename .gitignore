@@ -4,6 +4,9 @@
 *.exe
 *.module
 
+# type libraries
+*.tlb
+
 # key files
 *.snk
 
