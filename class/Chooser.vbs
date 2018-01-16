@@ -48,7 +48,7 @@ Class Chooser
 
     'Function FolderObject
     'Returns an object
-    'Remark: Opens a Browse For Folder dialog and returns a Shell.Application BrowseForFolder object for a folder chosen by the user. This object has methods Title and Self.Path, corresponding to this classes FolderTitle and FolderPath, respectively. This method is recommended for when you need both the FolderTitle and FolderPath but only want the user to have to choose once. If no folder was selected, then TypeName(folderObj) = "Nothing" is True.
+    'Remark: Opens a Browse For Folder dialog and returns a Shell.Application BrowseForFolder object for a folder chosen by the user. This object has methods Title and Self.Path, corresponding to this class's FolderTitle and FolderPath, respectively. This method is recommended for when you need both the FolderTitle and FolderPath but only want the user to have to choose once. If no folder was selected, then TypeName(folderObj) = "Nothing" is True.
     Function FolderObject
         Const WINDOW_HANDLE = 0
         Set FolderObject = sa.BrowseForFolder(WINDOW_HANDLE, WindowTitle, WindowOptions, sh.ExpandEnvironmentStrings(RootPath))

@@ -131,9 +131,7 @@ Class VBSTestRunner
     'Remark: Optional. Sets the number of times to run the test(s). Default is 1.
     Sub SetRunCount(newRunCount) : runCount = newRunCount : End Sub
 
-    'Method SetTimeout
-    'Parameter: an integer
-    'Remark: Optional. Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0. Termination may not be immediate.
+    'Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0. Termination may not be immediate. Optional. 
     Sub SetTimeout(newTimeout) : timeout = newTimeout : End Sub
 
     Private Sub ValidateSettings
