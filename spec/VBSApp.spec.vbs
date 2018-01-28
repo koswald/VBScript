@@ -27,7 +27,7 @@ Class VBSAppClassTester
         tester.ShowPendingResult
         WScript.StdOut.WriteLine "          " & ext
         sh.Run format(Array( _
-            "cmd /c %s%s ""arg zero"" ""arg one"" %s %s", _
+            "cmd /c %s%s ""ar g ze ro"" ""arg one"" %s %s", _
             base, ext, milliseconds, ext _
         )), hidden, Synchronous
         If Not "Empty" = TypeName(stream) Then stream.Close 'close the previous test's text stream, unless this is the first test
@@ -36,7 +36,7 @@ Class VBSAppClassTester
             .it "should get command-line args"
                 .AssertEqual stream.ReadLine, "arg one" 'selected arg with space
             .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, format(Array(" ""arg zero"" ""arg one"" ""%s"" ""%s""", milliseconds, ext))
+                .AssertEqual stream.ReadLine, format(Array(" ""ar g ze ro"" ""arg one"" ""%s"" ""%s""", milliseconds, ext))
             .it "should get the argument count"
                 .AssertEqual stream.ReadLine, "4"
             .it "should get app filespec"
