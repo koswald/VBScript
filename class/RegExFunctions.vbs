@@ -40,23 +40,7 @@ Class RegExFunctions
     'Returns: a regex expression
     'Remark: Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |.
     Function Pattern(wildcard)
-        'Discussion
-        '(1) These characters are invalid in file names,
-        'so raise an error, handle specially, or ignore:
-        'Array("\", "/", ":", "*", "?", """", "<", ">", "|")
-        '(2) These characters are regex special characters,
-        'so if not handled above, escape or handle specially:
-        'Array("(", ")", ".", "$", "+", "[", "?", "\", "^", "{", "|")
-
-        'Algorithm
-        'Special treatment from the first group (otherwise raise err):
-        '    "*" replace with ".*"
-        '    "?" replace with *.{1}" AFTER ESCAPING because of "{"
-        '    "|" don't change: regex delimiter
-        'Raise error on Array("\", "/", ":", """", "<", ">")
-        'Special treamtment from second group:
-        '    "." replace with "\." (escape) FIRST because of "."
-        'Escape Array("(", ")", "$", "+", "[", "^", "{")
+        'See docs\algorithm\ReadMe.md for more comments
         Dim i, wp : wp = wildcard '=> wildcard-to-pattern
         'remove whitespace from ends of delimited strings
         wp = Split(wp, "|")

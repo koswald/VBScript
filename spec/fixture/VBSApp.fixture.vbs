@@ -62,7 +62,7 @@ Class Test
     Sub Class_Initialize
         With CreateObject("includer")
             Dim base
-            Execute(.read("..\spec\VBSApp.spec.config"))
+            Execute .read("..\spec\VBSApp.spec.config")
             Execute .read("VBSApp")
             Execute .read("VBSTimer")
         End With

@@ -42,6 +42,79 @@ Class HTAApp
             i = i + 1
         Wend
     End Sub
+
+    'Return an array of command line arguments.
+    Function ParseArgs(cl)
+        'if there are no arguments, return an empty array
+        If 0 = Len(Trim(cl)) Then ParseArgs = Array() : Exit Function
+
+        'initialize
+        Dim pos 'current position
+        Dim char 'current character
+        Dim prevChar : prevChar = " "
+        Dim qCount : qCount = 0
+        Dim q : q = """"
+        Dim space : space = " "
+        Dim argCount : argCount = 0
+        Dim args : args = ""
+
+        'read the command line, one character at a time,
+        'making slight modifications
+        For pos = 1 To Len(cl)
+            'get the current character
+            char = Mid(cl, pos, 1)
+            'track double quotes
+            If q = char Then qCount = qCount + 1
+
+            If qCount mod 2 Then
+
+                'quote count is odd...
+
+                'validate
+                If q = char And Not space = prevChar Then Err.Raise 1,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
+                If pos = Len(cl) Then Err.Raise 2,, "There is an odd number of double quotes in the command line arguments, " & cl
+
+                'add the current character to the rebuild string
+                args = args & char
+
+            Else
+
+                'quote count is even...
+                'remove multiple spaces between arguments and
+                'add quotes, temporarily
+
+                'validate
+                If q = prevChar And Not space = char Then Err.Raise 3,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
+
+                'rebuild arguments
+
+                'add a leading quote to a quoteless argument
+                If space = prevChar And Not space = char And Not q = char Then
+                    args = args & q & char
+
+                'add a trailing quote to a quoteless argument
+                ElseIf space = char And Not space = prevChar And Not q = prevChar Then
+                    args = args & q & char
+
+                'remove multiple spaces
+                ElseIf space = char And space = prevChar Then
+                    'don't use this character
+
+                'add the current character to the rebuild string
+                Else
+                    args = args & char
+                End If
+            End If
+
+            prevChar = char
+        Next
+
+        'remove leading and trailing quotes
+        If q = Right(args, 1) Then args = Left(args, Len(args) - 1)
+        If q = Left(args, 1) Then args = Right(args, Len(args) - 1)
+
+        ParseArgs = Split(args, """ """)
+    End Function
    
     Private oHtaObject_400BFC32009942E895C3F39EA37103DF 'must differ from calling hta's id
     Private sh, re, format
@@ -146,32 +219,7 @@ Class HTAApp
         ElseIf "Empty" = TypeName(oHtaObject_400BFC32009942E895C3F39EA37103DF) Then
             Err.Raise 1,, ErrMsgHtaIdMissing 'hta object was not initialized
         End If
-        Dim cl : cl = oHtaObject_400BFC32009942E895C3F39EA37103DF.CommandLine
-        'the command line may contain two spaces between the .hta filespec and the other args. See HKCR\htafile\Shell\Open\Command
-        'Convert the double space to a single space
-        cl = Replace(cl, """  ", """ ")
-
-        'surround args with double quotes,
-        'if not already quoted
-        cl = cl & " " 'add a trailing space, to simplify the regular expression
-        re.IgnoreCase = True
-        re.Global = True
-        'Explanation of the regular expression
-        '[^""] matches any single character except the double quote
-        '+ matches one or more non-quote characters
-        '? makes the match a non-greedy match
-        '(?= ) non-consuming positive lookahead for a space
-        re.Pattern = " ([^""]+?)(?= )" 'match only unquoted args
-        cl = re.Replace(cl, " ""$1""") 'add quotes
-        cl = Trim(cl) 'remove trailing space
-
-        'convert string to array
-        Dim args : args = Split(cl, """ """)
-        'remove the remaining double quotes
-        Dim i : For i = 0 To UBound(args)
-            args(i) = Replace(args(i), """", "")
-        Next
-        GetArgs = args
+        GetArgs = ParseArgs(oHtaObject_400BFC32009942E895C3F39EA37103DF.CommandLine)
     End Function
 
     Private Sub ReleaseObjectMemory
