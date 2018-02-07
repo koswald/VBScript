@@ -25,7 +25,7 @@ Sub AddURL(wscPath)
 End Sub
 
 Sub SetPath(tlbPath)
-    If Not fso.FolderExists(fso.GetParentFolderName(tlbPath)) Then Err.Raise 2,, "Couldn't find parent folder of .tlb filefile" & vbLf & tlbPath
+    If Not fso.FolderExists(fso.GetParentFolderName(tlbPath)) Then Err.Raise 2,, "Couldn't find parent folder of .tlb file" & vbLf & tlbPath
     stl.Path = tlbPath
 End Sub
 

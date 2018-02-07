@@ -13,4 +13,4 @@ but a few are intended to be run using 32-bit executables.
 
 ### Launching tests
 
-The tests may be initiated by running directly or by running the files in the folder [examples\test launchers](../examples/test%20launchers).
+The tests may be initiated by running directly or by running the `TestLauncher*` files in the [examples](../examples) folder.

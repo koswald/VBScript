@@ -1,16 +1,16 @@
 ###### The `algorithm` folder
 
-## `ReadMe.md`
+## ReadMe.md
 
-Algorithms development details
+Algorithm development details.
 
 ## Contents
-[ParseArgs method](#parseargs-method)  
+[ParseArgs propery](#parseargs-propery)  
 [Pattern property](#pattern-property)
 
-# ParseArgs method
+# ParseArgs propery
 
-The [HTAApp class] `ParseArgs` method parses the mshta.exe command-line arguments. This is unnecessary for .vbs and .wsf files, because the WScript.Arguments object provides the arguments already separated, with any wapping quotes stripped off. The mshta.exe raw arguments typically include the full path of the .hta file, wrapped in double quotes.
+The [HTAApp class] `ParseArgs` propery parses the mshta.exe command-line arguments. This is unnecessary for .vbs and .wsf files, because the WScript.Arguments object provides the arguments already separated, with any wapping quotes stripped off. The mshta.exe raw arguments typically include the full path of the .hta file, wrapped in double quotes.
 
 [HTAApp class]: ../../class/HTAApp.vbs
 
@@ -22,7 +22,10 @@ The [HTAApp class] `ParseArgs` method parses the mshta.exe command-line argument
 - Quoted arguments may be mixed with unquoted arguments.
 - Quotes are used only in pairs and only for helping to define where to separate one argument from another.
 - Return an array of arguments with no quotes.
-- Remove multiple spaces between arguments.
+
+## Algorithm synopsis
+
+Temporarily wrap quoteless arguments with quotes, then split the modified command line string into an array.
 
 ## Algorithm
 
@@ -32,18 +35,19 @@ The [HTAApp class] `ParseArgs` method parses the mshta.exe command-line argument
     - Raise an error if the quote doesn't have a space immediately to its left.
     - Raise an error if there are an odd number of double-quotes.
 - If an even number of quotes have been read, then a quoteless argument is being read...
-    - Raise an error if the quote doesn't have a space immediately to the right.
-    - Add a leading quote to a quoteless argument.
-    - Add a trailing quote to a quoteless argument.
-    - Remove multiple spaces.
-
+    - Raise an error if the trailing quote, if any, of the previous argument doesn't have a space immediately to the right.
+    - Temporarily add a leading quote.
+    - Temporarily add a trailing quote.
+    - Remove multiple spaces between arguments.
+- Remove the leading and trailing quotes, if any.
+- Convert the rebuilt arguments string to an array.
 ## Examples
 
-| Argument(s) | result |
+| Argument | result |
 | --- | :---: |
-| `/folder:C:\myfolder` | ok |
-| `"/folder:C:\my folder"` | ok |
-| `/folder:"C:\my folder"` | error |
+| /folder:C:\myfolder | ok |
+| "/folder:C:\my folder" | ok |
+| /folder:"C:\my folder" | error |
 
 
 
