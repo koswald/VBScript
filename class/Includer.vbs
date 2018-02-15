@@ -36,7 +36,7 @@ Option Explicit : Initialize
 'Function GetObj
 'Parameter: className
 'Returns: An object
-'Remark: Returns an object based on the VBScript class with the specified name. Requires a .wsc scriptlet. Does not work with scripts such as VBSApp.vbs or TestingFrameework.vbs, which have a dependency on the WScript object/keywork. See StringFormatter.wsc for an example.
+'Remark: Returns an object based on the VBScript class with the specified name. Requires a .wsc Windows Script Component file in \class\wsc. See StringFormatter.wsc for an example.
 Function GetObj(className)
     'The GetObject method doesn't require that a scriptlet 
     'be registered, but it does require an absolute path.
@@ -81,6 +81,8 @@ End Function
 'Returns a folder path
 'Remark: Returns the resolved, absolute path of the folder that contains Includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.
 Function LibraryPath : LibraryPath = referencePath : End Function
+
+Sub SetLibraryPath(newPath) : referencePath = newPath : End Sub
 
 Sub SetFormat(newFormat) : StreamFormat = newFormat : End Sub
 Sub SetFormatAscii : SetFormat Ascii : End Sub
@@ -130,7 +132,7 @@ Const DontCreateNew = False
 
 Dim sh, fso, StreamFormat, analyzer
 Dim savedCurrentDirectory
-Dim referencePath
+Private referencePath
 
 Private Sub Initialize
     Set sh = CreateObject("WScript.Shell")
@@ -138,7 +140,10 @@ Private Sub Initialize
     Set analyzer = New EncodingAnalyzer
 
     'set the path against which relative paths will be referenced, i.e. the folder named "class".
-    Dim thisFile : thisFile = sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
+    Dim thisFile
+    On Error Resume Next
+        thisFile = sh.RegRead("HKCR\CLSID\" & sWscID & "\ScriptletURL\") 'get path to this scriptlet from the registry
+    On Error Goto 0
     thisFile = Replace(Replace(Replace(thisFile, "file:///", ""), "%20", " "), "/", "\") 'remove superfluous string
     referencePath = Parent(Parent(thisFile))
     SetFormat Ascii
