@@ -2,12 +2,12 @@
 <!-- Easily modify which executables start .hta, .vbs, and .wsf files, that is,
 whether the given file types are started by 64-bit or 32-bit executables.
 
-Launch this file from the .bat file of the same name, in order to ensure
-that it is started with the 64-bit cmd.exe, with elevated privileges  -->
+This HTML Application can be used to troubleshoot system configuration
+with respect to running script file types .vbs, .wsf, and .hta -->
 
-<hta:application id="oHta" scroll="No" icon="msdt.exe" innerborder="No">
+<hta:application scroll="No" icon="msdt.exe" innerborder="No">
 
-    <body onload="tr.Validate()">
+    <body>
 
         <fieldset> <legend id="lgdHta"> </legend>
             <span id="spanHta"> </span> <br />
@@ -34,85 +34,6 @@ that it is started with the 64-bit cmd.exe, with elevated privileges  -->
             Dim tr : Set tr = New Troubleshooter
 
             Class Troubleshooter
-                Private sh 'WScript.Shell object
-                Private fso 'Scripting.FileSystemObject
-                Private SysWow64, System32 'for regex.Replace arg#2
-                Private oSpanHta, oSpanVbs, oSpanWsf 'span elements for display of registry values
-                Private htaKey, vbsKey, wsfKey 'registry keys
-                Private keyName, rootKeyShortName
-                Private reg, HKCR, wmiRootKey
-                Private htaName, cmdLineToken, closeMessage, oDoc
-                Private regex
-
-                Sub Class_Initialize
-                    Self.ResizeTo 800, 400 'width, height
-                    Self.MoveTo 200, 300 'left, top
-                    Set sh = CreateObject("WScript.Shell")
-                    Set fso = CreateObject("Scripting.FileSystemObject")
-                    Set regex = New RegExp
-                    regex.IgnoreCase = True
-                    regex.Pattern = "\\(System32|SysWoW64)\\"
-                    SysWow64 = "\SysWoW64\" 'for regex.Replace arg#2
-                    System32 = "\System32\"
-
-                    Set oSpanHta = document.getElementById("spanHta") 'DOM elements
-                    Set oSpanVbs = document.getElementById("spanVbs")
-                    Set oSpanWsf = document.getElementById("spanWsf")
-
-                    htaKey = "htafile\Shell\Open\Command" 'registry keys
-                    vbsKey = "VBSFile\Shell\Open\Command"
-                    wsfKey = "WSFFile\Shell\Open\Command"
-                    keyName = "" 'use empty string for the default value, some other value for debugging
-                    rootKeyShortName = "HKCR" 'registry root key
-                    HKCR = &H80000000
-                    wmiRootKey = HKCR
-                    Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
-                    ShowVal htaKey, oSpanHta 'radio button group label <= key value
-                    ShowVal vbsKey, oSpanVbs
-                    ShowVal wsfKey, oSpanWsf
-
-                    cmdLineToken = "Ensure_x64_exe_starts_.hta_file" 'command-line argument
-                    Set oDoc = document.ParentWindow.document
-                    htaName = fso.GetBaseName(oDoc.location.href)
-                    oDoc.Title = htaName
-                    closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used."
-
-                    InitializeDOM "hta"
-                    InitializeDOM "vbs"
-                    InitializeDOM "wsf"
-                End Sub 'Class_Initialize
-
-                'initialize radio button status and fieldset legend for the specified file type
-                Sub InitializeDOM(fileType)
-                    Dim o64, o86, oLgd, re, key, keyVal
-                    Set re = New RegExp
-                    re.IgnoreCase = True
-                    Set o64 = document.getElementById("rad64" & fileType)
-                    Set o86 = document.getElementById("rad86" & fileType)
-                    Execute("key = " & fileType & "Key") 'initialize local variable with global variable
-                    keyVal = GetRegValue(key)
-
-                    re.Pattern = "\\System32\\" 'regex pattern must escape \ with \
-                    If re.Test(keyVal) Then o64.checked = "checked"
-                    re.Pattern = "\\SysWow64\\"
-                    If re.Test(keyVal) Then o86.checked = "checked"
-
-                    Set oLgd = document.getElementById("lgd" & fileType)
-                    oLgd.innerHTML = rootKeyShortName & "\" & key
-
-                    Set o64 = Nothing
-                    Set o86 = Nothing
-                    Set re = Nothing
-                    Set oLgd = Nothing
-                End Sub
-
-                'body onload event handler
-                'verify that this .hta was launched using the .bat file: look for token in the command-line
-                Sub Validate
-                    If InStr(oHta.CommandLine, cmdLineToken) Then Exit Sub
-                    MsgBox closeMessage, vbInformation, htaName
-                    Self.Close
-                End Sub
 
                 'update DOM element with the registry value
                 Sub ShowVal(key, span)
@@ -199,6 +120,89 @@ that it is started with the 64-bit cmd.exe, with elevated privileges  -->
                     document.getElementById("out").innerHTML = msg & "<br />" & newMsg
                 End Sub
 
+                'initialize radio button status and fieldset legend for the specified file type
+                Sub InitializeDOM(fileType)
+                    Dim o64, o86, oLgd, re, key, keyVal
+                    Set re = New RegExp
+                    re.IgnoreCase = True
+                    Set o64 = document.getElementById("rad64" & fileType)
+                    Set o86 = document.getElementById("rad86" & fileType)
+                    Execute("key = " & fileType & "Key") 'initialize local variable with global variable
+                    keyVal = GetRegValue(key)
+
+                    re.Pattern = "\\System32\\" 'regex pattern must escape \ with \
+                    If re.Test(keyVal) Then o64.checked = "checked"
+                    re.Pattern = "\\SysWow64\\"
+                    If re.Test(keyVal) Then o86.checked = "checked"
+
+                    Set oLgd = document.getElementById("lgd" & fileType)
+                    oLgd.innerHTML = rootKeyShortName & "\" & key
+
+                    Set o64 = Nothing
+                    Set o86 = Nothing
+                    Set re = Nothing
+                    Set oLgd = Nothing
+                End Sub
+
+                Private sh 'WScript.Shell object
+                Private fso 'Scripting.FileSystemObject
+                Private SysWow64, System32 'for regex.Replace arg#2
+                Private oSpanHta, oSpanVbs, oSpanWsf 'span elements for display of registry values
+                Private htaKey, vbsKey, wsfKey 'registry keys
+                Private keyName, rootKeyShortName
+                Private reg, HKCR, wmiRootKey
+                Private htaName, cmdLineToken, closeMessage
+                Private regex
+
+                Sub Class_Initialize
+                    Self.ResizeTo 800, 400 'width, height
+                    Self.MoveTo 200, 300 'left, top
+                    Set sh = CreateObject("WScript.Shell")
+                    Set fso = CreateObject("Scripting.FileSystemObject")
+                    Set regex = New RegExp
+                    regex.IgnoreCase = True
+                    regex.Pattern = "\\(System32|SysWoW64)\\"
+                    SysWow64 = "\SysWoW64\" 'for regex.Replace arg#2
+                    System32 = "\System32\"
+
+                    Set oSpanHta = document.getElementById("spanHta") 'DOM elements
+                    Set oSpanVbs = document.getElementById("spanVbs")
+                    Set oSpanWsf = document.getElementById("spanWsf")
+
+                    htaKey = "htafile\Shell\Open\Command" 'registry keys
+                    vbsKey = "VBSFile\Shell\Open\Command"
+                    wsfKey = "WSFFile\Shell\Open\Command"
+                    keyName = "" 'use empty string for the default value, some other value for debugging
+                    rootKeyShortName = "HKCR" 'registry root key
+                    HKCR = &H80000000
+                    wmiRootKey = HKCR
+                    Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
+                    ShowVal htaKey, oSpanHta 'radio button group label <= key value
+                    ShowVal vbsKey, oSpanVbs
+                    ShowVal wsfKey, oSpanWsf
+
+                    htaName = fso.GetBaseName(document.location.href)
+                    document.Title = htaName
+                    closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used."
+
+                    InitializeDOM "hta"
+                    InitializeDOM "vbs"
+                    InitializeDOM "wsf"
+
+                    'check for elevated privileges and restart if necessary
+                    With CreateObject("includer")
+                        Execute .read("PrivilegeChecker")
+                        Dim pc : Set pc = New PrivilegeChecker
+                        If Not pc Then
+                            Dim sa : Set sa = CreateObject("Shell.Application")
+                            Dim application : Set application = document.getElementsByTagName("application")(0)
+                            sa.ShellExecute "mshta", application.CommandLine,, "runas"
+                            Set sa = Nothing
+                            document.ParentWindow.Close
+                        End If
+                    End With
+                End Sub 'Class_Initialize
+
                 Sub Class_Terminate
                     Set sh = Nothing
                     Set fso = Nothing
@@ -206,7 +210,6 @@ that it is started with the 64-bit cmd.exe, with elevated privileges  -->
                     Set oSpanHta = Nothing
                     Set oSpanVbs = Nothing
                     Set oSpanWsf = Nothing
-                    Set oDoc = Nothing
                     Set reg = Nothing
                 End Sub
 
