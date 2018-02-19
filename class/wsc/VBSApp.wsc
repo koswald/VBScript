@@ -1,0 +1,46 @@
+<?XML version="1.0"?>
+<?component error="true"?>
+<component>
+	
+    <registration
+        description="Windows Script Component utilities standardized for .hta, .vbs, and .wsf"
+        progid="VBScripting.VBSApp"
+        classid="{ADCEC089-30E0-11D7-86BF-00606744568C}">
+    </registration>
+    
+    <public>
+        <property name="GetArgs" />
+        <property name="GetArgsString" />
+        <property name="GetArg" />
+        <property name="GetArgsCount" />
+        <property name="GetFullName" />
+        <property name="GetFileName" />
+        <property name="GetBaseName" />
+        <property name="GetExtensionName" />
+        <property name="GetParentFolderName" />
+        <property name="GetExe" />
+        <method name="RestartWith" />
+        <method name="SetUserInteractive" />
+        <property name="GetUserInteractive" />
+        <method name="SetVisibility" />
+        <property name="GetVisibility" />
+        <method name="Quit" />
+        <method name="Sleep" />
+        <property name="WScriptHost" />
+        <property name="CScriptHost" />
+        <property name="GetHost" />
+        <property name="WrapAll" >
+          <get internalName="GetWrapAll" />
+          <put internalName="PutWrapAll" />
+        </property>
+        <method name="Close" />
+        <method name="Init" />
+    </public>
+    
+    <!-- import the class -->
+    <script language="VBScript" src="../VBSApp.vbs"></script>
+    
+    <!-- wrap/expose the class members -->
+    <script language="VBScript" src="src/VBSAppWrapper.vbs"></script>
+
+  </component>

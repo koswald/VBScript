@@ -5,6 +5,30 @@
 
 'This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments and indentation.
 
+'Four ways to instantiate
+
+'For .vbs/.wsf scripts,
+'' Dim app : Set app = CreateObject("VBScripting.VBSApp")
+'' app.Init WScript
+
+'For .hta applications,
+'' Dim app : Set app = CreateObject("VBScripting.VBSApp")
+'' app.Init document
+
+'If the script may be used in .vbs/.wsf scripts or .hta applications
+'' With CreateObject("includer")
+''     Execute .read("VBSApp")
+'' End With
+'' Dim app : Set app = New VBSApp
+
+'Alternate method for both .hta and .vbs/.wsf,
+'' Set app = CreateObject("VBScripting.VBSApp")
+'' If "HTMLDocument" = TypeName(document) Then
+''     app.Init document
+'' Else app.Init WScript
+'' End If
+
+'Example
 '' 'test.vbs "arg one" "arg two"
 '' With CreateObject("includer")
 ''     Execute .read("VBSApp")
@@ -44,16 +68,11 @@ Class VBSApp
     'Returns: array of strings
     'Remark: Returns an array of command-line arguments.
     Property Get GetArgs
-        If Not "Empty" = TypeName(arguments) Then
-            GetArgs = arguments
-            Exit Property
-        End If
         With CreateObject("includer")
             Execute .read("VBSArrays")
         End With
         Dim arrayUtility : Set arrayUtility = New VBSArrays
         If IAmAnHta Then
-            hta.SetObj hta.GetId
             'strip off the first argument, which is the filespec
             arguments = arrayUtility.RemoveFirstElement(hta.GetArgs)
         ElseIf IAmAScript Then
@@ -66,13 +85,13 @@ Class VBSApp
     'Returns: a string
     'Remark: Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih double quotes. The return string has a leading space, by design, unless there are no arguments.
     Property Get GetArgsString
-        If Not "Empty" = TypeName(argumentsString) Then
-            GetArgsString = argumentsString
-            Exit Property
-        End If
         Dim i, s, args : s = "" : args = GetArgs
         For i = 0 To UBound(args)
-            s = s & " """ & args(i) & """"
+            If wrapAll_ Or InStr(args(i), " ") Then
+                s = s & " """ & args(i) & """"
+            Else
+                s = s & " " & args(i)
+            End If
         Next
         argumentsString = s
         GetArgsString = s
@@ -151,10 +170,15 @@ Class VBSApp
             'prevent console window from needlessly persisting
             start = "start"
         End If
-        If elevating And userInteractive Then If vbCancel = MsgBox(format(Array( _
-            " Restart %s with elevated privileges? %s (The User Account Control dialog may open.)", _
-            GetFileName, vbLf _
-        )), vbOKCancel + vbQuestion, GetBaseName) Then Quit
+        If elevating And userInteractive Then
+            Dim msg : msg = format(Array( _
+                " Restart %s with elevated privileges? %s (The User Account Control dialog may open.)", _
+                GetFileName, vbLf _
+            ))
+            If vbCancel = MsgBox(msg, vbOKCancel + vbQuestion, GetBaseName) Then
+                Quit
+            End If
+        End If
         Dim args : args = format(Array( _
             "%s cd ""%s"" & %s %s ""%s"" %s", _
              switch, GetParentFolderName, start, host, me.GetFullName, GetArgsString _
@@ -183,10 +207,10 @@ Class VBSApp
     'Remark: Returns the userInteractive setting. This setting also may affect the visibility of selected console windows.
     Property Get GetUserInteractive : GetUserInteractive = userInteractive : End Property
 
-    'Method SetVisiblity
+    'Method SetVisibility
     'Parameter: 0 (hidden) or 1 (normal)
     'Remark: Sets the visibility of selected command windows. SetUserInteractive also affects this setting. Default is True.
-    Sub SetVisiblity(newVisibility) : visibility = newVisibility : End Sub
+    Sub SetVisibility(newVisibility) : visibility = newVisibility : End Sub
 
     'Property GetVisibility
     'Returns: 0 (hidden) or 1 (normal)
@@ -198,7 +222,7 @@ Class VBSApp
     Sub Quit
         ReleaseObjectMemory
         If IAmAnHta Then
-            Self.close
+            document.parentWindow.close
         ElseIf IAmAScript Then
             WScript.Quit
         End If
@@ -220,55 +244,59 @@ Class VBSApp
     'Property WScriptHost
     'Returns: "wscript.exe"
     'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
-    Public Property Get WScriptHost : WSCriptHost = "wscript.exe" : End Property
+    Public Property Get WScriptHost : WScriptHost = "wscript.exe" : End Property
     
     'Property CScriptHost
     'Returns: "cscript.exe"
     'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
-    Public Property Get CScriptHost : CSCriptHost = "cscript.exe" : End Property
+    Public Property Get CScriptHost : CScriptHost = "cscript.exe" : End Property
     
     'Property GetHost
     'Returns: "wscript.exe" or "cscript.exe" or "mshta.exe"
     'Remark: Returns the current host. Can be used as an argument for the method RestartIfNotPrivileged.
     Public Property Get GetHost : GetHost = GetExe : End Property
-   
+    
+    'Determine whether the source file is a script,
+    '(.wsf or .vbs), an .hta, or a .wsc
+    Sub InitializeAppTypes
+        IAmAScript = False : IAmAnHta = False : IAmAWsc = False
+        If "HTMLDocument" = TypeName(document) Then
+            IAmAnHta = True
+            InitializeHtaDependencies
+            filespec = hta.GetFilespec
+        ElseIf "Object" = TypeName(WScript) Then
+            IAmAScript = True
+            filespec = WScript.ScriptFullName
+        ElseIf "VBSApp" = TypeName(Me) Then
+            IAmAWsc = True
+        Else
+            Err.Raise 2, GetFileName, "VBSApp.InitializeAppTypes could not determine the type of file that is calling it."
+        End If
+    End Sub
+    
+    Property Get WrapAll : WrapAll = wrapAll_ : End Property
+    Property Let WrapAll(newWrapAll)
+        wrapAll_ = newWrapAll
+    End Property
+
     Private fso
     Private hta
+    Private wrapAll_
     Private filespec, arguments, argumentsString
-    Private IAmAnHta, IAmAScript
+    Private IAmAnHta, IAmAScript, IAmAWsc
     Private userInteractive, visibility, visible, hidden
 
     Sub Class_Initialize
         Set fso = CreateObject("Scripting.FileSystemObject")
         hidden = 0
         visible = 1
-
+        wrapAll = False
         SetUserInteractive True
         InitializeAppTypes
-    End Sub
-    
-    'Determine whether the source file is a script or an hta
-    Private Sub InitializeAppTypes
-        On Error Resume Next
-            Dim x : x = WScript.ScriptName
-            If Err Then IAmAnHta = True Else IAmAnHta = False
-        On Error Goto 0
-        IAmAScript = Not IAmAnHta
-        If IAmAScript Then
-            filespec = WScript.ScriptFullName
-        ElseIf IAmAnHta Then
-            InitializeHtaDependencies
-            filespec = hta.GetFilespec
-        Else
-            Err.Raise 2, GetFileName, "VBSApp.InitializeAppTypes could not determine the type of file that is calling it."
-        End If
     End Sub
 
     Private Sub ReleaseObjectMemory
         Set fso = Nothing
     End Sub
 
-    Sub Class_Terminate
-        ReleaseObjectMemory
-    End Sub
 End Class

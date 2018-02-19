@@ -35,8 +35,8 @@ Class VBSAppClassTester
         With tester
             .it "should get command-line args"
                 .AssertEqual stream.ReadLine, "arg one" 'selected arg with space
-            .it "should get the command-line arg string"
-                .AssertEqual stream.ReadLine, format(Array(" ""ar g ze ro"" ""arg one"" ""%s"" ""%s""", milliseconds, ext))
+            .it "should not wrap spaceless args by default"
+                .AssertEqual stream.ReadLine, format(Array(" ""ar g ze ro"" ""arg one"" %s %s", milliseconds, ext))
             .it "should get the argument count"
                 .AssertEqual stream.ReadLine, "4"
             .it "should get app filespec"
@@ -77,7 +77,7 @@ Class VBSAppClassTester
         With CreateObject("includer")
             Execute .read("TestingFramework")
             Execute .read("StringFormatter")
-            Execute(.read("..\spec\VBSApp.spec.config"))
+            Execute .read("..\spec\VBSApp.spec.config")
         End With
         Set tester = New TestingFramework
         Set format = New StringFormatter
