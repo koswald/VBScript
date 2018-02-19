@@ -16,6 +16,7 @@
         <script language="VBScript">
 
             Dim si
+            Dim application
             Dim privilegesAreElevated
             Dim hiveSelector
             Dim selectDiv, tableDiv
@@ -30,7 +31,7 @@
                 End With
                 Dim pc : Set pc = New PrivilegeChecker
                 privilegesAreElevated = pc.Privileged
-                Dim application : Set application = document.getElementsByTagName("application")(0)
+                Set application = document.getElementsByTagName("application")(0)
                 document.Title = application.applicationName
                 If privilegesAreElevated Then
                     document.Title = document.Title & " - elevated privileges"
@@ -156,7 +157,7 @@
 
                 'optout
                 Dim items : items = si.ReadItems
-                If vbCancel = MsgBox("Do you want to remove this item?" & vbLf & vbLf & items(itemIndex).Name & vbLf & items(itemIndex).Value, vbOKCancel + vbExclamation + vbDefaultButton2, oHta.applicationName) Then
+                If vbCancel = MsgBox("Do you want to remove this item?" & vbLf & vbLf & items(itemIndex).Name & vbLf & items(itemIndex).Value, vbOKCancel + vbExclamation + vbDefaultButton2, application.applicationName) Then
                     Exit Sub
                 End If
 
