@@ -1,4 +1,5 @@
 <?XML version="1.0" ?>
+<!-- Windows Script Component dependency manager/helper -->
 <?component error="true"?> 
 <component> 
 
@@ -13,9 +14,10 @@
     <property name="Read" /> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to the "class" folder). -->
     <property name="ReadFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
     <property name="LibraryPath" /> <!-- get the absolute path of the "class" folder -->
-  </public>
+    <method name="SetLibraryPath" />
+    </public>
 
   <script language="VBScript" src="../EncodingAnalyzer.vbs" />
-  <script language="VBScript" src="src/Includer.vbs" />
+  <script language="VBScript" src="../Includer.vbs" />
   
 </component>
