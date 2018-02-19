@@ -3,7 +3,7 @@
 '
 'Provides string formatting functions
 '
-'Two instantiation examples
+'Three instantiation examples
 '' With CreateObject("includer")
 ''     Execute .read("StringFormatter")
 ''     Dim fm : Set fm = New StringFormatter
@@ -12,7 +12,8 @@
 '' With CreateObject("includer")
 ''     Dim fm : Set fm = .GetObj("StringFormatter")
 '' End With
-'
+'or
+''Dim fm : Set fm = CreateObject("VBScripting.StringFormatter")
 'Usage examples
 '' WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1
 '' 

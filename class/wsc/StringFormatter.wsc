@@ -3,23 +3,23 @@
 <component>
 
   <registration
-    description="String formatter"
-    progid="StringFormatter"
-    classid="{ADCEC089-30DF-11D7-86BF-00606744568C}"> <!-- last guid in sequence -->
+    description="Windows Script Component string formatter"
+    progid="VBScripting.StringFormatter"
+    classid="{ADCEC089-30DF-11D7-86BF-00606744568C}"> 
   </registration>
 
   <public>
-    <property name="Format" dispid="0"/> 
+    <property name="Format" dispid="0" /> <!-- default member -->
     <method name="SetSurrogate" />
     <property name="Pluralize" />
     <method name="SetZeroSingular" />
     <method name="SetZeroPlural" />
   </public>
   
-  <!-- import the StringFormatter class -->
+  <!-- import the class -->
   <script language="VBScript" src="../StringFormatter.vbs" />
   
-  <!-- wrap/expose the class procedures -->
+  <!-- wrap/expose the class members -->
   <script language="VBScript" src="src/StringFormatterWrapper.vbs" />
 
 </component>
