@@ -1,0 +1,34 @@
+<?XML version="1.0"?>
+<?component error="true"?>
+<component>
+    <registration
+        description="Windows Script Component registry key deleter"
+        progid="VBScripting.KeyDeleter"
+        classid="{ADCEC089-30E2-11D7-86BF-00606744568C}">
+    </registration>
+    <public>
+        <method name="DeleteKey" />
+        <method name="ValidateRoot" />
+        <method name="ValidateKey" />
+        <method name="ValidateSubkey" />
+        <method name="ValidateBackslashCount" />
+        <property name="BackslashCount" />
+        <property name="MaxCount" />
+        <property name="SavedKey" />
+        <property name="SavedSubkey" />
+        <property name="Result" />
+        <property name="Delete">
+            <get internalName="getDelete" />
+            <put internalName="putDelete" />
+        </property>
+        <property name="HKCR" />
+        <property name="HKCU" />
+        <property name="HKLM" />
+        <property name="HKU" />
+        <property name="HKCC" />
+    </public>
+    <!-- import the class file -->
+    <script src="../keyDeleter.vbs" language="VBScript" />
+    <!-- import the member wrapper -->
+    <script src="src/KeyDeleterWrapper.vbs" language="VBScript" />
+</component>
