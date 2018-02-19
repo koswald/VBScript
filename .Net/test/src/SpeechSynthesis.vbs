@@ -32,11 +32,12 @@ Dim voices, voiceIndex, nVoices
 
 'initialize html elements and the ss object
 Sub Window_OnLoad
-    document.title = oHta.ApplicationName
+    Dim application : Set application = document.getElementsByTagName("application")(0)
+    document.title = application.ApplicationName
 
     'set window size and position
     Dim pxWidth, pxHeight 'window size in pixels
-    With oHta.document.parentWindow.screen
+    With document.parentWindow.screen
         pxWidth = .availWidth * width * .01
         pxHeight = .availHeight * height * .01
         self.ResizeTo pxWidth, pxHeight
