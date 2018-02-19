@@ -30,19 +30,26 @@ Class VBSArrays
     'Returns: array of strings
     'Parameter: a collection of strings
     'Remark: Can be used to convert the WScript.Arguments object to an array, for example.
-    Property Get CollectionToArray(obj)
-        If vbArray = VarType(obj) Or 8204 = VarType(obj) Then 
+    Property Get CollectionToArray(collection)
+        If IsArray(collection) Then
             'parameter is already an array: don't convert
-            CollectionToArray = obj
+            CollectionToArray = collection
             Exit Property
         End If
         'convert the collection to an array
-        Dim str, strings, i : i = 0
-        For Each str In obj
-            If i = 0 Then strings = str Else strings = strings & delim & str
+        Dim arr()
+        Redim arr(collection.Count - 1)
+        Dim i : i = 0
+        Dim var : For Each var In collection
+            On Error Resume Next
+                Set arr(i) = var
+                If Err Then 'var is not an object
+                    arr(i) = var
+                End If
+            On Error Goto 0
             i = i + 1
         Next
-        CollectionToArray = Split(strings, delim)
+        CollectionToArray = arr
     End Property
 
     Private delim 'delimiter
