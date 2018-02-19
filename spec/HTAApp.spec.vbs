@@ -5,8 +5,6 @@
 With CreateObject("Includer")
     Execute .Read("TestingFramework")
     Execute .Read("StringFormatter")
-    Dim outputFiles, htaFiles
-    Execute .Read("..\spec\HTAApp.spec.config")
     Execute .Read("HTAApp")
     On Error Resume Next
         Dim hta : Set hta = New HTAApp
@@ -24,24 +22,6 @@ Dim sh : Set sh = CreateObject("WScript.Shell")
 With New TestingFramework
 
     .describe "HTAApp class"
-
-    .it "should raise an err if command-line args are used without an .hta id"
-        sh.Run format(Array( _
-            "cmd /c mshta ""%s"" arg_0 arg_1", _
-            fso.GetAbsolutePathName(htaFiles(iHta_NoIdHasArgs)) _
-        )), hidden, synchronous
-        Set stream = fso.OpenTextFile(outputFiles(iOutput_NoIdHasArgs), ForReading)
-        .AssertEqual stream.ReadLine, "For command-line argument functionality, an id property must be declared in the .hta file's hta:application element."
-        stream.Close
-
-    .it "should not require an id if command-line args aren't used"
-        sh.Run format(Array( _
-            "cmd /c mshta ""%s""", _
-            fso.GetAbsolutePathName(htaFiles(iHta_NoIdNoArgs)) _
-        )), hidden, synchronous
-        Set stream = fso.OpenTextFile(outputFiles(iOutput_NoIdNoArgs), ForReading)
-        .AssertEqual stream.ReadLine, ""
-        stream.Close
 
     .it "should return a zero-element array given no args"
         actual = hta.ParseArgs("")
@@ -76,12 +56,10 @@ With New TestingFramework
         expected = Array("C:\f o l d e r\f i l e.txt", "arg1", "arg2", "arg3", "arg4")
         .AssertEqual Join(actual, "|"), Join(expected, "|")
 
-    .it "should remove multiple spaces between arguments"
+    .it "should ignore multiple spaces between arguments"
         actual = hta.ParseArgs("""C:\f o l d e r\f i l e.txt""   arg1  arg2    ""arg3""    arg4")
         expected = Array("C:\f o l d e r\f i l e.txt", "arg1", "arg2", "arg3", "arg4")
         .AssertEqual Join(actual, "|"), Join(expected, "|")
-
-    .DeleteFiles outputFiles
 
 End With
 
