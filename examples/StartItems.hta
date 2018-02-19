@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+    <head>
+        <hta:application
+            applicationName="Startup items editor"
+            icon="msdt.exe"
+            innerBorder="No"
+            singleInstance="Yes">
+        </hta:application>
+        <script language="VBScript">
+            Self.ResizeTo 750, 400
+            Self.MoveTo 800, 300
+        </script>
+    </head>
+    <body>
+        <script language="VBScript">
+
+            Dim si
+            Dim privilegesAreElevated
+            Dim hiveSelector
+            Dim selectDiv, tableDiv
+            Dim nameInput, valueInput
+            Dim feedback
+
+            Main            
+            Sub Main
+                Set si = New StartupItems
+                With CreateObject("includer")
+                    Execute .Read("PrivilegeChecker")
+                End With
+                Dim pc : Set pc = New PrivilegeChecker
+                privilegesAreElevated = pc.Privileged
+                Dim application : Set application = document.getElementsByTagName("application")(0)
+                document.Title = application.applicationName
+                If privilegesAreElevated Then
+                    document.Title = document.Title & " - elevated privileges"
+                End If
+                DrawSelectDiv
+                Set tableDiv = document.createElement("div")
+                document.body.insertBefore tableDiv
+                DrawTableDiv
+            End Sub
+            
+            Sub DrawSelectDiv
+                Set selectDiv = document.createElement("div")
+                document.body.insertBefore selectDiv
+                selectDiv.style.marginBottom = "15px"
+                Set hiveSelector = document.createElement("select")
+                selectDiv.insertBefore hiveSelector
+                Dim text : Set text = document.createTextNode("\" & si.Key)
+                selectDiv.appendChild text
+                Dim hkcuOption : Set hkcuOption = document.createElement("option")
+                Dim hklmOption : Set hklmOption = document.createElement("option")
+                hkcuOption.value = "hkcu" 'internally used value; hex values would be ideal but aren't supported by the html
+                hklmOption.value = "hklm"
+                hkcuOption.innerHTML = "HKEY_CURRENT_USER"
+                hklmOption.innerHTML = "HKEY_LOCAL_MACHINE"
+                hiveSelector.insertBefore hkcuOption
+                hiveSelector.insertBefore hklmOption
+                hiveSelector.OnChange = GetRef("RootChanged")
+            End Sub
+            
+            Sub RootChanged
+                UpdateRootFromGui
+                DrawTableDiv
+            End Sub
+
+            Sub UpdateRootFromGui
+                If "hkcu" = hiveSelector.options(hiveSelector.selectedIndex).value Then
+                    si.Root = si.HKCU
+                ElseIf "hklm" = hiveSelector.options(hiveSelector.selectedIndex).value Then
+                    si.Root = si.HKLM
+                End If
+            End Sub
+
+            Sub DrawTableDiv
+                tableDiv.innerHTML = ""
+                Dim items : items = si.ReadItems 'get startup items from the registry
+                Dim tbl : Set tbl = document.createElement("table")
+                tableDiv.insertBefore tbl
+                Dim rowIndex, row
+                Dim nameCell, valueCell, buttonCell, button
+                For rowIndex = -1 To UBound(items) + 1
+                    Set row = tbl.insertRow(-1)
+                    Set nameCell = row.insertCell(-1)
+                    Set valueCell = row.insertCell(-1)
+                    Set buttonCell = row.insertCell(-1)
+                    Set button = document.createElement("input")
+                    button.type = "button"
+                    If -1 = rowIndex Then
+
+                        'create header row
+                        nameCell.innerHTML = "Name"
+                        valueCell.innerHTML = "Value"
+                        row.style.fontWeight = "bold"
+                    ElseIf Not UBound(items) + 1 = rowIndex Then
+        
+                        'show existing registry data
+                        nameCell.innerHTML = items(rowIndex).Name
+                        valueCell.innerHTML = items(rowIndex).Value
+                        buttonCell.insertBefore button
+                        button.value = "   Remove   "
+                        Set button.OnClick = GetRef("RemoveItem")
+                        If Not CBool(rowIndex mod 2) Then
+
+                            'even-numbered row: darken background--two cells only
+                            nameCell.style.backgroundColor = "#eee"
+                            valueCell.style.backgroundColor = "#eee"
+                        End If
+                    Else
+        
+                        'create input fields for creating a new entry
+                        Set nameInput = document.createElement("input")
+                        Set valueInput = document.createElement("input")
+                        nameInput.style.width = "100%"
+                        valueInput.style.width = "99%"
+                        nameCell.insertBefore nameInput
+                        valueCell.insertBefore valueInput
+                        buttonCell.insertBefore button
+                        button.value = "Save"
+                        Set button.OnClick = GetRef("SaveItem")
+                    End If
+                    valueCell.style.paddingLeft = "20px"
+                    buttonCell.style.paddingLeft = "20px"
+                    button.style.width = "100%"
+                Next
+
+                With document.body.style
+                    .fontFamily = "sans-serif"
+                    .fontSize = "13"
+                End With
+                With tbl.style
+                    .borderCollapse = "collapse"
+                    .marginTop = "15px"
+                End With
+                Set feedback = document.createElement("p")
+                tableDiv.insertBefore feedback
+                CheckPrivileges
+            End Sub
+
+            Sub SaveItem
+                si.CreateItem nameInput.value, valueInput.value
+                DrawTableDiv
+            End Sub
+
+            Sub RemoveItem
+
+                'get the index of the items array
+                Dim inputs : Set inputs = document.getElementsByTagName("input")
+                Dim itemIndex, inputIndex
+                For inputIndex = 0 To inputs.length - 1
+                    If window.event.srcElement Is inputs(inputIndex) Then 
+                        itemIndex = inputIndex
+                    End If
+                Next
+
+                'optout
+                Dim items : items = si.ReadItems
+                If vbCancel = MsgBox("Do you want to remove this item?" & vbLf & vbLf & items(itemIndex).Name & vbLf & items(itemIndex).Value, vbOKCancel + vbExclamation + vbDefaultButton2, oHta.applicationName) Then
+                    Exit Sub
+                End If
+
+                'remove the item
+                si.DeleteItem items(itemIndex).Name
+                DrawTableDiv
+            End Sub
+
+            Sub CheckPrivileges
+                If Not privilegesAreElevated And "hklm" = hiveSelector.options(hiveSelector.selectedIndex).value Then
+                    InputsEnabled False
+                    feedback.innerHTML = "Elevated privileges are required to edit HKEY_LOCAL_MACHINE."
+                Else
+                    InputsEnabled True
+                    feedback.innerHTML = ""
+                End If
+            End Sub
+
+            Sub InputsEnabled(enabling)
+                Dim inputs : Set inputs = document.getElementsByTagName("input")
+                Dim inputIndex
+                For inputIndex = 0 To inputs.length - 1
+                    inputs(inputIndex).disabled = Not enabling
+                Next
+            End Sub
+
+            Sub Window_OnLoad
+                On Error Resume Next
+                    'when F5-refreshing the app don't allow the hiveSelector
+                    'to remain at HKLM while the HKCU items are listed
+                    hiveSelector.selectedIndex = 0
+                On Error Goto 0
+            End Sub
+
+            Class StartupItems
+
+                Sub CreateItem(name, command)
+                    Dim erred : erred = False
+                    Dim errDescr : errDescr = ""
+                    If "" = name Then Err.Raise 2,, "The name cannot be empty."
+                    On Error Resume Next
+                        sh.RegWrite WSHRoot & "\" & key & "\" & name, command
+                        If Err Then erred = True
+                        errDescr = Err.Description
+                    On Error Goto 0
+                    If erred Then Err.Raise 1,, ErrDescr & vbLf & vbLf & "Elevated privileges are required to create/update certain (HKLM) registry values."
+                End Sub
+            
+                Property Get ReadItem(name)
+                    Dim item : Set item = New RegItem
+                    item.Name = name
+                    item.Value = sh.RegRead(WSHRoot & "\" & key & "\" & name)
+                    Set ReadItem = item
+                End Property
+
+                Property Get ReadItems
+                    Dim i, names, item, aoo, types
+                    Set aoo = New ArrayOfObjects
+                    reg.EnumValues root_, key, names, types
+                    For i = 0 To UBound(names)
+                        Set item = New RegItem
+                        item.Name = names(i)
+                        item.Value = ReadItem(names(i)).Value
+                        aoo.AddObject item
+                    Next
+                    ReadItems = aoo
+                End Property
+
+                Sub UpdateItem(name, command)
+                    CreateItem name, command
+                End Sub
+
+                Sub DeleteItem(name)
+                    Dim erred : erred = False
+                    On Error Resume Next
+                        sh.RegDelete WSHRoot & "\" & key & "\" & name
+                        If Err Then erred = True
+                    On Error Goto 0
+                    If erred Then Err.Raise 1,, "Elevated privileges are required to delete certain (HKLM) registry values."
+                End Sub
+
+                Public Property Get Root : Root = root_ : End Property
+                Public Property Let Root(newRoot)
+                    If HKLM = newRoot Then
+                        WSHRoot = "HKLM"
+                        root_ = newRoot
+                    ElseIf HKCU = newRoot Then
+                        WSHRoot = "HKCU"
+                        root_ = newRoot
+                    Else
+                        Err.Raise 1,, "Expected root to be &H" & Hex(HKLM) & " or &H" & Hex(HKCU) & "." & vbLf & "Actual: " & newRoot
+                    End If
+                End Property
+
+                Property Get HKLM : HKLM = &H80000002 : End Property
+                Property Get HKCU : HKCU = &H80000001 : End Property
+
+                Public Property Get Key : Key = key_ : End Property
+                Private Property Let Key(newKey) : key_ = newKey : End Property
+
+                Public Property Get WSHRoot : WSHRoot = WSHroot_ : End Property
+                Private Property Let WSHRoot(newWSHRoot) : WSHRoot_ = newWSHRoot : End Property
+
+                Private root_, key_, WSHRoot_
+                Private reg, sh
+                
+                Sub Class_Initialize
+                    Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
+                    Set sh = CreateObject("WScript.Shell")
+                    Root = HKCU
+                    Key = "Software\Microsoft\Windows\CurrentVersion\Run"
+                End Sub
+                
+                Sub Class_Terminate
+                    Set reg = Nothing
+                    Set sh = Nothing
+                End Sub
+            End Class
+            
+            Class RegItem
+                Public Name
+                Public Value
+            End Class
+
+            Class ArrayOfObjects
+                Sub AddObject(item)
+                    ReDim Preserve items(itemCount)
+                    Set items(itemCount) = item
+                    itemCount = itemCount + 1
+                End Sub
+
+                Public Default Property Get GetArrayOfObjects
+                    GetArrayOfObjects = items
+                End Property
+
+                Private items() 'dynamic array
+                Private itemCount
+
+                Sub Class_Initialize
+                    itemCount = 0
+                    ReDim items(-1)
+                End Sub
+            End Class
+            
+        </script>
+     </body>
+</html>

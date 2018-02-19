@@ -1,0 +1,19 @@
+<?XML version="1.0"?>
+<!-- Windows Script Component (.wsc) event example -->
+<?component error="true"?>
+<component>
+    <registration
+        description="Windows Script Component event example"
+        progid="VBScripting.EventExample"
+        classid="{ADCEC089-30E1-11D7-86BF-00606744568C}">
+    </registration>
+    <public>
+        <method name="FireTestEvent"/>
+        <event name="TestEvent" />
+    </public>
+    <script language="VBScript">
+        Sub FireTestEvent
+            fireEvent("TestEvent")
+        End Sub
+    </script>
+</component>

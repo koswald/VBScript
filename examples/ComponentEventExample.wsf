@@ -1,0 +1,12 @@
+<job id="usage demo for ComponentEventExample.wsc">
+    <object 
+        progid="VBScripting.EventExample"
+        id="vee"
+        events="true"/>
+    <script language="VBScript">
+        vee.FireTestEvent
+        Sub vee_TestEvent
+            WScript.Echo "Event fired successfully."
+        End Sub
+    </script>
+</job>

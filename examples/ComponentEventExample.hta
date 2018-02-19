@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- usage demo for ComponentEventExample.wsc -->
+<html>
+<head>
+    <hta:application>
+    <object
+        classid="clsid:ADCEC089-30E1-11D7-86BF-00606744568C"
+        id="cee" />
+</head>
+<body>
+    <script language="VBScript">
+        Sub Window_OnLoad
+            FireEvent
+        End Sub
+        Sub FireEvent
+            cee.FireTestEvent
+        End Sub
+        Sub cee_TestEvent
+            document.body.innerHTML = document.body.innerHTML & "<br />" & "Event fired successfully."
+        End Sub
+
+        Self.ResizeTo 700, 250
+        Set document.OnClick = GetRef("FireEvent")
+    </script>
+</body>
+</html>
