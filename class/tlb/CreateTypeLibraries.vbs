@@ -46,5 +46,5 @@ Sub Initialize
     Set fso = CreateObject("Scripting.FileSystemObject")
     classPath = fso.GetAbsolutePathName("..")
     Set stl = CreateObject("Scriptlet.TypeLib")
-    Set format = CreateObject("StringFormatter")
+    Set format = CreateObject("VBScripting.StringFormatter")
 End Sub
