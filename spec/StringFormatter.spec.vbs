@@ -1,4 +1,4 @@
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TestingFramework")
     Dim f : Set f = .GetObj("StringFormatter")
 End With

@@ -1,7 +1,7 @@
 
 'generate a documentation file based on code comments
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("DocGenerator")
 End With
 

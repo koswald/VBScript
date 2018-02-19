@@ -1,7 +1,7 @@
 
 'test GUIDGenerator.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("GUIDGenerator")
     Execute .read("TestingFramework")
 End With

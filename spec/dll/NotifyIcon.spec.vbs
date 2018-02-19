@@ -81,7 +81,7 @@ Dim x
 Sub Initialize
     Set ni = CreateObject("VBScripting.NotifyIcon")
     ni.SetIconByDllFile "%SystemRoot%\System32\msdt.exe", 0, True
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         ExecuteGlobal .read("TestingFramework")
     End With
 End Sub

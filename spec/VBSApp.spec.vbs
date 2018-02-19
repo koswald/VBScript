@@ -74,7 +74,7 @@ Class VBSAppClassTester
     Private base, minusSpec, plusSpec 'defined in .config file
 
     Sub Class_Initialize
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("TestingFramework")
             Execute .read("StringFormatter")
             Execute .read("..\spec\VBSApp.spec.config")

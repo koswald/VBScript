@@ -1,7 +1,7 @@
 
 'test EncodingAnalyzer.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("EncodingAnalyzer")
     Execute .read("TestingFramework")
 End With

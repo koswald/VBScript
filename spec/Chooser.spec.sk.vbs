@@ -1,7 +1,7 @@
 
 'test Chooser.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("Chooser")
     Execute .read("TestingFramework")
 End With

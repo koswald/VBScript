@@ -52,7 +52,7 @@ Class WMIUtility
     'Remark: Terminates a process with the specified id (integer), name (string, e.g. notepad.exe), and delay (integer: milliseconds), asynchronously.
     Sub TerminateProcessByIdAndNameDelayed(id, name, milliseconds)
         'create and run a .vbs script to end the process
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("TextStreamer")
             Execute .read("StringFormatter")
         End With

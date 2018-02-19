@@ -85,7 +85,7 @@ Sub Initialize
     Set fc = CreateObject("VBScripting.FileChooser")
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set sh = CreateObject("WScript.Shell")
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         ExecuteGlobal .read("TestingFramework")
     End With
 End Sub

@@ -1,7 +1,7 @@
 
 'Test the VBSFileSystem class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSFileSystem")
     Execute .read("TestingFramework")
 End With

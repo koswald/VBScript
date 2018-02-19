@@ -1,5 +1,5 @@
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSValidator")
     Execute .read("TestingFramework")
 End With

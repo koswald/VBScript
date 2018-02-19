@@ -3,7 +3,7 @@
 
 Option Explicit
 
-With CreateObject("includer") 'get dependencies
+With CreateObject("VBScripting.Includer") 'get dependencies
     Execute .read("TimeFunctions")
     Execute .read("TestingFramework")
 End With

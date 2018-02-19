@@ -4,7 +4,7 @@ Class TimeFunctions
     Private FirstDayOfWeek, isDOWAbbreviated, oVBSValidator, class_
 
     Sub Class_Initialize
-        With CreateObject("includer")'
+        With CreateObject("VBScripting.Includer")'
             Execute .read("VBSValidator") 'get class dependencies
         End With
         Set oVBSValidator = New VBSValidator

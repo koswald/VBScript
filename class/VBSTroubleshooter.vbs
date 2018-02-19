@@ -15,7 +15,7 @@ Class VBSTroubleshooter
     Private log, format
     
     Sub Class_Initialize
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSLogger")
             Execute .read("StringFormatter")
         End With

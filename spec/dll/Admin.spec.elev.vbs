@@ -55,7 +55,7 @@ Dim va, sh, log
 Dim result
 
 Sub Initialize
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("PrivilegeChecker")
         Execute .read("VBSEventLogger")
         Execute .read("VBSApp")

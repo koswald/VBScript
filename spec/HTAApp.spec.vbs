@@ -2,7 +2,7 @@
 'Test HTAApp class functions not
 'already tested with VBSApp.spec.vbs
 
-With CreateObject("Includer")
+With CreateObject("VBScripting.Includer")
     Execute .Read("TestingFramework")
     Execute .Read("StringFormatter")
     Execute .Read("HTAApp")

@@ -1,7 +1,7 @@
 
 'test TextStreamer.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TextStreamer")
     Execute .read("TestingFramework")
 End With

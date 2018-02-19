@@ -3,7 +3,7 @@
 
 'Usage example
 '
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("Chooser")
 '' End With
 '' 
@@ -211,7 +211,7 @@ Class Chooser
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
         Set sa = CreateObject("Shell.Application")
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSApp")
         End With
         Set app = New VBSApp
@@ -229,7 +229,7 @@ Class Chooser
     'Remark: Terminates a WShellExec process (the Browse for File window for example) after the specified time in milliseconds. Timeout of 0 prevents termination. An example of the exe: "mshta.exe".
     Sub SetMaxExecLifetime(oExec, exe, timeout)
         If 0 = timeout Then Exit Sub
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("WMIUtility")
         End With
         Dim wmi : Set wmi = New WMIUtility

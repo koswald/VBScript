@@ -83,7 +83,7 @@ Sub Initialize
     Set sh = CreateObject("WScript.Shell")
     Set fso = CreateObject("Scripting.FileSystemObject")
     shell32_dll = "%SystemRoot%\System32\shell32.dll"
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("StringFormatter")
     End With
     Set format = New StringFormatter

@@ -1,4 +1,4 @@
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TestingFramework")
     Execute .read("PrivilegeChecker")
 End With

@@ -46,7 +46,7 @@ Class Test
             app.Init document
         Else app.Init WScript
         End If
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Dim base
             Execute .read("..\spec\VBSApp.spec.config")
             Execute .read("VBSTimer")

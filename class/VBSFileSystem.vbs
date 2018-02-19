@@ -11,7 +11,7 @@ Class VBSFileSystem
     Private forceDelete
 
     Private Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSMessages")
             Execute .read("VBSEnvironment")
         End With

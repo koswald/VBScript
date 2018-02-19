@@ -3,7 +3,7 @@
 
 'Usage example
 '
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("PrivilegeChecker")
 '' End With
 '' MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker

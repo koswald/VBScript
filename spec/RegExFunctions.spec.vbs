@@ -1,7 +1,7 @@
 
 'test RegExFunctions.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("RegExFunctions")
     Execute .read("TestingFramework")
 End With

@@ -9,7 +9,7 @@
 
 Main
 Sub Main
-    Set incl = CreateObject("includer")
+    Set incl = CreateObject("VBScripting.Includer")
     Execute(incl.read("WoWChecker"))
     Set incl = Nothing
     Set wow = New WowChecker

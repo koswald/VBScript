@@ -132,6 +132,7 @@ Sub DeleteScriptletKeys
     "CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}", _
     "Wow6432Node\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}", _
     "Includer", _
+    "VBScripting.Includer", _
     "CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}", _
     "Wow6432Node\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}", _
     "VBScripting.KeyDeleter", _

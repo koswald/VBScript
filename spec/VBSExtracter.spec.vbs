@@ -1,7 +1,7 @@
 
 'test the VBSExtracter class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TestingFramework")
     Execute .read("VBSExtracter")
     Dim inputFile

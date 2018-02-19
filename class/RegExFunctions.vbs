@@ -3,7 +3,7 @@
 '
 'Usage example
 '
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("RegExFunctions")
 '' End With
 '' 
@@ -24,7 +24,7 @@ Class RegExFunctions
     Private oRE, Match, Matches, testString, class_, v, reader
 
     Sub Class_Initialize
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSValidator")
         End With
         Set oRE = New RegExp

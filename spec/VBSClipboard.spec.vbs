@@ -1,7 +1,7 @@
 
 'test VBSClipboard.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSClipboard")
     Execute .read("TestingFramework")
 End With

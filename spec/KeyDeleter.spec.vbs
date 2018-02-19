@@ -105,7 +105,7 @@ Sub Setup
     Dim i : For i = 0 To UBound(testKeys)
         sh.RegWrite "HKCU\" & testKeys(i) & "\subkey\subsubkey\", "test"
     Next
-    With CreateObject("Includer")
+    With CreateObject("VBScripting.Includer")
         ExecuteGlobal .Read("TestingFramework")
     End With
     validRoots = Array( _

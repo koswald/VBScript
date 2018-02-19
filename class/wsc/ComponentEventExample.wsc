@@ -1,5 +1,4 @@
 <?XML version="1.0"?>
-<!-- Windows Script Component (.wsc) event example -->
 <?component error="true"?>
 <component>
     <registration

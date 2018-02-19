@@ -3,7 +3,7 @@
 
 'Usage Example
 ''
-''    With CreateObject("includer")
+''    With CreateObject("VBScripting.Includer")
 ''        Execute .read("ValidFileName")
 ''    End With
 ''
@@ -26,7 +26,7 @@ Function GetValidFileName(fileNameCandidate)
     Dim invalidItems : invalidItems = Array("\", "/", ":", "*", "?", """", "<", ">", "|", "%20", "#")
 
     Dim maxLength
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute(.read("ValidFileName.config")) 'get the maxLength variable
     End With
 

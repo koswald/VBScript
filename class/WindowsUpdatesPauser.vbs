@@ -130,7 +130,7 @@ Class WindowsUpdatesPauser
         L = vbLf 'other
         L2 = L & L
 
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("StringFormatter")
             Execute .read("VBSLogger")
             Execute .read("VBSApp")

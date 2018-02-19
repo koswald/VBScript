@@ -5,7 +5,7 @@
 
 'requires the calling script to simulate user action
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("Chooser")
 End With
 Dim ch : Set ch = New Chooser

@@ -75,7 +75,7 @@ End Sub
 Dim va, sh, log, gg
 
 Sub Initialize
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("PrivilegeChecker")
         Execute .read("VBSEventLogger")
         Execute .read("GuidGenerator")

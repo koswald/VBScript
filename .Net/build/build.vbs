@@ -45,7 +45,7 @@ Dim buildDirectory
 Sub Initialize
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set sa = CreateObject("Shell.Application")
-    Dim inc : Set inc = CreateObject("includer")
+    Dim inc : Set inc = CreateObject("VBScripting.Includer")
     Execute inc.read("StringFormatter")
     Set format = New StringFormatter
     buildDirectory = fso.GetParentFolderName(WScript.ScriptFullName)

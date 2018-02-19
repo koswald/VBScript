@@ -3,7 +3,7 @@
 '
 'Usage example
 '
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("RegistryUtility")
 '' End With
 '' Dim reg : Set reg = New RegistryUtility

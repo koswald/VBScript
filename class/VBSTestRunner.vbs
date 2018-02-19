@@ -6,7 +6,7 @@
 ''   'test-launcher.vbs
 ''   'run this file from a console window; e.g. cscript //nologo test-launcher.vbs
 '' 
-''    With CreateObject("includer")
+''    With CreateObject("VBScripting.Includer")
 ''        Execute .read("VBSTestRunner")
 ''    End With
 '' 
@@ -205,7 +205,7 @@ Class VBSTestRunner
         foundTestFiles = 0
         TestIsRunning = 0
         TestIsFinished = 1
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSFileSystem")
             Execute .read("StringFormatter")
             Execute .read("VBSTimer")

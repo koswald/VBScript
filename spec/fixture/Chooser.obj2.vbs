@@ -10,7 +10,7 @@
 'then the following statement is True
 'TypeName(obj) = "Nothing"
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("Chooser")
 End With
 Dim ch : Set ch = New Chooser

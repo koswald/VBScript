@@ -12,7 +12,7 @@ Class TextStreamer
     Private StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") 'get class dependencies
+        With CreateObject("VBScripting.Includer") 'get class dependencies
             Execute .read("VBSFileSystem")
         End With
         Set fs = New VBSFileSystem

@@ -3,7 +3,7 @@
 
 'Usage example
 '
-''    With CreateObject("includer")
+''    With CreateObject("VBScripting.Includer")
 ''        Execute .read("VBSValidator")
 ''        Execute .read("TestingFramework")
 ''    End With
@@ -142,7 +142,7 @@ Class TestingFramework
     'Method ShowSendKeysWarning
     'Remark: Shows a SendKeys warning: a warning message to not make mouse clicks or key presses.
     Sub ShowSendKeysWarning
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("StringFormatter")
 	        Set sendKeysWarning = sh.Exec((New StringFormatter)(Array( _
                 "wscript ""%s\TestingFramework.fixture.vbs"" ""%s""", _
@@ -165,7 +165,7 @@ Class TestingFramework
     Private Sub Class_Initialize 'event fires on object instantiation
         SetResultPending False
         pass = "Pass" : fail = "Fail" : T = "      "
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .Read("VBSHoster")
             Dim hoster : Set hoster = New VBSHoster
             hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test

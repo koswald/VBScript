@@ -45,7 +45,7 @@ Const iPause = 0, iResume = 1, iConfig = 2, iClose = 3 'button index numbers
 Sub Window_OnLoad
     Self.ResizeTo 238, 30
     Self.MoveTo 100, 0
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("WindowsUpdatesPauser")
     End With
     Set wup = New WindowsUpdatesPauser

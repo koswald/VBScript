@@ -1,11 +1,10 @@
 <?XML version="1.0" ?>
-<!-- Windows Script Component dependency manager/helper -->
 <?component error="true"?> 
 <component> 
 
   <registration
-    description="VBScript Includer"
-    progid="Includer"
+    description="Windows Script Component dependency manager/helper"
+    progid="VBScripting.Includer"
     classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
   </registration>
 

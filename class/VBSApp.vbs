@@ -16,7 +16,7 @@
 '' app.Init document
 
 'If the script may be used in .vbs/.wsf scripts or .hta applications
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("VBSApp")
 '' End With
 '' Dim app : Set app = New VBSApp
@@ -30,7 +30,7 @@
 
 'Example
 '' 'test.vbs "arg one" "arg two"
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("VBSApp")
 '' End With
 '' Dim app : Set app = New VBSApp
@@ -42,7 +42,7 @@
 '' &lt;!--test.hta "arg one" "arg two"-->
 '' &lt;hta:application id="oHta" icon="msdt.exe"> &lt;!--an id must be used for command-line args functionality-->
 ''     &lt;script language="VBScript">
-''         With CreateObject("includer")
+''         With CreateObject("VBScripting.Includer")
 ''             Execute .read("VBSApp")
 ''         End With
 ''         Dim app : Set app = New VBSApp
@@ -58,7 +58,7 @@ Class VBSApp
     'Private Method InitializeHtaDependencies
     'Remark: Initializes members required for .hta files.
     Private Sub InitializeHtaDependencies
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("HTAApp")
         End With
         Set hta = New HTAApp
@@ -68,7 +68,7 @@ Class VBSApp
     'Returns: array of strings
     'Remark: Returns an array of command-line arguments.
     Property Get GetArgs
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSArrays")
         End With
         Dim arrayUtility : Set arrayUtility = New VBSArrays
@@ -156,7 +156,7 @@ Class VBSApp
     'Parameters: #1: host; #2: switch; #3: elevating"
     'Remark: Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
     Sub RestartWith(host, switch, elevating)
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSApp")
             Execute .read("StringFormatter")
         End With

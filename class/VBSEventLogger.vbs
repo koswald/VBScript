@@ -7,7 +7,7 @@
 '
 'Usage example:
 '
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("VBSEventLogger")
 '' End With
 '' 
@@ -35,7 +35,7 @@ Class VBSEventLogger
         logFile = "Application.evtx" 'event log file with WSH events
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSFileSystem")
             On Error Resume Next
                 Execute(.read("VBSEventLogger.config"))

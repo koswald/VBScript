@@ -4,12 +4,12 @@
 'Provides string formatting functions
 '
 'Three instantiation examples
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("StringFormatter")
 ''     Dim fm : Set fm = New StringFormatter
 '' End With
 'or
-'' With CreateObject("includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Dim fm : Set fm = .GetObj("StringFormatter")
 '' End With
 'or

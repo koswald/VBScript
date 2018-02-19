@@ -11,7 +11,7 @@ Class VBSClipboard
         hidden = 0 : synchronous = True 'WScript.Shell Run method constants
         Set sh = CreateObject("WScript.Shell")
         Set HtmlFile = CreateObject("htmlfile")
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("StringFormatter")
         End With
         Set formatter = New StringFormatter
@@ -37,7 +37,7 @@ Class VBSClipboard
     Private Sub SetClipboardTextAlt(newText)
         'create a temp file with contents equal to newText,
         'then send the contents to clip.exe
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("TextStreamer")
         End With
         Dim ts : Set ts = New TextStreamer

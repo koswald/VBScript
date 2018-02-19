@@ -3,7 +3,7 @@
 
 '<fieldset> <legend> Instantiation </legend>
 ''
-''    With CreateObject("includer")
+''    With CreateObject("VBScripting.Includer")
 ''        Execute .read("VBSLogger")
 ''    End With
 ''    Dim log : Set log = New VBSLogger
@@ -34,7 +34,7 @@ Class VBSLogger 'Logger for use in VBScript files
     Private scriptName, scriptFullName
 
     Sub Class_Initialize
-        WIth CreateObject("includer") 'get class dependencies
+        WIth CreateObject("VBScripting.Includer") 'get class dependencies
             Execute .read("TimeFunctions")
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")

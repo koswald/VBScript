@@ -3,7 +3,7 @@
 
 Option Explicit : Initialize
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TestingFramework")
     Execute .read("PrivilegeChecker")
 End With
@@ -20,7 +20,7 @@ End With
 Dim pc
 
 Sub Initialize
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("PrivilegeChecker")
         Execute .read("VBSApp")
     End With

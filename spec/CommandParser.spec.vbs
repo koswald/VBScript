@@ -1,7 +1,7 @@
 
 'test the CommandParser class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("CommandParser")
     Execute .read("TestingFramework")
 End With

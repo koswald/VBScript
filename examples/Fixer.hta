@@ -190,7 +190,7 @@ with respect to running script file types .vbs, .wsf, and .hta -->
                     InitializeDOM "wsf"
 
                     'check for elevated privileges and restart if necessary
-                    With CreateObject("includer")
+                    With CreateObject("VBScripting.Includer")
                         Execute .read("PrivilegeChecker")
                         Dim pc : Set pc = New PrivilegeChecker
                         If Not pc Then

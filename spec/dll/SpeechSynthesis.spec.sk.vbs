@@ -23,7 +23,7 @@ Dim ss, sh, i
 Const asynchronous = False
 
 Sub Initialize
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         ExecuteGlobal .read("TestingFramework")
     End With
     Set sh = CreateObject("WScript.Shell")

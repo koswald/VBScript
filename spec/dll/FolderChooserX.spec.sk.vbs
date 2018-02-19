@@ -126,7 +126,7 @@ Dim sh, fso
 
 Sub Initialize
     progIds = Split(idStrings, "|")
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("StringFormatter")
         ExecuteGlobal .read("TestingFramework")
     End With

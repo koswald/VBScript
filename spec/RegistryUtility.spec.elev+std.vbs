@@ -2,7 +2,7 @@
 'test RegistryUtility.vbs
 'intended to be run with standard or elevated privileges
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("RegistryUtility")
     Execute .read("TestingFramework")
     Execute .read("PrivilegeChecker")

@@ -7,7 +7,7 @@ Class VBSExtracter
     Private ref, streamer, fs, fso
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer") 'get dependencies
+        With CreateObject("VBScripting.Includer") 'get dependencies
             Execute .read("RegExFunctions")
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")

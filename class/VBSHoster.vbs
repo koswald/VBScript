@@ -35,7 +35,7 @@ Class VBSHoster
     Private format
 
     Private Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSArguments")
             Execute .read("StringFormatter")
         End With

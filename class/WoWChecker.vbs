@@ -30,7 +30,7 @@ Class WoWChecker
     'Remark: Returns a boolean that indicates whether the Windows OS is 64-bit.
     Property Get OSIs64Bit
         If "Empty" = TypeName(parser) Then
-            With CreateObject("includer")
+            With CreateObject("VBScripting.Includer")
                 Execute .read("CommandParser")
                 Set parser = New CommandParser
             End With

@@ -1,7 +1,7 @@
 
 'test the VBSPower class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSPower")
     Execute .read("TestingFramework")
 End With

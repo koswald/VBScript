@@ -4,7 +4,7 @@
 'outputs True if hosted by 32-bit cscript.exe
 'outputs False if hosted by 64-bit cscript.exe
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("WoWChecker")
 End With
 

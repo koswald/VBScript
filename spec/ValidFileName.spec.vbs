@@ -1,7 +1,7 @@
 
 'test ValidFileName.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("ValidFileName")
     Execute .read("TestingFramework")
 End With

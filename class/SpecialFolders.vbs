@@ -3,7 +3,7 @@
 
 'Usage example
 '
-''    With CreateObject("includer")
+''    With CreateObject("VBScripting.Includer")
 ''        Execute .read("SpecialFolders")
 ''    End With
 '' 

@@ -119,7 +119,7 @@ Class HTAApp
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
         Set re = New RegExp
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("HTAApp.config")
             Execute .read("StringFormatter")
         End With
@@ -136,7 +136,7 @@ Class HTAApp
     'Method PrepareToSleep
     'Remark: Required before calling the Sleep method when AlwaysPrepareToSleep is False in HTAApp.config.
     Sub PrepareToSleep
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("VBSTimer")
             libraryPath = .LibraryPath
         End With

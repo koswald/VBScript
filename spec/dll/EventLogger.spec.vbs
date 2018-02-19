@@ -20,7 +20,7 @@ Dim el, ad, gg, sh
 Sub Initialize
     Set el = CreateObject("VBScripting.EventLogger")
     Set ad = CreateObject("VBScripting.Admin")
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("GuidGenerator")
         ExecuteGlobal .read("TestingFramework")
     End With

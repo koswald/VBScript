@@ -7,7 +7,7 @@
 
 '' 'Usage Example
 '' '' 
-'' ''    With CreateObject("includer")
+'' ''    With CreateObject("VBScripting.Includer")
 '' ''        Execute .read("DocGenerator")
 '' ''    End With
 '' ''
@@ -76,7 +76,7 @@ Class DocGenerator
     Private scriptFolder, docFolder, docName, docTitle 'required to be set by the calling script before calling the Generate method
 
     Sub Class_Initialize
-        With CreateObject("includer")
+        With CreateObject("VBScripting.Includer")
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")
             Execute .read("RegExFunctions")

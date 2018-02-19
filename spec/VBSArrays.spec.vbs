@@ -1,7 +1,7 @@
 
 'Test the VBSArrays class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSArrays")
     Execute .read("TestingFramework")
 End With

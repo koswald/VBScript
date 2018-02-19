@@ -1,7 +1,7 @@
 
 'test VBSTimer.vbs
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSTimer")
     Execute .read("TestingFramework")
 End With

@@ -1,5 +1,5 @@
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSLogger")
     Execute .read("TestingFramework")
     Execute .read("VBSFileSystem")

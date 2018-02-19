@@ -35,7 +35,7 @@ Const privilegesNotElevated = False
 Dim testRunner
 
 Sub Initialize
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("VBSTestRunner")
         Execute .read("VBSApp")
     End With

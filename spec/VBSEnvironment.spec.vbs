@@ -1,7 +1,7 @@
 
 'test the VBSEnvironment class
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("VBSEnvironment")
     Execute .read("TestingFramework")
 End With

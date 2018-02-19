@@ -2,7 +2,7 @@
 'test WoWChecker.vbs
 'intended to be run with 32-bit cscript.exe
 
-With CreateObject("includer")
+With CreateObject("VBScripting.Includer")
     Execute .read("TestingFramework")
     Execute .read("WoWChecker")
 End With

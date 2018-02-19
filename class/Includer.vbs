@@ -9,7 +9,7 @@
 '
 '    <h5> Usage example </h5>
 '
-'' With CreateObject("Includer")
+'' With CreateObject("VBScripting.Includer")
 ''     Execute .read("WMIUtility.vbs")
 ''     Execute .read("TextStreamer") '.vbs may be omitted
 '' End With

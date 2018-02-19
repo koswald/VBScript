@@ -8,7 +8,7 @@ Dim generator, output
 Sub Window_OnLoad
     Self.ResizeTo 550, 200
     document.title = "GUID Generator"
-    With CreateObject("includer")
+    With CreateObject("VBScripting.Includer")
         Execute .read("GUIDGenerator")
     End With
     Set generator = New GUIDGenerator
