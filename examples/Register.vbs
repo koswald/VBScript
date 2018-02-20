@@ -15,8 +15,8 @@ End With
 
 'prepare to register
 args = "/c" & _
-    " %SystemRoot%\System32\regsvr32.exe """ & file & """ & " & _
-    " %SystemRoot%\SysWoW64\regsvr32.exe """ & file & """"
+    " %SystemRoot%\System32\regsvr32.exe /s """ & file & """ & " & _
+    " %SystemRoot%\SysWoW64\regsvr32.exe /s """ & file & """"
 
 'elevate privileges and register
 With CreateObject("Shell.Application")
