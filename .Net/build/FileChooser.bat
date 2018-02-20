@@ -7,13 +7,17 @@
 @echo Getting .Net executables locations
 call ..\config\exeLocations.bat
 
-@echo Compiling FileChooser.cs
-%net32%\csc.exe @..\rsp\_common.rsp @..\rsp\FileChooser.rsp ..\FileChooser.cs
-
-@echo Registering .dll for 32-bit apps
+if %1.==/unregister. (
+    set verb=Unregistering
+) else (
+    set verb=Registering
+    @echo Compiling FileChooser.cs
+    %net32%\csc.exe @..\rsp\_common.rsp @..\rsp\FileChooser.rsp ..\FileChooser.cs
+)
+@echo %verb% .dll for 32-bit apps
 %net32%\regasm.exe /codebase %1 ..\lib\FileChooser.dll
 
 if exist %net64% (
-    @echo. & @echo Registering .dll for 64-bit apps
+    @echo. & @echo %verb% .dll for 64-bit apps
     %net64%\regasm.exe /codebase %1 ..\lib\FileChooser.dll
 )
