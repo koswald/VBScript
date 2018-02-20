@@ -1,8 +1,11 @@
 
-'delete a registry key and all subkeys
+'Deletes a registry key and all of its subkeys.
 
 Class KeyDeleter
 
+    'Method: DeleteKey
+    'Parameters: root, key
+    'Remark: Deletes the specified registry key and all of its subkeys. Use one of the root constants for the first parameter.
     Public Sub DeleteKey(root, key)
         ValidateRoot root
         PrivateDeleteKey root, key, Delete
@@ -63,10 +66,25 @@ Class KeyDeleter
         BackslashCount = count
     End Function
 
+    'Property HKCR
+    'Returns: &H80000000
+    'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKCR : HKCR = &H80000000 : End Property
+    'Property HKCU
+    'Returns: &H80000001
+    'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKCU : HKCU = &H80000001 : End Property
+    'Property HKLM
+    'Returns: &H80000002
+    'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKLM : HKLM = &H80000002 : End Property
+    'Property HKU
+    'Returns: &H80000003
+    'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKU : HKU = &H80000003 : End Property
+    'Property HKCC
+    'Returns: &H80000005
+    'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKCC : HKCC = &H80000005 : End Property
     
     'for testability, introduce a few Public
@@ -78,8 +96,15 @@ Class KeyDeleter
     Private savedSubkey_
     Public Property Get SavedSubkey : SavedSubkey = savedSubkey_ : End Property
     Private result_
+    'Property Result
+    'Returns: an integer
+    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://msdn.microsoft.com/en-us/library/aa393978(v=vs.85).aspx">WbemErrEnum</a>
     Public Property Get Result : Result = result_ : End Property
     Private delete_
+    'Property: Delete
+    'Parameter: a boolean
+    'Returns: a boolean
+    'Remark: Gets or sets the boolean that controls whether the key is actually deleted.
     Public Property Get Delete : Delete = delete_ : End Property
     Public Property Let Delete(newValue)
         If Not "Boolean" = TypeName(newValue) Then Err.Raise 1, "KeyDeleter.Delete (Let)", "Expected a Boolean."
