@@ -11,6 +11,7 @@ Class WindowsUpdatesPauser
         sh.Run format(Array( _
             "cmd /c netsh %s set profileparameter name=""%s"" cost=Fixed", _
             srvcType, profileName)), hidden, synchronous
+        GetStatus
     End Sub
 
     'Method ResumeUpdates
@@ -19,6 +20,7 @@ Class WindowsUpdatesPauser
         sh.Run format(Array( _
             "cmd /c netsh %s set profileparameter name=""%s"" cost=Unrestricted", _
             srvcType, profileName)), hidden, synchronous
+        GetStatus
     End Sub
 
     'Function GetStatus
@@ -93,14 +95,14 @@ Class WindowsUpdatesPauser
     'Log a status error, and if userInteractive, display it
     Private Sub ShowStatusError
         Dim msg : msg = format(Array( _
-            "The metered status of the connection %s could not be determined. %s" & _
+            "The metered status of the connection %scould not be determined. %s" & _
             "Check the profileName (network name) in %s", _
-            L2 & profileName & L2, L, L2 & configFile))
+            L2 & profileName & L2, L, L & configFile))
         log msg
         If Not userInteractive Then Exit Sub
         Dim msg2 : msg2 = msg & format(Array( _
             "%s Would you like %s to open the file?", L2, app.GetBaseName))
-        If vbOK = MsgBox(msg2, vbQuestion + vbOKCancel, app.GetBaseName) Then
+        If vbOK = MsgBox(msg2, vbInformation + vbOKCancel, app.GetBaseName) Then
             OpenConfigFile
         End If
     End Sub
