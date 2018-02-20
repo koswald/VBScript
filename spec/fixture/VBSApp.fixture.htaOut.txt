@@ -1,0 +1,11 @@
+arg one
+ "ar g ze ro" "arg one" 100 hta
+4
+C:\Users\test\Dropbox\g\v\spec\fixture\VBSApp.fixture.hta
+VBSApp.fixture.hta
+VBSApp.fixture
+hta
+C:\Users\test\Dropbox\g\v\spec\fixture
+mshta.exe
+0
+0.11

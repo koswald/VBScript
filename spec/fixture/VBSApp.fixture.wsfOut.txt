@@ -1,0 +1,11 @@
+arg one
+ "ar g ze ro" "arg one" 1000 wsf
+4
+C:\Users\test\Dropbox\g\v\spec\fixture\VBSApp.fixture.wsf
+VBSApp.fixture.wsf
+VBSApp.fixture
+wsf
+C:\Users\test\Dropbox\g\v\spec\fixture
+wscript.exe
+0
+1
