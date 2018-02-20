@@ -3,7 +3,7 @@
 <component> 
 
   <registration
-    description="Windows Script Component dependency manager/helper"
+    description="Windows Script Component dependency manager"
     progid="VBScripting.Includer"
     classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
   </registration>
