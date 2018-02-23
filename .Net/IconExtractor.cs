@@ -8,17 +8,18 @@ using System;
 namespace VBScripting
 {
     /// <summary> Extracts an icon from a .dll or .exe file. </summary>
+    /// <remarks> <span class="red"> This class is not accessible to VBScript. </span></remarks>
     [Guid("2650C2AB-6AF8-495F-AB4D-6C61BD463EA4")]
     public class IconExtractor
     {
         [DllImport("Shell32.dll", EntryPoint = "ExtractIconExW", CharSet = CharSet.Unicode, ExactSpelling = true, CallingConvention = CallingConvention.StdCall)]
         private static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion, out IntPtr piSmallVersion, int amountIcons);
 
-        /// <summary> Extracts an icon from a .dll or .exe file. </summary>
-        /// <param name="file"> A filespec string. </param>
-        /// <param name="number"> An integer. The icon's index within the resource. </param>
-        /// <param name="largeIcon"> A boolean. True for a large icon, False for a small icon. </param>
-        /// <returns> An icon: See <see cref="Icon"/>. </returns>
+        /// <summary> Extracts an icon from the specified .dll or .exe file </summary>
+        /// <parameters> file, number, largeIcon </parameters>
+        /// <remarks> Parametes: number is an integer that specifies the icon's index within the resource.
+        /// largeIcon is a boolean that specifies whether the icon should be a large icon or small icon. </remarks>
+        /// <returns> an icon </returns>
         public static Icon Extract(string file, int number, bool largeIcon)
         {
             IntPtr large;

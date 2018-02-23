@@ -10,7 +10,7 @@ With New DocGenerator
     .SetScriptFolder "..\class" 'location of the scripts to document, relative to this script
     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" 'filename(s) of the scripts to document
     .SetDocFolder "..\docs" 'location of the target documentation file, relative to this script
-    .SetDocName "TheDocs.html"
+    .SetDocName "VBScriptClasses.html"
     .Generate
     .View
 End With

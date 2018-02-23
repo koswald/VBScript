@@ -47,8 +47,9 @@ namespace VBScripting
             set { this.notifyIcon.Visible = value; }
         }
 
-        /// <summary> Sets the system tray <see cref="Icon"/> given an .ico file. </summary>
-        /// <param name="fileName"> The filespec of the .ico file. Environment variables are allowed. </param>
+        /// <summary> Sets the system tray icon given an .ico file. </summary>
+        /// <parameters> fileName </parameters>
+        /// <remarks> The parameter ""filename"" specifies the filespec of the .ico file. Environment variables are allowed. </remarks>
         public void SetIconByIcoFile(string fileName)
         {
             try
@@ -66,10 +67,10 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Sets the system tray <see cref="Icon"/> from a .dll or .exe file. </summary>
-        /// <param name="fileName"> The path and name of a .dll or .exe file that contains icons. </param>
-        /// <param name="index"> The index of the icon. An integer. </param>
-        /// <param name="largeIcon"> A boolean: true extracts a large icon, false extracts a small icon. </param>
+        /// <summary> Sets the system tray icon from a .dll or .exe file. </summary>
+        /// <remarks> Parameters: filename is the path and name of a .dll or .exe file that contains icons.  
+        /// index is an integer that specifies which icon to use.
+        /// largeIcon is a boolean that specifies whether to use a large or small icon. </remarks>
         public void SetIconByDllFile(string fileName, int index, bool largeIcon)
         {
             try
@@ -104,7 +105,11 @@ namespace VBScripting
         /// <summary> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </summary>
         public int BalloonTipLifetime { get; set; }
 
-        /// <summary> Provides an object useful in VBScript for selecting a ToolTipIcon type. The methods (Error, Info, None, Warning) may be used with <see cref="SetBalloonTipIcon(int)"/>. </summary>
+        /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The methods (Error, Info, None, Warning) may be used with SetBalloonTipIcon. </summary>
+        /// <returns> a ToolTipIconT </returns>
+        /// <remarks> VBScript example: 
+        ///     <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>
+        /// </remarks>
         public ToolTipIconT ToolTipIcon
         {
             get { return new ToolTipIconT(); }
@@ -112,7 +117,8 @@ namespace VBScripting
         }
 
         /// <summary> Sets the icon of the "balloon tip" or notification. </summary>
-        /// <param name="type"> An integer. Return values of one of the four methods (Error = 1, Info = 2, None = 3, Warning = 4) of <see cref="ToolTipIcon"/> can be used. </param>
+        /// <parameters> type </parameters>
+        /// <remarks> The parameter ""type"" is an integer that specifies which icon to use: Return values of one of the four methods (Error = 1, Info = 2, None = 3, Warning = 4) of ToolTipIcon can be used. </remarks>
         public void SetBalloonTipIcon(int type)
         {
             if (type == this.ToolTipIcon.Error)
@@ -133,8 +139,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary>  Disposes of the icon resources when it is no longer needed.
-        /// <para> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </para> </summary>
+        /// <summary>  Disposes of the icon resources when it is no longer needed. </summary>
+        /// <remarks> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </remarks>
         public void Dispose()
         {
             this.notifyIcon.Icon.Dispose();
@@ -147,10 +153,11 @@ namespace VBScripting
             this.notifyIcon.ShowBalloonTip(this.BalloonTipLifetime);
         }
 
-        /// <summary> Add a menu item to the system tray icon's context menu.
-        /// <para> This method can be called only from VBScript. </para> </summary>
-        /// <param name="menuText"> string: The text that appears in the menu. </param>
-        /// <param name="callbackRef"> object: The VBScript object reference returned by GetRef in VBScript. </param>
+        /// <summary> Add a menu item to the system tray icon's context menu. </summary>
+        /// <parameters> menuText, callbackRef </parameters>
+        /// <remarks> <span class="green"> This method can be called only from VBScript. </span>
+        /// The parameter 'menuText' is a string that specifies the text that appears in the menu. 
+        /// The parameter 'callbackRef' is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
         public void AddMenuItem(string menuText, object callbackRef)
         {
             this.settings.AddRef(new CallbackReference(this.nextIndex, callbackRef));
@@ -209,118 +216,106 @@ namespace VBScripting
         private object balloonTipCallback;
         
         /// <summary> Sets the VBScript callback Sub or Function reference. </summary>
-        /// <example> VBScript: <code>.obj.SetBalloonTipCallback(GetRef("ProcedureName")) </code>. </example>
+        /// <remarks> VBScript example:
+        ///    <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>
+        /// </remarks>
         public void SetBalloonTipCallback(object callbackRef)
         {
             this.balloonTipCallback = callbackRef;
         }
     }
 
-    /// <summary> The COM interface for <see cref="NotifyIcon"/>. </summary>
+    /// <summary> The COM interface for NotifyIcon. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-5BF8-495F-AB4D-6C61BD463EA4")]
     public interface INotifyIcon
     {
-        /// <summary> COM interface member for <see cref="NotifyIcon.Text"/></summary>
+        /// <summary> </summary>
         [DispId(1)]
         string Text { get; set; }
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.Dispose()"/></summary>
+        /// <summary> </summary>
         [DispId(2)]
         void Dispose();
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.Visible"/></summary>
+        /// <summary> </summary>
         [DispId(3)]
         bool Visible { get; set; }
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.SetIconByIcoFile(string)"/></summary>
+        /// <summary> </summary>
         [DispId(5)]
         void SetIconByIcoFile(string file);
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.SetIconByDllFile(string, int, bool)"/></summary>
+        /// <summary> </summary>
         [DispId(6)]
         void SetIconByDllFile(string file, int index, bool largeIcon);
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.BalloonTipTitle"/></summary>
+        /// <summary> </summary>
         [DispId(7)]
         string BalloonTipTitle { get; set; }
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.BalloonTipText"/></summary>
+        /// <summary> </summary>
         [DispId(8)]
         string BalloonTipText { get; set; }
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.BalloonTipLifetime"/></summary>
+        /// <summary> </summary>
         [DispId(9)]
         int BalloonTipLifetime { get; set; } // milliseconds
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.ToolTipIcon"/></summary>
+        /// <summary> </summary>
         [DispId(10)]
         ToolTipIconT ToolTipIcon { get; }
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.SetBalloonTipIcon(int)"/></summary>
+        /// <summary> </summary>
         [DispId(11)]
         void SetBalloonTipIcon(int type);
 
-        /// <summary> COM interface member for <see cref="NotifyIcon.ShowBalloonTip"/></summary>
+        /// <summary> </summary>
         [DispId(12)]
         void ShowBalloonTip();
 
-        /// <summary> COM interface member for <see cref="AddMenuItem(string, object)"/> </summary>
+        /// <summary> </summary>
         [DispId(13)]
         void AddMenuItem(string menuText, object callbackRef);
 
-        /// <summary> COM interface member for <see cref="InvokeCallbackByIndex(int)"/> </summary>
+        /// <summary> </summary>
         [DispId(14)]
         void InvokeCallbackByIndex(int index);
 
-        /// <summary> COM interface member for <see cref="ShowContextMenu"/> </summary>
+        /// <summary> </summary>
         [DispId(15)]
         void ShowContextMenu();
 
-        /// <summary> COM interface member for <see cref="SetBalloonTipCallback"/> </summary>
+        /// <summary> </summary>
         [DispId(16)]
         void SetBalloonTipCallback(object callbackRef);
     }
 
-    /// <summary> C# enum not intended for use by VBScript. 
-    /// <para> Corresponds to but not equivalent to System.Windows.Forms.ToolTipIcon. </para> </summary>
-    [Guid("2650C2AB-5CF8-495F-AB4D-6C61BD463EA4")]
-    public enum ToolTipIcon : int
-    {
-        /// <summary> Return value can be cast to an int: 1 </summary>
-        Error = 1,
-        /// <summary> Return value can be cast to an int: 2 </summary>
-        Info,
-        /// <summary> Return value can be cast to an int: 3 </summary>
-        None,
-        /// <summary> Return value can be cast to an int: 4 </summary>
-        Warning
-    }
-
-    /// <summary> Supplies the type required by <see cref="NotifyIcon.ToolTipIcon"/>
-    /// <para> Not intended for use in VBScript. </para> </summary>
+    /// <summary> Supplies the type required by NotifyIcon.ToolTipIcon </summary>
+    /// <remarks> <span class="red"> This class is not directly accessible from VBScript </span>, 
+    /// however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </remarks>
     [Guid("2650C2AB-5DF8-495F-AB4D-6C61BD463EA4")]
     public class ToolTipIconT
     {
-        /// <returns> Returns 1 </returns>
+        /// <returns> 1 </returns>
         public int Error
         {
             get { return (int)ToolTipIcon.Error; }
             private set { }
         }
-        /// <returns> Returns 2 </returns>
+        /// <returns> 2 </returns>
         public int Info
         {
             get { return (int)ToolTipIcon.Info; }
             private set { }
         }
-        /// <returns> Returns 3 </returns>
+        /// <returns> 3 </returns>
         public int None
         {
             get { return (int)ToolTipIcon.None; }
             private set { }
         }
-        /// <returns> Returns 4 </returns>
+        /// <returns> 4 </returns>
         public int Warning
         {
             get { return (int)ToolTipIcon.Warning; }
@@ -328,11 +323,11 @@ namespace VBScripting
         }
     }
     
-    /// <summary> Settings for saving VBScript method references. </summary>
+    /// <summary> Settings for saving VBScript method references. <span class="red"> This class is not accessible from VBScript. </span></summary>
     [Guid("2650C2AB-5EF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackEventSettings
     {
-        /// <summary> A List of callback references. </summary>
+        /// <summary> Gets or sets a list of callback references. </summary>
         public List<CallbackReference> Refs { get; set; }
 
         /// <summary> Constructor </summary>
@@ -342,7 +337,8 @@ namespace VBScripting
         }
 
         /// <summary> Adds a CallbackReference instance reference to the List </summary>
-        /// <param name="callbackRef"></param>
+        /// <parameters> callbackRef </parameters>
+        /// <remarks> Not applicable to VBScript. </remarks>
         public void AddRef(CallbackReference callbackRef)
         {
             if (callbackRef != null && !(this.Refs.Contains(callbackRef)))
@@ -352,6 +348,7 @@ namespace VBScripting
         }
     }
     /// <summary> An orderly way to save the index and callback reference for a single menu item. </summary>
+    /// <remarks> <span class="red"> This class is not accessible to VBScript. </span></remarks>
     [Guid("2650C2AB-5FF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackReference
     {
@@ -361,8 +358,7 @@ namespace VBScripting
         public object Reference { get; set; }
 
         /// <summary> Constructor </summary>
-        /// <param name="index"><see cref="CallbackReference.Index"/></param>
-        /// <param name="reference"> See <see cref="CallbackReference.Reference"/></param>
+        /// <parameters> index, reference </parameters>
         public CallbackReference(int index, object reference)
         {
             this.Index = index;

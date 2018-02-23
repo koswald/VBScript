@@ -11,12 +11,12 @@ using System.Diagnostics;
 
 namespace VBScripting
 {
-    /// <summary> A COM Interface for <see cref="EventLogger"/> </summary>
+    /// <summary> A COM Interface for VBScripting.EventLogger. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-1BF8-495F-AB4D-6C61BD463EA4")]
     public interface IEventLogger
     {
-        /// <summary> COM interface member for <see cref="EventLogger.log(string)"/>. </summary>
+        /// <summary> </summary>
         [DispId(1)]
         void log(string message);
     }
@@ -27,8 +27,8 @@ namespace VBScripting
         Guid("2650C2AB-1AF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogger : IEventLogger
     {
-        /// <summary> Writes a message to the system log (Application/WSH). </summary>
-        /// <param name="message"> The message to be logged. </param>
+        /// <summary> Writes the specified message to the Application event log. </summary>
+        /// <parameters> message </parameters>
         public void log(string message)
         {
             if (!string.IsNullOrWhiteSpace(message))

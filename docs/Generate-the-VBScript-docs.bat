@@ -1,0 +1,1 @@
+..\examples\Generate-the-VBScript-docs.vbs

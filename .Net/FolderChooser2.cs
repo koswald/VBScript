@@ -10,19 +10,21 @@ using System.IO;
 
 namespace VBScripting
 {
-    /// <summary> Present the Windows Vista-style open file dialog to select a folder. </summary>
+    /// <summary> COM interface for FolderChooser2. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-B3F8-495F-AB4D-6C61BD463EA4")]
     public interface IFolderChooser2
     {
-        /// <summary> COM interface member for <see cref="FolderChooser2.InitialDirectory"/> </summary>
+        /// <summary> </summary>
         string InitialDirectory { get; set; }
-        /// <summary> COM interface member for <see cref="FolderChooser2.Title"/> </summary>
+        /// <summary> </summary>
         string Title { get; set; }
-        /// <summary> COM interface member for <see cref="FolderChooser2.FolderName"/> </summary>
+        /// <summary> </summary>
         string FolderName { get; }
     }
-    /// <summary> COM interface for <see cref="FolderChooser2"/> </summary>
+
+    /// <summary> Present the Windows Vista-style open file dialog to select a folder. </summary>
+    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. </remarks>
     [ProgId("VBScripting.FolderChooser2"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-B2F8-495F-AB4D-6C61BD463EA4")]
@@ -32,7 +34,8 @@ namespace VBScripting
         private string _folderName;
         private string _title;
 
-        /// <summary> Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. </summary>
+        /// <summary> Gets or sets the initial directory that the folder select dialog opens to. </summary>
+        /// <remarks> Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. </remarks>
         public string InitialDirectory
         {
             get { return string.IsNullOrEmpty(_initialDirectory) ? Environment.CurrentDirectory : _initialDirectory; }
@@ -52,6 +55,7 @@ namespace VBScripting
         }
 
         /// <summary> Opens a dialog and returns the folder selected by the user. </summary>
+        /// <returns> a path </returns>
         public string FolderName
         {
             get { return this.ShowDialog() ? _folderName : string.Empty; }

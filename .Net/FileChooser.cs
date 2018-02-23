@@ -31,8 +31,8 @@ namespace VBScripting
             this.InitialDirectory = System.Environment.CurrentDirectory;
         }
 
-        /// <summary> Opens a dialog enabling the user to browse for and choose a file. <para>
-        /// <returns> Returns the filespec of the chosen file. Returns an empty string if the user cancels.  </returns> </para> </summary>
+        /// <summary> Opens a dialog enabling the user to browse for and choose a file. </summary>
+        /// <remarks> Returns the filespec of the chosen file. Returns an empty string if the user cancels.  </remarks> 
         public string FileName
         {
             get
@@ -54,9 +54,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. <para> 
-        /// <returns> Returns a string array of filespecs. Returns an empty array if the user cancels. </returns> </para>
-        /// <para> Requires Multiselect to have been set to True. </para> </summary>
+        /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. </summary>
+        /// <remarks> Gets a string array of filespecs. Returns an empty array if the user cancels. Requires Multiselect to have been set to True. </remarks>
         public object FileNames
         {
             get
@@ -75,9 +74,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. <para> 
-        /// <returns> Returns a delimited string of filespecs ( delimited by | ). Returns an empty string if the user cancels. </returns> </para>
-        /// <para> Requires Multiselect to have been set to True. </para> </summary>
+        /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. </summary>
+        /// <remarks> Gets a string of filespecs delimited by a vertical bar (|). Returns an empty string if the user cancels. Requires Multiselect to have been set to True. </remarks>
         public string FileNamesString
         {
             get
@@ -123,9 +121,11 @@ namespace VBScripting
                 this._expandedResolvedInitialDirectory = Path.GetFullPath(System.Environment.ExpandEnvironmentVariables(value));
             }
         }
-        /// <summary> Gets or sets the selectable file types. The default is "All files (*.*)|*.*" <para>
-        /// <example> Example #1: <code> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" </code> </example> </para>
-        /// <example> Example #2: <code> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </code> </example> </summary>
+        /// <summary> Gets or sets the selectable file types. The default is <pre> "All files (*.*)|*.*" </pre> </summary>
+        /// <remarks> 
+        /// Example #1: <pre> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" </pre> 
+        /// Example #2: <pre> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
+        /// </remarks> 
         public string Filter
         {
             get
@@ -138,8 +138,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets the index controlling which filter item is initially selected. 
-        /// <para> An integer. The index is 1-based. The default is 1. </para> </summary>
+        /// <summary> Gets or sets the index controlling which filter item is initially selected. </summary>
+        /// <remarks> An integer. The index is 1-based. The default is 1. </remarks>
         public int FilterIndex
         {
             get
@@ -152,8 +152,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets the dialog titlebar text. 
-        /// <para> The default text is "Browse for a file." </para> </summary>
+        /// <summary> Gets or sets the dialog titlebar text. </summary>
+        /// <remarks> The default text is "Browse for a file." </remarks>
         public string Title
         {
             get
@@ -166,8 +166,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets whether multiple files can be selected. 
-        /// <para> A boolean. The default is False. </para> </summary>
+        /// <summary> Gets or sets whether multiple files can be selected. </summary> 
+        /// <remarks> The default is False. </remarks>
         public bool Multiselect
         {
             get
@@ -180,10 +180,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Indicates whether the returned file is the referenced file or the .lnk file itself.
-        /// <para> Gets or sets, if the selected file is a .lnk file, whether the filespec returned refers to the .lnk file itself (False) or to the file that the .lnk file points to (True). </para>
-        /// <para> A boolean. The default is False. </para> </summary>
-        /// <remarks> The default of the wrapped property, OpenFileDialog.DereferenceLinks, is True. </remarks>
+        /// <summary> Indicates whether the returned file is the referenced file or the .lnk file itself. </summary>
+        /// <remarks> Gets or sets, if the selected file is a .lnk file, whether the filespec returned refers to the .lnk file itself (False) or to the file that the .lnk file points to (True). The default is False. </remarks>
         public bool DereferenceLinks
         {
             get
@@ -196,8 +194,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets the file extension name that is automatically supplied when one is not specified.
-        /// <para> A string. The default is "txt". </para> </summary>
+        /// <summary> Gets or sets the file extension name that is automatically supplied when one is not specified. </summary>
+        /// <remarks> A string. The default is "txt". </remarks>
         public string DefaultExt
         {
             get
@@ -237,60 +235,60 @@ namespace VBScripting
         }
     }
 
-    /// <summary> The COM interface for <see cref="FileChooser"/>. </summary>
+    /// <summary> The COM interface for FileChooser </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-3BF8-495F-AB4D-6C61BD463EA4")]
     public interface IFileChooser
     {
-        /// <summary> COM interface member for <see cref="FileChooser.FileName"/>. </summary>
+        /// <summary> </summary>
         [DispId(1)]
         string FileName { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.FileNames"/>. </summary>
+        /// <summary> </summary>
         [DispId(2)]
         object FileNames { get; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.FileNamesString"/>. </summary>
+        /// <summary> </summary>
         [DispId(3)]
         string FileNamesString { get; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.Filter"/>. </summary>
+        /// <summary> </summary>
         [DispId(4)]
         string Filter { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.FilterIndex"/>. </summary>
+        /// <summary> </summary>
         [DispId(5)]
         int FilterIndex { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.Title"/>. </summary>
+        /// <summary> </summary>
         [DispId(6)]
         string Title { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.Multiselect"/>. </summary>
+        /// <summary> </summary>
         [DispId(7)]
         bool Multiselect { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.DereferenceLinks"/>. </summary>
+        /// <summary> </summary>
         [DispId(8)]
         bool DereferenceLinks { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.DefaultExt"/>. </summary>
+        /// <summary> </summary>
         [DispId(9)]
         string DefaultExt { get; set; }
 
-        /// <summary> COM interface for <see cref="FileChooser.ValidateNames"/> </summary>
+        /// <summary> </summary>
         [DispId(10)]
         bool ValidateNames { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.CheckFileExists"/> </summary>
+        /// <summary> </summary>
         [DispId(11)]
         bool CheckFileExists { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.InitialDirectory"/> </summary>
+        /// <summary> </summary>
         [DispId(12)]
         string InitialDirectory { get; set; }
 
-        /// <summary> COM interface member for <see cref="FileChooser.ExpandedResolvedInitialDirectory"/> </summary>
+        /// <summary> </summary>
         [DispId(12)]
         string ExpandedResolvedInitialDirectory { get; }
     }

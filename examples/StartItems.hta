@@ -26,11 +26,8 @@
             Main            
             Sub Main
                 Set si = New StartupItems
-                With CreateObject("VBScripting.Includer")
-                    Execute .Read("PrivilegeChecker")
-                End With
-                Dim pc : Set pc = New PrivilegeChecker
-                privilegesAreElevated = pc.Privileged
+                Dim vc : Set vc = CreateObject("VBScripting.Admin")
+                privilegesAreElevated = vc.PrivilegesAreElevated
                 Set application = document.getElementsByTagName("application")(0)
                 document.Title = application.applicationName
                 If privilegesAreElevated Then

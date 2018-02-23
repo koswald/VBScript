@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace VBScripting
 {
-    /// <summary> Provide sys admin features for C# and VBScript. </summary>
+    /// <summary> Provide sys admin features. </summary>
     [ProgId("VBScripting.Admin"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-8AF8-495F-AB4D-6C61BD463EA4")]
@@ -31,7 +31,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> VBScript wrapper for the static <see cref="PrivilegesAreElevated"/> property. </summary>
+        /// <summary> </summary>
+        // VBScript wrapper for the static PrivilegesAreElevated property. </summary>
         public bool privilegesAreElevated
         {
             get { return PrivilegesAreElevated; }
@@ -39,14 +40,14 @@ namespace VBScripting
 
         # region EventLogs
 
-        /// <summary> Name of the event log source for this namespace. </summary>
         private const string eventSource = "VBScripting";
-        /// <summary> Name of the log to which events will be logged. </summary>
         private const string logName = "Application";
 
-        /// <summary> VBScript wrapper for <see cref="eventSource"/> </summary>
+        /// <summary> Gets the name of the event log source for this namespace (VBScripting). </summary>
+        /// <returns> a string </returns>
         public string EventSource { get { return eventSource; } }
-        /// <summary> VBScript wrapper for <see cref="logName"/> </summary>
+        /// <summary> Gets the name of the log to which events will be logged. </summary>
+        /// <returns> a string </returns>
         public string LogName { get { return logName; } }
 
         /// <summary> Logs an event to the event log. </summary>
@@ -59,15 +60,17 @@ namespace VBScripting
             catch { }
         }
 
-        /// <summary> VBScript wrapper for the static <see cref="Log(string)"/> method. </summary>
+        /// <summary> </summary>
+        // <summary> VBScript wrapper for the static Log method. </summary>
         public void log(string msg)
         {
             Log(msg);
         }
 
         /// <summary> Get an array of logs entries from the Application log. </summary>
-        /// <param name="source"> Event source </param>
-        /// <param name="message"> A substring of the event message. </param>
+        /// <parameters> source, message </parameters>
+        /// <returns> an array </returns>
+        /// <remarks> Returns an array of logs (strings) from the specified event source that contain the specified message string. Searches the Application log only. </remarks>
         public object GetLogs(string source, string message)
         {
             EventLog log = new EventLog(logName);
@@ -89,8 +92,9 @@ namespace VBScripting
             return messages.Cast<object>().ToArray();
         }
 
-        /// <summary> Gets whether the EventLog source exists. </summary>
-        /// <param name="source"></param>
+        /// <summary> Gets whether the specified EventLog source exists. </summary>
+        /// <returns> a boolean </returns>
+        /// <parameters> source </parameters>
         public bool SourceExists(string source)
         {
             try
@@ -108,8 +112,9 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Create an EventLog source. </summary>
-        /// <param name="source"></param>
+        /// <summary> Creates the specified EventLog source. </summary>
+        /// <parameters> source </parameters>
+        /// <returns> an EventLogSourceResult </returns>
         public EventLogSourceResult CreateEventSource(string source)
         {
             string msg;
@@ -162,8 +167,9 @@ namespace VBScripting
                 }
             }
         }
-        /// <summary> Delete an EventLog source and all of its logs. </summary>
-        /// <param name="source"></param>
+        /// <summary> Deletes the specified EventLog source and all of its logs. </summary>
+        /// <parameters> source </parameters>
+        /// <returns> an EventLogSourceResult </returns>
         public EventLogSourceResult DeleteEventSource(string source)
         {
             string msg;
@@ -216,84 +222,91 @@ namespace VBScripting
                 };
             }
         }
-        /// <summary> Returns the behavior description collection object to VBScript as a property. </summary>
+        /// <summary> Gets an EventLogResultT object. </summary>
+        /// <returns> an EventLogResultT </returns>
+        /// <remarks> VBScript example: <pre> Set returnValue = adm.CreateEventSource <br /> If returnValue.Result = adm.Result.SourceCreationException Then <br />     MsgBox returnValue.Message <br /> End If </pre>
+        /// </remarks>
         public EventLogResultT Result
         {
             get { return new EventLogResultT(); }
         }
         # endregion EventLogs
     }
-    /// <summary> A set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
+    /// <summary> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
+    /// <remarks> <span class="red"> Not directly available to VBScript.</span> See <tt>Admin.Result</tt>. </remarks>
     public class EventLogResultT
     {
-        /// <summary>  </summary>
+        /// <returns> "Source already exists" </returns>
         public string SourceAlreadyExists {
             get { return "Source already exists"; } } // attempting to create
-        /// <summary>  </summary>
+        /// <returns> "Source created" </returns>
         public string SourceCreated {
             get { return "Source created"; } }
-        /// <summary>  </summary>
+        /// <returns> "Source creation error" </returns>
         public string SourceCreationException {
             get { return "Source creation error"; } }
-        /// <summary>  </summary>
+        /// <returns> "Source does not exist" </returns>
         public string SourceDoesNotExist {
             get { return "Source does not exist"; } } // attempting to delete
-        /// <summary>  </summary>
+        /// <returns> "Source deleted" </returns>
         public string SourceDeleted {
             get { return "Source deleted"; } }
-        /// <summary>  </summary>
+        /// <returns> "Source deletion error" </returns>
         public string SourceDeletionException {
             get { return "Source deletion error"; } }
     }
-    /// <summary> Result for returning to VBScript. </summary>
+    /// <summary> Type returned by CreateEventSource and DeleteEventSource. </summary>
     public class EventLogSourceResult
     {
-        /// <summary>  </summary>
+        /// <summary> Returns True if the source exists after the attempted operation has completed. </summary>
+        /// <returns> a boolean </returns>
         public bool SourceExists { get; set; }
-        /// <summary>  </summary>
+        /// <summary> Returns a message descriptive of the outcome of the operation. </summary>
+        /// <returns> a string </returns>
         public string Message { get; set; }
-        /// <summary>  </summary>
+        /// <summary> Returns a string: one of the EventLogResultT strings. </summary>
+        /// <returns> a string </returns>
         public string Result { get; set; }
     }
 
-    /// <summary> COM interface for <see cref="Admin"/> </summary>
+    /// <summary> COM interface for VBScripting.Admin </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-8BF8-495F-AB4D-6C61BD463EA4")]
     public interface IAdmin
     {
-        /// <summary> COM interface member for <see cref="Admin.CreateEventSource(string)"/> </summary>
+        /// <summary> </summary>
         [DispId(1)]
         EventLogSourceResult CreateEventSource(string source);
 
-        /// <summary> COM interface member for <see cref="Admin.DeleteEventSource(string)"/> </summary>
+        /// <summary> </summary>
         [DispId(2)]
         EventLogSourceResult DeleteEventSource(string source);
 
-        /// <summary> ComInterface member for <see cref="Admin.SourceExists(string)"/> </summary>
+        /// <summary> </summary>
         [DispId(3)]
         bool SourceExists(string source);
 
-        /// <summary> COM interface member for <see cref="Admin.GetLogs(string, string)"/> </summary>
+        /// <summary> </summary>
         [DispId(4)]
         object GetLogs(string source, string message);
 
-        /// <summary> COM interface for <see cref="Admin.privilegesAreElevated"/> </summary>
+        /// <summary> </summary>
         [DispId(5)]
         bool privilegesAreElevated { get; }
 
-        /// <summary> COM interface for <see cref="Admin.log(string)"/> </summary>
+        /// <summary> </summary>
         [DispId(6)]
         void log(string msg);
 
-        /// <summary> COM interface for <see cref="Admin.Result"/> </summary>
+        /// <summary> </summary>
         [DispId(7)]
         EventLogResultT Result { get; }
 
-        /// <summary> COM interface for <see cref="Admin.EventSource"/> </summary>
+        /// <summary> </summary>
         [DispId(8)]
         string EventSource { get; }
 
-        /// <summary> COM interface for <see cref="Admin.LogName"/> </summary>
+        /// <summary> </summary>
         [DispId(9)]
         string LogName { get; }
 

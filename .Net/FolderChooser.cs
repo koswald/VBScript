@@ -12,19 +12,20 @@ using System.IO;
 
 namespace VBScripting
 {
-    /// <summary> COM interface for <see cref="FolderChooser"/> </summary>
+    /// <summary> COM interface for FolderChooser. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-B1F8-495F-AB4D-6C61BD463EA4")]
     public interface IFolderChooser
     {
-        /// <summary> COM interface member for <see cref="FolderChooser.InitialDirectory"/> </summary>
+        /// <summary> </summary>
         string InitialDirectory { get; set; }
-        /// <summary> COM interface member for <see cref="FolderChooser.Title"/> </summary>
+        /// <summary> </summary>
         string Title { get; set; }
-        /// <summary> COM interface member for <see cref="FolderChooser.FolderName"/> </summary>
+        /// <summary> </summary>
         string FolderName { get; }
     }
-    /// <summary> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions </summary>
+    /// <summary> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. </summary>
+    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. </remarks>
     [ProgId("VBScripting.FolderChooser"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-B0F8-495F-AB4D-6C61BD463EA4")]
@@ -47,6 +48,7 @@ namespace VBScripting
             set { _title = value; }
         }
         /// <summary> Opens a dialog and returns the folder selected by the user. </summary>
+        /// <returns> a path </returns>
         public string FolderName
         {
             get { return Show()? _fileName : string.Empty; }
@@ -54,8 +56,8 @@ namespace VBScripting
 
         private bool Show() { return Show(IntPtr.Zero); }
 
-        /// <param name="hWndOwner">Handle of the control or window to be the parent of the file dialog</param>
-        /// <returns>true if the user clicks OK</returns>
+        // <param name="hWndOwner">Handle of the control or window to be the parent of the file dialog</param>
+        // <returns>true if the user clicks OK</returns>
         private bool Show(IntPtr hWndOwner)
         {
             var dir1 = Path.GetFullPath(Environment.ExpandEnvironmentVariables(InitialDirectory));

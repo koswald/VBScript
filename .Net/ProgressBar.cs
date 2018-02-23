@@ -20,7 +20,7 @@ namespace VBScripting
         private int pctX = -1; // percentage of avail. screen
         private int pctY = -1;
 
-        /// <summary> Constructor. </summary>
+        /// Constructor <summary></summary>
         public ProgressBar()
         {
             this.form = new System.Windows.Forms.Form();
@@ -34,8 +34,8 @@ namespace VBScripting
 
         }
 
-        /// <summary> Gets or sets the progress bar's visibility. 
-        /// <para> A boolean. The default is False. </para> </summary>
+        /// <summary> Gets or sets the progress bar's visibility.  </summary>
+        /// <remarks> A boolean. The default is False. </remarks>
         public bool Visible
         {
             get
@@ -49,16 +49,14 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Advances the progress bar one step.
-        /// <para> See <see cref="ProgressBar.Step"/>. </para></summary>
+        /// <summary> Advances the progress bar one step.</summary>
         public void PerformStep()
         {
             this.pbar.PerformStep();
         }
 
         /// <summary> Sets the size of the window. </summary>
-        /// <param name="width"> Width of the window in pixels. </param>
-        /// <param name="height"> Height of the window in pixels. </param>
+        /// <parameters> width, height </parameters> 
         public void FormSize(int width, int height)
         {
             this.form.ClientSize = new Size(width, height);
@@ -71,40 +69,37 @@ namespace VBScripting
         }
 
         /// <summary> Sets the size of the progress bar. </summary>
-        /// <param name="width"> Width of the progress bar in pixels. </param>
-        /// <param name="height"> Height of the progress bar in pixels. </param>
+        /// <parameters> width, height </parameters> 
         public void PBarSize(int width, int height)
         {
             this.pbar.Size = new Size(width, height);
         }
 
-        /// <summary> Gets or sets the value (<see cref="ProgressBar.Value"/>) at which there is no apparent progress.
-        /// <para> An integer. The default is 0. </para> </summary>
+        /// <summary> Gets or sets the value at which there is no apparent progress. </summary>
+        /// <remarks> An integer. The default is 0. </remarks>
         public int Minimum
         {
             get { return this.pbar.Minimum; }
             set { this.pbar.Minimum = value; }
         }
 
-        /// <summary> Gets or sets the value (<see cref="ProgressBar.Value"/>) at which the progress appears to be complete. 
-        /// <para> An integer. The default is 100. </para></summary>
+        /// <summary> Gets or sets the value at which the progress appears to be complete. </summary>
+        /// <remarks> An integer. The default is 100. </remarks>
         public int Maximum
         {
             get { return this.pbar.Maximum; }
             set { this.pbar.Maximum = value; }
         }
 
-        /// <summary> Gets or sets the apparent progress.
-        /// <para> Should be at or above the minimum (<see cref="ProgressBar.Minimum"/>) and at or below the maximum (<see cref="ProgressBar.Maximum"/>). </para>
-        /// An integer. </summary>
+        /// <summary> Gets or sets the apparent progress. </summary>
+        /// <remarks> An integer. Should be at or above the minimum and at or below the maximum. </remarks>
         public int Value
         {
             get { return this.pbar.Value; }
             set { this.pbar.Value = value; }
         }
 
-        /// <summary> Gets or sets the increment between steps.
-        /// <para> See <see cref="ProgressBar.PerformStep()"/> </para> </summary>
+        /// <summary> Gets or sets the increment between steps. </summary>
         public int Step
         {
             get { return this.pbar.Step; }
@@ -120,8 +115,7 @@ namespace VBScripting
         }
 
         /// <summary> Sets the position of the window. </summary>
-        /// <param name="x"> The distance of the window in pixels from the left edge of the screen. </param>
-        /// <param name="y"> The distance of the window in pixels from the top edge of the screen. </param>
+        /// <parameters> x, y </parameters>
         public void FormLocation(int x, int y)
         {
             // mark as not positioning by percentage
@@ -134,8 +128,7 @@ namespace VBScripting
 
 
         /// <summary> Sets the position of the window. </summary>
-        /// <param name="x"> The horizontal position of the window from 0 (at the left) to 100 (at the right). </param>
-        /// <param name="y"> The vertical position of the window from 0 (at the top) to 100 (at the bottom). </param>
+        /// <parameters> x, y </parameters>
         public void FormLocationByPercentage(int x, int y)
         {
             // save percentages; if the form is resized later, 
@@ -152,27 +145,27 @@ namespace VBScripting
             this.form.Location = new Point(pxX, pxY);
         }
 
-        /// <summary> Sets the location of the progress bar. </summary>
-        /// <param name="x"> Distance in pixels of the left edge of the progress bar from the left edge of the window. </param>
-        /// <param name="y"> Distance in pixels of the top edge of the progress bar from the top edge of the window. </param>
+        /// <summary> Sets the location of the progress bar within the window. </summary>
+        /// <parameters> x, y </parameters>
         public void PBarLocation(int x, int y)
         {
             this.pbar.Location = new Point(x, y);
         }
 
-        /// <summary> Suspend drawing of the window temporarily. </summary>
+        /// <summary> Suspends drawing of the window temporarily. </summary>
         public void SuspendLayout()
         {
             this.form.SuspendLayout();
         }
 
-        /// <summary> Resume drawing the window. </summary>
+        /// <summary> Resumes drawing the window. </summary>
         public void ResumeLayout(bool performLayout)
         {
             this.form.ResumeLayout(performLayout);
         }
-        /// <summary> Sets the system tray <see cref="Icon"/> given an .ico file. </summary>
-        /// <param name="fileName"> The filespec of the .ico file. Environment variables are allowed. </param>
+        /// <summary> Sets the icon given the filespec of an .ico file. </summary>
+        /// <parameters> fileName </parameters>
+        /// <remarks> Environment variables are allowed. </remarks>
         public void SetIconByIcoFile(string fileName)
         {
             try
@@ -192,9 +185,9 @@ namespace VBScripting
                 if (Debug) { MessageBox.Show(e.ToString()); }
             }
         }
-        /// <summary> Sets the system tray <see cref="Icon"/> from a .dll or .exe file. </summary>
-        /// <param name="fileName"> The path and name of a .dll or .exe file that contains icons. </param>
-        /// <param name="index"> The index of the icon. An integer. </param>
+        /// <summary> Sets the icon given the filespec of a .dll or .exe file and an index. </summary>
+        /// <parameters> fileName, index </parameters>
+        /// <remarks> The index is an integer that identifies the icon. Environment variables are allowed. </remarks>
         public void SetIconByDllFile(string fileName, int index)
         {
             try
@@ -208,6 +201,7 @@ namespace VBScripting
                     MessageBox.Show(fnfe.Message, "Couldn't find icon file",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+                else throw;
             }
             catch (Exception e)
             {
@@ -219,14 +213,16 @@ namespace VBScripting
                         fileName, index, e.ToString()
                     ));
                 }
+                else throw;
             }
         }
 
-        /// <summary> Gets or sets whether the type is under development. 
-        /// <para> Affects the behavior of two methods, if exceptions are thrown. See <see cref="SetIconByIcoFile(string)"/> and <see cref="SetIconByDllFile(string, int)"/> </para> </summary>
+        /// <summary> Gets or sets whether the type is under development.  </summary>
+        /// <remarks> Affects the behavior of two methods, SetIconByIcoFile and SetIconByDllFile, if exceptions are thrown: when debugging, a message box is shown. Default is False. </remarks>
         public bool Debug { get; set; }
 
-        /// <summary> Provides an object useful in VBScript for setting <see cref="FormBorderStyle(int)"/>. </summary>
+        /// <summary> Provides an object useful in VBScript for setting FormBorderStyle. </summary>
+        /// <returns> a FormBorderStyleT </returns>
         public FormBorderStyleT BorderStyle
         {
             get { return new FormBorderStyleT(); }
@@ -234,36 +230,39 @@ namespace VBScripting
         }
 
         /// <summary> Sets the style of the window border. </summary>
-        /// <param name="style"> An integer. Return values of one of the seven methods (Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), and SizableToolWindow) of <see cref="BorderStyle"/> can be used. </param>
-        public void FormBorderStyle(int style)
+        /// <remarks> An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre> </remarks>
+        public int FormBorderStyle
         {
-            if (style == this.BorderStyle.Fixed3D)
+            set
             {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            }
-            else if (style == this.BorderStyle.FixedDialog)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            }
-            else if (style == this.BorderStyle.FixedSingle)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            }
-            else if (style == this.BorderStyle.FixedToolWindow)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            }
-            else if (style == this.BorderStyle.None)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            }
-            else if (style == this.BorderStyle.Sizable)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            }
-            else if (style == this.BorderStyle.SizableToolWindow)
-            {
-                this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+                if (value == this.BorderStyle.Fixed3D)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+                }
+                else if (value == this.BorderStyle.FixedDialog)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+                }
+                else if (value == this.BorderStyle.FixedSingle)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+                }
+                else if (value == this.BorderStyle.FixedToolWindow)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+                }
+                else if (value == this.BorderStyle.None)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                }
+                else if (value == this.BorderStyle.Sizable)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+                }
+                else if (value == this.BorderStyle.SizableToolWindow)
+                {
+                    this.form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+                }
             }
         }
 
@@ -273,161 +272,142 @@ namespace VBScripting
             this.pbar.Dispose();
             this.form.Dispose();
         }
+
     }
 
-    /// <summary> C# enum not intended for use by VBScript. 
-    /// <para> Corresponds to but not equivalent to System.Windows.Forms.FormBorderStyle. </para> </summary>
-    [Guid("2650C2AB-4CF8-495F-AB4D-6C61BD463EA4")]
-    public enum FormBorderStyle : int
-    {
-        /// <summary> Return value can be cast to an int: 1 </summary>
-        Fixed3D = 1,
-        /// <summary> Return value can be cast to an int: 2 </summary>
-        FixedDialog,
-        /// <summary> Return value can be cast to an int: 3 </summary>
-        FixedSingle,
-        /// <summary> Return value can be cast to an int: 4 </summary>
-        FixedToolWindow,
-        /// <summary> Return value can be cast to an int: 5 </summary>
-        None,
-        /// <summary> Return value can be cast to an int: 6 </summary>
-        Sizable,
-        /// <summary> Return value can be cast to an int: 7 </summary>
-        SizableToolWindow
-    }
-
-    /// <summary> Supplies the type required by <see cref="BorderStyle"/>
-    /// <para> Not intended for use in VBScript. </para> </summary>
+    /// <summary> Enumeration of border styles. </summary>
+    /// <remarks> This class is available to VBScript via the <tt>ProgressBar.BorderStyle</tt> property. </remarks>
     [Guid("2650C2AB-4DF8-495F-AB4D-6C61BD463EA4")]
     public class FormBorderStyleT
     {
-        /// <returns> Returns 1 </returns>
+        /// <returns> 1 </returns>
         public int Fixed3D 
         {
-            get { return (int)FormBorderStyle.Fixed3D; }
+            get { return 1; }
             private set { }
         }
-        /// <returns> Returns 2 </returns>
+        /// <returns> 2 </returns>
         public int FixedDialog 
         {
-            get { return (int)FormBorderStyle.FixedDialog; }
+            get { return 2; }
             private set { }
         }
-        /// <returns> Returns 3 </returns>
+        /// <returns> 3 </returns>
         public int FixedSingle 
         {
-            get { return (int)FormBorderStyle.FixedSingle; }
+            get { return 3; }
             private set { }
         }
-        /// <returns> Returns 4 </returns>
+        /// <returns> 4 </returns>
         public int FixedToolWindow 
         {
-            get { return (int)FormBorderStyle.FixedToolWindow; }
+            get { return 4; }
             private set { }
         }
-        /// <returns> Returns 5 </returns>
+        /// <returns> 5 </returns>
         public int None
         {
-            get { return (int)FormBorderStyle.None; }
+            get { return 5; }
             private set { }
         }
-        /// <returns> Returns 6 </returns>
+        /// <returns> 6 </returns>
         public int Sizable
         {
-            get { return (int)FormBorderStyle.Sizable; }
+            get { return 6; }
             private set { }
         }
-        /// <returns> Returns 7 </returns>
+        /// <returns> 7 </returns>
         public int SizableToolWindow 
         {
-            get { return (int)FormBorderStyle.SizableToolWindow; }
+            get { return 7; }
             private set { }
         }
     }
 
-    /// <summary> The COM interface for <see cref="ProgressBar"/>. </summary>
+    /// <summary> Exposes the ProgressBar members to COM/VBScript. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-4BF8-495F-AB4D-6C61BD463EA4")]
     public interface IProgressBar
     {
-        /// <summary> COM interface member for <see cref="Visible"/></summary>
+        /// <summary> </summary>
         [DispId(1)]
         bool Visible { get; set; }
 
-        /// <summary> COM interface member for <see cref="PerformStep()"/></summary>
+        /// <summary> </summary>
         [DispId(2)]
         void PerformStep();
 
-        /// <summary> COM interface member for <see cref="FormSize(int, int)"/></summary>
+        /// <summary> </summary>
         [DispId(3)]
         void FormSize(int width, int height);
 
-        /// <summary> COM interface member for <see cref="PBarLocation(int, int)"/></summary>
+        /// <summary> </summary>
         [DispId(4)]
         void PBarSize(int width, int height);
 
-        /// <summary> COM interface member for <see cref="Minimum"/></summary>
+        /// <summary> </summary>
         [DispId(5)]
         int Minimum { get; set; }
 
-        /// <summary> COM interface member for <see cref="Maximum"/></summary>
+        /// <summary> </summary>
         [DispId(6)]
         int Maximum { get; set; }
 
-        /// <summary> COM interface member for <see cref="Value"/></summary>
+        /// <summary> </summary>
         [DispId(7)]
         int Value { get; set; }
 
-        /// <summary> COM interface member for <see cref="Step"/></summary>
+        /// <summary> </summary>
         [DispId(8)]
         int Step { get; set; }
 
-        /// <summary> COM interface member for <see cref="Caption"/></summary>
+        /// <summary> </summary>
         [DispId(10)]
         string Caption { get; set; }
 
-        /// <summary> COM interface member for <see cref="FormLocation(int, int)"/></summary>
+        /// <summary> </summary>
         [DispId(11)]
         void FormLocation(int x, int y);
 
-        /// <summary> COM interface member for <see cref="PBarLocation(int, int)"/></summary>
+        /// <summary> </summary>
         [DispId(12)]
         void PBarLocation(int x, int y);
 
-        /// <summary> COM interface member for <see cref="SuspendLayout()"/></summary>
+        /// <summary> </summary>
         [DispId(13)]
         void SuspendLayout();
 
-        /// <summary> COM interface member for <see cref="ResumeLayout(bool)"/></summary>
+        /// <summary> </summary>
         [DispId(14)]
         void ResumeLayout(bool performLayout);
 
-        /// <summary> COM interface member for <see cref="FormLocationByPercentage(int, int)"/></summary>
+        /// <summary> </summary>
         [DispId(15)]
         void FormLocationByPercentage(int x, int y);
 
-        /// <summary> COM interface member for <see cref="SetIconByDllFile(string, int)"/></summary>
+        /// <summary> </summary>
         [DispId(16)]
         void SetIconByDllFile(string fileName, int index);
 
-        /// <summary> COM interface member for <see cref="Debug"/></summary>
+        /// <summary> </summary>
         [DispId(17)]
         bool Debug { get; set; }
 
-        /// <summary> COM interface member for <see cref="BorderStyle"/></summary>
+        /// <summary> </summary>
         [DispId(18)]
         FormBorderStyleT BorderStyle { get; }
 
-        /// <summary> COM interface member for <see cref="FormBorderStyle(int)"/></summary>
+        /// <summary> </summary>
         [DispId(19)]
-        void FormBorderStyle(int style);
+        int FormBorderStyle { set; }
 
-        /// <summary> COM interface member for <see cref="SetIconByIcoFile(string)"/></summary>
+        /// <summary> </summary>
         [DispId(20)]
         void SetIconByIcoFile(string fileName);
 
-        /// <summary> COM interface member for <see cref="Dispose()"/></summary>
+        /// <summary> </summary>
         [DispId(21)]
         void Dispose();
     }
+
 }

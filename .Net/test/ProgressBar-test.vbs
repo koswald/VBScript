@@ -19,12 +19,12 @@ Dim pb
 
 Sub Initialize
     Set pb = CreateObject("VBScripting.ProgressBar")
-    pb.Debug = True
+    pb.Debug = False
     pb.Caption = "testing - VBScripting.ProgressBar"
     pb.SetIconByIcoFile "fixture\star.ico"
     pb.SetIconByDllFile "%SystemRoot%\System32\shell32.dll", 42
     pb.SetIconByDllFile "%SystemRoot%\System32\msdt.exe", 0
-    pb.FormBorderStyle pb.BorderStyle.FixedDialog 'Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable, SizableToolWindow 
+    pb.FormBorderStyle = pb.BorderStyle.FixedDialog 'Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable, SizableToolWindow 
     pb.FormLocationByPercentage 100, 100
     pb.FormSize 500, 100
     pb.PBarSize 400, 30

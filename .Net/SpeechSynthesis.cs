@@ -14,6 +14,8 @@ namespace VBScripting
 {
     /// <summary> Provide a wrapper for the .Net speech synthesizer 
     /// for VBScript, for demonstration purposes. </summary>
+    /// <remarks> Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>,
+    /// which may not be available on older machines. </remarks>
     [Guid("2650C2AB-2AF8-495F-AB4D-6C61BD463EA4")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("VBScripting.SpeechSynthesis")]
@@ -42,8 +44,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Convert text to speech. 
-        /// <para> This method is synchronous. </para> </summary>
+        /// <summary> Convert text to speech. </summary>
+        /// <remarks> This method is synchronous. </remarks> 
         public void Speak(string text)
         {
             if (!string.IsNullOrWhiteSpace(text))
@@ -52,8 +54,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Convert text to speech. 
-        /// <para> This method is asynchronous. </para> </summary>
+        /// <summary> Convert text to speech. </summary>
+        /// <remarks> This method is asynchronous. </remarks>
         public void SpeakAsync(string text)
         {
             if (!string.IsNullOrWhiteSpace(text))
@@ -80,15 +82,15 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets an array of the names of the installed, enabled voides. 
-        /// <para> Each element of the array can be used to set <see cref="Voice"/> </para> </summary>
+        /// <summary> Gets an array of the names of the installed, enabled voices. </summary>
+        /// <remarks> Each element of the array can be used to set <tt>Voice</tt> </remarks>
         public object Voices()
         {
             return this.voices.Cast<object>().ToArray(); // convert to VBScript array
         }
 
-        /// <summary> Gets or sets the current voice by name. 
-        /// <para> A string. One of the names from the Voices array. </para> </summary>
+        /// <summary> Gets or sets the current voice by name. </summary>
+        /// <remarks> A string. One of the names from the <tt>Voices</tt> array. </remarks>
         public string Voice
         {
             set
@@ -134,35 +136,35 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets the state of the SpeechSynthesizer. 
-        /// <para> Read only. Returns an integer equal to one of 
-        /// the <see cref="State"/> method return values. </para> </summary>
+        /// <summary> Gets the state of the SpeechSynthesizer. </summary>
+        /// <remarks> Read only. Returns an integer equal to one of 
+        /// the <tt>State</tt> method return values. </remarks>
         public int SynthesizerState
         {
             get
             {
                 if (System.Speech.Synthesis.SynthesizerState.Ready == this.ss.State)
                 {
-                    return (int) VBScripting.SynthesizerState.Ready;
+                    return 1;
                 }
                 else if (System.Speech.Synthesis.SynthesizerState.Paused == this.ss.State)
                 {
-                    return (int) VBScripting.SynthesizerState.Paused;
+                    return 2;
                 }
                 else if (System.Speech.Synthesis.SynthesizerState.Speaking == this.ss.State)
                 {
-                    return (int) VBScripting.SynthesizerState.Speaking;
+                    return 3;
                 }
                 else
                 {
-                    return (int) VBScripting.SynthesizerState.Unexpected;
+                    return 4;
                 }
             }
             private set { }
         }
         
-        /// <summary> Gets or sets the volume. 
-        /// <para> An integer from 0 to 100. </para> </summary>
+        /// <summary> Gets or sets the volume. </summary>
+        /// <remarks> An integer from 0 to 100. </remarks>
         public int Volume
         {
             get
@@ -175,7 +177,8 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Provides an object whose methods (Ready, Paused, and Speaking) provide return values useful in VBScript for comparing to <see cref="SynthesizerState"/>. </summary>
+        /// <summary> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <tt>SynthesizerState</tt>. </summary>
+        /// <returns> a SynthersizerStateT </returns>
         public SynthesizerStateT State
         {
             get { return new SynthesizerStateT(); }
@@ -183,80 +186,65 @@ namespace VBScripting
         }
     }
 
-    /// <summary> C# enum not intended for use by VBScript. 
-    /// <para> Corresponds to but not equivalent to System.Speech.Synthesis.SynthesizerState. </para> </summary>
-    [Guid("2650C2AB-2CF8-495F-AB4D-6C61BD463EA4")]
-    public enum SynthesizerState : int
-    {
-        /// <summary> Return value can be cast to an int: 1 </summary>
-        Ready = 1,
-        /// <summary> Return value can be cast to an int: 2 </summary>
-        Paused,
-        /// <summary> Return value can be cast to an int: 3 </summary>
-        Speaking,
-        /// <summary> Return value can be cast to an int: 4 </summary>
-        Unexpected
-    }
-
-    /// <summary> Supplies the type required by <see cref="SpeechSynthesis.State"/>
-    /// <para> Not intended for use in VBScript. </para> </summary>
+    /// <summary> Enumerates the synthesizer states. </summary>
+    /// <remarks> Not intended for use in VBScript. See <tt>SpeechSynthesis.State</tt>. </remarks>
     [Guid("2650C2AB-2DF8-495F-AB4D-6C61BD463EA4")]
     public class SynthesizerStateT
     {
         /// <summary> Constructor </summary>
         public SynthesizerStateT() { }
-        /// <summary> Returns an integer: 1 </summary>
-        public int Ready { get { return (int) SynthesizerState.Ready; } private set { } }
-        /// <summary> Returns an integer: 2 </summary>
-        public int Paused { get { return (int) SynthesizerState.Paused; } private set { } }
-        /// <summary> Returns an integer: 3 </summary>
-        public int Speaking { get { return (int) SynthesizerState.Speaking; } private set { } }
-        /// <summary> Returns an integer: 4 </summary>
-        public int Unexpected { get { return (int) SynthesizerState.Unexpected; } private set { } }
+        /// <returns> 1 </returns>
+        public int Ready { get { return 1; } private set { } }
+        /// <returns> 2 </returns>
+        public int Paused { get { return 2; } private set { } }
+        /// <returns> 3 </returns>
+        public int Speaking { get { return 3; } private set { } }
+        /// <returns> 4 </returns>
+        public int Unexpected { get { return 4; } private set { } }
     }
 
-    /// <summary> The COM interface for <see cref="SpeechSynthesis"/>. </summary>
+    /// <summary> The COM interface for <tt>VBScripting.SpeechSynthesis</tt>. </summary>
     [Guid("2650C2AB-2BF8-495F-AB4D-6C61BD463EA4")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     public interface ISpeechSynthesis
     {
-        /// <summary> COM interface member for <see cref="Speak(string)"/></summary>
+        /// <summary> </summary>
         [DispId(1)]
         void Speak(string text);
 
-        /// <summary> COM interface member for <see cref="SpeakAsync(string)"/></summary>
+        /// <summary> </summary>
         [DispId(2)]
         void SpeakAsync(string text);
 
-        /// <summary> COM interface member for <see cref="Pause()"/></summary>
+        /// <summary> </summary>
         [DispId(3)]
         void Pause();
 
-        /// <summary> COM interface member for <see cref="Resume()"/></summary>
+        /// <summary> </summary>
         [DispId(4)]
         void Resume();
 
-        /// <summary> COM interface member for <see cref="Voices()"/></summary>
+        /// <summary> </summary>
         [DispId(5)]
         object Voices(); // array
 
-        /// <summary> COM interface member for <see cref="Voice"/></summary>
+        /// <summary> </summary>
         [DispId(6)]
         string Voice { get; set; }
 
-        /// <summary> COM interface member for <see cref="Dispose()"/></summary>
+        /// <summary> </summary>
         [DispId(7)]
         void Dispose();
 
-        /// <summary> COM interface member for <see cref="SynthesizerState"/></summary>
+        /// <summary> </summary>
         [DispId(8)]
         int SynthesizerState { get; }
 
-        /// <summary> COM interface member for <see cref="State"/></summary>
+        /// <summary> </summary>
         [DispId(9)]
         SynthesizerStateT State { get; }
 
-        /// <summary> COM interface member for <see cref="Volume"/></summary>
+        /// <summary> </summary>
         [DispId(13)]
         int Volume { get; set; }
     }
