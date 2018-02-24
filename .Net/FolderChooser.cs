@@ -25,7 +25,7 @@ namespace VBScripting
         string FolderName { get; }
     }
     /// <summary> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. </summary>
-    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. </remarks>
+    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. </remarks>
     [ProgId("VBScripting.FolderChooser"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-B0F8-495F-AB4D-6C61BD463EA4")]

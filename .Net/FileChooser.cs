@@ -121,10 +121,9 @@ namespace VBScripting
                 this._expandedResolvedInitialDirectory = Path.GetFullPath(System.Environment.ExpandEnvironmentVariables(value));
             }
         }
-        /// <summary> Gets or sets the selectable file types. The default is <pre> "All files (*.*)|*.*" </pre> </summary>
+        /// <summary> Gets or sets the selectable file types.  </summary>
         /// <remarks> 
-        /// Example #1: <pre> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" </pre> 
-        /// Example #2: <pre> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
+        /// Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br /> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br /> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
         /// </remarks> 
         public string Filter
         {

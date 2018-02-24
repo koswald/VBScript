@@ -41,6 +41,7 @@ namespace VBScripting
         }
 
         /// <summary> Gets or sets the icon's visibility. A boolean. </summary>
+        /// <remarks> <span class="red"> Required. </span> Set this property to True after initializing other settings. </remarks>
         public bool Visible
         {
             get { return this.notifyIcon.Visible; }
@@ -49,7 +50,7 @@ namespace VBScripting
 
         /// <summary> Sets the system tray icon given an .ico file. </summary>
         /// <parameters> fileName </parameters>
-        /// <remarks> The parameter ""filename"" specifies the filespec of the .ico file. Environment variables are allowed. </remarks>
+        /// <remarks> The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </remarks>
         public void SetIconByIcoFile(string fileName)
         {
             try
@@ -68,9 +69,9 @@ namespace VBScripting
         }
 
         /// <summary> Sets the system tray icon from a .dll or .exe file. </summary>
-        /// <remarks> Parameters: filename is the path and name of a .dll or .exe file that contains icons.  
-        /// index is an integer that specifies which icon to use.
-        /// largeIcon is a boolean that specifies whether to use a large or small icon. </remarks>
+        /// <remarks> Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons.  
+        /// <tt>index</tt> is an integer that specifies which icon to use.
+        /// <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </remarks>
         public void SetIconByDllFile(string fileName, int index, bool largeIcon)
         {
             try
@@ -105,7 +106,7 @@ namespace VBScripting
         /// <summary> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </summary>
         public int BalloonTipLifetime { get; set; }
 
-        /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The methods (Error, Info, None, Warning) may be used with SetBalloonTipIcon. </summary>
+        /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. </summary>
         /// <returns> a ToolTipIconT </returns>
         /// <remarks> VBScript example: 
         ///     <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>
@@ -118,7 +119,7 @@ namespace VBScripting
 
         /// <summary> Sets the icon of the "balloon tip" or notification. </summary>
         /// <parameters> type </parameters>
-        /// <remarks> The parameter ""type"" is an integer that specifies which icon to use: Return values of one of the four methods (Error = 1, Info = 2, None = 3, Warning = 4) of ToolTipIcon can be used. </remarks>
+        /// <remarks> The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </remarks>
         public void SetBalloonTipIcon(int type)
         {
             if (type == this.ToolTipIcon.Error)
@@ -140,14 +141,14 @@ namespace VBScripting
         }
 
         /// <summary>  Disposes of the icon resources when it is no longer needed. </summary>
-        /// <remarks> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </remarks>
+        /// <remarks> <span class="red"> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </span> </remarks>
         public void Dispose()
         {
             this.notifyIcon.Icon.Dispose();
             this.notifyIcon.Dispose();
         }
 
-        /// <summary> Show the baloon tip. </summary>
+        /// <summary> Show the balloon tip. </summary>
         public void ShowBalloonTip()
         {
             this.notifyIcon.ShowBalloonTip(this.BalloonTipLifetime);
@@ -336,9 +337,8 @@ namespace VBScripting
             this.Refs = new List<CallbackReference>();
         }
 
-        /// <summary> Adds a CallbackReference instance reference to the List </summary>
+        /// <summary> Adds a CallbackReference instance reference to the list. </summary>
         /// <parameters> callbackRef </parameters>
-        /// <remarks> Not applicable to VBScript. </remarks>
         public void AddRef(CallbackReference callbackRef)
         {
             if (callbackRef != null && !(this.Refs.Contains(callbackRef)))

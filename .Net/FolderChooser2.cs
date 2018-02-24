@@ -24,7 +24,7 @@ namespace VBScripting
     }
 
     /// <summary> Present the Windows Vista-style open file dialog to select a folder. </summary>
-    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. </remarks>
+    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. </remarks>
     [ProgId("VBScripting.FolderChooser2"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-B2F8-495F-AB4D-6C61BD463EA4")]
