@@ -224,8 +224,7 @@ namespace VBScripting
         }
         /// <summary> Gets an EventLogResultT object. </summary>
         /// <returns> an EventLogResultT </returns>
-        /// <remarks> VBScript example: <pre> Set returnValue = adm.CreateEventSource <br /> If returnValue.Result = adm.Result.SourceCreationException Then <br />     MsgBox returnValue.Message <br /> End If </pre>
-        /// </remarks>
+        /// <remarks> VBScript example: <pre> Set returnValue = adm.CreateEventSource <br /> If returnValue.Result = adm.Result.SourceCreationException Then <br />     MsgBox returnValue.Message <br /> End If</pre></remarks>
         public EventLogResultT Result
         {
             get { return new EventLogResultT(); }
@@ -233,7 +232,7 @@ namespace VBScripting
         # endregion EventLogs
     }
     /// <summary> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
-    /// <remarks> <span class="red"> Not directly available to VBScript.</span> See <tt>Admin.Result</tt>. </remarks>
+    /// <remarks> Not directly available to VBScript. See <tt>Admin.Result</tt>. </remarks>
     public class EventLogResultT
     {
         /// <returns> "Source already exists" </returns>

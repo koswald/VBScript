@@ -44,8 +44,9 @@ Temporarily wrap quoteless arguments with quotes, then split the modified comman
 ## Examples
 
 | Argument | result |
-| --- | :---: |
+| :-------------- | :-------: |
 | /folder:C:\myfolder | ok |
+| "/folder:C:\myfolder" | ok |
 | "/folder:C:\my folder" | ok |
 | /folder:"C:\my folder" | error |
 

@@ -41,7 +41,7 @@ namespace VBScripting
         }
 
         /// <summary> Gets or sets the icon's visibility. A boolean. </summary>
-        /// <remarks> <span class="red"> Required. </span> Set this property to True after initializing other settings. </remarks>
+        /// <remarks> Required. Set this property to True after initializing other settings. </remarks>
         public bool Visible
         {
             get { return this.notifyIcon.Visible; }
@@ -69,9 +69,8 @@ namespace VBScripting
         }
 
         /// <summary> Sets the system tray icon from a .dll or .exe file. </summary>
-        /// <remarks> Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons.  
-        /// <tt>index</tt> is an integer that specifies which icon to use.
-        /// <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </remarks>
+        /// <parameters> fileName, index, largeIcon </parameters>
+        /// <remarks> Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </remarks>
         public void SetIconByDllFile(string fileName, int index, bool largeIcon)
         {
             try
@@ -108,9 +107,7 @@ namespace VBScripting
 
         /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. </summary>
         /// <returns> a ToolTipIconT </returns>
-        /// <remarks> VBScript example: 
-        ///     <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>
-        /// </remarks>
+        /// <remarks> VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> </remarks>
         public ToolTipIconT ToolTipIcon
         {
             get { return new ToolTipIconT(); }
@@ -141,7 +138,7 @@ namespace VBScripting
         }
 
         /// <summary>  Disposes of the icon resources when it is no longer needed. </summary>
-        /// <remarks> <span class="red"> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </span> </remarks>
+        /// <remarks> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </remarks>
         public void Dispose()
         {
             this.notifyIcon.Icon.Dispose();
@@ -156,9 +153,7 @@ namespace VBScripting
 
         /// <summary> Add a menu item to the system tray icon's context menu. </summary>
         /// <parameters> menuText, callbackRef </parameters>
-        /// <remarks> <span class="green"> This method can be called only from VBScript. </span>
-        /// The parameter 'menuText' is a string that specifies the text that appears in the menu. 
-        /// The parameter 'callbackRef' is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
+        /// <remarks> This method can be called only from VBScript. The parameter <tt>>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
         public void AddMenuItem(string menuText, object callbackRef)
         {
             this.settings.AddRef(new CallbackReference(this.nextIndex, callbackRef));
@@ -217,9 +212,7 @@ namespace VBScripting
         private object balloonTipCallback;
         
         /// <summary> Sets the VBScript callback Sub or Function reference. </summary>
-        /// <remarks> VBScript example:
-        ///    <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>
-        /// </remarks>
+        /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </remarks>
         public void SetBalloonTipCallback(object callbackRef)
         {
             this.balloonTipCallback = callbackRef;
@@ -293,8 +286,7 @@ namespace VBScripting
     }
 
     /// <summary> Supplies the type required by NotifyIcon.ToolTipIcon </summary>
-    /// <remarks> <span class="red"> This class is not directly accessible from VBScript </span>, 
-    /// however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </remarks>
+    /// <remarks> This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </remarks>
     [Guid("2650C2AB-5DF8-495F-AB4D-6C61BD463EA4")]
     public class ToolTipIconT
     {
@@ -324,7 +316,7 @@ namespace VBScripting
         }
     }
     
-    /// <summary> Settings for saving VBScript method references. <span class="red"> This class is not accessible from VBScript. </span></summary>
+    /// <summary> Settings for saving VBScript method references. This class is not accessible from VBScript. </summary>
     [Guid("2650C2AB-5EF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackEventSettings
     {
@@ -348,7 +340,7 @@ namespace VBScripting
         }
     }
     /// <summary> An orderly way to save the index and callback reference for a single menu item. </summary>
-    /// <remarks> <span class="red"> This class is not accessible to VBScript. </span></remarks>
+    /// <remarks> This class is not accessible to VBScript. </remarks>
     [Guid("2650C2AB-5FF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackReference
     {

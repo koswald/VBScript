@@ -112,8 +112,7 @@
     <td> Admin </td>
     <td>  </td>
     <td> an EventLogResultT </td>
-    <td> Gets an EventLogResultT object. VBScript example: <pre> Set returnValue = adm.CreateEventSource <br/> If returnValue.Result = adm.Result.SourceCreationException Then <br/>     MsgBox returnValue.Message <br/> End If </pre>
- </td>
+    <td> Gets an EventLogResultT object. VBScript example: <pre> Set returnValue = adm.CreateEventSource <br/> If returnValue.Result = adm.Result.SourceCreationException Then <br/>     MsgBox returnValue.Message <br/> End If</pre> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -122,8 +121,7 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. 
-	<span class="red"> Not directly available to VBScript.</span> See <tt>Admin.Result</tt>. </td>
+    <td> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. Not directly available to VBScript. See <tt>Admin.Result</tt>. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -319,6 +317,15 @@
     <td> VBScripting </td>
   </tr>
   <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> FileChooser </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Constructor  </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
     <td> FileName </td>
     <td> Property </td>
     <td> FileChooser </td>
@@ -369,8 +376,7 @@
     <td> FileChooser </td>
     <td>  </td>
     <td>  </td>
-    <td> Gets or sets the selectable file types. 
-            Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br/> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
+    <td> Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br/> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
  </td>
     <td> VBScripting </td>
   </tr>
@@ -572,8 +578,7 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> Extracts an icon from a .dll or .exe file. 
-	<span class="red"> This class is not accessible to VBScript. </span> </td>
+    <td> Extracts an icon from a .dll or .exe file. <span class="red"> This class is not accessible to VBScript. </span> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -582,8 +587,7 @@
     <td> IconExtractor </td>
     <td> file, number, largeIcon </td>
     <td> an icon </td>
-    <td> Extracts an icon from the specified .dll or .exe file Parametes: number is an integer that specifies the icon's index within the resource.
-            largeIcon is a boolean that specifies whether the icon should be a large icon or small icon. </td>
+    <td> Extracts an icon from the specified .dll or .exe file. Other parameters: <tt>number</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon or small icon. </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -618,6 +622,15 @@
     <td> VBScripting </td>
   </tr>
   <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> NotifyIcon </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Constructor  </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
     <td> SetIconByIcoFile </td>
     <td> Method </td>
     <td> NotifyIcon </td>
@@ -630,11 +643,9 @@
     <td> SetIconByDllFile </td>
     <td> Method </td>
     <td> NotifyIcon </td>
+    <td> fileName, index, largeIcon </td>
     <td>  </td>
-    <td>  </td>
-    <td> Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons.  
-            <tt>index</tt> is an integer that specifies which icon to use.
-            <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </td>
+    <td> Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -652,9 +663,7 @@
     <td> NotifyIcon </td>
     <td>  </td>
     <td>  </td>
-    <td> Disposes of the icon resources when it is no longer needed. 
-	<span class="red"> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </span>
- </td>
+    <td> Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -672,10 +681,7 @@
     <td> NotifyIcon </td>
     <td> menuText, callbackRef </td>
     <td>  </td>
-    <td> Add a menu item to the system tray icon's context menu. 
-	<span class="green"> This method can be called only from VBScript. </span>
-            The parameter 'menuText' is a string that specifies the text that appears in the menu. 
-            The parameter 'callbackRef' is a VBScript object reference returned by the VBScript GetRef Function. </td>
+    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>&gt;menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -702,8 +708,7 @@
     <td> NotifyIcon </td>
     <td>  </td>
     <td>  </td>
-    <td> Sets the VBScript callback Sub or Function reference. VBScript example:
-               <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>
+    <td> Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>
  </td>
     <td> VBScripting </td>
   </tr>
@@ -722,8 +727,7 @@
     <td> NotifyIcon </td>
     <td>  </td>
     <td>  </td>
-    <td> Gets or sets the icon's visibility. A boolean. 
-	<span class="red"> Required. </span> Set this property to True after initializing other settings. </td>
+    <td> Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -759,8 +763,7 @@
     <td> NotifyIcon </td>
     <td>  </td>
     <td> a ToolTipIconT </td>
-    <td> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: 
-                <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>
+    <td> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>
  </td>
     <td> VBScripting </td>
   </tr>
@@ -770,9 +773,7 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> Supplies the type required by NotifyIcon.ToolTipIcon 
-	<span class="red"> This class is not directly accessible from VBScript </span>, 
-            however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </td>
+    <td> Supplies the type required by NotifyIcon.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -817,7 +818,16 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> Settings for saving VBScript method references. <span class="red"> This class is not accessible from VBScript. </span>  </td>
+    <td> Settings for saving VBScript method references. This class is not accessible from VBScript.  </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> CallbackEventSettings </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Constructor  </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -844,8 +854,16 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> An orderly way to save the index and callback reference for a single menu item. 
-	<span class="red"> This class is not accessible to VBScript. </span> </td>
+    <td> An orderly way to save the index and callback reference for a single menu item. This class is not accessible to VBScript. </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> CallbackReference </td>
+    <td> index, reference </td>
+    <td>  </td>
+    <td> Constructor  </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -1169,9 +1187,7 @@
     <td> </td>
     <td>  </td>
     <td>  </td>
-    <td> Provide a wrapper for the .Net speech synthesizer 
-            for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>,
-            which may not be available on older machines. </td>
+    <td> Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>, which may not be available on older machines. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -1181,6 +1197,15 @@
     <td>  </td>
     <td>  </td>
     <td> The COM interface for <tt>VBScripting.SpeechSynthesis</tt>.  </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> SpeechSynthesis </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Constructor  </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -1253,8 +1278,7 @@
     <td> SpeechSynthesis </td>
     <td>  </td>
     <td>  </td>
-    <td> Gets the state of the SpeechSynthesizer. Read only. Returns an integer equal to one of 
-            the <tt>State</tt> method return values. </td>
+    <td> Gets the state of the SpeechSynthesizer. Read only. Returns an integer equal to one of the <tt>State</tt> method return values. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -1282,6 +1306,15 @@
     <td>  </td>
     <td>  </td>
     <td> Enumerates the synthesizer states. Not intended for use in VBScript. See <tt>SpeechSynthesis.State</tt>. </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> (Constructor) </td>
+    <td> Method </td>
+    <td> SynthesizerStateT </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Constructor  </td>
     <td> VBScripting </td>
   </tr>
   <tr>

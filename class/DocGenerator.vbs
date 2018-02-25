@@ -23,15 +23,17 @@
 '' ''    End With
 '
 '<h5> Example of well-formed comments before a Sub statement </h5>
+' Note: A remark is required for Methods (Subs).
 
 '' 'Method: SubName
-'' 'Parameters: varName, varTyep
-'' 'Remark: A remark is required for Methods (Subs) but not for properties or functions.
+'' 'Parameters: varName, varType
+'' 'Remark: Details about the parameters.
 
 '<h5> Example of well-formed comments before a Property or Function statement </h5>
+' Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.
 
 '' 'Property: PropertyName
-'' 'Returns a useful string. A Returns (or Return or Returns: or Return:) is required with a Property or Function
+'' 'Returns: a string
 '' 'Remark: A remark is not required for a Property or Function
 
 '<h5> Notes for the general comment syntax at the beginning of a script </h5>

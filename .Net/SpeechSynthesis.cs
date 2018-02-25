@@ -12,10 +12,8 @@ using System.Windows.Forms; // for MessageBox
 
 namespace VBScripting
 {
-    /// <summary> Provide a wrapper for the .Net speech synthesizer 
-    /// for VBScript, for demonstration purposes. </summary>
-    /// <remarks> Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>,
-    /// which may not be available on older machines. </remarks>
+    /// <summary> Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. </summary>
+    /// <remarks> Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>, which may not be available on older machines. </remarks>
     [Guid("2650C2AB-2AF8-495F-AB4D-6C61BD463EA4")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("VBScripting.SpeechSynthesis")]
@@ -137,8 +135,7 @@ namespace VBScripting
         }
 
         /// <summary> Gets the state of the SpeechSynthesizer. </summary>
-        /// <remarks> Read only. Returns an integer equal to one of 
-        /// the <tt>State</tt> method return values. </remarks>
+        /// <remarks> Read only. Returns an integer equal to one of the <tt>State</tt> method return values. </remarks>
         public int SynthesizerState
         {
             get

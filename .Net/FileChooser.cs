@@ -75,7 +75,7 @@ namespace VBScripting
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. </summary>
-        /// <remarks> Gets a string of filespecs delimited by a vertical bar (|). Returns an empty string if the user cancels. Requires Multiselect to have been set to True. </remarks>
+        /// <remarks> Gets a string of filespecs delimited by a vertical bar (&#124;). Returns an empty string if the user cancels. Requires Multiselect to have been set to True. </remarks>
         public string FileNamesString
         {
             get
@@ -122,9 +122,7 @@ namespace VBScripting
             }
         }
         /// <summary> Gets or sets the selectable file types.  </summary>
-        /// <remarks> 
-        /// Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br /> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br /> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre>
-        /// </remarks> 
+        /// <remarks> Examples: <pre> fc.Filter = "All files (*.*)&#124;*.*" // the default <br /> fc.Filter = "Text files (*.txt)&#124;*.txt&#124;All files (*.*)&#124;*.*" <br /> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)&#124;*.BMP;*.JPG;*.GIF&#124;All files (*.*)&#124;*.*" </pre> </remarks> 
         public string Filter
         {
             get

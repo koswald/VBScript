@@ -2,8 +2,9 @@ With CreateObject("VBScripting.Includer")
     Execute .Read("DocGeneratorCS")
 End With
 With New DocGeneratorCS
-    .HtmlFile = "..\docs\CSharpClasses.html"
+    .OutputFile = "..\docs\CSharpClasses"
     .XmlFolder = "..\.Net\lib"
     .Generate
-    .View
+    .ViewHtml
+''''.ViewMarkdown
 End With
