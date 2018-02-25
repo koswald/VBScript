@@ -55,8 +55,7 @@
 | FileNamesString| Property| FileChooser| | | Opens a dialog enabling the user to browse for and choose multiple files. Gets a string of filespecs delimited by a vertical bar (\|). Returns an empty string if the user cancels. Requires Multiselect to have been set to True.| VBScripting |
 | InitialDirectory| Property| FileChooser| | | Gets or sets directory at which the dialog opens. | VBScripting |
 | ExpandedResolvedInitialDirectory| Property| FileChooser| | | Gets the initial directory with relative path resolved and environment variables expanded. Improves testability.| VBScripting |
-| Filter| Property| FileChooser| | | Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (*.*)\|*.*" // the default <br/> fc.Filter = "Text files (*.txt)\|*.txt\|All files (*.*)\|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)\|*.BMP;*.JPG;*.GIF\|All files (*.*)\|*.*" </pre>
-| VBScripting |
+| Filter| Property| FileChooser| | | Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (\*.\*)\|\*.\*" // the default <br/> fc.Filter = "Text files (\*.txt)\|\*.txt\|All files (\*.\*)\|\*.\*" <br/> fc.Filter = "Image Files(\*.BMP;\*.JPG;\*.GIF)\|\*.BMP;\*.JPG;\*.GIF\|All files (\*.\*)\|\*.\*" </pre>| VBScripting |
 | FilterIndex| Property| FileChooser| | | Gets or sets the index controlling which filter item is initially selected. An integer. The index is 1-based. The default is 1.| VBScripting |
 | Title| Property| FileChooser| | | Gets or sets the dialog titlebar text. The default text is "Browse for a file."| VBScripting |
 | Multiselect| Property| FileChooser| | | Gets or sets whether multiple files can be selected. The default is False.| VBScripting |

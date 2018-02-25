@@ -126,7 +126,8 @@ Class DocGeneratorCS
         md.Write f(Array("| %s", Escape(info.NamespaceName)))
         md.WriteLine " |"
     End Sub
-    Function Escape(str)
+    Function Escape(ByVal str) 'conversions for markdown
+        str = Replace(str, "*", "\*")
         Escape = Replace(str, "|", "\|")
     End Function
     Function GetMemberInfo(member)
