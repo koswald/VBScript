@@ -1,15 +1,14 @@
 
 'A lightweight VBScript logger
 
-'<fieldset> <legend> Instantiation </legend> <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>
-'</fieldset>
-'<fieldset> <legend> Usage method one </legend> <pre>     log "test one" </pre>
-'This way has the advantage that the log doesn't remain open, allowing other scripts to write to the log.
-'</fieldset>
+'Instantiation 
+'<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>
+'
+'Usage method one. This method has the advantage that the log doesn't remain open, allowing other scripts to write to the log.
+' <pre>     log "test one" </pre>
 
-'<fieldset> <legend> Usage method two </legend> <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>
-'This way has the advantage that the name of the calling script is not written on each line of the log.
-'</fieldset>
+'Usage method two. This method has the advantage that the name of the calling script is not written on each line of the log.
+' <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>
 '
 Class VBSLogger 'Logger for use in VBScript files
 

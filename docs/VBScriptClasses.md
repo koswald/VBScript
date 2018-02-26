@@ -112,8 +112,8 @@ Use a single quote (') for general comments <br />
 -- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />  
 Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />  
 Use three single quotes for remarks that should not appear in the documentation <br />  
-<h5> Notes for when the script doesn't not contain a Class statement </h5>  
-If the script doesn't contain a class statement, then the general statements at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)  
+<h5> Notes for when the script does not contain a Class statement </h5>  
+If the script doesn't contain a class statement, then the general comments at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -577,14 +577,13 @@ Manage which script host is hosting the currently running script
 
 ## VBSLogger
 A lightweight VBScript logger  
-<fieldset> <legend> Instantiation </legend> <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>  
-</fieldset>  
-<fieldset> <legend> Usage method one </legend> <pre>     log "test one" </pre>  
-This way has the advantage that the log doesn't remain open, allowing other scripts to write to the log.  
-</fieldset>  
-<fieldset> <legend> Usage method two </legend> <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>  
-This way has the advantage that the name of the calling script is not written on each line of the log.  
-</fieldset>  
+Instantiation   
+<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>  
+  
+Usage method one. This method has the advantage that the log doesn't remain open, allowing other scripts to write to the log.  
+ <pre>     log "test one" </pre>  
+Usage method two. This method has the advantage that the name of the calling script is not written on each line of the log.  
+ <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |

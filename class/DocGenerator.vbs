@@ -24,9 +24,9 @@
 'Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
 'Use three single quotes for remarks that should not appear in the documentation <br />
 
-'<h5> Notes for when the script doesn't not contain a Class statement </h5>
+'<h5> Notes for when the script does not contain a Class statement </h5>
 
-'If the script doesn't contain a class statement, then the general statements at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)
+'If the script doesn't contain a class statement, then the general comments at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)
 '
 
 Class DocGenerator
