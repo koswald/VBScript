@@ -120,7 +120,6 @@ Class DocGenerator
         'wildcard pattern(s)
         defaultFilesToDocument = "*.vbs" 'file types to document, by name
 
-        'enums
         method = "Method"
         property_ = "Property"
         parameters = "parameters"
@@ -204,6 +203,7 @@ Class DocGenerator
     End Sub
 
     Private Sub WriteScriptSection(File)
+        If InStr(fso.GetBaseName(File.Name), ".") Then Exit Sub
         inputStreamer.SetFile(File.Path)
         Set script = inputStreamer.Open
         TableHeaderWritten = False
@@ -304,7 +304,15 @@ Class DocGenerator
             WriteLine "<p>" & generalContent & "</p>"
         End If
         IndentDecrease
-        md.WriteLine generalContent & "  "
+        
+        If InStr(generalContent, "<pre>") Then
+            Dim lines : lines = Replace(generalContent, "<pre>", "```vb" & vbCrLf)
+            lines = Replace(lines, "<br />", vbCrLf)
+            lines = Replace(lines, "</pre>", vbCrLf & "```")
+            md.WriteLine lines & "  "
+        Else
+            md.WriteLine generalContent & "  "
+        End If
     End Sub
 
     Private Sub WritePreContentToDoc
@@ -482,8 +490,8 @@ Class DocGenerator
         Dim baseName
         For Each File In fso.GetFolder(scriptFolder).Files
             re.Pattern = filesToDocument
-            If re.Test(File.Name) Then
-                baseName = fso.GetBaseName(File.Name)
+            baseName = fso.GetBaseName(File.Name)
+            If re.Test(File.Name) And Not CBool(InStr(baseName, ".")) Then
                 md.WriteLine "[" & baseName & "](#" & LCase(baseName) & ")  "
             End If
         Next

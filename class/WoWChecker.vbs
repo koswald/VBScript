@@ -3,7 +3,8 @@
 '
 'How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.
 '
-'Usage examples <pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
+'Usage examples
+'<pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
 '
 Class WoWChecker
     Private sh

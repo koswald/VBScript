@@ -591,22 +591,22 @@
             <p></p>
             <p>The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.</p>
             <p></p>
-            <h5> How it works </h5>
+            <p>How it works</p>
             <p></p>
             <p>The Read method returns the contents of a .vbs class file--or any other text file.</p>
             <p></p>
-            <h5> Usage example </h5>
-            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /><br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer</pre>
+            <p>Usage example</p>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
             <p></p>
             <p>Relative paths may be used and are relative to the location of Includer.wsc.</p>
             <p></p>
-            <h5> Registration </h5>
+            <p>Registrations</p>
             <p></p>
             Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
             <p>1) Run the Setup.vbs in the project folder. Or,</p>
             <p>2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.</p>
             <p></p>
-            <pre> %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc <br /> %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </pre>
+            <code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc <br />     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>
             <p></p>
             <table>
                <tr>
@@ -1225,6 +1225,7 @@
       <div>
          <h4 class="heading" id=16>StringFormatter</h4>
          <div class="detail">
+            <p> StringFormatter.vbs is the script for StringFormatter.wsc</p>
             <p></p>
             <p>Provides string formatting functions</p>
             <p></p>
@@ -2867,7 +2868,8 @@
             <p></p>
             <p>How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.</p>
             <p></p>
-            Usage examples <pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
+            <p>Usage examples</p>
+            <pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
             <p></p>
             <table>
                <tr>
