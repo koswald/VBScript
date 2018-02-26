@@ -81,7 +81,7 @@ namespace VBScripting
         }
 
         /// <summary> Gets an array of the names of the installed, enabled voices. </summary>
-        /// <remarks> Each element of the array can be used to set <tt>Voice</tt> </remarks>
+        /// <remarks> Each element of the array can be used to set <tt>Voice</tt>.</remarks>
         public object Voices()
         {
             return this.voices.Cast<object>().ToArray(); // convert to VBScript array

@@ -2,14 +2,7 @@
 'Provides various properties to analyze a file's encoding
 
 'Usage example
-
-''With CreateObject("VBScripting.Includer")
-''    Execute .read("EncodingAnalyzer")
-''End With
-'' 
-''With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
-''    MsgBox "isUTF16LE: " & .isUTF16LE
-''End With
+'<pre>With CreateObject("VBScripting.Includer")<br />    Execute .read("EncodingAnalyzer")<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>
 '
 'Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.
 '

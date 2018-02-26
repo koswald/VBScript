@@ -230,7 +230,7 @@ namespace VBScripting
         }
 
         /// <summary> Sets the style of the window border. </summary>
-        /// <remarks> An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre> </remarks>
+        /// <remarks> An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre></remarks>
         public int FormBorderStyle
         {
             set

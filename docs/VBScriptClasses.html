@@ -16,13 +16,7 @@
             <p>Get a folder or file chosen by the user</p>
             <p>Usage example</p>
             <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("Chooser")</pre>
-            <pre> End With</pre>
-            <pre> </pre>
-            <pre> Dim choose : Set choose = New Chooser</pre>
-            <pre> MsgBox choose.folder</pre>
-            <pre> MsgBox choose.file</pre>
+            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("Chooser")<br /> End With <br /><br /> Dim choose : Set choose = New Chooser <br /> MsgBox choose.folder <br /> MsgBox choose.file </pre>
             <p></p>
             Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.
             Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.
@@ -242,45 +236,27 @@
       <div>
          <h4 class="heading" id=2>DocGenerator</h4>
          <div class="detail">
-            <p>Auto-generate script documentation based on well-formed comments</p>
-            <h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
-            <pre> 'Usage Example</pre>
-            <pre> '' </pre>
-            <pre> ''    With CreateObject("VBScripting.Includer")</pre>
-            <pre> ''        Execute .read("DocGenerator")</pre>
-            <pre> ''    End With</pre>
-            <pre> ''</pre>
-            <pre> ''    With New DocGenerator</pre>
-            <pre> ''        .SetTitle "VBScript Utility Classes Documentation"</pre>
-            <pre> ''        .SetDocName "TheDocs.html"</pre>
-            <pre> ''        .SetFilesToDocument ".*\.(vbs|wsf|wsc)"</pre>
-            <pre> ''        .SetScriptFolder = "..\..\class"</pre>
-            <pre> ''        .SetDocFolder = "..\.."</pre>
-            <pre> ''</pre>
-            <pre> ''        .Generate</pre>
-            <pre> ''        .View</pre>
-            <pre> ''    End With</pre>
+            <p>Generate html and markdown documentation for VBScript code based on well-formed comments.</p>
+            <p>Usage Example</p>
+            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("DocGenerator") <br /> End With <br /> With New DocGenerator <br />     .SetTitle "VBScript Utility Classes Documentation" <br />     .SetDocName "TheDocs.html" <br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" <br />     .SetScriptFolder = "..\..\class" <br />     .SetDocFolder = "..\.." <br />     .Generate <br />     .View <br /> End With </pre>
             <p></p>
             <h5> Example of well-formed comments before a Sub statement </h5>
             <p> Note: A remark is required for Methods (Subs).</p>
-            <pre> 'Method: SubName</pre>
-            <pre> 'Parameters: varName, varType</pre>
-            <pre> 'Remark: Details about the parameters.</pre>
+            <pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
             <h5> Example of well-formed comments before a Property or Function statement </h5>
             <p> Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.</p>
-            <pre> 'Property: PropertyName</pre>
-            <pre> 'Returns: a string</pre>
-            <pre> 'Remark: A remark is not required for a Property or Function</pre>
+            <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
             <h5> Notes for the general comment syntax at the beginning of a script </h5>
             Use a single quote (') for general comments <br />
             -- lines without html will be wrapped with p tags <br />
             -- lines with html will not be wrapped with p tags <br />
             -- use a single quote by itself for an empty line <br />
             -- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
-            Use two single quotes for code: the text will be wrapped with pre tags <br />
+            Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
             Use three single quotes for remarks that should not appear in the documentation <br />
             <h5> Notes for when the script doesn't not contain a Class statement </h5>
             <p>If the script doesn't contain a class statement, then the general statements at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)</p>
+            <p></p>
             <table>
                <tr>
                   <th>Procedure type</th>
@@ -322,7 +298,7 @@
                   <td>SetFilesToDocument</td>
                   <td>A regular expression</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which files to document: default is <strong> *.vbs </strong></td>
+                  <td>Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -347,13 +323,10 @@
          <div class="detail">
             <p> DocGeneratorCS class</p>
             <p></p>
-             Generates html documentation for C# code from compiler-generated xml files.<br />
+             Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />
              Four base tags are supported: summary, parameters, returns, and remarks.<br />
-            <p> Between these tags, some html tags are supported.</p>
-             Note: Html tags that work well with the .html doc may cause problems with the .md doc.<br />
-             Html tags known to be supported, at least in part: a, tt<br />
-             Html tag(s) with known issues: <br />
-            <p>    The span tag is tempermental with markdown tables. Avoid empty space between adjacent tags. See IconExtractor.cs for an example.</p>
+            <p> Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.</p>
+            <p> Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.</p>
             <table>
                <tr>
                   <th>Procedure type</th>
@@ -406,13 +379,7 @@
          <div class="detail">
             <p>Provides various properties to analyze a file's encoding</p>
             <p>Usage example</p>
-            <pre>With CreateObject("VBScripting.Includer")</pre>
-            <pre>    Execute .read("EncodingAnalyzer")</pre>
-            <pre>End With</pre>
-            <pre> </pre>
-            <pre>With New EncodingAnalyzer.SetFile(WScript.Arguments(0))</pre>
-            <pre>    MsgBox "isUTF16LE: " & .isUTF16LE</pre>
-            <pre>End With</pre>
+            <pre>With CreateObject("VBScripting.Includer")<br />    Execute .read("EncodingAnalyzer")<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>
             <p></p>
             Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.
             <p></p>
@@ -506,14 +473,35 @@
       </div>
 
       <div>
-         <h4 class="heading" id=5>GUIDGenerator</h4>
+         <h4 class="heading" id=5>EscapeMd</h4>
+         <div class="detail">
+            <p>EscapeMd.vbs</p>
+            <p>Escapes markdown special characters.</p>
+            <table>
+               <tr>
+                  <th>Procedure type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>EscapeMd</td>
+                  <td>unescaped string</td>
+                  <td>escaped string</td>
+                  <td>Returns a string with Markdown special characters escaped.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=6>GUIDGenerator</h4>
          <div class="detail">
             <p>Generate a unique GUID</p>
             <p>Usage example</p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("GUIDGenerator")</pre>
-            <pre> End With</pre>
-            <pre> InputBox "",, New GUIDGenerator</pre>
+            <pre>With CreateObject("VBScripting.Includer")<br />     Execute .read("GUIDGenerator")<br /> End With<br /> InputBox "",, New GUIDGenerator</pre>
             <p></p>
             <table>
                <tr>
@@ -549,7 +537,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=6>HTAApp</h4>
+         <h4 class="heading" id=7>HTAApp</h4>
          <div class="detail">
             <p>HTAApp class</p>
             <p>Supports the VBSApp class, providing .hta functionality.</p>
@@ -595,35 +583,27 @@
       </div>
 
       <div>
-         <h4 class="heading" id=7>Includer</h4>
+         <h4 class="heading" id=8>Includer</h4>
          <div class="detail">
             <p></p>
             <p>The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.</p>
             <p></p>
-                <h5> How it works </h5>
+            <h5> How it works </h5>
             <p></p>
-            <p>        The Read method returns the contents of a .vbs class file--or any other text file.</p>
+            <p>The Read method returns the contents of a .vbs class file--or any other text file.</p>
             <p></p>
-                <h5> Usage example </h5>
+            <h5> Usage example </h5>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /><br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer</pre>
             <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("WMIUtility.vbs")</pre>
-            <pre>     Execute .read("TextStreamer") '.vbs may be omitted</pre>
-            <pre> End With</pre>
-            <pre></pre>
-            <pre> Dim wmi : Set wmi = New WMIUtility</pre>
-            <pre> Dim streamer : Set streamer = New TextStreamer</pre>
+            <p>Relative paths may be used and are relative to the location of Includer.wsc.</p>
             <p></p>
-            <p>        Relative paths may be used and are relative to the location of Includer.wsc.</p>
+            <h5> Registration </h5>
             <p></p>
-                <h5> Registration </h5>
+            Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
+            <p>1) Run the Setup.vbs in the project folder. Or,</p>
+            <p>2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.</p>
             <p></p>
-                    Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
-            <p>        1) Run the Setup.vbs in the project folder. Or,</p>
-            <p>        2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.</p>
-            <p></p>
-            <pre>       %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc</pre>
-            <pre>       %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc</pre>
+            <pre> %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc <br /> %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </pre>
             <p></p>
             <table>
                <tr>
@@ -666,7 +646,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=8>KeyDeleter</h4>
+         <h4 class="heading" id=9>KeyDeleter</h4>
          <div class="detail">
             <p>Deletes a registry key and all of its subkeys.</p>
             <table>
@@ -738,7 +718,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=9>MathConstants</h4>
+         <h4 class="heading" id=10>MathConstants</h4>
          <div class="detail">
             <table>
                <tr>
@@ -774,15 +754,11 @@
       </div>
 
       <div>
-         <h4 class="heading" id=10>PrivilegeChecker</h4>
+         <h4 class="heading" id=11>PrivilegeChecker</h4>
          <div class="detail">
             <p>Default property Privileged returns True if the calling script has elevated privileges.</p>
             <p>Usage example</p>
-            <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("PrivilegeChecker")</pre>
-            <pre> End With</pre>
-            <pre> MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker</pre>
+            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker </pre>
             <p></p>
             Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>
             <p></p>
@@ -806,27 +782,12 @@
       </div>
 
       <div>
-         <h4 class="heading" id=11>RegExFunctions</h4>
+         <h4 class="heading" id=12>RegExFunctions</h4>
          <div class="detail">
             <p>Regular Expression functions - a work in progress</p>
             <p></p>
             <p>Usage example</p>
-            <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("RegExFunctions")</pre>
-            <pre> End With</pre>
-            <pre> </pre>
-            <pre> Dim reg : Set reg = New RegExFunctions</pre>
-            <pre> reg.SetTestString "'Method SetSomething"</pre>
-            <pre> reg.SetPattern "(M).*(od).*(tS)"</pre>
-            <pre> </pre>
-            <pre> Dim s, submatch, subs : s = ""</pre>
-            <pre> Set subs = reg.GetSubMatches</pre>
-            <pre> </pre>
-            <pre> For Each submatch In subs</pre>
-            <pre>     s = s & " " & submatch</pre>
-            <pre> Next</pre>
-            <pre> MsgBox s 'M od tS</pre>
+            <pre>  With CreateObject("VBScripting.Includer")<br />      Execute .read("RegExFunctions")<br />  End With<br />  <br />  Dim reg : Set reg = New RegExFunctions<br />  reg.SetTestString "'Method SetSomething"<br />  reg.SetPattern "(M).*(od).*(tS)"<br />  <br />  Dim s, submatch, subs : s = ""<br />  Set subs = reg.GetSubMatches<br />  <br />  For Each submatch In subs<br />      s = s & " " & submatch<br />  Next<br />  MsgBox s 'M od tS </pre>
             <p></p>
             <table>
                <tr>
@@ -897,18 +858,12 @@
       </div>
 
       <div>
-         <h4 class="heading" id=12>RegistryUtility</h4>
+         <h4 class="heading" id=13>RegistryUtility</h4>
          <div class="detail">
             <p>Provides functions relating to the Windows&reg; registry</p>
             <p></p>
             <p>Usage example</p>
-            <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("RegistryUtility")</pre>
-            <pre> End With</pre>
-            <pre> Dim reg : Set reg = New RegistryUtility</pre>
-            <pre> Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion"</pre>
-            <pre> MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName")</pre>
+            <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("RegistryUtility") <br />  End With <br />  Dim reg : Set reg = New RegistryUtility <br />  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" <br />  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") </pre>
             <p></p>
             <p>Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.</p>
             <p></p>
@@ -1053,7 +1008,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=13>ShellConstants</h4>
+         <h4 class="heading" id=14>ShellConstants</h4>
          <div class="detail">
             <p>Constants for use with WScript.Shell.Run</p>
             <table>
@@ -1111,19 +1066,11 @@
       </div>
 
       <div>
-         <h4 class="heading" id=14>SpecialFolders</h4>
+         <h4 class="heading" id=15>SpecialFolders</h4>
          <div class="detail">
             <p>An enum and wrapper for WScript.Shell.SpecialFolders</p>
             <p>Usage example</p>
-            <p></p>
-            <pre>    With CreateObject("VBScripting.Includer")</pre>
-            <pre>        Execute .read("SpecialFolders")</pre>
-            <pre>    End With</pre>
-            <pre> </pre>
-            <pre>    Dim sf : Set sf = New SpecialFolders</pre>
-            <pre>    MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop</pre>
-            <p>     or</p>
-            <pre>    MsgBox sf(sf.AllUsersDesktop)</pre>
+            <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("SpecialFolders") <br />     End With <br />   <br />     Dim sf : Set sf = New SpecialFolders <br />     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop </pre>
             <p></p>
             <table>
                <tr>
@@ -1271,33 +1218,19 @@
       </div>
 
       <div>
-         <h4 class="heading" id=15>StringFormatter</h4>
+         <h4 class="heading" id=16>StringFormatter</h4>
          <div class="detail">
             <p></p>
             <p>Provides string formatting functions</p>
             <p></p>
-            <p>Three instantiation examples</p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("StringFormatter")</pre>
-            <pre>     Dim fm : Set fm = New StringFormatter</pre>
-            <pre> End With</pre>
-            <p>or</p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Dim fm : Set fm = .GetObj("StringFormatter")</pre>
-            <pre> End With</pre>
-            <p>or</p>
-            <pre>Dim fm : Set fm = CreateObject("VBScripting.StringFormatter")</pre>
-            <p>Usage examples</p>
-            <pre> WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1</pre>
-            <pre> </pre>
-            <pre> WScript.Echo fm.pluralize(3, "dog") '3 dogs</pre>
-            <pre> WScript.Echo fm.pluralize(1, "dog") '1 dog</pre>
-            <pre> WScript.Echo fm.pluralize(0, "dog") '0 dogs</pre>
-            <pre> fm.SetZeroSingular</pre>
-            <pre> WScript.Echo fm.pluralize(0, "dog") '0 dog</pre>
-            <pre> WScript.Echo fm.pluralize(1, Split("person people")) '1 person</pre>
-            <pre> WScript.Echo fm.pluralize(2, Split("person people")) '2 people</pre>
-            <pre> WScript.Echo fm.pluralize(12, "egg") '12 eggs</pre>
+            <p>Three instantiation examples:</p>
+            <pre> With CreateObject("VBScripting.Includer") <br />      Execute .read("StringFormatter") <br />      Dim fm : Set fm = New StringFormatter <br /> End With </pre>
+            <p>or </p>
+            <pre> With CreateObject("VBScripting.Includer") <br />      Dim fm : Set fm = .GetObj("StringFormatter") <br /> End With </pre>
+            <p>or </p>
+            <pre> Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") </pre>
+            <p>Usage examples:</p>
+            <pre> WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1 <br /> <br /> WScript.Echo fm.pluralize(3, "dog") '3 dogs <br /> WScript.Echo fm.pluralize(1, "dog") '1 dog <br /> WScript.Echo fm.pluralize(0, "dog") '0 dogs <br /> fm.SetZeroSingular <br /> WScript.Echo fm.pluralize(0, "dog") '0 dog <br /> WScript.Echo fm.pluralize(1, Split("person people")) '1 person <br /> WScript.Echo fm.pluralize(2, Split("person people")) '2 people <br /> WScript.Echo fm.pluralize(12, "egg") '12 eggs </pre>
             <p></p>
             <table>
                <tr>
@@ -1347,38 +1280,11 @@
       </div>
 
       <div>
-         <h4 class="heading" id=16>TestingFramework</h4>
+         <h4 class="heading" id=17>TestingFramework</h4>
          <div class="detail">
             <p>A lightweight testing framework</p>
             <p>Usage example</p>
-            <p></p>
-            <pre>    With CreateObject("VBScripting.Includer")</pre>
-            <pre>        Execute .read("VBSValidator")</pre>
-            <pre>        Execute .read("TestingFramework")</pre>
-            <pre>    End With</pre>
-            <pre> </pre>
-            <pre>    Dim val : Set val = New VBSValidator 'Class Under Test</pre>
-            <pre> </pre>
-            <pre>    With New TestingFramework</pre>
-            <pre> </pre>
-            <pre>        .describe "VBSValidator class"</pre>
-            <pre> </pre>
-            <pre>        .it "should return False when IsBoolean is given a string"</pre>
-            <pre> </pre>
-            <pre>            .AssertEqual val.IsBoolean("sdfjke"), False</pre>
-            <pre> </pre>
-            <pre>        .it "should raise an error when EnsureBoolean is given a string"</pre>
-            <pre> </pre>
-            <pre>            Dim nonBool : nonBool = "a string"</pre>
-            <pre>            On Error Resume Next</pre>
-            <pre>                val.EnsureBoolean(nonBool)</pre>
-            <pre> </pre>
-            <pre>                .AssertErrorRaised</pre>
-            <pre> </pre>
-            <pre>                Dim errDescr : errDescr = Err.Description 'capture the error information</pre>
-            <pre>                Dim errSrc : errSrc = Err.Source</pre>
-            <pre>            On Error Goto 0</pre>
-            <pre>    End With</pre>
+             <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSValidator") <br />         Execute .read("TestingFramework") <br />     End With <br />     Dim val : Set val = New VBSValidator 'class under test <br />     With New TestingFramework <br />         .describe "VBSValidator class" <br />         .it "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean("sdfjke"), False <br />         .it "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description 'capture the error information <br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
             <p></p>
             <p> See also VBSTestRunner</p>
             <p></p>
@@ -1465,11 +1371,12 @@
       </div>
 
       <div>
-         <h4 class="heading" id=17>TextStreamer</h4>
+         <h4 class="heading" id=18>TextStreamer</h4>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
             <h5> Methods for use with the text stream that is returned by the Open method: </h5>
             <p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>
+            <p></p>
             <table>
                <tr>
                   <th>Procedure type</th>
@@ -1644,7 +1551,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=18>TimeFunctions</h4>
+         <h4 class="heading" id=19>TimeFunctions</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1701,16 +1608,11 @@
       </div>
 
       <div>
-         <h4 class="heading" id=19>ValidFileName</h4>
+         <h4 class="heading" id=20>ValidFileName</h4>
          <div class="detail">
             <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
-            <pre></pre>
-            <pre>    With CreateObject("VBScripting.Includer")</pre>
-            <pre>        Execute .read("ValidFileName")</pre>
-            <pre>    End With</pre>
-            <pre></pre>
-            <pre>    MsgBox GetValidFileName("test\ing") 'test-ing</pre>
+            <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
             <p></p>
             <p>ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.</p>
             <table>
@@ -1733,53 +1635,24 @@
       </div>
 
       <div>
-         <h4 class="heading" id=20>VBSApp</h4>
+         <h4 class="heading" id=21>VBSApp</h4>
          <div class="detail">
             <p>VBSApp class</p>
             <p>Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.</p>
-            <p>This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments and indentation.</p>
+            <p>This can be useful when writing a class that might be used in both types of "apps".</p>
             <p>Four ways to instantiate</p>
             <p>For .vbs/.wsf scripts,</p>
-            <pre> Dim app : Set app = CreateObject("VBScripting.VBSApp")</pre>
-            <pre> app.Init WScript</pre>
+             <pre>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br />  app.Init WScript </pre>
             <p>For .hta applications,</p>
-            <pre> Dim app : Set app = CreateObject("VBScripting.VBSApp")</pre>
-            <pre> app.Init document</pre>
+             <pre>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br />  app.Init document </pre>
             <p>If the script may be used in .vbs/.wsf scripts or .hta applications</p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("VBSApp")</pre>
-            <pre> End With</pre>
-            <pre> Dim app : Set app = New VBSApp</pre>
+             <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp </pre>
             <p>Alternate method for both .hta and .vbs/.wsf,</p>
-            <pre> Set app = CreateObject("VBScripting.VBSApp")</pre>
-            <pre> If "HTMLDocument" = TypeName(document) Then</pre>
-            <pre>     app.Init document</pre>
-            <pre> Else app.Init WScript</pre>
-            <pre> End If</pre>
-            <p>Example</p>
-            <pre> 'test.vbs "arg one" "arg two"</pre>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("VBSApp")</pre>
-            <pre> End With</pre>
-            <pre> Dim app : Set app = New VBSApp</pre>
-            <pre> MsgBox app.GetFullName,, "app.GetFullName" '..\test.vbs</pre>
-            <pre> MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two</pre>
-            <pre> MsgBox app.GetArgsCount,, "app.GetArgsCount" '2</pre>
-            <pre> app.Quit</pre>
+             <pre>  Set app = CreateObject("VBScripting.VBSApp") <br />  If "HTMLDocument" = TypeName(document) Then <br />      app.Init document <br />  Else app.Init WScript <br />  End If </pre>
+            <p>Examples</p>
+             <pre>  'test.vbs "arg one" "arg two" <br />  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp <br />  MsgBox app.GetName 'test.vbs <br />  MsgBox app.GetArg(1) 'arg two <br />  MsgBox app.GetArgsCount '2 <br />  app.Quit </pre>
             <p></p>
-            <pre> &lt;!--test.hta "arg one" "arg two"--></pre>
-            <pre> &lt;hta:application id="oHta" icon="msdt.exe"> &lt;!--an id must be used for command-line args functionality--></pre>
-            <pre>     &lt;script language="VBScript"></pre>
-            <pre>         With CreateObject("VBScripting.Includer")</pre>
-            <pre>             Execute .read("VBSApp")</pre>
-            <pre>         End With</pre>
-            <pre>         Dim app : Set app = New VBSApp</pre>
-            <pre>         MsgBox app.GetFullName,, "app.GetFullName" '..\test.hta</pre>
-            <pre>         MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two</pre>
-            <pre>         MsgBox app.GetArgsCount,, "app.GetArgsCount" '2</pre>
-            <pre>         app.Quit</pre>
-            <pre>     &lt;/script></pre>
-            <pre> &lt;/hta:application></pre>
+             <pre>  &lt;!-- test.hta "arg one" "arg two" --> <br />  &lt;hta:application icon="msdt.exe"> <br />      &lt;script language="VBScript"> <br />          With CreateObject("VBScripting.Includer") <br />              Execute .read("VBSApp") <br />          End With <br />          Dim app : Set app = New VBSApp <br />          MsgBox app.GetName 'test.hta <br />          MsgBox app.GetArg(1) 'arg two <br />          MsgBox app.GetArgsCount '2 <br />          app.Quit <br />      &lt;/script> <br />  &lt;/hta:application> </pre>
             <p></p>
             <table>
                <tr>
@@ -1934,7 +1807,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=21>VBSArguments</h4>
+         <h4 class="heading" id=22>VBSArguments</h4>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments</p>
             <table>
@@ -1957,7 +1830,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=22>VBSArrays</h4>
+         <h4 class="heading" id=23>VBSArrays</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1993,7 +1866,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=23>VBSClipboard</h4>
+         <h4 class="heading" id=24>VBSClipboard</h4>
          <div class="detail">
             <p>Clipboard procedures</p>
             <table>
@@ -2023,7 +1896,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=24>VBSEnvironment</h4>
+         <h4 class="heading" id=25>VBSEnvironment</h4>
          <div class="detail">
             <table>
                <tr>
@@ -2115,7 +1988,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=25>VBSEventLogger</h4>
+         <h4 class="heading" id=26>VBSEventLogger</h4>
          <div class="detail">
             <p>Adds an event entry to a log file</p>
             <p></p>
@@ -2124,19 +1997,7 @@
             <p>To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.</p>
             <p></p>
             <p>Usage example:</p>
-            <p></p>
-            <pre> With CreateObject("VBScripting.Includer")</pre>
-            <pre>     Execute .read("VBSEventLogger")</pre>
-            <pre> End With</pre>
-            <pre> </pre>
-            <pre> Dim logger : Set logger = New VBSEventLogger</pre>
-            <pre> logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1</pre>
-            <pre> logger logger.INFORMATION, "informative message 2" 'example information log entry 2</pre>
-            <pre> logger 4, "informative message 3" 'example information log entry 3</pre>
-            <pre> logger 1, "error message" 'example error log entry</pre>
-            <pre> </pre>
-            <pre> logger.CreateCustomView 'create a custom view in the Event Viewer</pre>
-            <pre> logger.OpenViewer 'open EventVwr.msc</pre>
+             <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSEventLogger") <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1 <br />  logger logger.INFORMATION, "informative message 2" 'example information log entry 2 <br />  logger 4, "informative message 3" 'example information log entry 3 <br />  logger 1, "error message" 'example error log entry <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
             <p></p>
             <table>
                <tr>
@@ -2228,7 +2089,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=26>VBSExtracter</h4>
+         <h4 class="heading" id=27>VBSExtracter</h4>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <table>
@@ -2279,7 +2140,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=27>VBSFileSystem</h4>
+         <h4 class="heading" id=28>VBSFileSystem</h4>
          <div class="detail">
             <p>General utility functions</p>
             <table>
@@ -2393,9 +2254,8 @@
       </div>
 
       <div>
-         <h4 class="heading" id=28>VBSHoster</h4>
+         <h4 class="heading" id=29>VBSHoster</h4>
          <div class="detail">
-            <p>Deprecated. Use VBSApp.vbs</p>
             <p>Manage which script host is hosting the currently running script</p>
             <table>
                <tr>
@@ -2438,31 +2298,18 @@
       </div>
 
       <div>
-         <h4 class="heading" id=29>VBSLogger</h4>
+         <h4 class="heading" id=30>VBSLogger</h4>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
-            <fieldset> <legend> Instantiation </legend>
-            <pre></pre>
-            <pre>    With CreateObject("VBScripting.Includer")</pre>
-            <pre>        Execute .read("VBSLogger")</pre>
-            <pre>    End With</pre>
-            <pre>    Dim log : Set log = New VBSLogger</pre>
-            <pre></pre>
+            <fieldset> <legend> Instantiation </legend> <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>
             </fieldset>
-            <fieldset> <legend> Usage method one </legend>
-            <pre></pre>
-            <pre>    log "test one"</pre>
-            <pre></pre>
+            <fieldset> <legend> Usage method one </legend> <pre>     log "test one" </pre>
             <p>This way has the advantage that the log doesn't remain open, allowing other scripts to write to the log.</p>
             </fieldset>
-            <fieldset> <legend> Usage method two </legend>
-            <pre></pre>
-            <pre>    log.Open</pre>
-            <pre>    log.Write "test two"</pre>
-            <pre>    log.Close</pre>
-            <pre></pre>
+            <fieldset> <legend> Usage method two </legend> <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>
             <p>This way has the advantage that the name of the calling script is not written on each line of the log.</p>
             </fieldset>
+            <p></p>
             <table>
                <tr>
                   <th>Procedure type</th>
@@ -2553,7 +2400,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=30>VBSPower</h4>
+         <h4 class="heading" id=31>VBSPower</h4>
          <div class="detail">
             <p>Power functions: shutdown, restart, logoff, sleep, and hibernate.</p>
             <table>
@@ -2632,22 +2479,11 @@
       </div>
 
       <div>
-         <h4 class="heading" id=31>VBSTestRunner</h4>
+         <h4 class="heading" id=32>VBSTestRunner</h4>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
-            <p></p>
-            <pre>   'test-launcher.vbs</pre>
-            <pre>   'run this file from a console window; e.g. cscript //nologo test-launcher.vbs</pre>
-            <pre> </pre>
-            <pre>    With CreateObject("VBScripting.Includer")</pre>
-            <pre>        Execute .read("VBSTestRunner")</pre>
-            <pre>    End With</pre>
-            <pre> </pre>
-            <pre>    With New VBSTestRunner</pre>
-            <pre>        .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs</pre>
-            <pre>        .Run</pre>
-            <pre>    End With</pre>
+             <pre>    'test-launcher.vbs <br />    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs <br />   <br />     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSTestRunner") <br />     End With <br />   <br />     With New VBSTestRunner <br />         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs <br />         .Run <br />     End With </pre>
             <p></p>
             <p>See also TestingFramework</p>
             <p></p>
@@ -2713,7 +2549,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=32>VBSTimer</h4>
+         <h4 class="heading" id=33>VBSTimer</h4>
          <div class="detail">
             <p>A timer</p>
             <table>
@@ -2757,7 +2593,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=33>VBSTroubleshooter</h4>
+         <h4 class="heading" id=34>VBSTroubleshooter</h4>
          <div class="detail">
             <table>
                <tr>
@@ -2779,7 +2615,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=34>VBSValidator</h4>
+         <h4 class="heading" id=35>VBSValidator</h4>
          <div class="detail">
             <p>A working example of how validation can be accomplished.</p>
             <table>
@@ -2844,7 +2680,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=35>WindowsUpdatesPauser</h4>
+         <h4 class="heading" id=36>WindowsUpdatesPauser</h4>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
             <p>For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.</p>
@@ -2910,7 +2746,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=36>WMIUtility</h4>
+         <h4 class="heading" id=37>WMIUtility</h4>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object</p>
             <table>
@@ -3010,18 +2846,13 @@
       </div>
 
       <div>
-         <h4 class="heading" id=37>WoWChecker</h4>
+         <h4 class="heading" id=38>WoWChecker</h4>
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.</p>
             <p></p>
             <p>How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.</p>
             <p></p>
-            <p>Usage examples</p>
-            <pre>MsgBox New WoWChecker.BySize.isWoW</pre>
-            <pre>MsgBox New WoWChecker.isWoW</pre>
-            <pre>With New WoWChecker : .BySize : MsgBox .isWoW : End With</pre>
-            <pre>With New WoWChecker.BySize : MsgBox .isWoW : End With</pre>
-            <pre>MsgBox New WoWChecker</pre>
+            Usage examples <pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
             <p></p>
             <table>
                <tr>

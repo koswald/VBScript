@@ -376,7 +376,7 @@
     <td> FileChooser </td>
     <td>  </td>
     <td>  </td>
-    <td> Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br/> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre> </td>
+    <td> Gets or sets the selectable file types. Examples: <pre style="overflow-x: auto;"> fc.Filter = "All files (*.*)|*.*" // the default <br/> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -680,7 +680,7 @@
     <td> NotifyIcon </td>
     <td> menuText, callbackRef </td>
     <td>  </td>
-    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>&gt;menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
+    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -707,8 +707,7 @@
     <td> NotifyIcon </td>
     <td>  </td>
     <td>  </td>
-    <td> Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>
- </td>
+    <td> Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </td>
     <td> VBScripting </td>
   </tr>
   <tr>

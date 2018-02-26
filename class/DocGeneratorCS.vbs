@@ -1,13 +1,10 @@
 ' DocGeneratorCS class
 '
-' Generates html documentation for C# code from compiler-generated xml files based on code comments.<br />
+' Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />
 ' Four base tags are supported: summary, parameters, returns, and remarks.<br />
-' Between these tags, some html tags are supported.
+' Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.
 
-' Note: Html tags that work well with the .html doc may cause problems with the .md doc.<br />
-' Html tags known to be supported, at least in part: a, tt<br />
-' Html tag(s) with known issues: <br />
-'    The span tag is tempermental with markdown tables. Avoid empty space between adjacent tags. See IconExtractor.cs for an example.
+' Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.
 
 Class DocGeneratorCS
 
@@ -113,23 +110,19 @@ Class DocGeneratorCS
         html.WriteLine "  </tr>"
     End Sub
     Sub GenerateMarkdownRow(info)
-        md.Write f(Array("| %s", Escape(info.Name)))
-        md.Write f(Array("| %s", Escape(info.Kind)))
+        md.Write f(Array("| %s", EscapeMd(info.Name)))
+        md.Write f(Array("| %s", EscapeMd(info.Kind)))
         If "Type" = info.Kind Then
             md.Write "| "
         Else
-            md.Write f(Array("| %s", Escape(info.MemberOf)))
+            md.Write f(Array("| %s", EscapeMd(info.MemberOf)))
         End If
-        md.Write f(Array("| %s", Escape(info.Parameters)))
-        md.Write f(Array("| %s", Escape(info.Returns)))
-        md.Write f(Array("| %s", Escape(info.Summary & " " & info.Remarks)))
-        md.Write f(Array("| %s", Escape(info.NamespaceName)))
+        md.Write f(Array("| %s", EscapeMd(info.Parameters)))
+        md.Write f(Array("| %s", EscapeMd(info.Returns)))
+        md.Write f(Array("| %s", EscapeMd(info.Summary & " " & info.Remarks)))
+        md.Write f(Array("| %s", EscapeMd(info.NamespaceName)))
         md.WriteLine " |"
     End Sub
-    Function Escape(ByVal str) 'conversions for markdown
-        str = Replace(str, "*", "\*")
-        Escape = Replace(str, "|", "\|")
-    End Function
     Function GetMemberInfo(member)
         Dim info : Set info = New MemberInfo
         Dim attribute, rawName
@@ -243,6 +236,9 @@ Class DocGeneratorCS
         Set sh = CreateObject("WScript.Shell")
         Set f = CreateObject("VBScripting.StringFormatter")
         Set xml = CreateObject("MSXML2.DomDocument.6.0")
+        With CreateObject("VBScripting.Includer")
+            ExecuteGlobal .Read("EscapeMd")
+        End With
         xml.Async = False
     End Sub
     Sub Class_Terminate

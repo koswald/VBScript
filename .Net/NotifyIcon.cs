@@ -107,7 +107,7 @@ namespace VBScripting
 
         /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. </summary>
         /// <returns> a ToolTipIconT </returns>
-        /// <remarks> VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> </remarks>
+        /// <remarks> VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre></remarks>
         public ToolTipIconT ToolTipIcon
         {
             get { return new ToolTipIconT(); }
@@ -153,7 +153,7 @@ namespace VBScripting
 
         /// <summary> Add a menu item to the system tray icon's context menu. </summary>
         /// <parameters> menuText, callbackRef </parameters>
-        /// <remarks> This method can be called only from VBScript. The parameter <tt>>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
+        /// <remarks> This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
         public void AddMenuItem(string menuText, object callbackRef)
         {
             this.settings.AddRef(new CallbackReference(this.nextIndex, callbackRef));
@@ -212,7 +212,7 @@ namespace VBScripting
         private object balloonTipCallback;
         
         /// <summary> Sets the VBScript callback Sub or Function reference. </summary>
-        /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </remarks>
+        /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre></remarks>
         public void SetBalloonTipCallback(object callbackRef)
         {
             this.balloonTipCallback = callbackRef;

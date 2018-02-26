@@ -6,19 +6,7 @@
 'To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.
 '
 'Usage example:
-'
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("VBSEventLogger")
-'' End With
-'' 
-'' Dim logger : Set logger = New VBSEventLogger
-'' logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1
-'' logger logger.INFORMATION, "informative message 2" 'example information log entry 2
-'' logger 4, "informative message 3" 'example information log entry 3
-'' logger 1, "error message" 'example error log entry
-'' 
-'' logger.CreateCustomView 'create a custom view in the Event Viewer
-'' logger.OpenViewer 'open EventVwr.msc
+' <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSEventLogger") <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1 <br />  logger logger.INFORMATION, "informative message 2" 'example information log entry 2 <br />  logger 4, "informative message 3" 'example information log entry 3 <br />  logger 1, "error message" 'example error log entry <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
 '
 Class VBSEventLogger
 

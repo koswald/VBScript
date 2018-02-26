@@ -2,13 +2,7 @@
 'Provides functions relating to the Windows&reg; registry
 '
 'Usage example
-'
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("RegistryUtility")
-'' End With
-'' Dim reg : Set reg = New RegistryUtility
-'' Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion"
-'' MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName")
+'<pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("RegistryUtility") <br />  End With <br />  Dim reg : Set reg = New RegistryUtility <br />  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" <br />  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") </pre>
 '
 'Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.
 '

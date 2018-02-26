@@ -2,15 +2,7 @@
 'An enum and wrapper for WScript.Shell.SpecialFolders
 
 'Usage example
-'
-''    With CreateObject("VBScripting.Includer")
-''        Execute .read("SpecialFolders")
-''    End With
-'' 
-''    Dim sf : Set sf = New SpecialFolders
-''    MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop
-'     or
-''    MsgBox sf(sf.AllUsersDesktop)
+'<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("SpecialFolders") <br />     End With <br />   <br />     Dim sf : Set sf = New SpecialFolders <br />     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop </pre>
 '
 Class SpecialFolders 'use as a kind of enum with WScript.Shell.SpecialFolders
 

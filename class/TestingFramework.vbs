@@ -2,34 +2,7 @@
 'A lightweight testing framework
 
 'Usage example
-'
-''    With CreateObject("VBScripting.Includer")
-''        Execute .read("VBSValidator")
-''        Execute .read("TestingFramework")
-''    End With
-'' 
-''    Dim val : Set val = New VBSValidator 'Class Under Test
-'' 
-''    With New TestingFramework
-'' 
-''        .describe "VBSValidator class"
-'' 
-''        .it "should return False when IsBoolean is given a string"
-'' 
-''            .AssertEqual val.IsBoolean("sdfjke"), False
-'' 
-''        .it "should raise an error when EnsureBoolean is given a string"
-'' 
-''            Dim nonBool : nonBool = "a string"
-''            On Error Resume Next
-''                val.EnsureBoolean(nonBool)
-'' 
-''                .AssertErrorRaised
-'' 
-''                Dim errDescr : errDescr = Err.Description 'capture the error information
-''                Dim errSrc : errSrc = Err.Source
-''            On Error Goto 0
-''    End With
+' <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSValidator") <br />         Execute .read("TestingFramework") <br />     End With <br />     Dim val : Set val = New VBSValidator 'class under test <br />     With New TestingFramework <br />         .describe "VBSValidator class" <br />         .it "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean("sdfjke"), False <br />         .it "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description 'capture the error information <br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
 '
 ' See also VBSTestRunner
 '

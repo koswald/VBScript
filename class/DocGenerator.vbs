@@ -1,40 +1,18 @@
 
-'Auto-generate script documentation based on well-formed comments
+'Generate html and markdown documentation for VBScript code based on well-formed comments.
 
-''' The Following Examples are Best Viewed in the Documentation Itself (in a browser)
-
-'<h5> The following is a usage example for the DocGenerator, as well as an example of well-formed comments before the Class statement </h5>
-
-'' 'Usage Example
-'' '' 
-'' ''    With CreateObject("VBScripting.Includer")
-'' ''        Execute .read("DocGenerator")
-'' ''    End With
-'' ''
-'' ''    With New DocGenerator
-'' ''        .SetTitle "VBScript Utility Classes Documentation"
-'' ''        .SetDocName "TheDocs.html"
-'' ''        .SetFilesToDocument ".*\.(vbs|wsf|wsc)"
-'' ''        .SetScriptFolder = "..\..\class"
-'' ''        .SetDocFolder = "..\.."
-'' ''
-'' ''        .Generate
-'' ''        .View
-'' ''    End With
+'Usage Example
+'<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("DocGenerator") <br /> End With <br /> With New DocGenerator <br />     .SetTitle "VBScript Utility Classes Documentation" <br />     .SetDocName "TheDocs.html" <br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" <br />     .SetScriptFolder = "..\..\class" <br />     .SetDocFolder = "..\.." <br />     .Generate <br />     .View <br /> End With </pre>
 '
 '<h5> Example of well-formed comments before a Sub statement </h5>
 ' Note: A remark is required for Methods (Subs).
 
-'' 'Method: SubName
-'' 'Parameters: varName, varType
-'' 'Remark: Details about the parameters.
+'<pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
 
 '<h5> Example of well-formed comments before a Property or Function statement </h5>
 ' Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.
 
-'' 'Property: PropertyName
-'' 'Returns: a string
-'' 'Remark: A remark is not required for a Property or Function
+'<pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
 
 '<h5> Notes for the general comment syntax at the beginning of a script </h5>
 
@@ -43,17 +21,19 @@
 '-- lines with html will not be wrapped with p tags <br />
 '-- use a single quote by itself for an empty line <br />
 '-- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
-'Use two single quotes for code: the text will be wrapped with pre tags <br />
+'Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
 'Use three single quotes for remarks that should not appear in the documentation <br />
 
 '<h5> Notes for when the script doesn't not contain a Class statement </h5>
 
 'If the script doesn't contain a class statement, then the general statements at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)
+'
 
 Class DocGenerator
 
     Private outputStreamer, inputStreamer 'streamer objects
     Private script, doc 'input and output text streams
+    Private md 'output text stream
     Private File 'fso File object
     Private fs 'VBSFileSystem object
     Private rf 'RegExFunctions object
@@ -82,6 +62,7 @@ Class DocGenerator
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")
             Execute .read("RegExFunctions")
+            ExecuteGlobal .Read("EscapeMd")
         End With
 
         'prepare output streamer
@@ -111,10 +92,11 @@ Class DocGenerator
         SetTitle ""
     End Sub
 
-    Private Sub InitializeDocFile
+    Private Sub InitializeDocFiles
         docFile = docFolder & "\" & docName
         outputStreamer.SetFile docFile
         Set doc = outputStreamer.Open
+        Set md = fso.OpenTextFile(docFolder & "\" & fso.GetBaseName(docName) & ".md", 2, True)
     End Sub
 
     Private Sub InitializeLiterals
@@ -183,7 +165,7 @@ Class DocGenerator
 
     'Method SetFilesToDocument
     'Parameter: A regular expression
-    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>
+    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
     Private Sub ValidateConfiguration
@@ -199,7 +181,7 @@ Class DocGenerator
 
         msg = "The name of the doc file must be specified with SetDocName."
         If "" = docName Then Err.Raise 44, fs.SName, msg
-        InitializeDocFile
+        InitializeDocFiles
     End Sub
 
     'Method Generate
@@ -269,6 +251,8 @@ Class DocGenerator
         IndentIncrease
         WriteLine "<h4 class=""heading"" id=" & id & ">" & fso.GetBaseName(File.Name) & "</h4>"
         WriteLine "<div class=""detail"">"
+        md.WriteLine ""
+        md.WriteLine "## "& fso.GetBaseName(File.Name)
         ScriptHeaderWritten = True
     End Sub
 
@@ -295,6 +279,8 @@ Class DocGenerator
         WriteLine "<th>Comment</th>"
         IndentDecrease
         WriteLine "</tr>"
+        md.WriteLine "| Procedure | Name | Parameter | Return | Comment |"
+        md.WriteLine "| :-------- | :--- | :-------- | :----- | :------ |"
         TableHeaderWritten = True
     End Sub
 
@@ -318,6 +304,7 @@ Class DocGenerator
             WriteLine "<p>" & generalContent & "</p>"
         End If
         IndentDecrease
+        md.WriteLine generalContent & "  "
     End Sub
 
     Private Sub WritePreContentToDoc
@@ -328,6 +315,7 @@ Class DocGenerator
         IndentIncrease
         WriteLine "<pre>" & preContent & "</pre>"
         IndentDecrease
+        md.WriteLine "<pre>" & preContent & "</pre>"
     End Sub
 
     'Write the help content for the current routine in the current script
@@ -345,6 +333,7 @@ Class DocGenerator
         WriteLine "<td>" & remarksContent & "</td>"
         IndentDecrease
         WriteLine "</tr>"
+        md.WriteLine "|" & routineType & "|" & routineName & "|" & parametersContent & "|" & returnsContent & "|" & EscapeMd(remarksContent) & "|"
     End Sub
 
     Private Property Get NoComments
@@ -485,6 +474,20 @@ Class DocGenerator
         WriteLine "<h3>" & docTitle & "</h3>"
         doc.WriteLine ""
         IndentIncrease
+
+        md.WriteLine "# VBScript Classes"
+        md.WriteLine ""
+        md.WriteLine "### Contents"
+        md.WriteLine ""
+        Dim baseName
+        For Each File In fso.GetFolder(scriptFolder).Files
+            re.Pattern = filesToDocument
+            If re.Test(File.Name) Then
+                baseName = fso.GetBaseName(File.Name)
+                md.WriteLine "[" & baseName & "](#" & LCase(baseName) & ")  "
+            End If
+        Next
+        md.WriteLine ""
     End Sub
 
     Private Sub WriteBottomSection

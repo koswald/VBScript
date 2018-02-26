@@ -2,12 +2,7 @@
 'Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.
 
 'Usage Example
-''
-''    With CreateObject("VBScripting.Includer")
-''        Execute .read("ValidFileName")
-''    End With
-''
-''    MsgBox GetValidFileName("test\ing") 'test-ing
+'<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
 '
 
 'ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.

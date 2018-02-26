@@ -2,18 +2,7 @@
 'Run a test or group of tests
 
 'Usage example
-'
-''   'test-launcher.vbs
-''   'run this file from a console window; e.g. cscript //nologo test-launcher.vbs
-'' 
-''    With CreateObject("VBScripting.Includer")
-''        Execute .read("VBSTestRunner")
-''    End With
-'' 
-''    With New VBSTestRunner
-''        .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs
-''        .Run
-''    End With
+' <pre>    'test-launcher.vbs <br />    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs <br />   <br />     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSTestRunner") <br />     End With <br />   <br />     With New VBSTestRunner <br />         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs <br />         .Run <br />     End With </pre>
 '
 'See also TestingFramework
 '

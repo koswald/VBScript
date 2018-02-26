@@ -3,31 +3,23 @@
 '
 'The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.
 '
-'    <h5> How it works </h5>
+'<h5> How it works </h5>
 '
-'        The Read method returns the contents of a .vbs class file--or any other text file.
+'The Read method returns the contents of a .vbs class file--or any other text file.
 '
-'    <h5> Usage example </h5>
-'
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("WMIUtility.vbs")
-''     Execute .read("TextStreamer") '.vbs may be omitted
-'' End With
-''
-'' Dim wmi : Set wmi = New WMIUtility
-'' Dim streamer : Set streamer = New TextStreamer
-'
-'        Relative paths may be used and are relative to the location of Includer.wsc.
+'<h5> Usage example </h5>
 
+'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /><br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer</pre>
 '
-'    <h5> Registration </h5>
+'Relative paths may be used and are relative to the location of Includer.wsc.
 '
-'        Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
-'        1) Run the Setup.vbs in the project folder. Or,
-'        2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.
+'<h5> Registration </h5>
 '
-''       %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc
-''       %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc
+'Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
+'1) Run the Setup.vbs in the project folder. Or,
+'2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.
+'
+'<pre> %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc <br /> %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </pre>
 '
 ''''
 

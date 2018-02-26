@@ -3,55 +3,26 @@
 
 'Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.
 
-'This can be useful when writing a class that might be used in both types of "apps". Note that the VBScript code in the two examples below is identical except for the comments and indentation.
+'This can be useful when writing a class that might be used in both types of "apps".
 
 'Four ways to instantiate
 
 'For .vbs/.wsf scripts,
-'' Dim app : Set app = CreateObject("VBScripting.VBSApp")
-'' app.Init WScript
+' <pre>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br />  app.Init WScript </pre>
 
 'For .hta applications,
-'' Dim app : Set app = CreateObject("VBScripting.VBSApp")
-'' app.Init document
+' <pre>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br />  app.Init document </pre>
 
 'If the script may be used in .vbs/.wsf scripts or .hta applications
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("VBSApp")
-'' End With
-'' Dim app : Set app = New VBSApp
+' <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp </pre>
 
 'Alternate method for both .hta and .vbs/.wsf,
-'' Set app = CreateObject("VBScripting.VBSApp")
-'' If "HTMLDocument" = TypeName(document) Then
-''     app.Init document
-'' Else app.Init WScript
-'' End If
+' <pre>  Set app = CreateObject("VBScripting.VBSApp") <br />  If "HTMLDocument" = TypeName(document) Then <br />      app.Init document <br />  Else app.Init WScript <br />  End If </pre>
 
-'Example
-'' 'test.vbs "arg one" "arg two"
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("VBSApp")
-'' End With
-'' Dim app : Set app = New VBSApp
-'' MsgBox app.GetFullName,, "app.GetFullName" '..\test.vbs
-'' MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two
-'' MsgBox app.GetArgsCount,, "app.GetArgsCount" '2
-'' app.Quit
+'Examples
+' <pre>  'test.vbs "arg one" "arg two" <br />  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp <br />  MsgBox app.GetName 'test.vbs <br />  MsgBox app.GetArg(1) 'arg two <br />  MsgBox app.GetArgsCount '2 <br />  app.Quit </pre>
 '
-'' &lt;!--test.hta "arg one" "arg two"-->
-'' &lt;hta:application id="oHta" icon="msdt.exe"> &lt;!--an id must be used for command-line args functionality-->
-''     &lt;script language="VBScript">
-''         With CreateObject("VBScripting.Includer")
-''             Execute .read("VBSApp")
-''         End With
-''         Dim app : Set app = New VBSApp
-''         MsgBox app.GetFullName,, "app.GetFullName" '..\test.hta
-''         MsgBox app.GetArg(1),, "app.GetArg(1)" 'arg two
-''         MsgBox app.GetArgsCount,, "app.GetArgsCount" '2
-''         app.Quit
-''     &lt;/script>
-'' &lt;/hta:application>
+' <pre>  &lt;!-- test.hta "arg one" "arg two" --> <br />  &lt;hta:application icon="msdt.exe"> <br />      &lt;script language="VBScript"> <br />          With CreateObject("VBScripting.Includer") <br />              Execute .read("VBSApp") <br />          End With <br />          Dim app : Set app = New VBSApp <br />          MsgBox app.GetName 'test.hta <br />          MsgBox app.GetArg(1) 'arg two <br />          MsgBox app.GetArgsCount '2 <br />          app.Quit <br />      &lt;/script> <br />  &lt;/hta:application> </pre>
 '
 Class VBSApp
 

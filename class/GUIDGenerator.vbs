@@ -2,11 +2,7 @@
 'Generate a unique GUID
 
 'Usage example
-
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("GUIDGenerator")
-'' End With
-'' InputBox "",, New GUIDGenerator
+'<pre>With CreateObject("VBScripting.Includer")<br />     Execute .read("GUIDGenerator")<br /> End With<br /> InputBox "",, New GUIDGenerator</pre>
 '
 Class GUIDGenerator
 

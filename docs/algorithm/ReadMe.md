@@ -5,10 +5,10 @@
 Algorithm development details.
 
 ## Contents
-[ParseArgs propery](#parseargs-propery)  
+[ParseArgs propery](#parseargs-property)  
 [Pattern property](#pattern-property)
 
-# ParseArgs propery
+# ParseArgs property
 
 The [HTAApp class] `ParseArgs` propery parses the mshta.exe command-line arguments. This is unnecessary for .vbs and .wsf files, because the WScript.Arguments object provides the arguments already separated, with any wapping quotes stripped off. The mshta.exe raw arguments typically include the full path of the .hta file, wrapped in double quotes.
 
@@ -16,7 +16,7 @@ The [HTAApp class] `ParseArgs` propery parses the mshta.exe command-line argumen
 
 ## Requirements 
 
-- Multiple arguments must be separated by spaces.
+- Multiple command-line arguments must be separated by spaces.
 - Arguments with spaces *must* be wrapped with quotes (i.e. double quotes).
 - Arguments without spaces *may* be wrapped with quotes.
 - Quoted arguments may be mixed with unquoted arguments.

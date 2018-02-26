@@ -1,30 +1,15 @@
-
-''' StringFormatter.vbs is the script for StringFormatter.wsc
+ <br /> ' StringFormatter.vbs is the script for StringFormatter.wsc
 '
 'Provides string formatting functions
 '
-'Three instantiation examples
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("StringFormatter")
-''     Dim fm : Set fm = New StringFormatter
-'' End With
-'or
-'' With CreateObject("VBScripting.Includer")
-''     Dim fm : Set fm = .GetObj("StringFormatter")
-'' End With
-'or
-''Dim fm : Set fm = CreateObject("VBScripting.StringFormatter")
-'Usage examples
-'' WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1
-'' 
-'' WScript.Echo fm.pluralize(3, "dog") '3 dogs
-'' WScript.Echo fm.pluralize(1, "dog") '1 dog
-'' WScript.Echo fm.pluralize(0, "dog") '0 dogs
-'' fm.SetZeroSingular
-'' WScript.Echo fm.pluralize(0, "dog") '0 dog
-'' WScript.Echo fm.pluralize(1, Split("person people")) '1 person
-'' WScript.Echo fm.pluralize(2, Split("person people")) '2 people
-'' WScript.Echo fm.pluralize(12, "egg") '12 eggs
+'Three instantiation examples:
+'<pre> With CreateObject("VBScripting.Includer") <br />      Execute .read("StringFormatter") <br />      Dim fm : Set fm = New StringFormatter <br /> End With </pre>
+'or 
+'<pre> With CreateObject("VBScripting.Includer") <br />      Dim fm : Set fm = .GetObj("StringFormatter") <br /> End With </pre>
+'or 
+'<pre> Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") </pre>
+'Usage examples:
+'<pre> WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1 <br /> <br /> WScript.Echo fm.pluralize(3, "dog") '3 dogs <br /> WScript.Echo fm.pluralize(1, "dog") '1 dog <br /> WScript.Echo fm.pluralize(0, "dog") '0 dogs <br /> fm.SetZeroSingular <br /> WScript.Echo fm.pluralize(0, "dog") '0 dog <br /> WScript.Echo fm.pluralize(1, Split("person people")) '1 person <br /> WScript.Echo fm.pluralize(2, Split("person people")) '2 people <br /> WScript.Echo fm.pluralize(12, "egg") '12 eggs </pre>
 '
 Class StringFormatter
 

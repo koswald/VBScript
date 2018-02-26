@@ -1,6 +1,3 @@
-
-'Deprecated. Use VBSApp.vbs
-
 'Manage which script host is hosting the currently running script
 
 Class VBSHoster

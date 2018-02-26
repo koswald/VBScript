@@ -2,22 +2,7 @@
 'Regular Expression functions - a work in progress
 '
 'Usage example
-'
-'' With CreateObject("VBScripting.Includer")
-''     Execute .read("RegExFunctions")
-'' End With
-'' 
-'' Dim reg : Set reg = New RegExFunctions
-'' reg.SetTestString "'Method SetSomething"
-'' reg.SetPattern "(M).*(od).*(tS)"
-'' 
-'' Dim s, submatch, subs : s = ""
-'' Set subs = reg.GetSubMatches
-'' 
-'' For Each submatch In subs
-''     s = s & " " & submatch
-'' Next
-'' MsgBox s 'M od tS
+'<pre>  With CreateObject("VBScripting.Includer")<br />      Execute .read("RegExFunctions")<br />  End With<br />  <br />  Dim reg : Set reg = New RegExFunctions<br />  reg.SetTestString "'Method SetSomething"<br />  reg.SetPattern "(M).*(od).*(tS)"<br />  <br />  Dim s, submatch, subs : s = ""<br />  Set subs = reg.GetSubMatches<br />  <br />  For Each submatch In subs<br />      s = s & " " & submatch<br />  Next<br />  MsgBox s 'M od tS </pre>
 '
 Class RegExFunctions
 
