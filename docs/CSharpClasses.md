@@ -1,5 +1,18 @@
 # C# Classes Documentation
 
+### Contents
+
+[Admin](#admin)  
+[ComEvent](#comevent)  
+[EventLogger](#eventlogger)  
+[FileChooser](#filechooser)  
+[FolderChooser](#folderchooser)  
+[FolderChooser2](#folderchooser2)  
+[IconExtractor](#iconextractor)  
+[NotifyIcon](#notifyicon)  
+[ProgressBar](#progressbar)  
+[SpeechSynthesis](#speechsynthesis)  
+
 
 ## Admin
 

@@ -9,7 +9,7 @@ With New TestingFramework
 
     .it "should parse rawName for the type"
         Dim rawName : rawName = "M:VBScripting.IProgressBar.PBarSize(System.Int32,System.Int32)"
-        .AssertEqual dgc.GetType(rawName), "Method"
+        .AssertEqual dgc.GetKind(rawName), "Method"
 
     .it "should change rawName to the expected value"
         .AssertEqual rawName, "VBScripting.IProgressBar.PBarSize(System.Int32,System.Int32)"

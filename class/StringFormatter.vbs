@@ -1,4 +1,4 @@
- <br /> ' StringFormatter.vbs is the script for StringFormatter.wsc
+' StringFormatter.vbs is the script for StringFormatter.wsc
 '
 'Provides string formatting functions
 '

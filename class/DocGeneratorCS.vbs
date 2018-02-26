@@ -204,6 +204,16 @@ Class DocGeneratorCS
         On Error Goto 0
         md.WriteLine "# C# Classes Documentation"
         md.WriteLine ""
+        md.WriteLine "### Contents"
+        md.WriteLine ""
+        Dim file, baseName
+        For Each file In fso.GetFolder(xmlFolder_).Files
+            If "xml" = LCase(fso.GetExtensionName(file.Name)) Then
+                baseName = fso.GetBaseName(file.Name)
+                md.WriteLine f(Array("[%s](#%s)  ", baseName, LCase(baseName)))
+            End If
+        Next
+        md.WriteLine ""
     End Sub
     Sub WriteHtmlFooter
         html.WriteLine ""
