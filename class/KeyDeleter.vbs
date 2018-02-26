@@ -1,6 +1,6 @@
 
 'Deletes a registry key and all of its subkeys.
-
+'
 Class KeyDeleter
 
     'Method: DeleteKey

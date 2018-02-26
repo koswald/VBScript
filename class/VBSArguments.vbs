@@ -1,6 +1,6 @@
 
 'Functions related to VBScript command-line arguments
-
+'
 Class VBSArguments
 
     'Property GetArgumentsString

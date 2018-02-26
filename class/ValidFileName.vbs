@@ -6,14 +6,13 @@
 '
 
 'ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.
-
+'
 '''' End general comments
 
 'Function GetValidFileName
 'Parameter: a file name candidate
 'Returns a valid file name
 'Remarks: Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-)
-
 Function GetValidFileName(fileNameCandidate)
 
     'items 1 - 9: a Windows file name can't contain any of these

@@ -1,7 +1,7 @@
 'EscapeMd.vbs
 
 'Escapes markdown special characters.
-
+'
 ''''
 
 'Function EscapeMd

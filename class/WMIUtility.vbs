@@ -1,6 +1,6 @@
 
 'Examples of the Windows Management Instrumentation object
-
+'
 Class WMIUtility
 
     Private computer, select_, all, from, where 'select is a keyword, so the variable was named select_

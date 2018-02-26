@@ -5,7 +5,7 @@
 ' Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.
 
 ' Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.
-
+'
 Class DocGeneratorCS
 
     'Property XmlFolder

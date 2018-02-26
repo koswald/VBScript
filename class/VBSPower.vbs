@@ -1,6 +1,6 @@
 
 'Power functions: shutdown, restart, logoff, sleep, and hibernate.
-
+'
 Class VBSPower
 
     'Property Shutdown

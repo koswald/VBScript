@@ -1,6 +1,6 @@
 
 'A working example of how validation can be accomplished.
-
+'
 Class VBSValidator
 
     'Property GetClassName

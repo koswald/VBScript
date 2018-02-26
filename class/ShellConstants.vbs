@@ -1,6 +1,6 @@
 
 'Constants for use with WScript.Shell.Run
-
+'
 Class ShellConstants
 
     'Property RunHidden

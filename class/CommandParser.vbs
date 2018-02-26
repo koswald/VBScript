@@ -2,7 +2,7 @@
 'Command Parser
 '
 'Runs a specified command and searches the output for a phrase
-
+'
 Class CommandParser
 
     Private cmd, startPhrase, stopPhrase, searchPhrase

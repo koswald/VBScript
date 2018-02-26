@@ -1,5 +1,5 @@
 'Manage which script host is hosting the currently running script
-
+'
 Class VBSHoster
 
     'Method EnsureCScriptHost

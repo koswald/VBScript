@@ -2,7 +2,7 @@
 'Pause Windows Updates to get more bandwidth. Don't forget to resume.
 
 'For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.
-
+'
 Class WindowsUpdatesPauser
 
     'Method PauseUpdates

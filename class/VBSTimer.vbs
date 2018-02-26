@@ -1,6 +1,6 @@
 
 'A timer
-
+'
 Class VBSTimer
 
     Private startDate 'Date subtype

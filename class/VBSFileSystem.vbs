@@ -1,6 +1,6 @@
 
 'General utility functions
-
+'
 Class VBSFileSystem
 
     Private env

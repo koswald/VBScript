@@ -1,6 +1,6 @@
 
 'Clipboard procedures
-
+'
 Class VBSClipboard
 
     Private hidden, synchronous

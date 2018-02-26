@@ -1,6 +1,6 @@
 
 'For extracting a string from a text file, given a regular expression
-
+'
 Class VBSExtracter
 
     Private file
