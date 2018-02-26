@@ -125,8 +125,7 @@
 | BalloonTipTitle| Property| NotifyIcon| | | Gets or sets the title of the "balloon tip" or notification\. | VBScripting |
 | BalloonTipText| Property| NotifyIcon| | | Gets or sets the text of the "balloon tip" or notification\. | VBScripting |
 | BalloonTipLifetime| Property| NotifyIcon| | | Gets or sets the lifetime of the "balloon tip" or notification\. An integer \(milliseconds\)\. Deprecated as of Windows Vista, the value is overridden by accessibility settings\. | VBScripting |
-| ToolTipIcon| Property| NotifyIcon| | a ToolTipIconT| Gets an object useful in VBScript for selecting a ToolTipIcon type\. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon\. VBScript example: <pre>    obj\.SetBallonTipIcon obj\.ToolTipIcon\.Warning </pre>
-| VBScripting |
+| ToolTipIcon| Property| NotifyIcon| | a ToolTipIconT| Gets an object useful in VBScript for selecting a ToolTipIcon type\. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon\. VBScript example: <pre>    obj\.SetBallonTipIcon obj\.ToolTipIcon\.Warning </pre>| VBScripting |
 | ToolTipIconT| Type| | | | Supplies the type required by NotifyIcon\.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon\.ToolTipIcon</tt> property\.| VBScripting |
 | Error| Property| ToolTipIconT| | 1|  | VBScripting |
 | Info| Property| ToolTipIconT| | 2|  | VBScripting |
@@ -166,8 +165,7 @@
 | Caption| Property| ProgressBar| | | Gets or sets the window title\-bar text\. | VBScripting |
 | Debug| Property| ProgressBar| | | Gets or sets whether the type is under development\. Affects the behavior of two methods, SetIconByIcoFile and SetIconByDllFile, if exceptions are thrown: when debugging, a message box is shown\. Default is False\.| VBScripting |
 | BorderStyle| Property| ProgressBar| | a FormBorderStyleT| Provides an object useful in VBScript for setting FormBorderStyle\. | VBScripting |
-| FormBorderStyle| Property| ProgressBar| | | Sets the style of the window border\. An integer\. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable \(default\), or SizableToolWindow\. VBScript example: <pre> pb\.FormBorderStyle = pb\.BorderStyle\.Fixed3D </pre>
-| VBScripting |
+| FormBorderStyle| Property| ProgressBar| | | Sets the style of the window border\. An integer\. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable \(default\), or SizableToolWindow\. VBScript example: <pre> pb\.FormBorderStyle = pb\.BorderStyle\.Fixed3D </pre>| VBScripting |
 | FormBorderStyleT| Type| | | | Enumeration of border styles\. This class is available to VBScript via the <tt>ProgressBar\.BorderStyle</tt> property\.| VBScripting |
 | Fixed3D| Property| FormBorderStyleT| | 1|  | VBScripting |
 | FixedDialog| Property| FormBorderStyleT| | 2|  | VBScripting |
@@ -188,8 +186,7 @@
 | SpeakAsync| Method| SpeechSynthesis| | | Convert text to speech\. This method is asynchronous\.| VBScripting |
 | Pause| Method| SpeechSynthesis| | | Pause speech synthesis\. | VBScripting |
 | Resume| Method| SpeechSynthesis| | | Resume speech synthesis\. | VBScripting |
-| Voices| Method| SpeechSynthesis| | | Gets an array of the names of the installed, enabled voices\. Each element of the array can be used to set <tt>Voice</tt>
-| VBScripting |
+| Voices| Method| SpeechSynthesis| | | Gets an array of the names of the installed, enabled voices\. Each element of the array can be used to set <tt>Voice</tt>\.| VBScripting |
 | Dispose| Method| SpeechSynthesis| | | Disposes the SpeechSynthesis object's resources\. | VBScripting |
 | Voice| Property| SpeechSynthesis| | | Gets or sets the current voice by name\. A string\. One of the names from the <tt>Voices</tt> array\.| VBScripting |
 | SynthesizerState| Property| SpeechSynthesis| | | Gets the state of the SpeechSynthesizer\. Read only\. Returns an integer equal to one of the <tt>State</tt> method return values\.| VBScripting |
