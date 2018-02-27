@@ -257,7 +257,7 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
 1) Run the Setup.vbs in the project folder. Or,  
 2) Run the following commands in a command window with elevated privileges. The first command applies to 64-bit systems and 32-bit systems. The second command applies only to 64-bit systems.  
   
-<code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc <br />     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
+<code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -605,9 +605,9 @@ Examples
 ```  
   
  ```vb
-  &lt;!-- test.hta "arg one" "arg two" --> 
-  &lt;hta:application icon="msdt.exe"> 
-      &lt;script language="VBScript"> 
+  <!-- test.hta "arg one" "arg two" --> 
+  <hta:application icon="msdt.exe"> 
+      <script language="VBScript"> 
           With CreateObject("VBScripting.Includer") 
               Execute .read("VBSApp") 
           End With 
@@ -616,8 +616,8 @@ Examples
           MsgBox app.GetArg(1) 'arg two 
           MsgBox app.GetArgsCount '2 
           app.Quit 
-      &lt;/script> 
-  &lt;/hta:application> 
+      </script> 
+  </hta:application> 
 ```  
   
 | Procedure | Name | Parameter | Return | Comment |

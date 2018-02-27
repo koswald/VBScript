@@ -309,6 +309,8 @@ Class DocGenerator
             Dim lines : lines = Replace(generalContent, "<pre>", "```vb" & vbCrLf)
             lines = Replace(lines, "<br />", vbCrLf)
             lines = Replace(lines, "</pre>", vbCrLf & "```")
+            lines = Replace(lines, "&lt;", "<")
+            lines = Replace(lines, "&LT;", "<")
             md.WriteLine lines & "  "
         Else
             md.WriteLine generalContent & "  "
