@@ -118,6 +118,7 @@ Usage Example
   
 <h5> Example of well-formed comments before a Sub statement </h5>  
  Note: A remark is required for Methods (Subs).  
+  
 ```vb
 'Method: SubName
 'Parameters: varName, varType
@@ -125,6 +126,7 @@ Usage Example
 ```
 <h5> Example of well-formed comments before a Property or Function statement </h5>  
  Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.  
+  
 ```vb
 'Property: PropertyName
 'Returns: a string
