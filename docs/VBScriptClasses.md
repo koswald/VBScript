@@ -48,15 +48,7 @@
 Get a folder or file chosen by the user  
 Usage example  
   
-```vb
- With CreateObject("VBScripting.Includer") 
-     Execute .read("Chooser")
- End With 
-
- Dim choose : Set choose = New Chooser 
- MsgBox choose.folder 
- MsgBox choose.file 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer") <br/>     Execute .read("Chooser")<br/> End With <br/><br/> Dim choose : Set choose = New Chooser <br/> MsgBox choose.folder <br/> MsgBox choose.file </code></pre>
   
 Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.  
 Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.  
@@ -101,45 +93,25 @@ Runs a specified command and searches the output for a phrase
 ## DocGenerator
 Generate html and markdown documentation for VBScript code based on well-formed comments.  
 Usage Example  
-```vb
- With CreateObject("VBScripting.Includer") 
-     Execute .read("DocGenerator") 
- End With 
- With New DocGenerator 
-     .SetTitle "VBScript Utility Classes Documentation" 
-     .SetDocName "TheDocs.html" 
-     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" 
-     .SetScriptFolder = "..\..\class" 
-     .SetDocFolder = "..\.." 
-     .Generate 
-     .View 
- End With 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer")<br/>     Execute .read("DocGenerator")<br/> End With<br/> With New DocGenerator<br/>     .SetTitle "VBScript Utility Classes Documentation"<br/>     .SetDocName "TheDocs.html"<br/>     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br/>     .SetScriptFolder = "..\..\class"<br/>     .SetDocFolder = "..\.."<br/>     .Generate<br/>     .View<br/> End With</code></pre>
   
 <h5> Example of well-formed comments before a Sub statement </h5>  
  Note: A remark is required for Methods (Subs).  
-```vb
-'Method: SubName
-'Parameters: varName, varType
-'Remark: Details about the parameters.
-```  
+<pre><code style='white-space: nowrap;'>'Method: SubName<br/>'Parameters: varName, varType<br/>'Remark: Details about the parameters.</code></pre>
 <h5> Example of well-formed comments before a Property or Function statement </h5>  
  Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.  
-```vb
-'Property: PropertyName
-'Returns: a string
-'Remark: A remark is not required for a Property or Function.
-```  
-<h5> Notes for the general comment syntax at the beginning of a script </h5>  
+<pre><code style='white-space: nowrap;'>'Property: PropertyName<br/>'Returns: a string<br/>'Remark: A remark is not required for a Property or Function.</code></pre>
+<h5> Notes for the comment syntax at the beginning of a script </h5>  
 Use a single quote (') for general comments <br />  
--- lines without html will be wrapped with p tags <br />  
--- lines with html will not be wrapped with p tags <br />  
--- use a single quote by itself for an empty line <br />  
--- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />  
-Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />  
+- lines without html will be wrapped with p tags <br />  
+- lines with html will not be wrapped with p tags <br />  
+- use a single quote by itself for an empty line <br />  
+- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
+- Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
+  
 Use three single quotes for remarks that should not appear in the documentation <br />  
-<h5> Notes for when the script does not contain a Class statement </h5>  
-If the script doesn't contain a class statement, then the general comments at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)  
+  
+Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -147,9 +119,10 @@ If the script doesn't contain a class statement, then the general comments at th
 |Method|SetDocFolder|a folder|N/A|Required\. Must be set before calling the Generate method\. Sets the folder of the documentation file\. Environment variables OK\. Relative paths OK\.|
 |Method|SetDocName|a filename|N/A|Required\. Must be set before calling the Generate method\. Specifies the name of the documentation file, including the filename extension \(\.html suggested\)\.|
 |Method|SetTitle|a string|N/A|Required\. Must be set before calling the Generate method\. Sets the title for the documentation\.|
-|Method|SetFilesToDocument|A regular expression|N/A|Optional\. Specifies which files to document: default is <strong> \*\.vbs </strong>\. Separate multiple wildcards with " \| "\.|
+|Method|SetFilesToDocument|wildcard(s)|N/A|Optional\. Specifies which files to document: default is <strong> \*\.vbs </strong>\. Separate multiple wildcards with " \| "\.|
 |Method|Generate|None|N/A|Generate comment\-based documentation for the scripts in the specified folder\.|
 |Method|View|None|N/A|Open the documentation file for viewing|
+|Property|Colorize|-|-|Gets or sets whether a &lt;pre&gt; code block in the markdown \(\.md\) document \(assumed to be VBScript\) is colorized\. If False \(default\), the code lines will not wrap\.|
 
 ## DocGeneratorCS
  DocGeneratorCS class  
@@ -170,15 +143,7 @@ If the script doesn't contain a class statement, then the general comments at th
 ## EncodingAnalyzer
 Provides various properties to analyze a file's encoding  
 Usage example  
-```vb
-With CreateObject("VBScripting.Includer")
-    Execute .read("EncodingAnalyzer")
-End With
- 
-With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
-    MsgBox "isUTF16LE: " & .isUTF16LE
-End With
-```  
+<pre><code style='white-space: nowrap;'>With CreateObject("VBScripting.Includer")<br/>    Execute .read("EncodingAnalyzer")<br/>End With<br/> <br/>With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br/>    MsgBox "isUTF16LE: " & .isUTF16LE<br/>End With</code></pre>
   
 Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
   
@@ -207,12 +172,7 @@ Escapes markdown special characters.
 ## GUIDGenerator
 Generate a unique GUID  
 Usage example  
-```vb
-With CreateObject("VBScripting.Includer")
-     Execute .read("GUIDGenerator")
- End With
- InputBox "",, New GUIDGenerator
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer")<br/>     Execute .read("GUIDGenerator")<br/> End With<br/> InputBox "",, New GUIDGenerator</code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -235,23 +195,14 @@ Supports the VBSApp class, providing .hta functionality.
   
 The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.  
   
-How it works  
-  
-The Read method returns the contents of a .vbs class file--or any other text file.  
+How it works: The Read method returns the contents of a .vbs class file--or any other text file.  
   
 Usage example  
-```vb
- With CreateObject("VBScripting.Includer")
-     Execute .read("WMIUtility.vbs")
-     Execute .read("TextStreamer") '.vbs may be omitted
- End With
- Dim wmi : Set wmi = New WMIUtility
- Dim streamer : Set streamer = New TextStreamer 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer")<br/>     Execute .read("WMIUtility.vbs")<br/>     Execute .read("TextStreamer") '.vbs may be omitted<br/> End With<br/> Dim wmi : Set wmi = New WMIUtility<br/> Dim streamer : Set streamer = New TextStreamer </code></pre>
   
-Relative paths may be used and are relative to the location of Includer.wsc.  
+Relative paths may be used and are relative to the location of the class folder.  
   
-Registrations  
+Registration  
   
 Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,  
 1) Run the Setup.vbs in the project folder. Or,  
@@ -290,12 +241,7 @@ Deletes a registry key and all of its subkeys.
 ## PrivilegeChecker
 Default property Privileged returns True if the calling script has elevated privileges.  
 Usage example  
-```vb
- With CreateObject("VBScripting.Includer") 
-     Execute .read("PrivilegeChecker") 
- End With 
- MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer") <br/>     Execute .read("PrivilegeChecker") <br/> End With <br/> MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker </code></pre>
   
 Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>  
   
@@ -307,23 +253,7 @@ Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-
 Regular Expression functions - a work in progress  
   
 Usage example  
-```vb
-  With CreateObject("VBScripting.Includer")
-      Execute .read("RegExFunctions")
-  End With
-  
-  Dim reg : Set reg = New RegExFunctions
-  reg.SetTestString "'Method SetSomething"
-  reg.SetPattern "(M).*(od).*(tS)"
-  
-  Dim s, submatch, subs : s = ""
-  Set subs = reg.GetSubMatches
-  
-  For Each submatch In subs
-      s = s & " " & submatch
-  Next
-  MsgBox s 'M od tS 
-```  
+<pre><code style='white-space: nowrap;'>  With CreateObject("VBScripting.Includer")<br/>      Execute .read("RegExFunctions")<br/>  End With<br/>  <br/>  Dim reg : Set reg = New RegExFunctions<br/>  reg.SetTestString "'Method SetSomething"<br/>  reg.SetPattern "(M).*(od).*(tS)"<br/>  <br/>  Dim s, submatch, subs : s = ""<br/>  Set subs = reg.GetSubMatches<br/>  <br/>  For Each submatch In subs<br/>      s = s & " " & submatch<br/>  Next<br/>  MsgBox s 'M od tS </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -340,14 +270,7 @@ Usage example
 Provides functions relating to the Windows&reg; registry  
   
 Usage example  
-```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("RegistryUtility") 
-  End With 
-  Dim reg : Set reg = New RegistryUtility 
-  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" 
-  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") 
-```  
+<pre><code style='white-space: nowrap;'>  With CreateObject("VBScripting.Includer") <br/>      Execute .read("RegistryUtility") <br/>  End With <br/>  Dim reg : Set reg = New RegistryUtility <br/>  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" <br/>  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") </code></pre>
   
 Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.  
   
@@ -389,14 +312,7 @@ Constants for use with WScript.Shell.Run
 ## SpecialFolders
 An enum and wrapper for WScript.Shell.SpecialFolders  
 Usage example  
-```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("SpecialFolders") 
-     End With 
-   
-     Dim sf : Set sf = New SpecialFolders 
-     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop 
-```  
+<pre><code style='white-space: nowrap;'>     With CreateObject("VBScripting.Includer") <br/>         Execute .read("SpecialFolders") <br/>     End With <br/>   <br/>     Dim sf : Set sf = New SpecialFolders <br/>     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -426,35 +342,13 @@ Usage example
 Provides string formatting functions  
   
 Three instantiation examples:  
-```vb
- With CreateObject("VBScripting.Includer") 
-      Execute .read("StringFormatter") 
-      Dim fm : Set fm = New StringFormatter 
- End With 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer") <br/>      Execute .read("StringFormatter") <br/>      Dim fm : Set fm = New StringFormatter <br/> End With </code></pre>
 or   
-```vb
- With CreateObject("VBScripting.Includer") 
-      Dim fm : Set fm = .GetObj("StringFormatter") 
- End With 
-```  
+<pre><code style='white-space: nowrap;'> With CreateObject("VBScripting.Includer") <br/>      Dim fm : Set fm = .GetObj("StringFormatter") <br/> End With </code></pre>
 or   
-```vb
- Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") 
-```  
+<pre><code style='white-space: nowrap;'> Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") </code></pre>
 Usage examples:  
-```vb
- WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1 
- 
- WScript.Echo fm.pluralize(3, "dog") '3 dogs 
- WScript.Echo fm.pluralize(1, "dog") '1 dog 
- WScript.Echo fm.pluralize(0, "dog") '0 dogs 
- fm.SetZeroSingular 
- WScript.Echo fm.pluralize(0, "dog") '0 dog 
- WScript.Echo fm.pluralize(1, Split("person people")) '1 person 
- WScript.Echo fm.pluralize(2, Split("person people")) '2 people 
- WScript.Echo fm.pluralize(12, "egg") '12 eggs 
-```  
+<pre><code style='white-space: nowrap;'> WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1 <br/> <br/> WScript.Echo fm.pluralize(3, "dog") '3 dogs <br/> WScript.Echo fm.pluralize(1, "dog") '1 dog <br/> WScript.Echo fm.pluralize(0, "dog") '0 dogs <br/> fm.SetZeroSingular <br/> WScript.Echo fm.pluralize(0, "dog") '0 dog <br/> WScript.Echo fm.pluralize(1, Split("person people")) '1 person <br/> WScript.Echo fm.pluralize(2, Split("person people")) '2 people <br/> WScript.Echo fm.pluralize(12, "egg") '12 eggs </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -467,26 +361,7 @@ Usage examples:
 ## TestingFramework
 A lightweight testing framework  
 Usage example  
- ```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSValidator") 
-         Execute .read("TestingFramework") 
-     End With 
-     Dim val : Set val = New VBSValidator 'class under test 
-     With New TestingFramework 
-         .describe "VBSValidator class" 
-         .it "should return False when IsBoolean is given a string" 
-             .AssertEqual val.IsBoolean("sdfjke"), False 
-         .it "should raise an error when EnsureBoolean is given a string" 
-             Dim nonBool : nonBool = "a string" 
-             On Error Resume Next 
-                 val.EnsureBoolean(nonBool) 
-                 .AssertErrorRaised 
-                 Dim errDescr : errDescr = Err.Description 'capture the error information 
-                 Dim errSrc : errSrc = Err.Source 
-             On Error Goto 0 
-     End With 
-```  
+ <pre><code style='white-space: nowrap;'>     With CreateObject("VBScripting.Includer") <br/>         Execute .read("VBSValidator") <br/>         Execute .read("TestingFramework") <br/>     End With <br/>     Dim val : Set val = New VBSValidator 'class under test <br/>     With New TestingFramework <br/>         .describe "VBSValidator class" <br/>         .it "should return False when IsBoolean is given a string" <br/>             .AssertEqual val.IsBoolean("sdfjke"), False <br/>         .it "should raise an error when EnsureBoolean is given a string" <br/>             Dim nonBool : nonBool = "a string" <br/>             On Error Resume Next <br/>                 val.EnsureBoolean(nonBool) <br/>                 .AssertErrorRaised <br/>                 Dim errDescr : errDescr = Err.Description 'capture the error information <br/>                 Dim errSrc : errSrc = Err.Source <br/>             On Error Goto 0 <br/>     End With </code></pre>
   
  See also VBSTestRunner  
   
@@ -497,7 +372,7 @@ Usage example
 |Property|GetSpec|None|a string|Returns the specification string for the current spec\.|
 |Method|ShowPendingResult|None|N/A|Flushes any pending results\. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place\.|
 |Method|AssertEqual|actual, expected|N/A|Asserts that the specified two variants, of any subtype, are equal\.|
-|Method|AssertErrorRaised|None|N/A|Asserts that an error should be raised by one or more of the preceeding statements\. The statement\(s\), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block\.|
+|Method|AssertErrorRaised|None|N/A|Asserts that an error should be raised by one or more of the preceeding statements\. The statement\(s\), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white\-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block\.|
 |Method|DeleteFiles|an array|N/A|Deletes the specified files\. The parameter is an array of filespecs\. Relative paths may be used\.|
 |Property|MessageAppeared|None|a boolean|None|
 |Method|ShowSendKeysWarning|None|N/A|Shows a SendKeys warning: a warning message to not make mouse clicks or key presses\.|
@@ -547,13 +422,7 @@ Open a file as a text stream for reading, writing, or appending.
 ## ValidFileName
 Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.  
 Usage Example  
-```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("ValidFileName") 
-     End With 
-  
-     MsgBox GetValidFileName("test\ing") 'test-ing 
-```  
+<pre><code style='white-space: nowrap;'>     With CreateObject("VBScripting.Includer") <br/>         Execute .read("ValidFileName") <br/>     End With <br/>  <br/>     MsgBox GetValidFileName("test\ing") 'test-ing </code></pre>
   
 ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.  
   
@@ -567,58 +436,17 @@ Intended to support identical handling of class procedures by .vbs/.wsf files an
 This can be useful when writing a class that might be used in both types of "apps".  
 Four ways to instantiate  
 For .vbs/.wsf scripts,  
- ```vb
-  Dim app : Set app = CreateObject("VBScripting.VBSApp") 
-  app.Init WScript 
-```  
+ <pre><code style='white-space: nowrap;'>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br/>  app.Init WScript </code></pre>
 For .hta applications,  
- ```vb
-  Dim app : Set app = CreateObject("VBScripting.VBSApp") 
-  app.Init document 
-```  
+ <pre><code style='white-space: nowrap;'>  Dim app : Set app = CreateObject("VBScripting.VBSApp") <br/>  app.Init document </code></pre>
 If the script may be used in .vbs/.wsf scripts or .hta applications  
- ```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSApp") 
-  End With 
-  Dim app : Set app = New VBSApp 
-```  
+ <pre><code style='white-space: nowrap;'>  With CreateObject("VBScripting.Includer") <br/>      Execute .read("VBSApp") <br/>  End With <br/>  Dim app : Set app = New VBSApp </code></pre>
 Alternate method for both .hta and .vbs/.wsf,  
- ```vb
-  Set app = CreateObject("VBScripting.VBSApp") 
-  If "HTMLDocument" = TypeName(document) Then 
-      app.Init document 
-  Else app.Init WScript 
-  End If 
-```  
+ <pre><code style='white-space: nowrap;'>  Set app = CreateObject("VBScripting.VBSApp") <br/>  If "HTMLDocument" = TypeName(document) Then <br/>      app.Init document <br/>  Else app.Init WScript <br/>  End If </code></pre>
 Examples  
- ```vb
-  'test.vbs "arg one" "arg two" 
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSApp") 
-  End With 
-  Dim app : Set app = New VBSApp 
-  MsgBox app.GetName 'test.vbs 
-  MsgBox app.GetArg(1) 'arg two 
-  MsgBox app.GetArgsCount '2 
-  app.Quit 
-```  
+ <pre><code style='white-space: nowrap;'>  'test.vbs "arg one" "arg two" <br/>  With CreateObject("VBScripting.Includer") <br/>      Execute .read("VBSApp") <br/>  End With <br/>  Dim app : Set app = New VBSApp <br/>  MsgBox app.GetName 'test.vbs <br/>  MsgBox app.GetArg(1) 'arg two <br/>  MsgBox app.GetArgsCount '2 <br/>  app.Quit </code></pre>
   
- ```vb
-  <!-- test.hta "arg one" "arg two" --> 
-  <hta:application icon="msdt.exe"> 
-      <script language="VBScript"> 
-          With CreateObject("VBScripting.Includer") 
-              Execute .read("VBSApp") 
-          End With 
-          Dim app : Set app = New VBSApp 
-          MsgBox app.GetName 'test.hta 
-          MsgBox app.GetArg(1) 'arg two 
-          MsgBox app.GetArgsCount '2 
-          app.Quit 
-      </script> 
-  </hta:application> 
-```  
+ <pre><code style='white-space: nowrap;'>  &lt;!-- test.hta "arg one" "arg two" --> <br/>  &lt;hta:application icon="msdt.exe"> <br/>      &lt;script language="VBScript"> <br/>          With CreateObject("VBScripting.Includer") <br/>              Execute .read("VBSApp") <br/>          End With <br/>          Dim app : Set app = New VBSApp <br/>          MsgBox app.GetName 'test.hta <br/>          MsgBox app.GetArg(1) 'arg two <br/>          MsgBox app.GetArgsCount '2 <br/>          app.Quit <br/>      &lt;/script> <br/>  &lt;/hta:application> </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -688,20 +516,7 @@ Wrapper for the Windows Script Host (WSH) WshShell.LogEvent method
 To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.  
   
 Usage example:  
- ```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSEventLogger") 
-  End With 
-   
-  Dim logger : Set logger = New VBSEventLogger 
-  logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1 
-  logger logger.INFORMATION, "informative message 2" 'example information log entry 2 
-  logger 4, "informative message 3" 'example information log entry 3 
-  logger 1, "error message" 'example error log entry 
-   
-  logger.CreateCustomView 'create a custom view in the Event Viewer 
-  logger.OpenViewer 'open EventVwr.msc 
-```  
+ <pre><code style='white-space: nowrap;'>  With CreateObject("VBScripting.Includer") <br/>      Execute .read("VBSEventLogger") <br/>  End With <br/>   <br/>  Dim logger : Set logger = New VBSEventLogger <br/>  logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1 <br/>  logger logger.INFORMATION, "informative message 2" 'example information log entry 2 <br/>  logger 4, "informative message 3" 'example information log entry 3 <br/>  logger 1, "error message" 'example error log entry <br/>   <br/>  logger.CreateCustomView 'create a custom view in the Event Viewer <br/>  logger.OpenViewer 'open EventVwr.msc </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -761,23 +576,12 @@ Manage which script host is hosting the currently running script
 ## VBSLogger
 A lightweight VBScript logger  
 Instantiation   
-```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSLogger") 
-     End With 
-     Dim log : Set log = New VBSLogger 
-```  
+<pre><code style='white-space: nowrap;'>     With CreateObject("VBScripting.Includer") <br/>         Execute .read("VBSLogger") <br/>     End With <br/>     Dim log : Set log = New VBSLogger </code></pre>
   
 Usage method one. This method has the advantage that the log doesn't remain open, allowing other scripts to write to the log.  
- ```vb
-     log "test one" 
-```  
+ <pre><code style='white-space: nowrap;'>     log "test one" </code></pre>
 Usage method two. This method has the advantage that the name of the calling script is not written on each line of the log.  
- ```vb
-     log.Open 
-     log.Write "test two" 
-     log.Close 
-```  
+ <pre><code style='white-space: nowrap;'>     log.Open <br/>     log.Write "test two" <br/>     log.Close </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -811,19 +615,7 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 ## VBSTestRunner
 Run a test or group of tests  
 Usage example  
- ```vb
-    'test-launcher.vbs 
-    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs 
-   
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSTestRunner") 
-     End With 
-   
-     With New VBSTestRunner 
-         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs 
-         .Run 
-     End With 
-```  
+ <pre><code style='white-space: nowrap;'>    'test-launcher.vbs <br/>    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs <br/>   <br/>     With CreateObject("VBScripting.Includer") <br/>         Execute .read("VBSTestRunner") <br/>     End With <br/>   <br/>     With New VBSTestRunner <br/>         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs <br/>         .Run <br/>     End With </code></pre>
   
 See also TestingFramework  
   
@@ -903,13 +695,7 @@ Provides an object whose default property, isWoW, returns a boolean indicating w
 How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.  
   
 Usage examples  
-```vb
- MsgBox New WoWChecker.BySize.isWoW 
- MsgBox New WoWChecker.isWoW 
- With New WoWChecker : .BySize : MsgBox .isWoW : End With 
- With New WoWChecker.BySize : MsgBox .isWoW : End With 
- MsgBox New WoWChecker 
-```  
+<pre><code style='white-space: nowrap;'> MsgBox New WoWChecker.BySize.isWoW <br/> MsgBox New WoWChecker.isWoW <br/> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br/> With New WoWChecker.BySize : MsgBox .isWoW : End With <br/> MsgBox New WoWChecker </code></pre>
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |

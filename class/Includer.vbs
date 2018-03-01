@@ -3,17 +3,15 @@
 '
 'The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.
 '
-'How it works
-'
-'The Read method returns the contents of a .vbs class file--or any other text file.
+'How it works: The Read method returns the contents of a .vbs class file--or any other text file.
 '
 'Usage example
 
 '<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
 '
-'Relative paths may be used and are relative to the location of Includer.wsc.
+'Relative paths may be used and are relative to the location of the class folder.
 '
-'Registrations
+'Registration
 '
 'Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
 '1) Run the Setup.vbs in the project folder. Or,

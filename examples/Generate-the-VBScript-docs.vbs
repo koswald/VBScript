@@ -11,6 +11,7 @@ With New DocGenerator
     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" 'filename(s) of the scripts to document
     .SetDocFolder "..\docs" 'location of the target documentation file, relative to this script
     .SetDocName "VBScriptClasses.html"
+    .Colorize = False 'default is False to prevent code line wrap
     .Generate
     .View
 End With

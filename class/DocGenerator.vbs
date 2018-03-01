@@ -2,7 +2,7 @@
 'Generate html and markdown documentation for VBScript code based on well-formed comments.
 
 'Usage Example
-'<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("DocGenerator") <br /> End With <br /> With New DocGenerator <br />     .SetTitle "VBScript Utility Classes Documentation" <br />     .SetDocName "TheDocs.html" <br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" <br />     .SetScriptFolder = "..\..\class" <br />     .SetDocFolder = "..\.." <br />     .Generate <br />     .View <br /> End With </pre>
+'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
 '
 '<h5> Example of well-formed comments before a Sub statement </h5>
 ' Note: A remark is required for Methods (Subs).
@@ -14,19 +14,20 @@
 
 '<pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
 
-'<h5> Notes for the general comment syntax at the beginning of a script </h5>
+'<h5> Notes for the comment syntax at the beginning of a script </h5>
 
 'Use a single quote (') for general comments <br />
-'-- lines without html will be wrapped with p tags <br />
-'-- lines with html will not be wrapped with p tags <br />
-'-- use a single quote by itself for an empty line <br />
-'-- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
-'Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
+'- lines without html will be wrapped with p tags <br />
+'- lines with html will not be wrapped with p tags <br />
+'- use a single quote by itself for an empty line <br />
+'- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+'- Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+'
+'''- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
+'''Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
 'Use three single quotes for remarks that should not appear in the documentation <br />
-
-'<h5> Notes for when the script does not contain a Class statement </h5>
-
-'If the script doesn't contain a class statement, then the general comments at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)
+'
+'Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
 '
 
 Class DocGenerator
@@ -90,6 +91,7 @@ Class DocGenerator
         SetDocName ""
         scriptFolder = "" 'don't use the setter yet, or else an empty string will be resolved to an existing folder before being validated
         SetTitle ""
+        Colorize = False
     End Sub
 
     Private Sub InitializeDocFiles
@@ -163,7 +165,7 @@ Class DocGenerator
     Sub SetTitle(newDocTitle) : docTitle = newDocTitle : End Sub
 
     'Method SetFilesToDocument
-    'Parameter: A regular expression
+    'Parameter: wildcard(s)
     'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
@@ -290,7 +292,6 @@ Class DocGenerator
         IndentDecrease
     End Sub
 
-
     'Write the general help content to file; don't include <p> tags if line already contains html
     Private Sub WriteGeneralContentToDoc
         If postClassStatement = status Then Exit Sub
@@ -304,18 +305,45 @@ Class DocGenerator
             WriteLine "<p>" & generalContent & "</p>"
         End If
         IndentDecrease
-        
-        If InStr(generalContent, "<pre>") Then
-            Dim lines : lines = Replace(generalContent, "<pre>", "```vb" & vbCrLf)
-            lines = Replace(lines, "<br />", vbCrLf)
-            lines = Replace(lines, "</pre>", vbCrLf & "```")
-            lines = Replace(lines, "&lt;", "<")
-            lines = Replace(lines, "&LT;", "<")
-            md.WriteLine lines & "  "
-        Else
-            md.WriteLine generalContent & "  "
-        End If
+        md.WriteLine GetColorizedOrGetNowrap(generalContent)
     End Sub
+    
+    Function GetColorizedOrGetNowrap(markup)
+        If Not CBool(InStr(markup, "<pre>")) Then
+            GetColorizedOrGetNowrap = markup & "  "
+        ElseIf colorize_ Then
+            GetColorizedOrGetNowrap = GetColorized(markup)
+        Else
+            GetColorizedOrGetNowrap = GetNowrap(markup)
+        End If
+    End Function
+
+    Function GetNowrap(markup)
+        Dim lines : lines = markup
+        lines = Replace(lines, "<br />", "<br/>")
+        lines = Replace(lines, " ", " ") 'Alt+0160 = non-breaking space
+        lines = Replace(lines, "<pre>", "<pre><code style='white-space: nowrap;'>")
+        lines = Replace(lines, "</pre>", "</code></pre>")
+        GetNowrap = lines
+    End Function
+
+    Function GetColorized(markup)
+        Dim lines : lines = markup
+        lines = Replace(lines, "<pre>", "```vb" & vbCrLf)
+        lines = Replace(lines, "<br />", vbCrLf)
+        lines = Replace(lines, "</pre>", vbCrLf & "```")
+        lines = Replace(lines, "&lt;", "<")
+        lines = Replace(lines, "&gt;", ">")
+        GetColorized = lines
+    End Function
+
+    'Property Colorize
+    'Parameters: -
+    'Returns: -
+    'Remarks: Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (default), the code lines will not wrap.
+    Property Get Colorize : Colorize = colorize_ : End Property
+    Property Let Colorize(value) : colorize_ = value : End Property
+    Private colorize_
 
     Private Sub WritePreContentToDoc
         If postClassStatement = status Then Exit Sub
@@ -325,7 +353,7 @@ Class DocGenerator
         IndentIncrease
         WriteLine "<pre>" & preContent & "</pre>"
         IndentDecrease
-        md.WriteLine "<pre>" & preContent & "</pre>"
+        'md.WriteLine "<pre>" & preContent & "</pre>"
     End Sub
 
     'Write the help content for the current routine in the current script

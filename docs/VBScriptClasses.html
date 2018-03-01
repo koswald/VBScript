@@ -239,7 +239,7 @@
          <div class="detail">
             <p>Generate html and markdown documentation for VBScript code based on well-formed comments.</p>
             <p>Usage Example</p>
-            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("DocGenerator") <br /> End With <br /> With New DocGenerator <br />     .SetTitle "VBScript Utility Classes Documentation" <br />     .SetDocName "TheDocs.html" <br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc" <br />     .SetScriptFolder = "..\..\class" <br />     .SetDocFolder = "..\.." <br />     .Generate <br />     .View <br /> End With </pre>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
             <p></p>
             <h5> Example of well-formed comments before a Sub statement </h5>
             <p> Note: A remark is required for Methods (Subs).</p>
@@ -247,16 +247,17 @@
             <h5> Example of well-formed comments before a Property or Function statement </h5>
             <p> Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.</p>
             <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
-            <h5> Notes for the general comment syntax at the beginning of a script </h5>
+            <h5> Notes for the comment syntax at the beginning of a script </h5>
             Use a single quote (') for general comments <br />
-            -- lines without html will be wrapped with p tags <br />
-            -- lines with html will not be wrapped with p tags <br />
-            -- use a single quote by itself for an empty line <br />
-            -- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
-            Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
+            - lines without html will be wrapped with p tags <br />
+            - lines with html will not be wrapped with p tags <br />
+            - use a single quote by itself for an empty line <br />
+            - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+            - Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+            <p></p>
             Use three single quotes for remarks that should not appear in the documentation <br />
-            <h5> Notes for when the script does not contain a Class statement </h5>
-            <p>If the script doesn't contain a class statement, then the general comments at the beginning of the file must be separated from the rest of the file with line that begins with '''' (four single quotes)</p>
+            <p></p>
+            <p>Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.</p>
             <p></p>
             <table>
                <tr>
@@ -297,7 +298,7 @@
                <tr>
                   <td>Method</td>
                   <td>SetFilesToDocument</td>
-                  <td>A regular expression</td>
+                  <td>wildcard(s)</td>
                   <td>N/A</td>
                   <td>Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".</td>
                </tr>
@@ -314,6 +315,13 @@
                   <td>None</td>
                   <td>N/A</td>
                   <td>Open the documentation file for viewing</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Colorize</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (default), the code lines will not wrap.</td>
                </tr>
             </table>
          </div>
@@ -504,7 +512,7 @@
          <div class="detail">
             <p>Generate a unique GUID</p>
             <p>Usage example</p>
-            <pre>With CreateObject("VBScripting.Includer")<br />     Execute .read("GUIDGenerator")<br /> End With<br /> InputBox "",, New GUIDGenerator</pre>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("GUIDGenerator")<br /> End With<br /> InputBox "",, New GUIDGenerator</pre>
             <p></p>
             <table>
                <tr>
@@ -591,16 +599,14 @@
             <p></p>
             <p>The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.</p>
             <p></p>
-            <p>How it works</p>
-            <p></p>
-            <p>The Read method returns the contents of a .vbs class file--or any other text file.</p>
+            <p>How it works: The Read method returns the contents of a .vbs class file--or any other text file.</p>
             <p></p>
             <p>Usage example</p>
             <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
             <p></p>
-            <p>Relative paths may be used and are relative to the location of Includer.wsc.</p>
+            <p>Relative paths may be used and are relative to the location of the class folder.</p>
             <p></p>
-            <p>Registrations</p>
+            <p>Registration</p>
             <p></p>
             Although Windows Script Component (.wsc) files must be registered--unless used with GetObject("script:" & AbsolutePathToWscFile)--right clicking <code> Includer.wsc</code> and selecting Register probably <strong> will not work</strong>. Instead,
             <p>1) Run the Setup.vbs in the project folder. Or,</p>
@@ -1342,7 +1348,7 @@
                   <td>AssertErrorRaised</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.</td>
+                  <td>Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block.</td>
                </tr>
                <tr>
                   <td>Method</td>

@@ -60,7 +60,7 @@ Class TestingFramework
     End Sub
 
     'Method AssertErrorRaised
-    'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre> On Error Resume Next <br /> On Error Goto 0 </pre> block.
+    'Remark: Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block.
     Sub AssertErrorRaised
         ShowPendingResult
         If Err Then
