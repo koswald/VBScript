@@ -91,7 +91,7 @@ Class DocGenerator
         SetDocName ""
         scriptFolder = "" 'don't use the setter yet, or else an empty string will be resolved to an existing folder before being validated
         SetTitle ""
-        Colorize = False
+        Colorize = True
     End Sub
 
     Private Sub InitializeDocFiles
@@ -340,7 +340,7 @@ Class DocGenerator
     'Property Colorize
     'Parameters: -
     'Returns: -
-    'Remarks: Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (default), the code lines will not wrap.
+    'Remarks: Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (experimental, with GFM), the code lines will not wrap. Default is True
     Property Get Colorize : Colorize = colorize_ : End Property
     Property Let Colorize(value) : colorize_ = value : End Property
     Private colorize_
