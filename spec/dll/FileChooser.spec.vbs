@@ -54,19 +54,19 @@ With New TestingFramework
     .it "should open at the current directory"
         .AssertEqual fc.InitialDirectory, sh.CurrentDirectory
 
-    .it "should have an ExpandedResolvedInitialDirectory property (get only)"
+    .it "should have an ERInitialDirectory property (get only)"
         On Error Resume Next
-            x = fc.ExpandedResolvedInitialDirectory
+            x = fc.ERInitialDirectory
             .AssertEqual Err.Description, ""
         On Error Goto 0
 
     .it "should resolve a relative path"
         fc.InitialDirectory = ".."
-        .AssertEqual fc.ExpandedResolvedInitialDirectory, fso.GetAbsolutePathName("..")
+        .AssertEqual fc.ERInitialDirectory, fso.GetAbsolutePathName("..")
 
     .it "should expand an environment variable"
         fc.InitialDirectory = "%UserProfile%"
-        .AssertEqual fc.ExpandedResolvedInitialDirectory, sh.ExpandEnvironmentStrings("%UserProfile%")
+        .AssertEqual fc.ERInitialDirectory, sh.ExpandEnvironmentStrings("%UserProfile%")
 End With
 
 Cleanup

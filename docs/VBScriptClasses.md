@@ -201,12 +201,13 @@ Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/ef
 |Property|GetByte|BOM byte number|an integer|Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark (BOM).|
 
 ## EscapeMd
-EscapeMd.vbs  
+EscapeMd and EscapeMd2 Functions  
 Escapes markdown special characters.  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
 |Property|EscapeMd|unescaped string|escaped string|Returns a string with Markdown special characters escaped.|
+|Property|EscapeMd2|unescaped string|escaped string|Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>.|
 
 ## GUIDGenerator
 Generate a unique GUID  

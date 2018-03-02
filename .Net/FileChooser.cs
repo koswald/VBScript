@@ -104,13 +104,13 @@ namespace VBScripting
             set
             {
                 this._initialDirectory = value;
-                this.ExpandedResolvedInitialDirectory = value;
-                this.chooser.InitialDirectory = ExpandedResolvedInitialDirectory;
+                this.ERInitialDirectory = value;
+                this.chooser.InitialDirectory = ERInitialDirectory;
             }
         }
         /// <summary> Gets the initial directory with relative path resolved and environment variables expanded. </summary>
         /// <remarks> Improves testability. </remarks>
-        public string ExpandedResolvedInitialDirectory
+        public string ERInitialDirectory
         {
             get
             {
@@ -287,6 +287,6 @@ namespace VBScripting
 
         /// <summary> </summary>
         [DispId(12)]
-        string ExpandedResolvedInitialDirectory { get; }
+        string ERInitialDirectory { get; }
     }
 }

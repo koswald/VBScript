@@ -1,4 +1,4 @@
-'EscapeMd.vbs
+'EscapeMd and EscapeMd2 Functions
 
 'Escapes markdown special characters.
 '
@@ -43,3 +43,14 @@ End Function
 
 ' to which I would add | for tables;
 ' also, make sure to replace \ with \\ first of all
+
+'Function EscapeMd2
+'Parameters: unescaped string
+'Returns: escaped string
+'Remarks: Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>.
+Function EscapeMd2(str)
+    Dim s : s = str
+    s = Replace(s, "|", "&#124;")
+    s = Replace(s, "*", "&#42;")
+    EscapeMd2 = s
+End Function
