@@ -20,7 +20,7 @@
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Admin| Provide sys admin features\. | | | Type| | VBScripting |
 | IAdmin| COM interface for VBScripting\.Admin | | | Type| | VBScripting |
-| Log| Logs an event to the event log\. | | | Method| Admin| VBScripting |
+| Log| Logs the specified message to the event log\. | | message| Method| Admin| VBScripting |
 | GetLogs| Get an array of logs entries from the Application log\. Returns an array of logs \(strings\) from the specified event source that contain the specified message string\. Searches the Application log only\.| an array| source, message| Method| Admin| VBScripting |
 | SourceExists| Gets whether the specified EventLog source exists\. | a boolean| source| Method| Admin| VBScripting |
 | CreateEventSource| Creates the specified EventLog source\. | an EventLogSourceResult| source| Method| Admin| VBScripting |

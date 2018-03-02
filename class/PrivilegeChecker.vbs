@@ -2,7 +2,7 @@
 'Default property Privileged returns True if the calling script has elevated privileges.
 
 'Usage example
-'<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker </pre>
+'<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> Dim pc : Set pc = New PrivilegeChecker <br /> If pc Then <br />     WScript.Echo "Privileges are elevated" <br /> Else <br />     WScript.Echo "Privileges are not elevated" <br /> End If </pre>
 '
 'Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>
 '

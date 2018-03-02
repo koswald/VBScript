@@ -124,7 +124,7 @@ Class VBSApp
     End Property
 
     'Method RestartWith
-    'Parameters: #1: host; #2: switch; #3: elevating"
+    'Parameters: #1: host; #2: switch; #3: elevating
     'Remark: Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
     Sub RestartWith(host, switch, elevating)
         With CreateObject("VBScripting.Includer")

@@ -7,7 +7,7 @@
 '
 'Usage example
 
-'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
+'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs") '.vbs may be omitted<br />     Execute .read("TextStreamer")<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
 '
 'Relative paths may be used and are relative to the location of the class folder.
 '

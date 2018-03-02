@@ -371,7 +371,7 @@ Class DocGenerator
         WriteLine "<td>" & remarksContent & "</td>"
         IndentDecrease
         WriteLine "</tr>"
-        md.WriteLine "|" & routineType & "|" & routineName & "|" & parametersContent & "|" & returnsContent & "|" & EscapeMd(remarksContent) & "|"
+        md.WriteLine "|" & routineType & "|" & routineName & "|" & parametersContent & "|" & returnsContent & "|" & remarksContent & "|"
     End Sub
 
     Private Property Get NoComments

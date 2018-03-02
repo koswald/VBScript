@@ -604,7 +604,7 @@
             <p>How it works: The Read method returns the contents of a .vbs class file--or any other text file.</p>
             <p></p>
             <p>Usage example</p>
-            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs")<br />     Execute .read("TextStreamer") '.vbs may be omitted<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("WMIUtility.vbs") '.vbs may be omitted<br />     Execute .read("TextStreamer")<br /> End With<br /> Dim wmi : Set wmi = New WMIUtility<br /> Dim streamer : Set streamer = New TextStreamer </pre>
             <p></p>
             <p>Relative paths may be used and are relative to the location of the class folder.</p>
             <p></p>
@@ -770,7 +770,7 @@
          <div class="detail">
             <p>Default property Privileged returns True if the calling script has elevated privileges.</p>
             <p>Usage example</p>
-            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> MsgBox WScript.ScriptName & " is running with elevated privileges: " & New PrivilegeChecker </pre>
+            <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> Dim pc : Set pc = New PrivilegeChecker <br /> If pc Then <br />     WScript.Echo "Privileges are elevated" <br /> Else <br />     WScript.Echo "Privileges are not elevated" <br /> End If </pre>
             <p></p>
             Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>
             <p></p>
@@ -1750,7 +1750,7 @@
                <tr>
                   <td>Method</td>
                   <td>RestartWith</td>
-                  <td>#1: host; #2: switch; #3: elevating"</td>
+                  <td>#1: host; #2: switch; #3: elevating</td>
                   <td>N/A</td>
                   <td>Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.</td>
                </tr>
@@ -2014,7 +2014,7 @@
             <p>To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.</p>
             <p></p>
             <p>Usage example:</p>
-             <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSEventLogger") <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "informative message 1" 'example information log entry 1 <br />  logger logger.INFORMATION, "informative message 2" 'example information log entry 2 <br />  logger 4, "informative message 3" 'example information log entry 3 <br />  logger 1, "error message" 'example error log entry <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
+             <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSEventLogger") <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "message 1" <br />  logger logger.INFORMATION, "message 2" <br />  logger 4, "message 3" <br />  logger 1, "error message" <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
             <p></p>
             <table>
                <tr>
@@ -2457,7 +2457,7 @@
                   <td>Sleep</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Puts the computer to sleep. Requires <a href="https://technet.microsoft.com/en-us/sysinternals/psshutdown.aspx"> PsShutdown.exe</a> from Windows Sysinternals to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power.</td>
+                  <td>Puts the computer to sleep. Requires <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power.</td>
                </tr>
                <tr>
                   <td>Method</td>

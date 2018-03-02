@@ -50,7 +50,8 @@ namespace VBScripting
         /// <returns> a string </returns>
         public string LogName { get { return logName; } }
 
-        /// <summary> Logs an event to the event log. </summary>
+        /// <summary> Logs the specified message to the event log. </summary>
+        /// <parameters> message </parameters>
         public static void Log(string msg)
         {
             try
