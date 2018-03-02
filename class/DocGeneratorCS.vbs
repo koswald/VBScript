@@ -73,11 +73,11 @@ Class DocGeneratorCS
         html.WriteLine "<table>"
         html.WriteLine "  <tr>"
         html.WriteLine "    <th> Member name </th>"
+        html.WriteLine "    <th> Remarks </th>"
+        html.WriteLine "    <th> Returns </th>"
+        html.WriteLine "    <th> Parameters </th>"
         html.WriteLine "    <th> Kind </th>"
         html.WriteLine "    <th> Member of </th>"
-        html.WriteLine "    <th> Parameters </th>"
-        html.WriteLine "    <th> Returns </th>"
-        html.WriteLine "    <th> Remarks </th>"
         html.WriteLine "    <th> Namespace </th>"
         html.WriteLine "  </tr>"
     End Sub
@@ -85,8 +85,8 @@ Class DocGeneratorCS
         md.WriteLine ""
         md.WriteLine "## " & fso.GetBaseName(xmlFile)
         md.WriteLine ""
-        md.WriteLine "| Member name | Kind | Member of | Parameters | Returns | Remarks | Namespace |"
-        md.WriteLine "| :--------------------- | :------ | :---------------- | :----------------- | :----------- | :------------- | :----------------- |"
+        md.WriteLine "| Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |"
+        md.WriteLine "| :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |"
     End Sub
     Sub GenerateRow(member)
         Dim info : Set info = GetMemberInfo(member)
@@ -97,29 +97,29 @@ Class DocGeneratorCS
     Sub GenerateHtmlRow(info)
         html.WriteLine "  <tr>"
         html.WriteLine f(Array("    <td> %s </td>", info.Name))
+        html.WriteLine f(Array("    <td> %s </td>", info.Summary & " " & info.Remarks))
+        html.WriteLine f(Array("    <td> %s </td>", info.Returns))
+        html.WriteLine f(Array("    <td> %s </td>", info.Parameters))
         html.WriteLine f(Array("    <td> %s </td>", info.Kind))
         If "Type" = info.Kind Then
             html.WriteLine "    <td> </td>"
         Else
             html.WriteLine f(Array("    <td> %s </td>", info.MemberOf))
         End If
-        html.WriteLine f(Array("    <td> %s </td>", info.Parameters))
-        html.WriteLine f(Array("    <td> %s </td>", info.Returns))
-        html.WriteLine f(Array("    <td> %s </td>", info.Summary & " " & info.Remarks))
         html.WriteLine f(Array("    <td> %s </td>", info.NamespaceName))
         html.WriteLine "  </tr>"
     End Sub
     Sub GenerateMarkdownRow(info)
         md.Write f(Array("| %s", EscapeMd(info.Name)))
+        md.Write f(Array("| %s", EscapeMd(info.Summary & " " & info.Remarks)))
+        md.Write f(Array("| %s", EscapeMd(info.Returns)))
+        md.Write f(Array("| %s", EscapeMd(info.Parameters)))
         md.Write f(Array("| %s", EscapeMd(info.Kind)))
         If "Type" = info.Kind Then
             md.Write "| "
         Else
             md.Write f(Array("| %s", EscapeMd(info.MemberOf)))
         End If
-        md.Write f(Array("| %s", EscapeMd(info.Parameters)))
-        md.Write f(Array("| %s", EscapeMd(info.Returns)))
-        md.Write f(Array("| %s", EscapeMd(info.Summary & " " & info.Remarks)))
         md.Write f(Array("| %s", EscapeMd(info.NamespaceName)))
         md.WriteLine " |"
     End Sub

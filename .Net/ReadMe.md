@@ -5,7 +5,7 @@
 The `.Net` folder contains C# examples for creating 
 `.dll` libraries that can be called from VBScript. 
 
-#### Compiling and registering
+## Compiling and registering
 
 Among the options for building (compiling and registering) the class libraries are
  
@@ -17,10 +17,11 @@ Among the options for building (compiling and registering) the class libraries a
 5. Drag one or more of the `.bat` scripts in the [build] folder 
    onto `build.vbs`.
 
-#### Features
+## Features
 
 Features include the following:  
 
+0) [Documentation].
 1) [Manual tests] that demonstrate functionality.
 2) For an example of a COM event, or callback, see [NotifyIcon.cs]
    and [NotifyIcon-test.vbs].
@@ -44,6 +45,7 @@ are all expected to work on Windows versions as old as Vista, with
 the exception of `SpeechSynthesis`, which requires a reference 
 probably not available on most Vista machines.
 
+[Documentation]: ../docs/CSharpClasses.md
 [build]: build
 [EventLogger.cs]: EventLogger.cs
 [SpeechSynthesis.cs]: SpeechSynthesis.cs
@@ -59,7 +61,7 @@ probably not available on most Vista machines.
 [Setup.vbs]: ../Setup.vbs
 [Manual tests]: test
 
-#### Links and References
+## Links and References
 
 [Interoperability (C# Programming Guide)](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/ "docs.microsoft.com")  
 [Example COM Class (MSDN)](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/example-com-class "docs.microsoft.com")  
@@ -71,9 +73,6 @@ probably not available on most Vista machines.
 [Show detailed browser from a property grid](https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992 "stackoverflow.com")  
 
 ##### Compiler-supported code comments
-
-The compiler-supported code comments are used by Visual Studio for 
-intellisense.  
 
 [Documenting your code with XML comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc "docs.microsoft.com")  
 [XML Documentation Comments (C# Programming Guide)](https://github.com/dotnet/docs/blob/master/docs/csharp/programming-guide/xmldoc/xml-documentation-comments.md "github.com/dotnet/docs")  
