@@ -21,10 +21,8 @@
 '- lines with html will not be wrapped with p tags <br />
 '- use a single quote by itself for an empty line <br />
 '- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
-'- Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+'- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
 '
-'''- for an empty line within a &ltpre&gt block, use two single quotes followed by a space. If you are using Visual Studio, you may need to change an option: Tools | Options | Environment | Trailing Whitespace | Remove Whitespace on Save: False <br />
-'''Use two single quotes for code: the text will be wrapped with pre tags. But for multi-line code snippets, enclose all lines, separated by &lt;br /&gt;, in single set of pre tags.<br />
 'Use three single quotes for remarks that should not appear in the documentation <br />
 '
 'Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
@@ -166,7 +164,7 @@ Class DocGenerator
 
     'Method SetFilesToDocument
     'Parameter: wildcard(s)
-    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".
+    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
     Private Sub ValidateConfiguration
@@ -340,7 +338,7 @@ Class DocGenerator
     'Property Colorize
     'Parameters: -
     'Returns: -
-    'Remarks: Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (experimental, with GFM), the code lines will not wrap. Default is True
+    'Remarks: Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.
     Property Get Colorize : Colorize = colorize_ : End Property
     Property Let Colorize(value) : colorize_ = value : End Property
     Private colorize_

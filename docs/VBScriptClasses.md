@@ -150,7 +150,7 @@ Use four single quotes (''''), if the script doesn't contain a class statement, 
 |Method|SetDocFolder|a folder|N/A|Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK.|
 |Method|SetDocName|a filename|N/A|Required. Must be set before calling the Generate method. Specifies the name of the documentation file, including the filename extension (.html suggested).|
 |Method|SetTitle|a string|N/A|Required. Must be set before calling the Generate method. Sets the title for the documentation.|
-|Method|SetFilesToDocument|wildcard(s)|N/A|Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with " | ".|
+|Method|SetFilesToDocument|wildcard(s)|N/A|Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;|
 |Method|Generate|None|N/A|Generate comment-based documentation for the scripts in the specified folder.|
 |Method|View|None|N/A|Open the documentation file for viewing|
 |Property|Colorize|-|-|Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (experimental, with GFM), the code lines will not wrap. Default is True|

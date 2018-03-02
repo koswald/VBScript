@@ -2,8 +2,7 @@
 '
 ' Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />
 ' Four base tags are supported: summary, parameters, returns, and remarks.<br />
-' Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.
-
+' Within these tags, html tags are supported. <br />
 ' Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.
 '
 Class DocGeneratorCS
