@@ -688,9 +688,9 @@ Clipboard procedures
 |Property|GetDefaults|None|an array|Returns an array of common environment variables pre-installed with some versions of Windows&reg;. Not exhaustive.|
 
 ## VBSEventLogger
-Adds an event entry to a log file  
+Logs messages to the Application event log.  
   
-Wrapper for the Windows Script Host (WSH) WshShell.LogEvent method  
+Wraps the LogEvent method of the WScript.Shell object.  
   
 To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.  
   
@@ -798,7 +798,7 @@ Usage method two. This method has the advantage that the name of the calling scr
 |Method|ViewFolder|None|N/A|Open the log folder|
 |Property|WordPad|None|a filespec|Can be used as the argument for the SetViewer method in order to open files with WordPad when the View method is called.|
 |Property|GetDefaultLogFolder|None|a folder|Retrieves the default log folder, %AppData%\VBScripts\logs|
-|Property|GetLogFilePath|None|a filespec|Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt|
+|Property|GetLogFilePath|None|a filespec|Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt|
 
 ## VBSPower
 Power functions: shutdown, restart, logoff, sleep, and hibernate.  

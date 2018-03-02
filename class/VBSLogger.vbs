@@ -141,7 +141,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Property GetLogFilePath
     'Returns a filespec
-    'Remark: Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt
+    'Remark: Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt
     Property Get GetLogFilePath : GetLogFilePath = logFile : End Property
 
     Sub Class_Terminate 'event fires when the logger instance goes out of scope or is Set to Nothing

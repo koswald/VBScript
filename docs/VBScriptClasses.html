@@ -2007,9 +2007,9 @@
       <div>
          <h4 class="heading" id=26>VBSEventLogger</h4>
          <div class="detail">
-            <p>Adds an event entry to a log file</p>
+            <p>Logs messages to the Application event log.</p>
             <p></p>
-            <p>Wrapper for the Windows Script Host (WSH) WshShell.LogEvent method</p>
+            <p>Wraps the LogEvent method of the WScript.Shell object.</p>
             <p></p>
             <p>To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.</p>
             <p></p>
@@ -2412,7 +2412,7 @@
                   <td>GetLogFilePath</td>
                   <td>None</td>
                   <td>a filespec</td>
-                  <td>Retreives the filespec for the log file, with environment variables expanded. Default: &ltGetDefaultLogFolder&gt\YYYY-MM-DD-DayOfWeek.txt</td>
+                  <td>Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt</td>
                </tr>
             </table>
          </div>

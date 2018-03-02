@@ -1,7 +1,7 @@
 
-'Adds an event entry to a log file
+'Logs messages to the Application event log.
 '
-'Wrapper for the Windows Script Host (WSH) WshShell.LogEvent method
+'Wraps the LogEvent method of the WScript.Shell object.
 '
 'To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.
 '
