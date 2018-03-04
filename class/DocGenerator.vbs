@@ -4,21 +4,19 @@
 'Usage Example
 '<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
 '
-'<h5> Example of well-formed comments before a Sub statement </h5>
+'Example of well-formed comments before a Sub statement
 ' Note: A remark is required for Methods (Subs).
 '
 '<pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
 
-'<h5> Example of well-formed comments before a Property or Function statement </h5>
-' Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.
+'Example of well-formed comments before a Property or Function statement.
+'Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.
 '
 '<pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
 
-'<h5> Notes for the comment syntax at the beginning of a script </h5>
+'Notes for the comment syntax at the beginning of a script
 
 'Use a single quote (') for general comments <br />
-'- lines without html will be wrapped with p tags <br />
-'- lines with html will not be wrapped with p tags <br />
 '- use a single quote by itself for an empty line <br />
 '- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
 '- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />

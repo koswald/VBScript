@@ -9,6 +9,7 @@
 [FolderChooser](#folderchooser)  
 [FolderChooser2](#folderchooser2)  
 [IconExtractor](#iconextractor)  
+[IdlePreventer](#idlepreventer)  
 [NotifyIcon](#notifyicon)  
 [ProgressBar](#progressbar)  
 [SpeechSynthesis](#speechsynthesis)  
@@ -104,6 +105,19 @@
 | IconExtractor| | Extracts an icon from a .dll or .exe file. <span class="red"> This class is not accessible to VBScript. </span>| | | Type| VBScripting |
 | Extract| IconExtractor| Extracts an icon from the specified .dll or .exe file. Other parameters: <tt>number</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon or small icon.| an icon| file, number, largeIcon| Method| VBScripting |
 
+## IdlePreventer
+
+| Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
+| :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
+| IdlePreventer| | Provides something like presentation mode for non-Pro Windows systems, which don't have presentation.exe. Adapted from a <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow post</a> and a <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net post</a>. See the <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState docs</a>.| | | Type| VBScripting |
+| IIdlePreventer| | The COM interface for IdlePreventer. | | | Type| VBScripting |
+| (Constructor)| IdlePreventer| Constructor | | | Method| VBScripting |
+| PreventIdle| IdlePreventer| Prevents the system from going into an idle state. Also prevents the monitor from powering down.| | | Method| VBScripting |
+| AllowIdle| IdlePreventer| Allows the computer to go into an idle state after having prevented it with the PreventIdle method. | | | Method| VBScripting |
+| Dispose| IdlePreventer| Disposes of the object's resources. | | | Method| VBScripting |
+| LogOps| IdlePreventer| Gets or sets whether operations are logged to the event log. Default is False.| | | Property| VBScripting |
+| RefreshPeriod| IdlePreventer| Gets or sets the time in milliseconds between refreshes of the PreventIdle setting. Default is 30,000. | | | Property| VBScripting |
+
 ## NotifyIcon
 
 | Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
@@ -118,6 +132,8 @@
 | ShowBalloonTip| NotifyIcon| Show the balloon tip. | | | Method| VBScripting |
 | AddMenuItem| NotifyIcon| Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function.| | menuText, callbackRef| Method| VBScripting |
 | InvokeCallbackByIndex| NotifyIcon| Provide callback testability from VBScript. | | | Method| VBScripting |
+| DisableMenuItem| NotifyIcon| Disable a menu item | | | Method| VBScripting |
+| EnableMenuItem| NotifyIcon| Enable a menu item | | | Method| VBScripting |
 | ShowContextMenu| NotifyIcon| Show the context menu. Public in order to provide testability from VBScript.| | | Method| VBScripting |
 | SetBalloonTipCallback| NotifyIcon| Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>| | | Method| VBScripting |
 | Text| NotifyIcon| Gets or sets the text shown when the mouse hovers over the system tray icon. | | | Property| VBScripting |

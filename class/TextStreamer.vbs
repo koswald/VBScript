@@ -1,9 +1,9 @@
 
 'Open a file as a text stream for reading, writing, or appending.
 
-'<h5> Methods for use with the text stream that is returned by the Open method: </h5>
+'Methods for use with the text stream that is returned by the Open method:
 
-'<p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>
+'<em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line
 '
 Class TextStreamer
 

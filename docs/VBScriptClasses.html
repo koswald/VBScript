@@ -241,21 +241,19 @@
             <p>Usage Example</p>
             <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
             <p></p>
-            <h5> Example of well-formed comments before a Sub statement </h5>
+            <p>Example of well-formed comments before a Sub statement</p>
             <p> Note: A remark is required for Methods (Subs).</p>
             <p></p>
             <pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
-            <h5> Example of well-formed comments before a Property or Function statement </h5>
-            <p> Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.</p>
+            <p>Example of well-formed comments before a Property or Function statement.</p>
+            <p>Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.</p>
             <p></p>
             <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
-            <h5> Notes for the comment syntax at the beginning of a script </h5>
+            <p>Notes for the comment syntax at the beginning of a script</p>
             Use a single quote (') for general comments <br />
-            - lines without html will be wrapped with p tags <br />
-            - lines with html will not be wrapped with p tags <br />
             - use a single quote by itself for an empty line <br />
             - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
-            - Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+            - Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
             <p></p>
             Use three single quotes for remarks that should not appear in the documentation <br />
             <p></p>
@@ -323,7 +321,7 @@
                   <td>Colorize</td>
                   <td>-</td>
                   <td>-</td>
-                  <td>Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (experimental, with GFM), the code lines will not wrap. Default is True</td>
+                  <td>Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.</td>
                </tr>
             </table>
          </div>
@@ -336,7 +334,7 @@
             <p></p>
              Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />
              Four base tags are supported: summary, parameters, returns, and remarks.<br />
-            <p> Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.</p>
+             Within these tags, html tags are supported. <br />
             <p> Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.</p>
             <p></p>
             <table>
@@ -1395,8 +1393,8 @@
          <h4 class="heading" id=18>TextStreamer</h4>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
-            <h5> Methods for use with the text stream that is returned by the Open method: </h5>
-            <p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>
+            <p>Methods for use with the text stream that is returned by the Open method:</p>
+            <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line
             <p></p>
             <table>
                <tr>

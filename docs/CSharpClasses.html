@@ -591,6 +591,91 @@
   </tr>
 </table>
 
+<h2>IdlePreventer</h2>
+<table>
+  <tr>
+    <th> Member name </th>
+    <th> Member of </th>
+    <th> Remarks </th>
+    <th> Returns </th>
+    <th> Parameters </th>
+    <th> Kind </th>
+    <th> Namespace </th>
+  </tr>
+  <tr>
+    <td> IdlePreventer </td>
+    <td> </td>
+    <td> Provides something like presentation mode for non-Pro Windows systems, which don't have presentation.exe. Adapted from a <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow post</a> and a <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net post</a>. See the <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState docs</a>. </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Type </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> IIdlePreventer </td>
+    <td> </td>
+    <td> The COM interface for IdlePreventer.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Type </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> (Constructor) </td>
+    <td> IdlePreventer </td>
+    <td> Constructor  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> PreventIdle </td>
+    <td> IdlePreventer </td>
+    <td> Prevents the system from going into an idle state. Also prevents the monitor from powering down. </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> AllowIdle </td>
+    <td> IdlePreventer </td>
+    <td> Allows the computer to go into an idle state after having prevented it with the PreventIdle method.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> Dispose </td>
+    <td> IdlePreventer </td>
+    <td> Disposes of the object's resources.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> LogOps </td>
+    <td> IdlePreventer </td>
+    <td> Gets or sets whether operations are logged to the event log. Default is False. </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Property </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> RefreshPeriod </td>
+    <td> IdlePreventer </td>
+    <td> Gets or sets the time in milliseconds between refreshes of the PreventIdle setting. Default is 30,000.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Property </td>
+    <td> VBScripting </td>
+  </tr>
+</table>
+
 <h2>NotifyIcon</h2>
 <table>
   <tr>
@@ -687,6 +772,24 @@
     <td> InvokeCallbackByIndex </td>
     <td> NotifyIcon </td>
     <td> Provide callback testability from VBScript.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> DisableMenuItem </td>
+    <td> NotifyIcon </td>
+    <td> Disable a menu item  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> EnableMenuItem </td>
+    <td> NotifyIcon </td>
+    <td> Enable a menu item  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>

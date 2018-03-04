@@ -116,7 +116,7 @@ Usage Example
  End With
 ```
   
-<h5> Example of well-formed comments before a Sub statement </h5>  
+Example of well-formed comments before a Sub statement  
  Note: A remark is required for Methods (Subs).  
   
 ```vb
@@ -124,21 +124,19 @@ Usage Example
 'Parameters: varName, varType
 'Remark: Details about the parameters.
 ```
-<h5> Example of well-formed comments before a Property or Function statement </h5>  
- Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.  
+Example of well-formed comments before a Property or Function statement.  
+Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.  
   
 ```vb
 'Property: PropertyName
 'Returns: a string
 'Remark: A remark is not required for a Property or Function.
 ```
-<h5> Notes for the comment syntax at the beginning of a script </h5>  
+Notes for the comment syntax at the beginning of a script  
 Use a single quote (') for general comments <br />  
-- lines without html will be wrapped with p tags <br />  
-- lines with html will not be wrapped with p tags <br />  
 - use a single quote by itself for an empty line <br />  
 - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
-- Wrap other code with <code>code</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
+- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
   
 Use three single quotes for remarks that should not appear in the documentation <br />  
   
@@ -153,14 +151,14 @@ Use four single quotes (''''), if the script doesn't contain a class statement, 
 |Method|SetFilesToDocument|wildcard(s)|N/A|Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;|
 |Method|Generate|None|N/A|Generate comment-based documentation for the scripts in the specified folder.|
 |Method|View|None|N/A|Open the documentation file for viewing|
-|Property|Colorize|-|-|Gets or sets whether a &lt;pre&gt; code block in the markdown (.md) document (assumed to be VBScript) is colorized. If False (experimental, with GFM), the code lines will not wrap. Default is True|
+|Property|Colorize|-|-|Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.|
 
 ## DocGeneratorCS
  DocGeneratorCS class  
   
  Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />  
  Four base tags are supported: summary, parameters, returns, and remarks.<br />  
- Within these tags, html tags are supported. While not all html tags are supported by markdown, they should at least be tolerated, subject to the Note below.  
+ Within these tags, html tags are supported. <br />  
  Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.  
   
 | Procedure | Name | Parameter | Return | Comment |
@@ -513,8 +511,8 @@ Usage example
 
 ## TextStreamer
 Open a file as a text stream for reading, writing, or appending.  
-<h5> Methods for use with the text stream that is returned by the Open method: </h5>  
-<p> <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line </p>  
+Methods for use with the text stream that is returned by the Open method:  
+<em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
