@@ -184,6 +184,18 @@ namespace VBScripting
             }
         }
 
+        /// <summary> Disable a menu item </summary>
+        public void DisableMenuItem(int index)
+        {
+            this.contextMenu.MenuItems[index].Enabled = false;
+        }
+
+        /// <summary> Enable a menu item </summary>
+        public void EnableMenuItem(int index)
+        {
+            this.contextMenu.MenuItems[index].Enabled = true;
+        }
+
         // show the context menu on left mouse click too
         private void notifyIcon_MouseUp(object Sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -283,6 +295,14 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(16)]
         void SetBalloonTipCallback(object callbackRef);
+
+        /// <summary> </summary>
+        [DispId(17)]
+        void DisableMenuItem(int index);
+
+        /// <summary> </summary>
+        [DispId(18)]
+        void EnableMenuItem(int index);
     }
 
     /// <summary> Supplies the type required by NotifyIcon.ToolTipIcon </summary>

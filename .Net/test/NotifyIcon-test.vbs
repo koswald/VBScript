@@ -89,21 +89,6 @@ Sub Initialize
     Set format = New StringFormatter
     'show the test-case message
     Set testCaseMessage = sh.Exec("wscript fixture\NotifyIcon-test-case.vbs")
-    Dim shel32dllIconExplorerIcons : shel32dllIconExplorerIcons = Array("" _
-        , shell32_dll, 0, smallIcon, "blank page" _
-        , shell32_dll, 28, smallIcon, "sharing hand" _
-        , shell32_dll, 56, smallIcon, "search pc" _
-        , shell32_dll, 84, smallIcon, "block diagram" _
-        , shell32_dll, 112, smallIcon, "power switch" _
-        , shell32_dll, 140, smallIcon, "easel" _
-        , shell32_dll, 168, smallIcon, "stereo speaker" _
-        , shell32_dll, 196, smallIcon, "cell phone" _
-        , shell32_dll, 224, smallIcon, "? on page" _
-        , shell32_dll, 252, smallIcon, "split window" _
-        , shell32_dll, 280, smallIcon, "file folders + diskette" _
-        , shell32_dll, 308, smallIcon, "up arrow" _
-        , shell32_dll, 326, smallIcon, "pic-bulleted list" _
-    )
     Dim shel32dllInterestingIcons : shel32dllInterestingIcons = Array("" _
         , shell32_dll, 77, smallIcon, "exclamation" _
         , shell32_dll, 43, smallIcon, "gold star" _
