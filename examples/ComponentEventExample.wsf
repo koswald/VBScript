@@ -1,4 +1,4 @@
-<job id="usage demo for ComponentEventExample.wsc">
+<job id=".wsf usage demo for ComponentEventExample.wsc">
     <object 
         progid="VBScripting.EventExample"
         id="vee"

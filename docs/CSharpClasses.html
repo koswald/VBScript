@@ -591,7 +591,7 @@
   </tr>
 </table>
 
-<h2>IdlePreventer</h2>
+<h2>IdleTimer</h2>
 <table>
   <tr>
     <th> Member name </th>
@@ -603,18 +603,18 @@
     <th> Namespace </th>
   </tr>
   <tr>
-    <td> IdlePreventer </td>
+    <td> IdleTimer </td>
     <td> </td>
-    <td> Provides something like presentation mode for non-Pro Windows systems, which don't have presentation.exe. Adapted from a <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow post</a> and a <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net post</a>. See the <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState docs</a>. </td>
+    <td> Provides something like presentation mode for Windows systems that don't have presentation.exe. Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> IIdlePreventer </td>
+    <td> IIdleTimer </td>
     <td> </td>
-    <td> The COM interface for IdlePreventer.  </td>
+    <td> The COM interface for VBScripting.IdleTimer.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -622,7 +622,7 @@
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> IdlePreventer </td>
+    <td> IdleTimer </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
@@ -630,18 +630,18 @@
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> PreventIdle </td>
-    <td> IdlePreventer </td>
-    <td> Prevents the system from going into an idle state. Also prevents the monitor from powering down. </td>
+    <td> PreventSleep </td>
+    <td> IdleTimer </td>
+    <td> Tends to prevent the system from entering a suspend (sleep) state or hibernation. Other applications or direct user action may still cause the computer to sleep or hibernate. Uses a private <em> reset</em> timer to periodically reset the system idle timer. By default, also prevents the monitor from powering down; this can be changed by setting PreventSleepState to &amp;h80000001 before calling PreventSleep. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> AllowIdle </td>
-    <td> IdlePreventer </td>
-    <td> Allows the computer to go into an idle state after having prevented it with the PreventIdle method.  </td>
+    <td> AllowSleep </td>
+    <td> IdleTimer </td>
+    <td> Allows the computer to go into a sleep state. Reverses the effect of the PreventSleep method.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
@@ -649,7 +649,7 @@
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> IdlePreventer </td>
+    <td> IdleTimer </td>
     <td> Disposes of the object's resources.  </td>
     <td>  </td>
     <td>  </td>
@@ -657,329 +657,82 @@
     <td> VBScripting </td>
   </tr>
   <tr>
+    <td> InitialState </td>
+    <td> IdleTimer </td>
+    <td> Gets the initial state.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Property </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> PreventSleepState </td>
+    <td> IdleTimer </td>
+    <td> Gets or sets the state for preventing sleep. Default is &amp;h80000003.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Property </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> AllowSleepState </td>
+    <td> IdleTimer </td>
+    <td> Gets or sets the state for allowing sleep. Default is &amp;h80000000.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Property </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
     <td> LogOps </td>
-    <td> IdlePreventer </td>
-    <td> Gets or sets whether operations are logged to the event log. Default is False. </td>
+    <td> IdleTimer </td>
+    <td> Gets or sets whether operations are logged to the Application event log. Default is False. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> RefreshPeriod </td>
-    <td> IdlePreventer </td>
-    <td> Gets or sets the time in milliseconds between refreshes of the PreventIdle setting. Default is 30,000.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-</table>
-
-<h2>NotifyIcon</h2>
-<table>
-  <tr>
-    <th> Member name </th>
-    <th> Member of </th>
-    <th> Remarks </th>
-    <th> Returns </th>
-    <th> Parameters </th>
-    <th> Kind </th>
-    <th> Namespace </th>
-  </tr>
-  <tr>
-    <td> NotifyIcon </td>
-    <td> </td>
-    <td> Provides a system tray icon for VBScript, for illustration purposes.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Type </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> INotifyIcon </td>
-    <td> </td>
-    <td> The COM interface for NotifyIcon.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Type </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> (Constructor) </td>
-    <td> NotifyIcon </td>
-    <td> Constructor  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> SetIconByIcoFile </td>
-    <td> NotifyIcon </td>
-    <td> Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </td>
-    <td>  </td>
-    <td> fileName </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> SetIconByDllFile </td>
-    <td> NotifyIcon </td>
-    <td> Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </td>
-    <td>  </td>
-    <td> fileName, index, largeIcon </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> SetBalloonTipIcon </td>
-    <td> NotifyIcon </td>
-    <td> Sets the icon of the "balloon tip" or notification. The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </td>
-    <td>  </td>
-    <td> type </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Dispose </td>
-    <td> NotifyIcon </td>
-    <td> Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ShowBalloonTip </td>
-    <td> NotifyIcon </td>
-    <td> Show the balloon tip.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> AddMenuItem </td>
-    <td> NotifyIcon </td>
-    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
-    <td>  </td>
-    <td> menuText, callbackRef </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> InvokeCallbackByIndex </td>
-    <td> NotifyIcon </td>
-    <td> Provide callback testability from VBScript.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> DisableMenuItem </td>
-    <td> NotifyIcon </td>
-    <td> Disable a menu item  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> EnableMenuItem </td>
-    <td> NotifyIcon </td>
-    <td> Enable a menu item  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ShowContextMenu </td>
-    <td> NotifyIcon </td>
-    <td> Show the context menu. Public in order to provide testability from VBScript. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> SetBalloonTipCallback </td>
-    <td> NotifyIcon </td>
-    <td> Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Text </td>
-    <td> NotifyIcon </td>
-    <td> Gets or sets the text shown when the mouse hovers over the system tray icon.  </td>
+    <td> ResetPeriod </td>
+    <td> IdleTimer </td>
+    <td> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> Visible </td>
-    <td> NotifyIcon </td>
-    <td> Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> BalloonTipTitle </td>
-    <td> NotifyIcon </td>
-    <td> Gets or sets the title of the "balloon tip" or notification.  </td>
-    <td>  </td>
+    <td> ES_AWAYMODE_REQUIRED </td>
+    <td> IdleTimer </td>
+    <td> Typically not required or recommended. See <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>.  </td>
+    <td> &amp;h00000040 </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> BalloonTipText </td>
-    <td> NotifyIcon </td>
-    <td> Gets or sets the text of the "balloon tip" or notification.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> BalloonTipLifetime </td>
-    <td> NotifyIcon </td>
-    <td> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ToolTipIcon </td>
-    <td> NotifyIcon </td>
-    <td> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> </td>
-    <td> a ToolTipIconT </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ToolTipIconT </td>
-    <td> </td>
-    <td> Supplies the type required by NotifyIcon.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Type </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Error </td>
-    <td> ToolTipIconT </td>
+    <td> ES_CONTINUOUS </td>
+    <td> IdleTimer </td>
     <td>   </td>
-    <td> 1 </td>
+    <td> &amp;h80000000 </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> Info </td>
-    <td> ToolTipIconT </td>
+    <td> ES_DISPLAY_REQUIRED </td>
+    <td> IdleTimer </td>
     <td>   </td>
-    <td> 2 </td>
+    <td> &amp;h00000002 </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> None </td>
-    <td> ToolTipIconT </td>
+    <td> ES_SYSTEM_REQUIRED </td>
+    <td> IdleTimer </td>
     <td>   </td>
-    <td> 3 </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Warning </td>
-    <td> ToolTipIconT </td>
-    <td>   </td>
-    <td> 4 </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> CallbackEventSettings </td>
-    <td> </td>
-    <td> Settings for saving VBScript method references. This class is not accessible from VBScript.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Type </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> (Constructor) </td>
-    <td> CallbackEventSettings </td>
-    <td> Constructor  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> AddRef </td>
-    <td> CallbackEventSettings </td>
-    <td> Adds a CallbackReference instance reference to the list.  </td>
-    <td>  </td>
-    <td> callbackRef </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Refs </td>
-    <td> CallbackEventSettings </td>
-    <td> Gets or sets a list of callback references.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> CallbackReference </td>
-    <td> </td>
-    <td> An orderly way to save the index and callback reference for a single menu item. This class is not accessible to VBScript. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Type </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> (Constructor) </td>
-    <td> CallbackReference </td>
-    <td> Constructor  </td>
-    <td>  </td>
-    <td> index, reference </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Index </td>
-    <td> CallbackReference </td>
-    <td> This Index corresponds to the Index of a menuItem in the context menu.  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> Reference </td>
-    <td> CallbackReference </td>
-    <td> COM object generated by VBScript's GetRef Function.  </td>
-    <td>  </td>
+    <td> &amp;h00000001 </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>

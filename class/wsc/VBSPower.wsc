@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?component error="true"?>
+<component>
+	<registration
+		description="wrapper for the VBSPower class"
+		classid="{ADCEC089-30E3-11D7-86BF-00606744568C}"
+		progid="VBScripting.VBSPower">
+	</registration>
+
+	<public>
+    <method name="Shutdown" />
+    <method name="Restart" />
+    <method name="Logoff" />
+    <method name="Sleep" />
+    <method name="Hibernate" />
+    <method name="EnableHibernation" />
+    <method name="DisableHibernation" />
+    <method name="SetForce" />
+    <method name="SetDebug" />
+	</public>
+
+  <script language="VBScript" src="..\VBSPower.vbs" /> <!-- class -->
+  <script language="VBScript" src="src\VBSPowerWrapper.vbs" /> <!-- wrapper -->
+</component>
