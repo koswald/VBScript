@@ -23,8 +23,7 @@
             Dim nameInput, valueInput
             Dim feedback
 
-            Main            
-            Sub Main
+            Sub Window_OnLoad
                 Set si = New StartupItems
                 Dim vc : Set vc = CreateObject("VBScripting.Admin")
                 privilegesAreElevated = vc.PrivilegesAreElevated
@@ -37,6 +36,11 @@
                 Set tableDiv = document.createElement("div")
                 document.body.insertBefore tableDiv
                 DrawTableDiv
+                On Error Resume Next
+                    'On F5 (refresh) don't allow the hiveSelector
+                    'to remain at HKLM while the HKCU items are listed
+                    hiveSelector.selectedIndex = 0
+                On Error Goto 0
             End Sub
             
             Sub DrawSelectDiv
@@ -179,14 +183,6 @@
                 For inputIndex = 0 To inputs.length - 1
                     inputs(inputIndex).disabled = Not enabling
                 Next
-            End Sub
-
-            Sub Window_OnLoad
-                On Error Resume Next
-                    'when F5-refreshing the app don't allow the hiveSelector
-                    'to remain at HKLM while the HKCU items are listed
-                    hiveSelector.selectedIndex = 0
-                On Error Goto 0
             End Sub
 
             Class StartupItems

@@ -623,25 +623,7 @@
   <tr>
     <td> (Constructor) </td>
     <td> IdleTimer </td>
-    <td> Constructor  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> PreventSleep </td>
-    <td> IdleTimer </td>
-    <td> Tends to prevent the system from entering a suspend (sleep) state or hibernation. Other applications or direct user action may still cause the computer to sleep or hibernate. Uses a private <em> reset</em> timer to periodically reset the system idle timer. By default, also prevents the monitor from powering down; this can be changed by setting PreventSleepState to &amp;h80000001 before calling PreventSleep. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> AllowSleep </td>
-    <td> IdleTimer </td>
-    <td> Allows the computer to go into a sleep state. Reverses the effect of the PreventSleep method.  </td>
+    <td> Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
@@ -657,82 +639,37 @@
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> InitialState </td>
+    <td> SystemRequired </td>
     <td> IdleTimer </td>
-    <td> Gets the initial state.  </td>
+    <td> Gets or sets whether the system should be kept from going into a suspend (sleep) state or hibernate. Default is False.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> PreventSleepState </td>
+    <td> DisplayRequired </td>
     <td> IdleTimer </td>
-    <td> Gets or sets the state for preventing sleep. Default is &amp;h80000003.  </td>
+    <td> Gets or sets whether the monitor should be kept awake. Default is False.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> AllowSleepState </td>
+    <td> currentState </td>
     <td> IdleTimer </td>
-    <td> Gets or sets the state for allowing sleep. Default is &amp;h80000000.  </td>
+    <td> Gets or sets a double describing the current thread execution state.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> LogOps </td>
-    <td> IdleTimer </td>
-    <td> Gets or sets whether operations are logged to the Application event log. Default is False. </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ResetPeriod </td>
+    <td> resetPeriod </td>
     <td> IdleTimer </td>
     <td> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000.  </td>
     <td>  </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ES_AWAYMODE_REQUIRED </td>
-    <td> IdleTimer </td>
-    <td> Typically not required or recommended. See <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>.  </td>
-    <td> &amp;h00000040 </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ES_CONTINUOUS </td>
-    <td> IdleTimer </td>
-    <td>   </td>
-    <td> &amp;h80000000 </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ES_DISPLAY_REQUIRED </td>
-    <td> IdleTimer </td>
-    <td>   </td>
-    <td> &amp;h00000002 </td>
-    <td>  </td>
-    <td> Property </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> ES_SYSTEM_REQUIRED </td>
-    <td> IdleTimer </td>
-    <td>   </td>
-    <td> &amp;h00000001 </td>
     <td>  </td>
     <td> Property </td>
     <td> VBScripting </td>

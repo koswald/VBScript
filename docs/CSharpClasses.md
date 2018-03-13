@@ -110,19 +110,12 @@
 | :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
 | IdleTimer| | Provides something like presentation mode for Windows systems that don't have presentation.exe. Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts.| | | Type| VBScripting |
 | IIdleTimer| | The COM interface for VBScripting.IdleTimer. | | | Type| VBScripting |
-| (Constructor)| IdleTimer| Constructor | | | Method| VBScripting |
-| PreventSleep| IdleTimer| Tends to prevent the system from entering a suspend (sleep) state or hibernation. Other applications or direct user action may still cause the computer to sleep or hibernate. Uses a private <em> reset</em> timer to periodically reset the system idle timer. By default, also prevents the monitor from powering down; this can be changed by setting PreventSleepState to &amp;h80000001 before calling PreventSleep.| | | Method| VBScripting |
-| AllowSleep| IdleTimer| Allows the computer to go into a sleep state. Reverses the effect of the PreventSleep method. | | | Method| VBScripting |
+| (Constructor)| IdleTimer| Constructor. Starts a private timer that periodically resets the system idle timer with the desired state. | | | Method| VBScripting |
 | Dispose| IdleTimer| Disposes of the object's resources. | | | Method| VBScripting |
-| InitialState| IdleTimer| Gets the initial state. | | | Property| VBScripting |
-| PreventSleepState| IdleTimer| Gets or sets the state for preventing sleep. Default is &amp;h80000003. | | | Property| VBScripting |
-| AllowSleepState| IdleTimer| Gets or sets the state for allowing sleep. Default is &amp;h80000000. | | | Property| VBScripting |
-| LogOps| IdleTimer| Gets or sets whether operations are logged to the Application event log. Default is False.| | | Property| VBScripting |
-| ResetPeriod| IdleTimer| Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. | | | Property| VBScripting |
-| ES_AWAYMODE_REQUIRED| IdleTimer| Typically not required or recommended. See <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. | &amp;h00000040| | Property| VBScripting |
-| ES_CONTINUOUS| IdleTimer|  | &amp;h80000000| | Property| VBScripting |
-| ES_DISPLAY_REQUIRED| IdleTimer|  | &amp;h00000002| | Property| VBScripting |
-| ES_SYSTEM_REQUIRED| IdleTimer|  | &amp;h00000001| | Property| VBScripting |
+| SystemRequired| IdleTimer| Gets or sets whether the system should be kept from going into a suspend (sleep) state or hibernate. Default is False. | | | Property| VBScripting |
+| DisplayRequired| IdleTimer| Gets or sets whether the monitor should be kept awake. Default is False. | | | Property| VBScripting |
+| currentState| IdleTimer| Gets or sets a double describing the current thread execution state. | | | Property| VBScripting |
+| resetPeriod| IdleTimer| Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. | | | Property| VBScripting |
 
 ## ProgressBar
 

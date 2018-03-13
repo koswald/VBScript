@@ -14,13 +14,15 @@
         <script
             language="VBScript">
             Sub KeepAwake
-                preventer.PreventSleep
+                it.SystemRequired = True
+                it.DisplayRequired = True
                 document.Title = "Presentation mode on"
                 Enable offButton
                 Disable onButton
             End Sub
             Sub AllowSleep
-                preventer.AllowSleep
+                it.SystemRequired = False
+                it.DisplayRequired = False
                 document.Title = "Presentation mode off"
                 Enable onButton
                 Disable offButton
@@ -28,20 +30,17 @@
             Sub Disable(htmlElement) : htmlElement.disabled = True : End Sub
             Sub Enable(htmlElement) : htmlElement.disabled = False : End Sub
 
-            Dim preventer
+            Dim it
             Dim offButton, onButton
             Sub Window_OnLoad
-                Set preventer = CreateObject("VBScripting.IdleTimer")
-                preventer.LogOps = False
+                Set it = CreateObject("VBScripting.IdleTimer")
                 Set offButton = document.getElementsByTagName("input")(0)
                 Set onButton = document.getElementsByTagName("input")(1)
-                document.Title = "Presentation mode off"
-                Enable onButton
-                Disable offButton
+                AllowSleep
             End Sub
             Sub Window_OnUnload
-                preventer.Dispose
-                Set preventer = Nothing
+                it.Dispose
+                Set it = Nothing
             End Sub
         </script>
         <input
