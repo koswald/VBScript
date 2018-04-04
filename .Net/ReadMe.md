@@ -21,24 +21,26 @@ Among the options for building (compiling and registering) the class libraries a
 
 Features include the following:  
 
-0) [Documentation].
-1) [Manual tests] that demonstrate functionality.
-2) For an example of a COM event, or callback, see [NotifyIcon.cs]
+1) [Documentation].
+2) [Manual tests] that demonstrate functionality.
+3) For an example of a COM event, or callback, see [NotifyIcon.cs]
    and [NotifyIcon-test.vbs].
-3) For an example of a progress bar (for illustration only), 
+4) For an example of a progress bar (for illustration only), 
    see [ProgressBar.cs] and [ProgressBar-test.vbs]. 
-4) For a simple example of making a C# method available to 
+5) For a simple example of making a C# method available to 
    VBScript, see [EventLogger.cs].
-5) For an example of a class requiring an assembly reference, and 
+6) For an example of a class requiring an assembly reference, and 
    an illustration of how to do it, see [SpeechSynthesis.cs],
    [SpeechSynthesis.rsp].
-6) For a user-friendly file chooser dialog, see [FileChooser.cs].
-7) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
+7) For a user-friendly file chooser dialog, see [FileChooser.cs].
+8) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
    and [FolderChooser2.cs]. These two files are adapted from 
    stackoverflow.com posts. The exposed features of the two are 
    identical. `FolderChooser2` is a backup in case `FolderChooser.cs`
    breaks due to future changes in the private members that are invoked 
    using [Reflection].
+
+## Compatibility
 
 Most thoroughly tested on Windows 10, the libraries 
 are all expected to work on Windows versions as old as Vista, with 

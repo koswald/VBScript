@@ -14,7 +14,7 @@
     <property name="ReadFrom" /> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
     <property name="LibraryPath" /> <!-- get the absolute path of the "class" folder -->
     <method name="SetLibraryPath" />
-    </public>
+  </public>
 
   <script language="VBScript" src="../EncodingAnalyzer.vbs" />
   <script language="VBScript" src="../Includer.vbs" />

@@ -13,8 +13,6 @@
     </head>
     <body>
         <script language="VBScript">
-            Setup
-            
             Sub DocKeyUp
                 If Esc = window.event.keyCode Then
                     typedStatement.value = ""
@@ -254,7 +252,7 @@
             Const configFile = "VBSInterpreter.config"
             Const delimiter = "_-_"
             
-            Sub Setup
+            Sub Window_OnLoad
                 rowCount = 0
                 savedStatements = ""
                 statementIndex = -1
@@ -271,14 +269,6 @@
                 On Error Resume Next
                     Set historyStream = fso.OpenTextFile(historyFile, ForAppending, CreateNew)
                     If Err Then ShowError Err.Description
-                On Error Goto 0
-            End Sub
-
-            ' this Sub gets called on load,
-            ' on F5 refresh, and on
-            ' document.parentWindow.location.reload
-            Sub Window_OnLoad
-                On Error Resume Next
                     typedStatement.focus
                 On Error Goto 0
             End Sub

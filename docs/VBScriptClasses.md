@@ -366,6 +366,8 @@ StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.
 |Method|SetStringValue|rootKey, subKey, valueName, value|N/A|Writes the specified REG_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.|
 |Property|GetExpandedStringValue|rootKey, subKey, valueName|a string|Returns the value of the specified registry location. The specified registry entry must be of type REG_EXPAND_SZ.|
 |Method|SetExpandedStringValue|rootKey, subKey, valueName, value|N/A|Writes the specified REG_EXPAND_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.|
+|Property|GetDWordValue|rootKey, subKey, valueName|a string|Returns the value of the specified registry location. The specified registry entry must be of type REG_EXPAND_SZ.|
+|Method|SetDWordValue|rootKey, subKey, valueName, value|N/A|Writes the specified REG_EXPAND_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.|
 |Property|HKLM|None|&H80000002|Represents HKEY_LOCAL_MACHINE. For use with the rootKey parameter.|
 |Property|HKCU|None|&H80000001|Represents HKEY_CURRENT_USER. For use with the rootKey parameter.|
 |Property|HKCR|None|&H80000000|Represents HKEY_CLASSES_ROOT. For use with the rootKey parameter.|
@@ -505,7 +507,7 @@ Usage example
 |Method|AssertEqual|actual, expected|N/A|Asserts that the specified two variants, of any subtype, are equal.|
 |Method|AssertErrorRaised|None|N/A|Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block.|
 |Method|DeleteFiles|an array|N/A|Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used.|
-|Property|MessageAppeared|None|a boolean|None|
+|Property|MessageAppeared|caption, seconds, keys|a boolean|Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False.|
 |Method|ShowSendKeysWarning|None|N/A|Shows a SendKeys warning: a warning message to not make mouse clicks or key presses.|
 |Method|CloseSendKeysWarning|None|N/A|Closes the SendKeys warning.|
 
@@ -796,7 +798,7 @@ Usage method two. This method has the advantage that the name of the calling scr
 |Method|SetViewer|a filespec|N/A|Optional. Customize the program that the View method uses to view log files. Default: Notepad.|
 |Method|ViewFolder|None|N/A|Open the log folder|
 |Property|WordPad|None|a filespec|Can be used as the argument for the SetViewer method in order to open files with WordPad when the View method is called.|
-|Property|GetDefaultLogFolder|None|a folder|Retrieves the default log folder, %AppData%\VBScripts\logs|
+|Property|GetDefaultLogFolder|None|a folder|Retrieves the default log folder, %AppData%\VBScripting\logs|
 |Property|GetLogFilePath|None|a filespec|Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt|
 
 ## VBSPower

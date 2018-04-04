@@ -85,9 +85,9 @@ Class TestingFramework
     End Sub
 
     'Function MessageAppeared
-    'Paramater: a string
+    'Parameter: caption, seconds, keys
     'Returns: a boolean
-    'Remaark: Waits for a dialog with the specified title-bar text (caption). If the dialog appears, acknowlege it and return True
+    'Remark: Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False.
     Function MessageAppeared(caption, seconds, keys)
         Dim i : i = 0
         While (Not sh.AppActivate(caption)) And i < seconds * 250

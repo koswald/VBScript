@@ -3,15 +3,6 @@
 '
 Class VBSTimer
 
-    Private startDate 'Date subtype
-    Private start 'single; seconds
-    Private precision 'integer; decimal places
-
-    Sub Class_Initialize
-        Reset
-        SetPrecision 2
-    End Sub
-
     'Function Split
     'Returns a rounded number (Single)
     'Remark: Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.
@@ -50,6 +41,15 @@ Class VBSTimer
     Sub Reset
         startDate = Now
         start = Timer  'the Timer function returns the number of seconds elapsed since midnight.
+    End Sub
+
+    Private startDate 'Date subtype
+    Private start 'single; seconds
+    Private precision 'integer; decimal places
+
+    Sub Class_Initialize
+        Reset
+        SetPrecision 2
     End Sub
 
 End Class

@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+    <head>
+        <hta:application
+            icon="msdt.exe"
+            innerBorder="No"
+            scroll="No">
+        <script language="VBScript">
+            self.resizeTo 450, 580
+            self.moveTo 900, 0
+        </script>
+    </head>
+    <body>
+        <script language="VBScript">
+            Sub PresentationMode
+                watcher.Watch = True
+                document.Title = "Presentation mode is on"
+                Enable offButton
+                Disable onButton
+                PublishStatus "Presentation"
+            End Sub
+            Sub NormalMode
+                watcher.Watch = False
+                document.Title = "Presentation mode is off"
+                Enable onButton
+                Disable offButton
+                PublishStatus "Normal"
+            End Sub
+            Sub ChargerMode
+                sh.Run "rundll32 user32.dll,LockWorkStation",, synchronous
+                app.Sleep 1000
+                watcher.MonitorOff
+                app.Sleep 1000
+                PresentationMode
+                PublishStatus "Presentation"
+            End Sub
+            Sub Disable(htmlElement) : htmlElement.disabled = True : End Sub
+            Sub Enable(htmlElement) : htmlElement.disabled = False : End Sub
+            Sub PublishStatus(newStatus)
+                Dim folder : folder = sh.ExpandEnvironmentStrings("%AppData%\VBScripting")
+                If Not fso.FolderExists(folder) Then fso.CreateFolder folder
+                Dim statusFile : statusFile = folder & "\" & app.GetBaseName & ".status"
+                Dim stream : Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
+                stream.WriteLine(newStatus)
+                stream.Close
+                Set stream = Nothing
+            End Sub
+
+            'Set the timeoutKey 'Attributes' DWord to 2 to enable 'Console lock display off timeout' in Advanced power options settings, Display section.
+            'Set to 1 to disable (default). https://www.windowscentral.com/how-extend-lock-screen-timeout-display-turn-windows-10
+            Sub SetTimeoutAttributes(newValue)
+                regUtil.SetDWordValue regUtil.HKLM, timeoutKey, "Attributes", newValue
+            End Sub
+            Function GetTimeoutAttributes
+                GetTimeoutAttributes = regUtil.GetDWordValue(regUtil.HKLM, timeoutKey, "Attributes")
+            End Function
+            Sub OptionChanged
+                 SetTimeoutAttributes enabler.options(enabler.SelectedIndex).value
+            End Sub
+            Sub ChangeACTimeout
+                sh.Run "cmd /c echo Changing AC VideoCOnLock to " & acSeconds.value & " seconds... & powercfg.exe /SETACVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK " & acSeconds.value & " & echo Done. & echo This setting may require a computer restart. & echo Press any key to exit & pause > nul",, synchronous
+                sh.Run "cmd /c echo Updating the current power scheme... & powercfg.exe /S SCHEME_CURRENT & echo Done. Press any key to exit & pause > nul"
+                acSeconds.value = ""
+            End Sub
+            Sub ChangeDCTimeout
+                sh.Run "cmd /c echo Changing DC VideoCOnLock to " & dcSeconds.value & " seconds... & powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK " & dcSeconds.value & " & echo Done. & echo This setting may require a computer restart. & echo Press any key to exit & pause > nul",, synchronous
+                sh.Run "cmd /c echo Updating the current power scheme... & powercfg.exe /S SCHEME_CURRENT & echo Done. Press any key to exit & pause > nul"
+                dcSeconds.value = ""
+            End Sub
+
+            Sub AdvancedPowerOptions
+                sh.Run "control.exe powercfg.cpl,,3"
+            End Sub
+            Sub PowerSleepSettings
+                sh.Run "ms-settings:powersleep"
+            End Sub
+            Sub PowerOptionsGlobalSettings
+                sh.Run "control.exe /name Microsoft.PowerOptions /page pageGlobalSettings"
+            End Sub
+            Sub PowerOptionsPlanSettings
+                sh.Run "control.exe /name Microsoft.PowerOptions /page pagePlanSettings"
+            End Sub
+
+            Const synchronous = True
+            Const ForWriting = 2, CreateNew = True
+            Const timeoutKey = "SYSTEM\CurrentControlSet\Control\Power\PowerSettings\7516b95f-f776-4464-8c53-06167f40cc99\8EC4B3A5-6868-48c2-BE75-4F3044BE88A7"
+            Dim enabler
+            Dim watcher, sh, regUtil, app, fso
+            Dim offButton, onButton, chargeButton
+            Dim acSeconds, saveAC, dcSeconds, saveDC
+            Dim optionEnabled, optionDisabled
+            Dim errMsg
+
+            Sub Window_OnLoad
+                Set watcher = CreateObject("VBScripting.Watcher")
+                Set app = CreateObject("VBScripting.VBSApp")
+                app.Init document
+                Dim includer : Set includer = CreateObject("VBScripting.Includer")
+                Execute includer.Read("RegistryUtility")
+                Set includer = Nothing
+                Set regUtil = New RegistryUtility
+                Set sh = CreateObject("WScript.Shell")
+                sh.CurrentDirectory = app.GetParentFolderName
+                Set fso = CreateObject("Scripting.FileSystemObject")
+
+                Set offButton = document.getElementsByTagName("input")(0)
+                Set onButton = document.getElementsByTagName("input")(1)
+                Set chargeButton = document.getElementsByTagName("input")(2)
+                Set acSeconds = document.getElementsByTagName("input")(3)
+                Set saveAC = document.getElementsByTagName("input")(4)
+                Set dcSeconds = document.getElementsByTagName("input")(5)
+                Set saveDC = document.getElementsByTagName("input")(6)
+
+                Set enabler = document.getElementsByTagName("select")(0)
+                Set enabler.OnChange = GetRef("OptionChanged")
+                enabler.style.marginTop = "10px"
+                Set errMsg = document.getElementsByTagName("div")(0)
+                If Not watcher.Privileged Then
+                    enabler.disabled = True
+                    acSeconds.disabled = True
+                    dcSeconds.disabled = True
+                    saveAC.disabled = True
+                    saveDC.disabled = True
+                    Dim msg : msg = "Elevated privileges are required to change this setting."
+                    enabler.Title = msg
+                    acSeconds.Title = msg
+                    dcSeconds.Title = msg
+                End If
+                Set optionDisabled = document.createElement("option")
+                Set optionEnabled = document.createElement("option")
+                optionDisabled.innerHTML = "Disabled"
+                optionEnabled.innerHTML = "Enabled"
+                optionDisabled.value = 1 'see Sub SetTimeoutAttributes comment above
+                optionEnabled.value = 2
+                enabler.insertBefore optionDisabled
+                enabler.insertBefore optionEnabled
+                If 1 = GetTimeoutAttributes Then
+                    enabler.SelectedIndex = 0
+                ElseIf 2 = GetTimeoutAttributes Then
+                    enabler.SelectedIndex = 1
+                Else
+                    MsgBox "Sub Window_OnLoad: Unexpected timeout attributes value: " & GetTimeoutAttributes, vbExclamation, document.Title
+                End If
+                NormalMode
+            End Sub
+            Sub Window_OnUnload
+                watcher.Dispose
+                Set watcher = Nothing
+                Set sh = Nothing
+                Set regUtil = Nothing
+                Set fso = Nothing
+            End Sub
+        </script>
+        
+        Presentation.vbs may require changes to Windows settings in 
+        order to work properly. Specifically, values may need to be 
+        increased that control when the following components go to 
+        sleep or turn off for both AC (plugged in) and DC (battery).
+        <fieldset>
+            <legend> Mode</legend>
+            <input
+                type="button"
+                value="Normal mode"
+                class="wideButton"
+                onclick="NormalMode" /><br />
+            <input
+                type="button"
+                value="Presentation mode"
+                class="wideButton"
+                onclick="PresentationMode" /><br />
+            <input
+                type="button"
+                value="Phone charger mode"
+                class="wideButton"
+                onclick="ChargerMode" /><br />
+        </fieldset>
+
+        <fieldset>
+            <legend> Presentation settings</legend>
+            <select></select> Console lock display off timeout <br />
+            <p class="label"> AC screen lock timeout, in seconds</p>
+            <input
+                type="text" />
+            <input
+                type="button"
+                value="Save"
+                onclick="ChangeACTimeout" /><br />
+            <p class="label"> DC screen lock timeout, in seconds</p>
+            <input
+                type="text" />
+            <input
+                type="button"
+                value="Save"
+                onclick="ChangeDCTimeout" /><br />
+            <input
+                type="button"
+                value="Power options advanced settings"
+                class="wideButton"
+                onclick="AdvancedPowerOptions" /><br />
+            <input
+                type="button"
+                value="Power options global settings"
+                class="wideButton"
+                onclick="PowerOptionsGlobalSettings" /><br />
+            <input
+                type="button"
+                value="Power options plan settings"
+                class="wideButton"
+                onclick="PowerOptionsPlanSettings" /><br />
+            <input
+                type="button"
+                value="Power & sleep settings"
+                class="wideButton"
+                onclick="PowerSleepSettings" /><br />
+        </fieldset>
+        <div class="errMsg"></div>
+    </body>
+    <style>
+        .wideButton {
+            width: 100%;
+            margin-top: 10px;
+        }
+        div {
+            margin: 10px;
+        }
+        body {
+            font-family: sans-serif;
+            background-color: ButtonFace;
+            font-size: smaller;
+        }
+        fieldset {
+            padding: 10px;
+            border-width: 3px;
+        }
+        .label {
+            margin-bottom: 4px;
+            margin-top: 8px;
+        }
+        .errMsg {
+            color: darkred;
+        }
+    </style>
+</html>

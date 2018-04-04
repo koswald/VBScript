@@ -10,16 +10,16 @@
 'Usage method two. This method has the advantage that the name of the calling script is not written on each line of the log.
 ' <pre>     log.Open <br />     log.Write "test two" <br />     log.Close </pre>
 '
-Class VBSLogger 'Logger for use in VBScript files
+Class VBSLogger
 
-'    Private oTimeFunctions, oTextStreamer
     Private streamer, dt, fs
-    Private sh, fso
+    Private sh
+    Private fso
     Private stream, logFile, logFolder, viewer
     Private scriptName, scriptFullName
 
     Sub Class_Initialize
-        WIth CreateObject("VBScripting.Includer") 'get class dependencies
+        With CreateObject("VBScripting.Includer") 'get class dependencies
             Execute .read("TimeFunctions")
             Execute .read("TextStreamer")
             Execute .read("VBSFileSystem")
@@ -36,10 +36,10 @@ Class VBSLogger 'Logger for use in VBScript files
             If Err Then scriptFullName = Replace(Replace(document.location.href, "file:///", ""), "%20", "") '.hta file
         On Error Goto 0
         scriptName = fso.GetFileName(scriptFullName)
-        SetLogFolder(GetDefaultLogFolder)
-        SetViewer(Notepad)
+        SetLogFolder GetDefaultLogFolder
+        SetViewer Notepad
         dt.LetDOWBeAbbreviated = True 'DOW = day of the week
-        UpdateLogFilePath(Now)
+        UpdateLogFilePath Now
     End Sub
 
     Property Get Notepad : Notepad = "Notepad" : End Property
@@ -49,7 +49,7 @@ Class VBSLogger 'Logger for use in VBScript files
     'Remark: Opens the log file, writes the specified string, then closes the log file. This is the default method for the VBSLogger class.
     Public Default Sub Log(msg) 'open the log file for appending, write the message, and then close the text stream
         PrivateOpen
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - " & scriptName & " - " & msg)
+        stream.WriteLine dt.GetFormattedTime(Now) & " - " & scriptName & ": " & msg
         PrivateClose
     End Sub
 
@@ -68,8 +68,8 @@ Class VBSLogger 'Logger for use in VBScript files
     End Sub
 
     Private Sub PrivateOpen 'open the log file as a text stream for appending
-        UpdateLogFilePath(Now)
-        streamer.SetFile(logFile)
+        UpdateLogFilePath Now
+        streamer.SetFile logFile
         PrivateClose 'attempt to close the stream, in case it is already open
         Set stream = streamer.Open
     End Sub
@@ -78,20 +78,20 @@ Class VBSLogger 'Logger for use in VBScript files
     'Remark: Opens the log file for writing. The log file is opened and remains open for writing. While it is open, other processes/scripts will be unable to write to it.
     Sub Open
         PrivateOpen
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - log opened by " & scriptName)
+        stream.WriteLine dt.GetFormattedTime(Now) & " - log opened by " & scriptName
     End Sub
 
     'Method Write
     'Parameter: a string
     'Remark: Writes the specified string to the log file.
     Sub Write(msg) 'write to the log with timestamp
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - " & msg)
+        stream.WriteLine dt.GetFormattedTime(Now) & " - " & msg
     End Sub
 
     'Method Close
     'Remark: Closes the log file text stream, enabling other process to write to it.
     Sub Close
-        stream.WriteLine(dt.GetFormattedTime(Now) & " - log closed by " & scriptName)
+        stream.WriteLine dt.GetFormattedTime(Now) & " - log closed by " & scriptName
         PrivateClose
     End Sub
 
@@ -104,13 +104,13 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method View
     'Remark: Opens the log file for viewing. Notepad is the default editor. See SetViewer.
-    Sub View 'open the log file for viewing in a text editor
+    Sub View
         If fso.FileExists(GetLogFilePath) Then
             sh.Run """" & viewer & """ """ & logFile & """"
         Else
             Dim msg : msg = "Today's log file hasn't been created " & _
                 "yet. Do you want to open the log folder?"
-            If vbOK = MsgBox(msg, vbOKCancel + vbQuestion) Then
+            If vbOK = MsgBox(msg, vbOKCancel + vbInformation, scriptName) Then
                 ViewFolder
             End If
         End If
@@ -123,7 +123,7 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Method ViewFolder
     'Remark: Open the log folder
-    Sub ViewFolder 'open Windows File Explorer at the log folder
+    Sub ViewFolder
         sh.Run "explorer """ & logFolder & """"
     End Sub
 
@@ -134,9 +134,9 @@ Class VBSLogger 'Logger for use in VBScript files
 
     'Property GetDefaultLogFolder
     'Returns a folder
-    'Remark: Retrieves the default log folder, %AppData%\VBScripts\logs
+    'Remark: Retrieves the default log folder, %AppData%\VBScripting\logs
     Property Get GetDefaultLogFolder
-        GetDefaultLogFolder                 = "%AppData%\VBScripts\logs"
+        GetDefaultLogFolder                 = "%AppData%\VBScripting\logs"
     End Property
 
     'Property GetLogFilePath
@@ -144,8 +144,10 @@ Class VBSLogger 'Logger for use in VBScript files
     'Remark: Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt
     Property Get GetLogFilePath : GetLogFilePath = logFile : End Property
 
-    Sub Class_Terminate 'event fires when the logger instance goes out of scope or is Set to Nothing
+    Sub Class_Terminate
         PrivateClose
+        Set sh = Nothing
+        Set fso = Nothing
     End Sub
 
 End Class

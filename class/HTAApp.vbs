@@ -44,6 +44,7 @@ Class HTAApp
     End Sub
 
     'Return an array of command line arguments.
+    'Undocumented Function is public for testability.
     Function ParseArgs(cl)
         If 0 = Len(Trim(cl)) Then ParseArgs = Array() : Exit Function
         Dim pos 'current position
@@ -60,7 +61,6 @@ Class HTAApp
         For pos = 1 To Len(cl)
             'get the current character
             char = Mid(cl, pos, 1)
-            'track double quotes
             If q = char Then qCount = qCount + 1
             If qCount mod 2 Then
 
@@ -100,7 +100,7 @@ Class HTAApp
             prevChar = char
         Next
 
-        'remove leading and trailing quotes
+        'remove leading and trailing spaces and quotes
         args = Trim(args)
         If q = Right(args, 1) Then args = Left(args, Len(args) - 1)
         If q = Left(args, 1) Then args = Right(args, Len(args) - 1)

@@ -1,45 +1,129 @@
-'System tray icon with option to
-'prevent the computer from going to sleep
-
 Option Explicit
-Const ALLOW_SLEEP = 0, PREVENT_SLEEP = 1 'menu indexes
-Const largeIcon = True, smallIcon = False
-Dim it : Set it = CreateObject("VBScripting.IdleTimer")
-Dim ni : Set ni = CreateObject("VBScripting.NotifyIcon")
-Dim sh : Set sh = CreateObject("WScript.Shell")
-ni.AddMenuItem "Allow sleep", GetRef("AllowSleep")
-ni.AddMenuItem "Prevent sleep", GetRef("PreventSleep")
-ni.AddMenuItem "Exit", GetRef("CloseAndExit")
-ni.Visible = True
-AllowSleep
-ListenForCallbacks
+purpose = "Show a system tray icon with options to prevent the computer and/or monitor from going to sleep."
+helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button."
+showNotifications = False
+Call Main
 
+Sub NormalMode
+    watcher.Watch = False
+    notifyIcon.DisableMenuItem normalModeMenuIndex
+    notifyIcon.EnableMenuItem presentationModeMenuIndex
+    notifyIcon.SetIconByDllFile "%SystemRoot%\System32\powercpl.dll", 5, largeIcon
+    If showNotifications Then
+        notifyIcon.BalloonTipText = "Presentation mode is off."
+        notifyIcon.SetBalloonTipIcon notifyIcon.ToolTipIcon.Info
+        notifyIcon.ShowBalloonTip
+    End If
+    notifyIcon.Text = "Presentation mode is off"
+    status = "Normal"
+    PublishStatus
+    csTimer.Stop
+End Sub
+Sub PresentationMode
+    watcher.Watch = True
+    notifyIcon.EnableMenuItem normalModeMenuIndex
+    notifyIcon.DisableMenuItem presentationModeMenuIndex
+    notifyIcon.SetIconByDllFile "%SystemRoot%\System32\powercpl.dll", 6, largeIcon
+    If showNotifications Then
+        notifyIcon.BalloonTipText = "Presentation mode is on."
+        notifyIcon.SetBalloonTipIcon notifyIcon.ToolTipIcon.Warning
+        notifyIcon.ShowBalloonTip
+    End If
+    status = "Presentation"
+    PublishStatus
+    stopwatch.Reset
+    csTimer.Start
+End Sub
+Sub ChargerMode
+    shell.Run "rundll32 user32.dll,LockWorkStation",, synchronous
+    WScript.Sleep 1000
+    watcher.MonitorOff
+    WScript.Sleep 1000
+    PresentationMode
+End Sub
+Sub PublishStatus
+    Dim stream : Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
+    stream.WriteLine status
+    stream.Close
+    Set stream = Nothing
+End Sub
+Sub SetDurationUI
+    sa.MinimizeAll
+    Dim currentValue : currentValue = Round(csTimer.IntervalInHours, 4)
+    Dim response : response = InputBox("Enter the desired duration of Presentation mode / Phone charger mode, in hours." & vbLf & vbLf & "Current value: " & currentValue, WScript.ScriptName, currentValue)
+    sa.UndoMinimizeAll
+    If "" = response Then Exit Sub
+    csTimer.IntervalInHours =  response
+    If "Presentation" = status Then
+        PresentationMode 'reset timers
+    End If
+End Sub
+Sub BalloonTipClicked
+    shell.PopUp helpMessage, 40, WScript.ScriptName, vbInformation + vbSystemModal
+End Sub
 Sub ListenForCallbacks
     While True
+        If "Presentation" = status Then
+            notifyIcon.Text = "Presentation mode is on" & vbLf & "Normal mode resumes in " & Round(csTimer.Interval/60000 - stopwatch/60, 0) & " min."
+        End If
         WScript.Sleep 200
     Wend
 End Sub
-Sub AllowSleep
-    it.SystemRequired = False
-    it.DisplayRequired = False
-    ni.DisableMenuItem ALLOW_SLEEP
-    ni.EnableMenuItem PREVENT_SLEEP
-    ni.Text = "Presentation mode is off"
-    ni.SetIconByDllFile "%SystemRoot%\System32\imageres.dll", 101, largeIcon
-End Sub
-Sub PreventSleep
-    it.SystemRequired = True
-    it.DisplayRequired = True
-    ni.DisableMenuItem PREVENT_SLEEP
-    ni.EnableMenuItem ALLOW_SLEEP
-    ni.Text = "Presentation mode is on"
-    ni.SetIconByDllFile "%SystemRoot%\System32\imageres.dll", 102, largeIcon
+
+Const synchronous = True
+Const largeIcon = True, smallIcon = False
+Const PresentationState = 3, NormalState = 0
+Const ForWriting = 2, CreateNew = True
+Dim watcher, notifyIcon, shell, fso, csTimer, sa, stopwatch, includer
+Dim normalModeMenuIndex, presentationModeMenuIndex
+Dim purpose, helpUrl, helpMessage, showNotifications
+Dim statusFile, status
+
+Sub Main
+    Set watcher = CreateObject("VBScripting.Watcher")
+    Set notifyIcon = CreateObject("VBScripting.NotifyIcon")
+    Set csTimer = CreateObject("VBScripting.Timer")
+    Set shell = CreateObject("WScript.Shell")
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set sa = CreateObject("Shell.Application")
+    Set includer = CreateObject("VBScripting.Includer")
+    Execute includer.Read("VBSTimer")
+    Set stopwatch = New VBSTimer
+    Dim folder : folder = shell.ExpandEnvironmentStrings("%AppData%\VBScripting")
+    If Not fso.FolderExists(folder) Then fso.CreateFolder folder
+    statusFile = folder & "\" & fso.GetBaseName(WScript.ScriptName) & ".status"
+
+    normalModeMenuIndex = 0
+    presentationModeMenuIndex = 1
+    notifyIcon.AddMenuItem "Normal mode", GetRef("NormalMode")
+    notifyIcon.AddMenuItem "Presentation mode", GetRef("PresentationMode")
+    notifyIcon.AddMenuItem "Phone charger mode", GetRef("ChargerMode")
+    notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
+    notifyIcon.AddMenuItem "Exit", GetRef("CloseAndExit")
+    If showNotifications Then
+        notifyIcon.BalloonTipTitle = WScript.ScriptName
+        notifyIcon.SetBalloonTipCallback GetRef("BalloonTipClicked")
+    End If
+    notifyIcon.Visible = True
+
+    csTimer.IntervalInHours = 1.5
+    csTimer.AutoReset = False
+    Set csTimer.Callback = GetRef("NormalMode")
+
+    NormalMode
+    ListenForCallbacks
 End Sub
 Sub CloseAndExit
-    it.Dispose
-    Set it = Nothing
-    ni.Dispose
-    Set ni = Nothing
-    Set sh = Nothing
+    watcher.Dispose
+    Set watcher = Nothing
+    notifyIcon.Dispose
+    Set notifyIcon = Nothing
+    csTimer.Dispose
+    Set csTimer = Nothing
+    Set shell = Nothing
+    Set fso = Nothing
+    Set sa = Nothing
+    Set includer = Nothing
+    Set stopwatch = Nothing
     WScript.Quit
 End Sub

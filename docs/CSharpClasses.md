@@ -9,9 +9,11 @@
 [FolderChooser](#folderchooser)  
 [FolderChooser2](#folderchooser2)  
 [IconExtractor](#iconextractor)  
-[IdleTimer](#idletimer)  
+[NotifyIcon](#notifyicon)  
 [ProgressBar](#progressbar)  
 [SpeechSynthesis](#speechsynthesis)  
+[Timer](#timer)  
+[Watcher](#watcher)  
 
 
 ## Admin
@@ -25,6 +27,7 @@
 | SourceExists| Admin| Gets whether the specified EventLog source exists. | a boolean| source| Method| VBScripting |
 | CreateEventSource| Admin| Creates the specified EventLog source. | an EventLogSourceResult| source| Method| VBScripting |
 | DeleteEventSource| Admin| Deletes the specified EventLog source and all of its logs. | an EventLogSourceResult| source| Method| VBScripting |
+| MonitorOff| Admin| Turn off the monitor(s) | | | Method| VBScripting |
 | PrivilegesAreElevated| Admin| Gets whether the current process has elevated privileges. | | | Property| VBScripting |
 | EventSource| Admin| Gets the name of the event log source for this namespace (VBScripting). | a string| | Property| VBScripting |
 | LogName| Admin| Gets the name of the log to which events will be logged. | a string| | Property| VBScripting |
@@ -104,18 +107,43 @@
 | IconExtractor| | Extracts an icon from a .dll or .exe file. <span class="red"> This class is not accessible to VBScript. </span>| | | Type| VBScripting |
 | Extract| IconExtractor| Extracts an icon from the specified .dll or .exe file. Other parameters: <tt>number</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon or small icon.| an icon| file, number, largeIcon| Method| VBScripting |
 
-## IdleTimer
+## NotifyIcon
 
 | Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
 | :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
-| IdleTimer| | Provides something like presentation mode for Windows systems that don't have presentation.exe. Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts.| | | Type| VBScripting |
-| IIdleTimer| | The COM interface for VBScripting.IdleTimer. | | | Type| VBScripting |
-| (Constructor)| IdleTimer| Constructor. Starts a private timer that periodically resets the system idle timer with the desired state. | | | Method| VBScripting |
-| Dispose| IdleTimer| Disposes of the object's resources. | | | Method| VBScripting |
-| SystemRequired| IdleTimer| Gets or sets whether the system should be kept from going into a suspend (sleep) state or hibernate. Default is False. | | | Property| VBScripting |
-| DisplayRequired| IdleTimer| Gets or sets whether the monitor should be kept awake. Default is False. | | | Property| VBScripting |
-| currentState| IdleTimer| Gets or sets a double describing the current thread execution state. | | | Property| VBScripting |
-| resetPeriod| IdleTimer| Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. | | | Property| VBScripting |
+| NotifyIcon| | Provides a system tray icon for VBScript, for illustration purposes. | | | Type| VBScripting |
+| INotifyIcon| | The COM interface for NotifyIcon. | | | Type| VBScripting |
+| (Constructor)| NotifyIcon| Constructor | | | Method| VBScripting |
+| SetIconByIcoFile| NotifyIcon| Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed.| | fileName| Method| VBScripting |
+| SetIconByDllFile| NotifyIcon| Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon.| | fileName, index, largeIcon| Method| VBScripting |
+| SetBalloonTipIcon| NotifyIcon| Sets the icon of the "balloon tip" or notification. The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4.| | type| Method| VBScripting |
+| Dispose| NotifyIcon| Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope.| | | Method| VBScripting |
+| ShowBalloonTip| NotifyIcon| Show the balloon tip. | | | Method| VBScripting |
+| AddMenuItem| NotifyIcon| Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function.| | menuText, callbackRef| Method| VBScripting |
+| InvokeCallbackByIndex| NotifyIcon| Provide callback testability from VBScript. | | | Method| VBScripting |
+| DisableMenuItem| NotifyIcon| Disable a menu item | | | Method| VBScripting |
+| EnableMenuItem| NotifyIcon| Enable a menu item | | | Method| VBScripting |
+| ShowContextMenu| NotifyIcon| Show the context menu. Public in order to provide testability from VBScript.| | | Method| VBScripting |
+| SetBalloonTipCallback| NotifyIcon| Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre>| | | Method| VBScripting |
+| Text| NotifyIcon| Gets or sets the text shown when the mouse hovers over the system tray icon. | | | Property| VBScripting |
+| Visible| NotifyIcon| Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings.| | | Property| VBScripting |
+| BalloonTipTitle| NotifyIcon| Gets or sets the title of the "balloon tip" or notification. | | | Property| VBScripting |
+| BalloonTipText| NotifyIcon| Gets or sets the text of the "balloon tip" or notification. | | | Property| VBScripting |
+| BalloonTipLifetime| NotifyIcon| Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings. | | | Property| VBScripting |
+| ToolTipIcon| NotifyIcon| Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre>| a ToolTipIconT| | Property| VBScripting |
+| ToolTipIconT| | Supplies the type required by NotifyIcon.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property.| | | Type| VBScripting |
+| Error| ToolTipIconT|  | 1| | Property| VBScripting |
+| Info| ToolTipIconT|  | 2| | Property| VBScripting |
+| None| ToolTipIconT|  | 3| | Property| VBScripting |
+| Warning| ToolTipIconT|  | 4| | Property| VBScripting |
+| CallbackEventSettings| | Settings for saving VBScript method references. This class is not accessible from VBScript. | | | Type| VBScripting |
+| (Constructor)| CallbackEventSettings| Constructor | | | Method| VBScripting |
+| AddRef| CallbackEventSettings| Adds a CallbackReference instance reference to the list. | | callbackRef| Method| VBScripting |
+| Refs| CallbackEventSettings| Gets or sets a list of callback references. | | | Property| VBScripting |
+| CallbackReference| | An orderly way to save the index and callback reference for a single menu item. This class is not accessible to VBScript.| | | Type| VBScripting |
+| (Constructor)| CallbackReference| Constructor | | index, reference| Method| VBScripting |
+| Index| CallbackReference| This Index corresponds to the Index of a menuItem in the context menu. | | | Property| VBScripting |
+| Reference| CallbackReference| COM object generated by VBScript's GetRef Function. | | | Property| VBScripting |
 
 ## ProgressBar
 
@@ -175,3 +203,31 @@
 | Paused| SynthesizerStateT|  | 2| | Property| VBScripting |
 | Speaking| SynthesizerStateT|  | 3| | Property| VBScripting |
 | Unexpected| SynthesizerStateT|  | 4| | Property| VBScripting |
+
+## Timer
+
+| Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
+| :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
+| Timer| | Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript. | | | Type| VBScripting |
+| ITimer| | COM interface for VBScripting.Timer. | | | Type| VBScripting |
+| Start| Timer| Starts or restarts rhe timer. | | | Method| VBScripting |
+| Stop| Timer| Stops the timer. | | | Method| VBScripting |
+| Dispose| Timer| Disposes of rhe timer'a resources. | | | Method| VBScripting |
+| Interval| Timer| Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. | | | Property| VBScripting |
+| Callback| Timer| Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed. | | | Property| VBScripting |
+| AutoReset| Timer| Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is True. If False, the callback is invoked only once, until the timer is restarted with the Start method. | | | Property| VBScripting |
+| IntervalInHours| Timer| Gets or sets the interval in hours. | | | Property| VBScripting |
+
+## Watcher
+
+| Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
+| :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
+| Watcher| | Provides something like presentation mode for Windows systems that don't have presentation.exe. Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts.| | | Type| VBScripting |
+| IWatcher| | The COM interface for VBScripting.Watcher. | | | Type| VBScripting |
+| (Constructor)| Watcher| Constructor. Starts a private timer that periodically resets the system idle timer with the desired state. | | | Method| VBScripting |
+| Dispose| Watcher| Disposes of the object's resources. | | | Method| VBScripting |
+| MonitorOff| Watcher| Turn off the monitor(s). | | | Method| VBScripting |
+| Watch| Watcher| Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. Default is False. | | | Property| VBScripting |
+| CurrentState| Watcher| Gets or sets a double describing the current thread execution state. | | | Property| VBScripting |
+| ResetPeriod| Watcher| Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. | | | Property| VBScripting |
+| Privileged| Watcher| Gets a boolean indicating whether privileges are elevated. | | | Property| VBScripting |

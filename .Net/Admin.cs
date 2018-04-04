@@ -231,6 +231,26 @@ namespace VBScripting
             get { return new EventLogResultT(); }
         }
         # endregion EventLogs
+
+        /// <summary> </summary>
+        // VBScript wrapper for the static MonitorOff()
+        public void monitorOff()
+        {
+            MonitorOff();
+        }
+        /// <summary> Turn off the monitor(s) </summary>
+        public static void MonitorOff()
+        {
+            int HWND = -1;
+            int WM_SYSCOMMAND = 0x0112;
+            int SC_MONITORPOWER = 0xF170;
+            //int MONITOR_ON = -1;
+            int MONITOR_OFF = 2;
+            SendMessage(HWND, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);
     }
     /// <summary> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
     /// <remarks> Not directly available to VBScript. See <tt>Admin.Result</tt>. </remarks>
@@ -310,5 +330,8 @@ namespace VBScripting
         [DispId(9)]
         string LogName { get; }
 
+        /// <summary> </summary>
+        [DispId(10)]
+        void monitorOff();
     }
 }

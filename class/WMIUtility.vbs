@@ -3,19 +3,6 @@
 '
 Class WMIUtility
 
-    Private computer, select_, all, from, where 'select is a keyword, so the variable was named select_
-
-    Sub Class_Initialize
-         SetPC(localPC)
-         select_ = "Select "
-         all = " * "
-         from = " from "
-         where = " where "
-    End Sub
-
-    Sub SetPC(newPC) : computer = newPC : End Sub
-    Private Property Get localPC : localPC = "." : End Property
-
     'Function TerminateProcessById
     'Parameter: process id
     'Returns a boolean
@@ -73,7 +60,7 @@ Class WMIUtility
         stream.WriteLine "Set fso = Nothing"
         stream.Close
         Set stream = Nothing
-        ts.Run 'the Run method is asynchronous: program execution will not halt
+        ts.Run 'the Run method is asynchronous by default: program execution will not halt
     End Sub
 
     'Function GetProcessIDsByName
@@ -201,5 +188,18 @@ Class WMIUtility
     End Function
 
     Property Get Win32_Bios : Win32_Bios = "Win32_Bios" : End Property
+
+    Sub SetPC(newPC) : computer = newPC : End Sub
+    Private Property Get localPC : localPC = "." : End Property
+
+    Private computer, select_, all, from, where
+
+    Sub Class_Initialize
+         SetPC(localPC)
+         select_ = "Select "
+         all = " * "
+         from = " from "
+         where = " where "
+    End Sub
 
 End Class

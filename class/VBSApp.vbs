@@ -127,18 +127,13 @@ Class VBSApp
     'Parameters: #1: host; #2: switch; #3: elevating
     'Remark: Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
     Sub RestartWith(host, switch, elevating)
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSApp")
-            Execute .read("StringFormatter")
-        End With
-        Dim app : Set app = New VBSApp
-        Dim format : Set format = New StringFormatter
+        Dim format : Set format = CreateObject("VBScripting.StringFormatter")
         Dim privileges : If elevating Then privileges = "runas" Else privileges = ""
         Dim start
         If "cscript" = LCase(fso.GetBaseName(host)) Then
             start = ""
         Else 
-            'prevent console window from needlessly persisting
+            'prevent console window from persisting needlessly
             start = "start"
         End If
         If elevating And userInteractive Then

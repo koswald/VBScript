@@ -13,7 +13,7 @@ With New TestingFramework
         Dim log : Set log = New VBSLogger
 
     .it "should return the expected default log folder"
-        .AssertEqual log.GetDefaultLogFolder, "%AppData%\VBScripts\logs"
+        .AssertEqual log.GetDefaultLogFolder, "%AppData%\VBScripting\logs"
 
     .it "should create a log folder"
         'set a custom log folder

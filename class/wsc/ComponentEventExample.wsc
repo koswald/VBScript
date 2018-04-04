@@ -12,7 +12,7 @@
     </public>
     <script language="VBScript">
         Sub FireTestEvent
-            fireEvent("TestEvent")
+            FireEvent "TestEvent"
         End Sub
     </script>
 </component>

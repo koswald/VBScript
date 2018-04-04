@@ -7,8 +7,8 @@ This project has a number of facets:
 - A [doc generator for the C# classes].
 - A [doc generator for the VBScript classes].
 - A lightweight [testing framework].
-- A [logger]
-- [Examples]  
+- A [logger].
+- [Examples].  
 
 ## Requirements
 
