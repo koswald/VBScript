@@ -87,8 +87,8 @@ Sub Main
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set sa = CreateObject("Shell.Application")
     Set includer = CreateObject("VBScripting.Includer")
-    Execute includer.Read("VBSTimer")
-    Set stopwatch = New VBSTimer
+    Execute includer.Read("VBSStopwatch")
+    Set stopwatch = New VBSStopwatch
     Dim folder : folder = shell.ExpandEnvironmentStrings("%AppData%\VBScripting")
     If Not fso.FolderExists(folder) Then fso.CreateFolder folder
     statusFile = folder & "\" & fso.GetBaseName(WScript.ScriptName) & ".status"

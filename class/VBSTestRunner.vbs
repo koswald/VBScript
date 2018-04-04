@@ -36,7 +36,7 @@ Class VBSTestRunner
             Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
         End If
         Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
-        WriteLine "test duration: " & formatter.pluralize(tim_r, "second") & " "
+        WriteLine "test duration: " & formatter.pluralize(stopwatch, "second") & " "
     End Sub
 
     'run all the test files whose names match the regex pattern
@@ -113,7 +113,7 @@ Class VBSTestRunner
     'Method SetPrecision
     'Parameter: 0, 1, or 2
     'Remark: Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2.
-    Sub SetPrecision(newPrecision) : tim_r.SetPrecision newPrecision : End Sub
+    Sub SetPrecision(newPrecision) : stopwatch.SetPrecision newPrecision : End Sub
 
     'Method SetRunCount
     'Parameter: an integer
@@ -157,11 +157,11 @@ Class VBSTestRunner
     End Sub
 
     Private Sub WaitForTestToFinishOrTimeout(Pipe)
-        Dim startSplit : startSplit = tim_r.split
+        Dim startSplit : startSplit = stopwatch.Split
         Do
             WScript.Sleep 100 'milliseconds
             WriteALineOfStdOut(Pipe)
-            If tim_r.Split - startSplit > timeout Then Exit Do
+            If stopwatch.Split - startSplit > timeout Then Exit Do
             If TestIsFinished = Pipe.status Then Exit Sub
         Loop
         TimedOut = True
@@ -179,7 +179,7 @@ Class VBSTestRunner
 
     Private passing, failing, erring, foundTestFiles 'tallies
     Private regex
-    Private fs, formatter, tim_r, log, rf
+    Private fs, formatter, stopwatch, log, rf
     Private sh, fso
     Private specFolder, specPattern, specFile 'settings
     Private searchingSubfolders
@@ -197,13 +197,13 @@ Class VBSTestRunner
         With CreateObject("VBScripting.Includer")
             Execute .read("VBSFileSystem")
             Execute .read("StringFormatter")
-            Execute .read("VBSTimer")
+            Execute .read("VBSStopwatch")
             Execute .read("VBSlogger")
             Execute .read("RegExFunctions")
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
-        Set tim_r = New VBSTimer
+        Set stopwatch = New VBSStopwatch
         Set log = New VBSLogger
         Set rf = New RegExFunctions
         Set sh = CreateObject("WScript.Shell")

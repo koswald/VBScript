@@ -1,7 +1,7 @@
 
 'A timer
 '
-Class VBSTimer
+Class VBSStopwatch
 
     'Function Split
     'Returns a rounded number (Single)

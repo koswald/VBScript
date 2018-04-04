@@ -33,12 +33,12 @@ Class Test
         On Error Goto 0
 
         'output the actual sleep duration
-        tmr.Reset
+        stopwatch.Reset
         app.Sleep app.GetArg(2)
-        stream.WriteLine tmr.Split
+        stream.WriteLine stopwatch.Split
     End Sub 'Run
 
-    Private app, tmr, fso, stream
+    Private app, stopwatch, fso, stream
 
     Sub Class_Initialize
         Set app = CreateObject("VBScripting.VBSApp")
@@ -49,9 +49,9 @@ Class Test
         With CreateObject("VBScripting.Includer")
             Dim base
             Execute .read("..\spec\VBSApp.spec.config")
-            Execute .read("VBSTimer")
+            Execute .read("VBSStopwatch")
         End With
-        Set tmr = New VBSTimer
+        Set stopwatch = New VBSStopwatch
         Set fso = CreateObject("Scripting.FileSystemObject")
         Const ForWriting = 2
         Const CreateNew = True

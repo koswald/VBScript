@@ -21,7 +21,7 @@ Class HTAApp
     'Parameter: an integer
     'Remark: Private synchronous sleep method. Sleeps the specified number of milliseconds. Intended for sleeps longer than one second or so.
     Private Sub ScriptSleep(milliseconds)
-        tmr.Reset
+        stopwatch.Reset
         'call the sleep script
         Dim cmd : cmd = format(Array( _
             "wscript.exe ""%s\HTAApp.sleep.vbs"" %s", _
@@ -29,7 +29,7 @@ Class HTAApp
 
         sh.Run cmd, hidden, synchronous
         'finish out with the more precise TimerSleep
-        TimerSleep(milliseconds - tmr.Split * 1000)
+        TimerSleep(milliseconds - stopwatch.Split * 1000)
     End Sub
     
     'Private method TimerSleep
@@ -37,8 +37,8 @@ Class HTAApp
     'Remark: Private synchronous sleep method. Intended for short sleeps. Sleeps the specified number of milliseconds.
     Private Sub TimerSleep(milliseconds)
         Dim i
-        tmr.Reset
-        While tmr.Split * 1000 < milliseconds
+        stopwatch.Reset
+        While stopwatch.Split * 1000 < milliseconds
             i = i + 1
         Wend
     End Sub
@@ -114,7 +114,7 @@ Class HTAApp
     Private visible, hidden
     Private synchronous
     Private libraryPath
-    Private tmr, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
+    Private stopwatch, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
 
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
@@ -137,10 +137,10 @@ Class HTAApp
     'Remark: Required before calling the Sleep method when AlwaysPrepareToSleep is False in HTAApp.config.
     Sub PrepareToSleep
         With CreateObject("VBScripting.Includer")
-            Execute .read("VBSTimer")
+            Execute .read("VBSStopwatch")
             libraryPath = .LibraryPath
         End With
-        Set tmr = New VBSTimer
+        Set stopwatch = New VBSStopwatch
     End Sub
 
     'Property GetFilespec
