@@ -61,10 +61,10 @@ End Function
 'Returns: file contents
 'Remark: Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files.
 Function ReadFrom(relativePath, tempReferencePath)
-    Dim savedReferencePath : savedReferencePath = me.referencePath
-    me.referencePath = tempReferencePath
+    Dim savedReferencePath : savedReferencePath = referencePath
+    referencePath = tempReferencePath
     ReadFrom = Read(relativePath)
-    me.referencePath = savedReferencePath
+    referencePath = savedReferencePath
 End Function
 
 'Function LibraryPath
