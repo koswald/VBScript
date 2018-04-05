@@ -1,7 +1,6 @@
 Option Explicit
 purpose = "Show a system tray icon with options to prevent the computer and/or monitor from going to sleep."
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button."
-showNotifications = False
 Call Main
 
 Sub NormalMode
@@ -9,11 +8,6 @@ Sub NormalMode
     notifyIcon.DisableMenuItem normalModeMenuIndex
     notifyIcon.EnableMenuItem presentationModeMenuIndex
     notifyIcon.SetIconByDllFile "%SystemRoot%\System32\powercpl.dll", 5, largeIcon
-    If showNotifications Then
-        notifyIcon.BalloonTipText = "Presentation mode is off."
-        notifyIcon.SetBalloonTipIcon notifyIcon.ToolTipIcon.Info
-        notifyIcon.ShowBalloonTip
-    End If
     notifyIcon.Text = "Presentation mode is off"
     status = "Normal"
     PublishStatus
@@ -24,11 +18,6 @@ Sub PresentationMode
     notifyIcon.EnableMenuItem normalModeMenuIndex
     notifyIcon.DisableMenuItem presentationModeMenuIndex
     notifyIcon.SetIconByDllFile "%SystemRoot%\System32\powercpl.dll", 6, largeIcon
-    If showNotifications Then
-        notifyIcon.BalloonTipText = "Presentation mode is on."
-        notifyIcon.SetBalloonTipIcon notifyIcon.ToolTipIcon.Warning
-        notifyIcon.ShowBalloonTip
-    End If
     status = "Presentation"
     PublishStatus
     stopwatch.Reset
@@ -58,7 +47,7 @@ Sub SetDurationUI
         PresentationMode 'reset timers
     End If
 End Sub
-Sub BalloonTipClicked
+Sub Help
     shell.PopUp helpMessage, 40, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
 Sub ListenForCallbacks
@@ -76,7 +65,7 @@ Const PresentationState = 3, NormalState = 0
 Const ForWriting = 2, CreateNew = True
 Dim watcher, notifyIcon, shell, fso, csTimer, sa, stopwatch, includer
 Dim normalModeMenuIndex, presentationModeMenuIndex
-Dim purpose, helpUrl, helpMessage, showNotifications
+Dim purpose, helpUrl, helpMessage
 Dim statusFile, status
 
 Sub Main
@@ -99,11 +88,8 @@ Sub Main
     notifyIcon.AddMenuItem "Presentation mode", GetRef("PresentationMode")
     notifyIcon.AddMenuItem "Phone charger mode", GetRef("ChargerMode")
     notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
+    notifyIcon.AddMenuItem "Help", GetRef("Help")
     notifyIcon.AddMenuItem "Exit", GetRef("CloseAndExit")
-    If showNotifications Then
-        notifyIcon.BalloonTipTitle = WScript.ScriptName
-        notifyIcon.SetBalloonTipCallback GetRef("BalloonTipClicked")
-    End If
     notifyIcon.Visible = True
 
     csTimer.IntervalInHours = 1.5

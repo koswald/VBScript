@@ -1,9 +1,9 @@
-'Launch the test runner for tests designated elevated or elevated and standard
+'Launch the test runner for standard tests
 Option Explicit
 Initialize
 Main
 Sub Main
-    testRunner.SetSpecPattern "*.spec.elev.vbs | *.spec.elev+std.vbs"
+    testRunner.SetSpecPattern "*.spec.sk.vbs"
     testRunner.SetSpecFolder "..\spec"
     With WScript.Arguments
         If .Count Then
@@ -24,13 +24,11 @@ Sub Initialize
     With CreateObject("VBScripting.Includer")
         Execute .read("VBSTestRunner")
         Execute .read("VBSApp")
-        Execute .read("PrivilegeChecker")
     End With
     Set testRunner = New VBSTestRunner
     Dim app : Set app = New VBSApp
-    Dim pc : Set pc = New PrivilegeChecker
-    If (Not pc) Or (Not "cscript.exe" = app.GetHost) Then
+    If Not "cscript.exe" = app.GetHost Then
         app.SetUserInteractive False
-        app.RestartWith "cscript.exe", "/k", privilegesElevated
+        app.RestartWith "cscript.exe", "/k", privilegesNotElevated
     End If
 End Sub
