@@ -49,7 +49,7 @@ Class WMIUtility
         Dim format : Set format = New StringFormatter
         Dim stream : Set stream = ts.Open
         stream.WriteLine "'automatically generated script"
-        stream.WriteLine "With CreateObject(""includer"")"
+        stream.WriteLine "With CreateObject(""VBScripting.Includer"")"
         stream.WriteLine "    Execute(.read(""WMIUtility""))"
         stream.WriteLine "End With"
         stream.WriteLine "Dim fso : Set fso = CreateObject(""Scripting.FileSystemObject"")"
