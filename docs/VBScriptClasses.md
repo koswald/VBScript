@@ -35,8 +35,8 @@
 [VBSLogger](#vbslogger)  
 [VBSMessages](#vbsmessages)  
 [VBSPower](#vbspower)  
+[VBSStopwatch](#vbsstopwatch)  
 [VBSTestRunner](#vbstestrunner)  
-[VBSTimer](#vbstimer)  
 [VBSTroubleshooter](#vbstroubleshooter)  
 [VBSValidator](#vbsvalidator)  
 [WindowsUpdatesPauser](#windowsupdatespauser)  
@@ -816,6 +816,16 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 |Method|SetForce|force|N/A|Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close.|
 |Method|SetDebug|a boolean|N/A|Used for testing. True prevents the computer from actually shutting down, etc., during testing. Default is False.|
 
+## VBSStopwatch
+A timer  
+  
+| Procedure | Name | Parameter | Return | Comment |
+| :-------- | :--- | :-------- | :----- | :------ |
+|Property|Split|None|a rounded number (Single)|Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.|
+|Method|SetPrecision|0, 1, or 2|N/A|Sets the number of decimal places to round the Split function return value. Default is 2.|
+|Property|GetPrecision|None|0, 1, or 2|Returns the current precision.|
+|Method|Reset|None|N/A|Sets the timer to zero.|
+
 ## VBSTestRunner
 Run a test or group of tests  
 Usage example  
@@ -845,16 +855,6 @@ See also TestingFramework
 |Method|SetPrecision|0, 1, or 2|N/A|Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2.|
 |Method|SetRunCount|an integer|N/A|Optional. Sets the number of times to run the test(s). Default is 1.|
 
-## VBSTimer
-A timer  
-  
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-|Property|Split|None|a rounded number (Single)|Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.|
-|Method|SetPrecision|0, 1, or 2|N/A|Sets the number of decimal places to round the Split function return value. Default is 2.|
-|Property|GetPrecision|None|0, 1, or 2|Returns the current precision.|
-|Method|Reset|None|N/A|Sets the timer to zero.|
-
 ## VBSTroubleshooter
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -875,7 +875,7 @@ A working example of how validation can be accomplished.
 
 ## WindowsUpdatesPauser
 Pause Windows Updates to get more bandwidth. Don't forget to resume.  
-For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.  
+For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |

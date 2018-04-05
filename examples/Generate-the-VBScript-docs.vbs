@@ -4,7 +4,11 @@
 With CreateObject("VBScripting.Includer")
     Execute .read("DocGenerator")
 End With
-
+Set fso = CreateObject("Scripting.FileSystemObject")
+With CreateObject("WScript.Shell")
+    .CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
+End With
+Set fso = Nothing
 With New DocGenerator
     .SetTitle "VBScript Utility Classes Documentation"
     .SetScriptFolder "..\class" 'location of the scripts to document, relative to this script
@@ -12,5 +16,4 @@ With New DocGenerator
     .SetDocFolder "..\docs" 'location of the target documentation file, relative to this script
     .SetDocName "VBScriptClasses.html"
     .Generate
-    .View
 End With

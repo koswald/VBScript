@@ -2518,7 +2518,52 @@
       </div>
 
       <div>
-         <h4 class="heading" id=32>VBSTestRunner</h4>
+         <h4 class="heading" id=32>VBSStopwatch</h4>
+         <div class="detail">
+            <p>A timer</p>
+            <p></p>
+            <table>
+               <tr>
+                  <th>Procedure type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Split</td>
+                  <td>None</td>
+                  <td>a rounded number (Single)</td>
+                  <td>Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>SetPrecision</td>
+                  <td>0, 1, or 2</td>
+                  <td>N/A</td>
+                  <td>Sets the number of decimal places to round the Split function return value. Default is 2.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetPrecision</td>
+                  <td>None</td>
+                  <td>0, 1, or 2</td>
+                  <td>Returns the current precision.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Reset</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Sets the timer to zero.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=33>VBSTestRunner</h4>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -2582,51 +2627,6 @@
                   <td>an integer</td>
                   <td>N/A</td>
                   <td>Optional. Sets the number of times to run the test(s). Default is 1.</td>
-               </tr>
-            </table>
-         </div>
-      </div>
-
-      <div>
-         <h4 class="heading" id=33>VBSTimer</h4>
-         <div class="detail">
-            <p>A timer</p>
-            <p></p>
-            <table>
-               <tr>
-                  <th>Procedure type</th>
-                  <th>Name</th>
-                  <th>Parameter(s)</th>
-                  <th>Return value</th>
-                  <th>Comment</th>
-               </tr>
-               <tr>
-                  <td>Property</td>
-                  <td>Split</td>
-                  <td>None</td>
-                  <td>a rounded number (Single)</td>
-                  <td>Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property.</td>
-               </tr>
-               <tr>
-                  <td>Method</td>
-                  <td>SetPrecision</td>
-                  <td>0, 1, or 2</td>
-                  <td>N/A</td>
-                  <td>Sets the number of decimal places to round the Split function return value. Default is 2.</td>
-               </tr>
-               <tr>
-                  <td>Property</td>
-                  <td>GetPrecision</td>
-                  <td>None</td>
-                  <td>0, 1, or 2</td>
-                  <td>Returns the current precision.</td>
-               </tr>
-               <tr>
-                  <td>Method</td>
-                  <td>Reset</td>
-                  <td>None</td>
-                  <td>N/A</td>
-                  <td>Sets the timer to zero.</td>
                </tr>
             </table>
          </div>
@@ -2724,7 +2724,7 @@
          <h4 class="heading" id=36>WindowsUpdatesPauser</h4>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
-            <p>For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.</p>
+            <p>For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.</p>
             <p></p>
             <table>
                <tr>
