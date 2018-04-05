@@ -33,6 +33,7 @@ namespace VBScripting
                     "VBScripting.ComEvent.InvokeComCallback:\n{0}\n\n{1}",
                     e.Message, e.ToString()
                 ));
+                throw;
             }
         }
     }
