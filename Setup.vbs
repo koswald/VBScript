@@ -10,11 +10,12 @@
 
 'Use /u to uninstall
 
-Option Explicit : Initialize
+Option Explicit
 
-Const componentFolder_ = "class\wsc"
-Const buildFolder_ = ".Net\build"
+componentFolder_ = "class\wsc"
+buildFolder_ = ".Net\build"
 
+Initialize
 Main
 ReleaseObjectMemory
 
@@ -23,7 +24,7 @@ Sub Main
         PrepWscRegistrationSystem32
         PrepWscRegistrationSysWoW64
         PrepDllRegistration
-        PrepFinalInstruction
+        'PrepFinalInstruction
         RunBatchFile
         CreateEventLogSource
     ElseIf uninstalling Then
@@ -31,7 +32,7 @@ Sub Main
         PrepDllRegistration
         PrepWscRegistrationSystem32
         PrepWscRegistrationSysWoW64
-        PrepFinalInstruction
+        'PrepFinalInstruction
         RunBatchFile
         DeleteScriptletKeys
     End If
@@ -167,6 +168,8 @@ Dim sa, sh, fso, reg
 Dim include, format, keyDeleter
 Dim wow
 Dim inspectBatchFile
+Dim componentFolder_, buildFolder_
+
 
 Sub Initialize
     Set sa = CreateObject("Shell.Application")
