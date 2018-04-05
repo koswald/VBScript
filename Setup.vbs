@@ -24,7 +24,7 @@ Sub Main
         PrepWscRegistrationSystem32
         PrepWscRegistrationSysWoW64
         PrepDllRegistration
-        'PrepFinalInstruction
+        PrepFinalInstruction
         RunBatchFile
         CreateEventLogSource
     ElseIf uninstalling Then
@@ -32,7 +32,7 @@ Sub Main
         PrepDllRegistration
         PrepWscRegistrationSystem32
         PrepWscRegistrationSysWoW64
-        'PrepFinalInstruction
+        PrepFinalInstruction
         RunBatchFile
         DeleteScriptletKeys
     End If
