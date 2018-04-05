@@ -1,7 +1,7 @@
 
 'Pause Windows Updates to get more bandwidth. Don't forget to resume.
 
-'For configuration settings, see the .config file in %LocalAppData% that has the same base name as the calling script/hta.
+'For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.
 '
 Class WindowsUpdatesPauser
 
@@ -140,7 +140,7 @@ Class WindowsUpdatesPauser
         Set format = New StringFormatter
         Set log = New VBSLogger
         Set app = New VBSApp
-        configFile = format(Array("%LocalAppData%\%s.config", app.GetBaseName))
+        configFile = format(Array("%AppData%\VBScripting\%s.config", app.GetBaseName))
         ReadConfigFile
    End Sub
 
