@@ -1,15 +1,15 @@
 <!-- Launch the test runner for 32-bit (x86) tests -->
 <job>
-    <script language="VBScript" src="../class/WoWChecker.vbs"></script>
-    <script language="VBScript" src="../class/VBSTestRunner.vbs"></script>
-    <script language="VBScript" src="../class/VBSApp.vbs"></script>
+    <script language="VBScript" src="../../class/WoWChecker.vbs"></script>
+    <script language="VBScript" src="../../class/VBSTestRunner.vbs"></script>
+    <script language="VBScript" src="../../class/VBSApp.vbs"></script>
     <script language="VBScript">
         Option Explicit
         Initialize
         Main
         Sub Main
             testRunner.SetSpecPattern "*.spec.wow.vbs"
-            testRunner.SetSpecFolder "..\spec\wow"
+            testRunner.SetSpecFolder "..\wow"
             With WScript.Arguments
                 If .Count Then
                     'if it is desired to run just a single test file, pass it in on the

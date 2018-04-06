@@ -1,10 +1,10 @@
-'Launch the test runner for standard tests
+'Launch the test runner for .dll libraries
 Option Explicit
 Initialize
 Main
 Sub Main
-    testRunner.SetSpecPattern "*.spec.sk.vbs"
-    testRunner.SetSpecFolder "..\spec"
+    testRunner.SetSpecPattern "*.spec.vbs"
+    testRunner.SetSpecFolder "..\dll"
     With WScript.Arguments
         If .Count Then
             'if it is desired to run just a single test file, pass it in on the

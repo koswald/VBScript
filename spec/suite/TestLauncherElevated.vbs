@@ -4,7 +4,7 @@ Initialize
 Main
 Sub Main
     testRunner.SetSpecPattern "*.spec.elev.vbs | *.spec.elev+std.vbs"
-    testRunner.SetSpecFolder "..\spec"
+    testRunner.SetSpecFolder ".."
     With WScript.Arguments
         If .Count Then
             'if it is desired to run just a single test file, pass it in on the
