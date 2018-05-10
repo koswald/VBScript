@@ -96,7 +96,21 @@ namespace VBScripting
         public int Value
         {
             get { return this.pbar.Value; }
-            set { this.pbar.Value = value; }
+            set 
+            {
+                if (value > pbar.Maximum)
+                {
+                    this.pbar.Value = pbar.Maximum;
+                }
+                else if (value < pbar.Minimum)
+                {
+                    this.pbar.Value = pbar.Minimum;
+                }
+                else 
+                {
+                    this.pbar.Value = value; 
+                }
+            }
         }
 
         /// <summary> Gets or sets the increment between steps. </summary>
