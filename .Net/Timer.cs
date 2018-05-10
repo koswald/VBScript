@@ -12,7 +12,7 @@ namespace VBScripting
         private System.Timers.Timer timer;
         
         /// <summary> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. </summary>
-        public double Interval { get; set; }
+        public long Interval { get; set; }
         /// <summary> Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed. </summary>
         public object Callback { get; set; }
         /// <summary> Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is True. If False, the callback is invoked only once, until the timer is restarted with the Start method. </summary>
@@ -53,10 +53,10 @@ namespace VBScripting
             }
         }
         /// <summary> Gets or sets the interval in hours. </summary>
-        public double IntervalInHours
+        public long IntervalInHours
         {
-            get { return Interval/3600000.0;  }
-            set { Interval = value*3600000.0; }
+            get { return (long) Interval/3600000;  }
+            set { Interval = value*3600000; }
         }
     }
     /// <summary> COM interface for VBScripting.Timer. </summary>
@@ -66,7 +66,7 @@ namespace VBScripting
     {
         /// <summary> </summary>
         [DispId(0)]
-        double Interval { get; set; }
+        long Interval { get; set; }
         /// <summary> </summary>
         [DispId(1)]
         object Callback { get; set; }
@@ -84,6 +84,6 @@ namespace VBScripting
         void Dispose ();
         /// <summary> </summary>
         [DispId(6)]
-        double IntervalInHours { get; set; }
+        long IntervalInHours { get; set; }
     }
 }

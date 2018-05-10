@@ -11,7 +11,7 @@ namespace VBScripting
         Guid("2650C2AB-C000-495F-AB4D-6C61BD463EA4")]
     public class Watcher : IWatcher
     {
-        private int _resetPeriod;
+        private long _resetPeriod;
         private int _currentState;
         private bool _watch;
         private System.Timers.Timer timer;
@@ -39,7 +39,7 @@ namespace VBScripting
                 }
             }
         }
-        /// <summary> Gets or sets a double describing the current thread execution state. </summary>
+        /// <summary> Gets or sets an integer describing the current thread execution state. </summary>
         public int CurrentState
         {
             get { return _currentState; }
@@ -65,7 +65,7 @@ namespace VBScripting
         }
         /// <summary> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. </summary>
         // Also initializes/resets the internal timer.
-        public int ResetPeriod
+        public long ResetPeriod
         {
             get { return _resetPeriod; }
             set
@@ -102,7 +102,7 @@ namespace VBScripting
     {
         /// <summary> </summary>
         [DispId(0)]
-        int ResetPeriod { get; set; }
+        long ResetPeriod { get; set; }
         /// <summary> </summary>
         [DispId(1)]
         bool Watch { get; set; }
