@@ -20,14 +20,16 @@ Class VBSValidator
         End If
     End Function
 
-    'Method EnsureBoolean
+    'Property EnsureBoolean
     'Parameter a boolean candidate
-    'Remark: Raises an error if the parameter is not a boolean
-    Sub EnsureBoolean(pBool)
+    'Returns: boolean
+    'Remark: Raises an error if the parameter is not a boolean. Unless an error is raised, returns the same value passed to it.
+    Property Get EnsureBoolean(pBool)
         If Not IsBoolean(pBool) Then
             Err.Raise 1, GetClassName, CStr(pBool) & ErrDescrBool
         End If
-    End Sub
+        EnsureBoolean = pBool
+    End Property
 
     'Function IsInteger
     'Parameter: an integer candidate
@@ -41,14 +43,16 @@ Class VBSValidator
         End If
     End Function
 
-    'Method EnsureInteger
+    'Property EnsureInteger
     'Parameter: an integer candidate
-    'Remark: Raises an error if the parameter is not an integer
-    Sub EnsureInteger(pInt)
+    'Returns: integer
+    'Remark: Raises an error if the parameter is not an integer. Unless an error is raised, returns the same value passed to it.
+    Property Get EnsureInteger(pInt)
         If Not IsInteger(pInt) Then
             Err.Raise 2, GetClassName,, CStr(pInt) & ErrDescrInt
         End If
-    End Sub
+        EnsureInteger = pInt
+    End Property
 
     'Property ErrDescrBool
     'Returns a string

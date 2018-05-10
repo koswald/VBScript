@@ -16,9 +16,9 @@ Class VBSExtracter
         Set fs = New VBSFileSystem
         Set streamer = New TextStreamer
         Set fso = CreateObject("Scripting.FileSystemObject")
-        SetFile(vbNull)
-        SetPattern(vbNull)
-        SetTestString(vbNull)
+        SetFile ""
+        SetPattern ""
+        SetTestString ""
     End Sub
 
     'Method SetPattern
@@ -36,7 +36,7 @@ Class VBSExtracter
     'Method SetIgnoreCase
     'Parameter: a boolean
     'Remark: Set whether to ignore case when matching text. Default is False.
-    Sub SetIgnoreCase(pBool) : ref.SetIgnoreCase(pBool) : End Sub
+    Sub SetIgnoreCase(pBool) : ref.SetIgnoreCase pBool : End Sub
 
     ''Method SetMultiline
     ''Parameter: a boolean
@@ -47,8 +47,8 @@ Class VBSExtracter
 
     Private Sub EnsureInitialized
         Dim funct : funct = "VBSExtracter.EnsureInitialized"
-        If vbNull = file Then Err.Raise 1, funct, "File to extract text from was not specified. Use SetFile()."
-        If vbNull = ref.re.Pattern Then Err.Raise 2, funct, "RegEx test pattern was never set."
+        If "" = file Then Err.Raise 1, funct, "File to extract text from was not specified. Use SetFile()."
+        If "" = ref.re.Pattern Then Err.Raise 2, funct, "RegEx test pattern was never set."
         If Not fso.FileExists(file) Then Err.Raise 3, funct, "Couldn't find the file to extract text from, " & vbLf & vbTab & file
     End Sub
 
@@ -61,7 +61,7 @@ Class VBSExtracter
         streamer.SetFile(file) 'set the streamer to use the file specified
         streamer.SetForReading 'set the streamer for reading
         Dim inputStream : Set inputStream = streamer.Open 'open the file as a text stream
-        SetTestString(inputStream.ReadAll)
+        SetTestString inputStream.ReadAll
         Dim match : match = ref.FirstMatch
         If Len(match) Then
             Extract = match
@@ -81,7 +81,7 @@ Class VBSExtracter
         Dim inputStream : Set inputStream = streamer.Open 'open the file as a text stream
         Dim match
         Do Until inputStream.AtEndOfStream 'or until the Exit Do statement is reached
-            SetTestString(inputStream.ReadLine)
+            SetTestString inputStream.ReadLine
             match = ref.FirstMatch
             If Len(match) Then 'we are at the correct line, and we now have what we need from the file
                 Extract0 = match 'return the match value
