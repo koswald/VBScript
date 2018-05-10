@@ -15,8 +15,8 @@ Class RegExFunctions
         Set oRE = New RegExp
         Set v = New VBSValidator
         class_ = "RegExFunctions"
-        SetPattern(vbNull)
-        SetTestString(vbNull)
+        SetPattern ""
+        SetTestString ""
         SetIgnoreCase False
     End Sub
     
@@ -26,7 +26,7 @@ Class RegExFunctions
     'Remark: Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |.
     Function Pattern(wildcard)
         'See docs\algorithm\ReadMe.md for more comments
-        Dim i, wp : wp = wildcard '=> wildcard-to-pattern
+        Dim i, arrwp, wp : wp = wildcard '=> wildcard-to-pattern
         'remove whitespace from ends of delimited strings
         wp = Split(wp, "|")
         For i = 0 To UBound(wp)
@@ -44,7 +44,12 @@ Class RegExFunctions
         For i = 0 To UBound(escape)
             wp = Replace(wp, escape(i), "\" & escape(i))
         Next
-        Pattern = Replace(wp, "?", ".{1}")
+        wp = Replace(wp, "?", ".{1}")
+        arrwp = Split(wp, "|")
+        For i = 0 To UBound(arrwp)
+            arrwp(i) = "^" & arrwp(i) & "$"
+        Next
+        Pattern = Join(arrwp, "|")
     End Function
 
     'Property re
@@ -87,8 +92,8 @@ Class RegExFunctions
 
     Private Sub EnsureInitialized
         Dim funct : funct = class_ & ".EnsureInitialized"
-        If vbNull = oRE.pattern Then Err.Raise 2, funct, "RegEx pattern was not set: use SetPattern()"
-        If vbNull = testString Then Err.Raise 3, funct, "RegEx test string was not set: use SetTestString()"
+        If "" = oRE.pattern Then Err.Raise 2, funct, "RegEx pattern was not set: use SetPattern()"
+        If "" = testString Then Err.Raise 3, funct, "RegEx test string was not set: use SetTestString()"
     End Sub
 
     'Function FirstMatch
