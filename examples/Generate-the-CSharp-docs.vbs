@@ -7,8 +7,8 @@ With CreateObject("WScript.Shell")
 End With
 Set fso = Nothing
 With New DocGeneratorCS
-    .OutputFile = "..\docs\CSharpClasses"
+    .OutputFile = "..\docs\CSharpClasses.html"
     .XmlFolder = "..\.Net\lib"
     .Generate
-'    .ViewHtml
+''    .ViewHtml
 End With

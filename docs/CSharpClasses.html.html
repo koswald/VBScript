@@ -619,7 +619,7 @@
   <tr>
     <td> IconCount </td>
     <td> IconExtractor </td>
-    <td> Returns the number of icons A relative path or environmental variable is allowed. </td>
+    <td> Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. </td>
     <td> an int </td>
     <td> filespec (.dll or .exe) </td>
     <td> Method </td>
@@ -628,7 +628,7 @@
   <tr>
     <td> GetPointer </td>
     <td> IconExtractor </td>
-    <td> Gets a pointer to an icon. Must be disposed later with DisposeIcon(pointer), in order to release memory. A relative path or environmental variable is allowed. </td>
+    <td> Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. </td>
     <td> integer </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
@@ -637,7 +637,7 @@
   <tr>
     <td> ExtractIcon </td>
     <td> IconExtractor </td>
-    <td> Gets an icon.  </td>
+    <td> Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). </td>
     <td> Icon </td>
     <td> integer </td>
     <td> Method </td>
@@ -646,7 +646,7 @@
   <tr>
     <td> DisposeIcon </td>
     <td> IconExtractor </td>
-    <td> Dispose icon by pointer (an int).  </td>
+    <td> Dispose an icon by pointer (an int).  </td>
     <td> Returns true for success. </td>
     <td> pointer </td>
     <td> Method </td>

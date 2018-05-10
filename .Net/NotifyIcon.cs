@@ -1,4 +1,3 @@
-
 // System tray icon for VBScript
 
 using System.Windows.Forms;

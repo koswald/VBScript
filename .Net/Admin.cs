@@ -1,6 +1,3 @@
-
-// Miscellaneous admin functions
-
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
@@ -10,7 +7,7 @@ using System.Collections.Generic;
 
 namespace VBScripting
 {
-    /// <summary> Provide sys admin features. </summary>
+    /// <summary> Provide miscellaneous system admin. features. </summary>
     [ProgId("VBScripting.Admin"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-8AF8-495F-AB4D-6C61BD463EA4")]

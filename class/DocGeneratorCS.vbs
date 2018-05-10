@@ -109,18 +109,18 @@ Class DocGeneratorCS
         html.WriteLine "  </tr>"
     End Sub
     Sub GenerateMarkdownRow(info)
-        md.Write f(Array("| %s", info.Name))
+        md.Write f(Array("| %s ", info.Name))
         If "Type" = info.Kind Then
             md.Write "| "
         Else
-            md.Write f(Array("| %s", info.MemberOf))
+            md.Write f(Array("| %s ", info.MemberOf))
         End If
-        md.Write f(Array("| %s", EscapeMd2(info.Summary & " " & info.Remarks)))
-        md.Write f(Array("| %s", info.Returns))
-        md.Write f(Array("| %s", info.Parameters))
-        md.Write f(Array("| %s", info.Kind))
-        md.Write f(Array("| %s", info.NamespaceName))
-        md.WriteLine " |"
+        md.Write f(Array("| %s ", EscapeMd2(info.Summary & " " & info.Remarks)))
+        md.Write f(Array("| %s ", info.Returns))
+        md.Write f(Array("| %s ", info.Parameters))
+        md.Write f(Array("| %s ", info.Kind))
+        md.Write f(Array("| %s ", info.NamespaceName))
+        md.WriteLine "|"
     End Sub
     Function GetMemberInfo(member)
         Dim info : Set info = New MemberInfo

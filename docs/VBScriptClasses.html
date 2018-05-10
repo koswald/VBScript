@@ -903,6 +903,13 @@
                </tr>
                <tr>
                   <td>Property</td>
+                  <td>Reg</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Returns a reference to the StdRegProv object.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
                   <td>GetStringValue</td>
                   <td>rootKey, subKey, valueName</td>
                   <td>a string</td>
@@ -933,15 +940,15 @@
                   <td>Property</td>
                   <td>GetDWordValue</td>
                   <td>rootKey, subKey, valueName</td>
-                  <td>a string</td>
-                  <td>Returns the value of the specified registry location. The specified registry entry must be of type REG_EXPAND_SZ.</td>
+                  <td>an integer</td>
+                  <td>Returns the value of the specified registry location. The specified registry entry must be of type REG_DWORD.</td>
                </tr>
                <tr>
                   <td>Method</td>
                   <td>SetDWordValue</td>
                   <td>rootKey, subKey, valueName, value</td>
                   <td>N/A</td>
-                  <td>Writes the specified REG_EXPAND_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.</td>
+                  <td>Writes the specified REG_DWORD value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -977,6 +984,13 @@
                   <td>rootKey, subKey, valueName</td>
                   <td>an integer</td>
                   <td>Returns a registry key value type integer.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>CreateKey</td>
+                  <td>rootKey, subKey</td>
+                  <td>N/A</td>
+                  <td>Creates the specified subKey and all of it's parent keys, if necessary.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -1645,7 +1659,7 @@
          <div class="detail">
             <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
-            <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
+            <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .Read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
             <p></p>
             <p>ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.</p>
             <p></p>
@@ -1662,7 +1676,7 @@
                   <td>GetValidFileName</td>
                   <td>a file name candidate</td>
                   <td>a valid file name</td>
-                  <td>Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-)</td>
+                  <td>Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config.</td>
                </tr>
             </table>
          </div>
@@ -2682,11 +2696,11 @@
                   <td>Returns True if the parameter is a boolean subtype; False if not.</td>
                </tr>
                <tr>
-                  <td>Method</td>
+                  <td>Property</td>
                   <td>EnsureBoolean</td>
                   <td>a boolean candidate</td>
-                  <td>N/A</td>
-                  <td>Raises an error if the parameter is not a boolean</td>
+                  <td>boolean</td>
+                  <td>Raises an error if the parameter is not a boolean. Unless an error is raised, returns the same value passed to it.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -2696,11 +2710,11 @@
                   <td>Returns True if the parameter is an integer subtype; False if not.</td>
                </tr>
                <tr>
-                  <td>Method</td>
+                  <td>Property</td>
                   <td>EnsureInteger</td>
                   <td>an integer candidate</td>
-                  <td>N/A</td>
-                  <td>Raises an error if the parameter is not an integer</td>
+                  <td>integer</td>
+                  <td>Raises an error if the parameter is not an integer. Unless an error is raised, returns the same value passed to it.</td>
                </tr>
                <tr>
                   <td>Property</td>
