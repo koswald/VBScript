@@ -8,3 +8,5 @@ Sub SetSurrogate(str) : sf.SetSurrogate str : End Sub
 Function Pluralize(i, v) : Pluralize = sf.Pluralize(i, v) : End Function
 Sub SetZeroSingular : sf.SetZeroSingular : End Sub
 Sub SetZeroPlural : sf.SetZeroPlural : End Sub
+Function getFlag : getFlag = sf.Flag : End Function
+Sub putFlag(newValue) : sf.Flag = newValue : End Sub

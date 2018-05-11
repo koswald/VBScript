@@ -13,28 +13,19 @@
 '
 Class StringFormatter
 
-    Private zero, singular, plural
-    Private surrogate
-
-    Sub Class_Initialize
-        singular = "singular"
-        plural = "plural"
-        SetZeroPlural
-        SetSurrogate "%s"
-    End Sub
-
     'Function Format
     'Parameter: array
     'Returns a string
     'Remark: Returns a formatted string. The parameter is an array whose first element contains the pattern of the returned string. The first %s in the pattern is replaced by the next element in the array. The second %s in the pattern is replaced by the next element in the array, and so on. Variant subtypes tested OK with %s include string, integer, and single. Format is the default property for the class, so the property name is optional. If there are too many or too few %s instances, then an error will be raised.
     Public Default Function Format(array_)
         Const startPosition = 1
-        Const replacemtCount = 1
+        Const replacementCount = 1
         Dim arr : arr = array_
         Dim i, pattern : pattern = arr(0)
         For i = 1 To UBound(arr)
             If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 1,, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
-            pattern = Replace(pattern, surrogate, arr(i), startPosition, replacemtCount)
+            If "Null" = TypeName(arr(i)) Or "Empty" = TypeName(arr(i)) Then arr(i) = ""
+            pattern = Replace(pattern, surrogate, arr(i), startPosition, replacementCount)
         Next
         If InStr(pattern, surrogate) Then Err.Raise 1,, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
         Format = pattern
@@ -76,4 +67,19 @@ Class StringFormatter
     'Remark: Optional. Restores the default behavior of considering a count of zero to be plural.
     Sub SetZeroPlural : zero = plural : End Sub
 
+    'undocumented propery for troubleshooting
+    Private flag_
+    Property Let Flag(newValue) : flag_ = newValue : End Property
+    Property Get Flag : Flag = flag_ : End Property
+
+    Private zero, singular, plural
+    Private surrogate
+
+    Sub Class_Initialize
+        singular = "singular"
+        plural = "plural"
+        SetZeroPlural
+        SetSurrogate "%s"
+        Flag = False
+    End Sub
 End Class

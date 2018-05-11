@@ -14,6 +14,10 @@
     <property name="Pluralize" />
     <method name="SetZeroSingular" />
     <method name="SetZeroPlural" />
+    <property name ="Flag">
+      <put internalName="putFlag" />
+      <get internalName="getFlag" />
+    </property>
   </public>
   
   <!-- import the class -->
