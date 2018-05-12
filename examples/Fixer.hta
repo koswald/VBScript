@@ -1,20 +1,20 @@
 
-<!-- Easily modify which executables start .hta, .vbs, and .wsf files, that is,
+<!-- Easily modify which executables start .vbs and .wsf files, that is,
 whether the given file types are started by 64-bit or 32-bit executables.
 
 This HTML Application can be used to troubleshoot system configuration
-with respect to running script file types .vbs, .wsf, and .hta -->
+with respect to running script file types .vbs and .wsf -->
 
-<hta:application scroll="No" icon="msdt.exe" innerborder="No">
+<hta:application scroll="No" icon="regedit.exe" innerborder="No">
 
     <body>
-
+<!--
         <fieldset> <legend id="lgdHta"> </legend>
             <span id="spanHta"> </span> <br />
             64-bit <input type="radio" id="rad64hta" name="nameHta" onclick="tr.SetHta64()" />
             32-bit <input type="radio" id="rad86hta" name="nameHta" onclick="tr.SetHta86()" />
         </fieldset>
-
+-->
         <fieldset> <legend id="lgdVbs"> </legend>
             <span id="spanVbs"> </span> <br />
             64-bit <input type="radio" id="rad64vbs" name="nameVbs" onclick="tr.SetVbs64()" />
@@ -103,8 +103,8 @@ with respect to running script file types .vbs, .wsf, and .hta -->
                 Property Get REG_QWORD : REG_QWORD = 11 : End Property
 
                 'click handlers for the radio buttons
-                Sub SetHta64 : ReplaceKeyString htaKey, System32, oSpanHta : End Sub
-                Sub SetHta86 : ReplaceKeyString htaKey, SysWoW64, oSpanHta : End Sub
+'                Sub SetHta64 : ReplaceKeyString htaKey, System32, oSpanHta : End Sub
+'                Sub SetHta86 : ReplaceKeyString htaKey, SysWoW64, oSpanHta : End Sub
                 Sub SetVbs64 : ReplaceKeyString vbsKey, System32, oSpanVbs : End Sub
                 Sub SetVbs86 : ReplaceKeyString vbsKey, SysWoW64, oSpanVbs : End Sub
                 Sub SetWsf64 : ReplaceKeyString wsfKey, System32, oSpanWsf : End Sub
@@ -150,9 +150,11 @@ with respect to running script file types .vbs, .wsf, and .hta -->
                 Private oSpanHta, oSpanVbs, oSpanWsf 'span elements for display of registry values
                 Private htaKey, vbsKey, wsfKey 'registry keys
                 Private keyName, rootKeyShortName
-                Private reg, HKCR, wmiRootKey
+                Private reg, wmiRootKey
                 Private htaName, cmdLineToken, closeMessage
                 Private regex
+                Private HKCU, HKCUShortName
+                Private HKLM, HKLMShortName
 
                 Sub Class_Initialize
                     Self.ResizeTo 800, 400 'width, height
@@ -161,23 +163,26 @@ with respect to running script file types .vbs, .wsf, and .hta -->
                     Set fso = CreateObject("Scripting.FileSystemObject")
                     Set regex = New RegExp
                     regex.IgnoreCase = True
-                    regex.Pattern = "\\(System32|SysWoW64)\\"
-                    SysWow64 = "\SysWoW64\" 'for regex.Replace arg#2
+                    regex.Pattern = "\\(System32|SysWow64)\\"
+                    SysWow64 = "\SysWow64\" 'for regex.Replace arg#2
                     System32 = "\System32\"
 
-                    Set oSpanHta = document.getElementById("spanHta") 'DOM elements
+'                    Set oSpanHta = document.getElementById("spanHta") 'DOM elements
                     Set oSpanVbs = document.getElementById("spanVbs")
                     Set oSpanWsf = document.getElementById("spanWsf")
 
-                    htaKey = "htafile\Shell\Open\Command" 'registry keys
-                    vbsKey = "VBSFile\Shell\Open\Command"
-                    wsfKey = "WSFFile\Shell\Open\Command"
+'                    htaKey = "Software\Classes\htafile\Shell\Open\Command" 'registry keys
+                    vbsKey = "Software\Classes\VBSFile\Shell\Open\Command"
+                    wsfKey = "Software\Classes\WSFFile\Shell\Open\Command"
                     keyName = "" 'use empty string for the default value, some other value for debugging
-                    rootKeyShortName = "HKCR" 'registry root key
-                    HKCR = &H80000000
-                    wmiRootKey = HKCR
+                    HKCU = &H80000001
+                    HKLM = &H80000002
+                    HKCUShortName = "HKCU"
+                    HKLMShortName = "HKLM"
+                    rootKeyShortName = HKLMShortName 'registry root key
+                    wmiRootKey = HKLM
                     Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
-                    ShowVal htaKey, oSpanHta 'radio button group label <= key value
+'                    ShowVal htaKey, oSpanHta 'radio button group label <= key value
                     ShowVal vbsKey, oSpanVbs
                     ShowVal wsfKey, oSpanWsf
 
@@ -185,23 +190,21 @@ with respect to running script file types .vbs, .wsf, and .hta -->
                     document.Title = htaName
                     closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used."
 
-                    InitializeDOM "hta"
+'                    InitializeDOM "hta"
                     InitializeDOM "vbs"
                     InitializeDOM "wsf"
 
                     'check for elevated privileges and restart if necessary
-                    With CreateObject("VBScripting.Includer")
-                        Execute .read("PrivilegeChecker")
-                        Dim pc : Set pc = New PrivilegeChecker
-                        If Not pc Then
-                            Dim sa : Set sa = CreateObject("Shell.Application")
-                            Dim application : Set application = document.getElementsByTagName("application")(0)
-                            sa.ShellExecute "mshta", application.CommandLine,, "runas"
-                            Set sa = Nothing
-                            document.ParentWindow.Close
-                        End If
-                    End With
-                End Sub 'Class_Initialize
+                    Dim admin : Set admin = CreateObject("VBScripting.Admin")
+                    If Not admin.PrivilegesAreElevated Then
+                        Dim sa : Set sa = CreateObject("Shell.Application")
+                        Dim application : Set application = document.getElementsByTagName("application")(0)
+                        sa.ShellExecute "mshta", application.CommandLine,, "runas"
+                        Set sa = Nothing
+                        document.ParentWindow.Close
+                    End If
+                    Set admin = Nothing
+                End Sub
 
                 Sub Class_Terminate
                     Set sh = Nothing
@@ -216,7 +219,7 @@ with respect to running script file types .vbs, .wsf, and .hta -->
             End Class
 
             Sub Window_OnUnload
-                tr.Class_Terminate
+                Set tr = Nothing
             End Sub
 
         </script>
