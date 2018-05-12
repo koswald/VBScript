@@ -1,8 +1,3 @@
-###### The `examples` folder
-
-# ReadMe.md
-
-The `examples` folder contains examples of 
-`vbs`, `.wsf`, or `.hta` scripts, including 
-some that illustrate how to use the classes 
-in the `class` folder.
+The `examples` folder contains `vbs`, `.wsf`, 
+or `.hta` script samples illustrating various 
+aspects of the project or of VBScript in general.

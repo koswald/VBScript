@@ -1,18 +1,22 @@
-# Overview
+# Presentation.vbs
+
+## Overview
 
 [Presentation.vbs] may require changes to Windows settings in order to work properly.
 
-Specifically, you may need to increase the value that controls when the following components go to sleep or turn off for both AC (plugged in) and DC (battery):  
+Specifically, you may want to increase the value that controls when the following components go to sleep or turn off for both AC (plugged in) and DC (battery):  
 
 - Display(s)  
 - Hard Drive(s)  
 - Computer  
 
-# References  
+## References  
 [How to change Lock screen timeout before display turn off on Windows 10]  
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]  
 [Canonical Names of Control Panel Items]  
 [SetThreadExecutionState]  
+
+
 
 [Presentation.vbs]: Presentation.vbs
 [How to change Lock screen timeout before display turn off on Windows 10]: https://www.windowscentral.com/how-extend-lock-screen-timeout-display-turn-windows-10 "windowscentral.com"
