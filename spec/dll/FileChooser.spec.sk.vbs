@@ -37,17 +37,11 @@ With New TestingFramework
         vbsFixture = fixtureBase & "s.vbs"
         anyFile = WScript.ScriptFullName
         anotherFile = fso.GetAbsolutePathName(vbsFixture)
-        'run the fixture file to open the dialog
         sh.Run vbsFixture
-        'wait for dialog, enter file, acknowledge dialog
         .MessageAppeared caption, 5, "%n%n""" & anyFile & """ """ & anotherFile & """{Enter}"
-        'wait for fixture to write result to file
-        'and close the text stream
         WScript.Sleep 1000
-        'prepare the input text stream
         input_.Close
         Set input_ = fso.OpenTextFile(txtFixture, ForReading)
-        'read the file and converrt contents to array of filespecs
         files = Split(input_.ReadAll, vbCrLf)
         .AssertEqual files(0) & files(1), anyFile & anotherFile
 
