@@ -1,26 +1,31 @@
-<!doctype html>
-<!-- .hta usage demo for ComponentEventExample.wsc -->
 <html>
 <head>
-    <hta:application>
+    <hta:application
+        applicationName="Usage demo for ComponentEventExample.wsc with .hta file"
+        innerBorder="No"
+        icon="filemgmt.dll"
+        scroll="No" />
     <object
         classid="clsid:ADCEC089-30E1-11D7-86BF-00606744568C"
         id="cee" />
 </head>
 <body>
     <script language="VBScript">
-        Sub Window_OnLoad
-            FireEvent
-        End Sub
+
         Sub FireEvent
             cee.FireTestEvent
         End Sub
+
         Sub cee_TestEvent
             document.body.innerHTML = document.body.innerHTML & "<br />" & "Event fired successfully."
         End Sub
 
-        Self.ResizeTo 700, 250
-        Set document.OnClick = GetRef("FireEvent")
+        Sub Window_OnLoad
+            document.body.innerHTML = "Click to fire event."
+            Set document.OnClick = GetRef("FireEvent")
+            Window.ResizeTo 555, 222
+            document.Title = document.getElementsByTagName("application")(0).applicationName
+        End Sub
     </script>
 </body>
 </html>

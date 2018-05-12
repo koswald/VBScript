@@ -27,7 +27,14 @@ Sub Main
         PrepFinalInstruction
         RunBatchFile
         CreateEventLogSource
+        ProgramsAndFeaturesEntry
     ElseIf uninstalling Then
+        If Not silent Then
+            If vbCancel = MsgBox("Uninstall VBScripting utility classes and extensions?", vbOKCancel + vbInformation + vbSystemModal + vbDefaultButton2, WScript.ScriptName) Then
+                DeleteBatchFile
+                Exit Sub
+            End If
+        End If
         DeleteEventLogSource
         PrepDllRegistration
         PrepWscRegistrationSystem32
@@ -92,9 +99,9 @@ Sub RunBatchFile
     batchStream.Close
     If inspectBatchFile Then
         sh.Run "notepad " & batchFile
-        If vbCancel = MsgBox("Click OK to proceed with VBScript Utilities " & setupNoun & " after inspecting the batch file.", vbInformation + vbOKCancel + vbSystemModal, "Proceed? - " & WScript.ScriptName) Then DeleteBatchFile : ReleaseObjectMemory : WScript.Quit
+        If vbCancel = MsgBox(format(Array("Click OK to proceed with %s the VBScript Utilities after inspecting the batch file.", setupNoun)), vbInformation + vbOKCancel + vbSystemModal, "Proceed? - " & WScript.ScriptName) Then DeleteBatchFile : ReleaseObjectMemory : WScript.Quit
     End If
-    sh.Run "cmd /c " & batchFile,, synchronous
+    sh.Run format(Array("cmd /c %s", batchFile)),, synchronous
 End Sub
 
 Sub CreateEventLogSource
@@ -103,6 +110,34 @@ Sub CreateEventLogSource
         va.CreateEventSource va.EventSource
         Set va = Nothing
     On Error Goto 0
+End Sub
+
+Sub ProgramsAndFeaturesEntry
+    Const HKLM = &H80000002
+    Const uninstKey = "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\VBScripting"
+    Dim InstallLocation : InstallLocation = fso.GetParentFolderName(WScript.ScriptFullName)
+    reg.CreateKey HKLM, uninstKey
+    reg.SetStringValue HKLM, uninstKey, "DisplayName", "VBScripting utility classes and extensions"
+    reg.SetDWORDValue HKLM, uninstKey, "NoRemove", 0
+    reg.SetStringValue HKLM, uninstKey, "UninstallString", format(Array("wscript ""%s\Setup.vbs"" /u", InstallLocation))
+    reg.SetDWORDValue HKLM, uninstKey, "NoModify", 1
+    reg.SetStringValue HKLM, uninstKey, "ModifyPath", ""
+    reg.SetDWORDValue HKLM, uninstKey, "NoRepair", 1
+    reg.SetStringValue HKLM, uninstKey, "HelpLink", "https://github.com/koswald/VBScript"
+    reg.SetStringValue HKLM, uninstKey, "InstallLocation", InstallLocation
+    reg.SetDWORDValue HKLM, uninstKey, "EstimatedSize", 1500 'kilobytes
+    reg.SetExpandedStringValue HKLM, uninstKey, "DisplayIcon", "%SystemRoot%\System32\wscript.exe,1"
+    reg.SetStringValue HKLM, uninstKey, "Publisher", "Karl Oswald"
+    reg.SetStringValue HKLM, uninstKey, "HelpTelephone", ""
+    reg.SetStringValue HKLM, uninstKey, "Contact", ""
+    reg.SetStringValue HKLM, uninstKey, "UrlInfoAbout", ""
+    reg.SetStringValue HKLM, uninstKey, "DisplayVersion", ""
+    reg.SetStringValue HKLM, uninstKey, "Comments", ""
+    reg.SetStringValue HKLM, uninstKey, "Readme", InstallLocation & "\ReadMe.md"
+    reg.SetStringValue HKLM, uninstKey, "InstallDate", "" ' [YYYYMMDD]
+    reg.SetDWORDValue HKLM, uninstKey, "Version", 0
+    reg.SetDWORDValue HKLM, uninstKey, "VersionMajor", 0
+    reg.SetDWORDValue HKLM, uninstKey, "VersionMinor", 0
 End Sub
 
 Sub DeleteEventLogSource
@@ -126,26 +161,27 @@ End Sub
 'regsvr32.exe may show a success message on unregister
 'without removing the registry keys.
 Sub DeleteScriptletKeys
-    Dim keys : keys = Array( _
-    "CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}", _
-    "Wow6432Node\CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}", _
-    "VBScripting.EventExample", _
-    "CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}", _
-    "Wow6432Node\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}", _
-    "Includer", _
-    "VBScripting.Includer", _
-    "CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}", _
-    "Wow6432Node\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}", _
-    "VBScripting.KeyDeleter", _
-    "CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}", _
-    "Wow6432Node\CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}", _
-    "VBScripting.StringFormatter", _
-    "CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}", _
-    "Wow6432Node\CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}", _
-    "VBScripting.VBSApp", _
-"")
-    Dim i : For i = 0 To UBound(keys) - 1
-        keyDeleter.DeleteKey keyDeleter.HKCR, keys(i)
+    Dim keys : keys = Array("" _
+        , "Software\Classes\CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}" _
+        , "Software\Classes\VBScripting.EventExample" _
+        , "Software\Classes\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Includer" _
+        , "Software\Classes\VBScripting.Includer" _
+        , "Software\Classes\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}" _
+        , "Software\Classes\VBScripting.KeyDeleter" _
+        , "Software\Classes\CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}" _
+        , "Software\Classes\VBScripting.StringFormatter" _
+        , "Software\Classes\CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}" _
+        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}" _
+        , "Software\Classes\VBScripting.VBSApp" _
+        , "Software\Microsoft\Windows\CurrentVersion\Uninstall\VBScripting" _
+    )
+    Dim i : For i = 1 To UBound(keys)
+        keyDeleter.DeleteKey keyDeleter.HKLM, keys(i)
     Next
 End Sub
 
@@ -162,7 +198,7 @@ Const ForAppending = 8
 Const CreateNew = True
 Dim batchStream
 Dim projectFolder, buildFolder, componentFolder
-Dim installing, uninstalling, registerVerb, setupNoun
+Dim installing, uninstalling, registerVerb, setupNoun, silent
 Dim wscFlag, dllFlag
 Dim sa, sh, fso, reg
 Dim include, format, keyDeleter
@@ -170,24 +206,23 @@ Dim wow
 Dim inspectBatchFile
 Dim componentFolder_, buildFolder_
 
-
 Sub Initialize
     Set sa = CreateObject("Shell.Application")
     Set sh = CreateObject("WScript.Shell")
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
 
-    'get config data
-    inspectBatchFile = False
-    On Error Resume Next
-        Execute fso.OpenTextFile(configFile).ReadAll
-    On Error Goto 0
-
     'convert relative paths to absolute paths
     projectFolder = fso.GetParentFolderName(WScript.ScriptFullName)
     sh.CurrentDirectory = projectFolder
     buildFolder = fso.GetAbsolutePathName(buildFolder_)
     componentFolder = fso.GetAbsolutePathName(componentFolder_)
+
+    'get config data
+    inspectBatchFile = False
+    On Error Resume Next
+        Execute fso.OpenTextFile(configFile).ReadAll
+    On Error Goto 0
 
     'initialize required project classes
     Set include = GetObject("script:" & componentFolder & "\Includer.wsc")
@@ -201,15 +236,20 @@ Sub Initialize
         Set wow = New WoWChecker
     End With
 
-    'look for /u on the command line
+    'look for arguments on the command line
     With WScript.Arguments
         uninstalling = False
+        silent = False
+        Dim silentFlag : silentFlag = ""
         Dim i : For i = 0 To .Count - 1
             If "/u" = LCase(.item(i)) Then
                 uninstalling = True
+            ElseIf "/s" = LCase(.item(i)) Then
+                silent = True
+                silentFlag = "/s"
             End If
         Next
-        Dim setupFlag 'flag for restarting this script
+        Dim setupFlag
         If uninstalling Then
             setupFlag = "/u"
             registerVerb = "Unregistering"
@@ -220,7 +260,7 @@ Sub Initialize
         Else 'installing
             setupFlag = ""
             registerVerb = "Registering"
-            setupNoun = "setup"
+            setupNoun = "setting up"
             wscFlag = ""
             dllFlag = ""
             installing = True
@@ -230,8 +270,8 @@ Sub Initialize
 
         'restart this script to elevate privileges
         Dim restartArgs : restartArgs = format(Array( _
-            "/c cd ""%s"" & start wscript ""%s"" %s", _
-            projectFolder, WScript.ScriptFullName, setupFlag _
+            "/c cd ""%s"" & start wscript ""%s"" %s %s", _
+            projectFolder, WScript.ScriptFullName, setupFlag, silentFlag _
         ))
         sa.ShellExecute "cmd", restartArgs,, "runas"
         ReleaseObjectMemory

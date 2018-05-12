@@ -15,10 +15,13 @@ Class RegistryUtility
     'Remark: Optional. A dot (.) can be used for the local computer (default), in place of the computer name.
     Sub SetPC(newPC)
         pc = newPC
-        Set oStdRegProv = GetObject(GetWmiRegToken)
+        Set prov = GetObject(GetWmiRegToken)
     End sub
 
-    Private Property Get reg : Set reg = oStdRegProv : End Property
+    'Property Reg
+    'Returns: an object
+    'Remark: Returns a reference to the StdRegProv object.
+    Public Property Get Reg : Set Reg = prov : End Property
 
     'Function GetStringValue
     'Parameters: rootKey, subKey, valueName
@@ -56,8 +59,8 @@ Class RegistryUtility
 
     'Function GetDWordValue
     'Parameters: rootKey, subKey, valueName
-    'Returns a string
-    'Remark: Returns the value of the specified registry location. The specified registry entry must be of type REG_EXPAND_SZ.
+    'Returns an integer
+    'Remark: Returns the value of the specified registry location. The specified registry entry must be of type REG_DWORD.
     Function GetDWordValue(rootKey, subKey, valueName)
         Dim value
         reg.GetDWordValue rootKey, subKey, valueName, value
@@ -66,7 +69,7 @@ Class RegistryUtility
 
     'Method SetDWordValue
     'Parameters: rootKey, subKey, valueName, value
-    'Remark: Writes the specified REG_EXPAND_SZ value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.
+    'Remark: Writes the specified REG_DWORD value to the specified registry location. Writing to HKLM or HKCR requires elevated privileges.
     Sub SetDWordValue(rootKey, subKey, valueName, value)
         reg.SetDWordValue rootKey, subKey, valueName, value
     End Sub
@@ -87,7 +90,7 @@ Class RegistryUtility
     Property Get HKCR : HKCR = &H80000000 : End Property
 
     Private Property Get GetWmiRegToken
-        GetWmiRegToken = "winmgmts:\\" & pc & "\root\default:StdRegProv"
+        GetWmiRegToken = "winmgmts:{impersonationLevel=impersonate}!\\" & pc & "\root\default:StdRegProv"
     End Property
 
     'Property GetPC
@@ -110,6 +113,13 @@ Class RegistryUtility
         Next
         GetRegValueType = iType
     End Function
+
+    'Method CreateKey
+    'Parameters: rootKey, subKey
+    'Remark: Creates the specified subKey and all of it's parent keys, if necessary.
+    Sub CreateKey(rootKey, subKey)
+        reg.CreateKey rootKey, subKey
+    End Sub    
 
     'Method EnumValues
     'Parameters: rootKey, subKey, aNames, aTypes
@@ -174,14 +184,14 @@ Class RegistryUtility
         GetRegValueTypeString = sType
     End Function
 
-    Private pc, oStdRegProv
+    Private pc, prov
 
     Sub Class_Initialize
         SetPC(".")
     End Sub
 
     Sub Class_Terminate
-        Set oStdRegProv = Nothing
+        Set prov = Nothing
     End Sub
 
 End Class

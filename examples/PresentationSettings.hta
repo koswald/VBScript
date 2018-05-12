@@ -2,12 +2,12 @@
 <html>
     <head>
         <hta:application
-            icon="msdt.exe"
+            icon="filemgmt.dll"
             innerBorder="No"
             scroll="No">
         <script language="VBScript">
-            self.resizeTo 450, 580
-            self.moveTo 900, 0
+            self.resizeTo 450, 630
+            self.moveTo 830, 0
         </script>
     </head>
     <body>
@@ -66,19 +66,6 @@
                 sh.Run "cmd /c echo Changing DC VideoCOnLock to " & dcSeconds.value & " seconds... & powercfg.exe /SETDCVALUEINDEX SCHEME_CURRENT SUB_VIDEO VIDEOCONLOCK " & dcSeconds.value & " & echo Done. & echo This setting may require a computer restart. & echo Press any key to exit & pause > nul",, synchronous
                 sh.Run "cmd /c echo Updating the current power scheme... & powercfg.exe /S SCHEME_CURRENT & echo Done. Press any key to exit & pause > nul"
                 dcSeconds.value = ""
-            End Sub
-
-            Sub AdvancedPowerOptions
-                sh.Run "control.exe powercfg.cpl,,3"
-            End Sub
-            Sub PowerSleepSettings
-                sh.Run "ms-settings:powersleep"
-            End Sub
-            Sub PowerOptionsGlobalSettings
-                sh.Run "control.exe /name Microsoft.PowerOptions /page pageGlobalSettings"
-            End Sub
-            Sub PowerOptionsPlanSettings
-                sh.Run "control.exe /name Microsoft.PowerOptions /page pagePlanSettings"
             End Sub
 
             Const synchronous = True
@@ -196,22 +183,27 @@
                 type="button"
                 value="Power options advanced settings"
                 class="wideButton"
-                onclick="AdvancedPowerOptions" /><br />
+                onclick='sh.Run "control.exe powercfg.cpl,,3"' /><br />
             <input
                 type="button"
                 value="Power options global settings"
                 class="wideButton"
-                onclick="PowerOptionsGlobalSettings" /><br />
+                onclick='sh.Run "control.exe /name Microsoft.PowerOptions /page pageGlobalSettings"' /><br />
             <input
                 type="button"
                 value="Power options plan settings"
                 class="wideButton"
-                onclick="PowerOptionsPlanSettings" /><br />
+                onclick='sh.Run "control.exe /name Microsoft.PowerOptions /page pagePlanSettings"' /><br />
             <input
                 type="button"
                 value="Power & sleep settings"
                 class="wideButton"
-                onclick="PowerSleepSettings" /><br />
+                onclick='sh.Run "ms-settings:powersleep"' /><br />
+            <input
+                type="button"
+                value="Available sleep states"
+                class="wideButton"
+                onclick='sh.Run "cmd /k powercfg /AvailableSleepStates"' /><br />
         </fieldset>
         <div class="errMsg"></div>
     </body>

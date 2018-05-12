@@ -3,8 +3,9 @@
     <head>
         <hta:application
             applicationName="Startup items editor"
-            icon="msdt.exe"
+            icon="regedit.exe"
             innerBorder="No"
+            scroll="No"
             singleInstance="Yes">
         </hta:application>
         <script language="VBScript">
@@ -14,6 +15,7 @@
     </head>
     <body>
         <script language="VBScript">
+            Option Explicit
 
             Dim si
             Dim application
@@ -53,8 +55,8 @@
                 selectDiv.appendChild text
                 Dim hkcuOption : Set hkcuOption = document.createElement("option")
                 Dim hklmOption : Set hklmOption = document.createElement("option")
-                hkcuOption.value = "hkcu" 'internally used value; hex values would be ideal but aren't supported by the html
-                hklmOption.value = "hklm"
+                hkcuOption.value = si.HKCU
+                hklmOption.value = si.HKLM
                 hkcuOption.innerHTML = "HKEY_CURRENT_USER"
                 hklmOption.innerHTML = "HKEY_LOCAL_MACHINE"
                 hiveSelector.insertBefore hkcuOption
@@ -63,21 +65,13 @@
             End Sub
             
             Sub RootChanged
-                UpdateRootFromGui
+                si.Root = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
                 DrawTableDiv
-            End Sub
-
-            Sub UpdateRootFromGui
-                If "hkcu" = hiveSelector.options(hiveSelector.selectedIndex).value Then
-                    si.Root = si.HKCU
-                ElseIf "hklm" = hiveSelector.options(hiveSelector.selectedIndex).value Then
-                    si.Root = si.HKLM
-                End If
             End Sub
 
             Sub DrawTableDiv
                 tableDiv.innerHTML = ""
-                Dim items : items = si.ReadItems 'get startup items from the registry
+                Dim items : items = si.ReadItems
                 Dim tbl : Set tbl = document.createElement("table")
                 tableDiv.insertBefore tbl
                 Dim rowIndex, row
@@ -119,7 +113,7 @@
                         nameCell.insertBefore nameInput
                         valueCell.insertBefore valueInput
                         buttonCell.insertBefore button
-                        button.value = "Save"
+                        button.value = "Add"
                         Set button.OnClick = GetRef("SaveItem")
                     End If
                     valueCell.style.paddingLeft = "20px"
@@ -134,6 +128,7 @@
                 With tbl.style
                     .borderCollapse = "collapse"
                     .marginTop = "15px"
+                    .marginRight = "15px"
                 End With
                 Set feedback = document.createElement("p")
                 tableDiv.insertBefore feedback
@@ -168,7 +163,7 @@
             End Sub
 
             Sub CheckPrivileges
-                If Not privilegesAreElevated And "hklm" = hiveSelector.options(hiveSelector.selectedIndex).value Then
+                If Not privilegesAreElevated And si.HKLM = CLng(hiveSelector.options(hiveSelector.selectedIndex).value) Then
                     InputsEnabled False
                     feedback.innerHTML = "Elevated privileges are required to edit HKEY_LOCAL_MACHINE."
                 Else
@@ -214,7 +209,7 @@
                         Set item = New RegItem
                         item.Name = names(i)
                         item.Value = ReadItem(names(i)).Value
-                        aoo.AddObject item
+                        aoo.Add item
                     Next
                     ReadItems = aoo
                 End Property
@@ -276,21 +271,25 @@
             End Class
 
             Class ArrayOfObjects
-                Sub AddObject(item)
-                    ReDim Preserve items(itemCount)
-                    Set items(itemCount) = item
-                    itemCount = itemCount + 1
+                Sub Add(item)
+                    ReDim Preserve items(Count)
+                    Set items(Count) = item
+                    Count = Count + 1
                 End Sub
 
                 Public Default Property Get GetArrayOfObjects
                     GetArrayOfObjects = items
                 End Property
 
-                Private items() 'dynamic array
-                Private itemCount
+                Private count_
+                Public Property Get Count : Count = count_ : End Property
+                Private Property Let Count(newCount)
+                    count_ = newCount
+                End Property
 
+                Private items() 'dynamic array
                 Sub Class_Initialize
-                    itemCount = 0
+                    Count = 0
                     ReDim items(-1)
                 End Sub
             End Class

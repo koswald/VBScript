@@ -1,0 +1,439 @@
+<html>
+<head>
+    <hta:application
+        applicationName="Semi-automatic Git push preparation"
+        icon="msiexec.exe"
+        innerBorder="No"
+        singleInstance="Yes"
+        scroll="no">
+    <script language="VBScript">
+        Self.ResizeTo 400, 450
+    </script>
+</head>
+<body>
+    <script language="VBScript">
+        Option Explicit
+        
+        Dim componentFolder
+        Dim suiteFolder, suiteFilter
+        componentFolder = "class\wsc"
+        suiteFolder = "spec\suite"
+        suiteFilter = "TestLauncher"
+        Dim docGenerators : docGenerators = Array("" _
+            , "examples\Generate-the-CSharp-docs.vbs" _
+            , "examples\Generate-the-VBScript-docs.vbs" _
+        )
+        Dim gits : gits = Array("" _
+            , "%ProgramFiles%\Git\cmd\git-gui.exe" _
+            , "%ProgramFiles%\Git\git-bash.exe" _
+            , "%LocalAppData%\Programs\Git\cmd\git-gui.exe" _
+            , "%LocalAppData%\Programs\Git\git-bash.exe" _
+        )
+        Dim prepItems : prepItems = Array("" _
+            , "RunSetupUninstall" _
+            , "StopScripts" _
+            , "RunSetup" _
+            , "RunTestSuites" _
+            , "GenerateDocs" _
+            , "OpenProgramsAndFeatures" _
+            , "OpenGit" _
+        )
+        
+        Dim nextItem
+        Sub prepBtn_OnClick
+            nextItem = 0
+            AwaitNextItem
+        End Sub
+        Sub AwaitNextItem
+            ClearFeedback
+            nextItem = nextItem + 1
+            window.setTimeout prepItems(nextItem), 1, VBScript
+        End Sub
+        
+        Sub RunSetupUninstall
+            If Not uninstallChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Dim response
+            If reqConfirmChkBox.checked Then
+                response = MsgBox("Uninstall the VBScripting components and libraries, etc.?", settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                CreateFlagFile
+                If Not UninstallFromProgramsAndFeatures Then
+                    UninstallDirectly
+                End If
+                nextItem = nextItem + 1
+                window.setTimeout "AwaitSetupCompletion", 1000, VBScript
+            ElseIf vbNo = response Then
+                AwaitNextItem
+            End If
+        End Sub
+        Sub UninstallDirectly
+            If reqConfirmChkBox.checked Then
+                sh.Run "wscript Setup.vbs /u"
+            Else sh.Run "wscript Setup.vbs /u /s"
+            End If
+        End Sub
+
+        Sub AwaitSetupCompletion
+            If fso.FileExists(flagFile) Then
+                Feedback "Waiting for Setup/Uninstall to finish.<br><br>After Setup/uninstall has finished, and after inspecting for errors, close the console window."
+                window.setTimeout "AwaitSetupCompletion", 2000, VBScript
+            Else window.setTimeout prepItems(nextItem), 1, VBScript
+                ClearFeedback
+            End If
+        End Sub
+        Function UninstallFromProgramsAndFeatures
+            If Not reqConfirmChkBox.checked Then
+                UninstallFromProgramsAndFeatures = False
+                Exit Function
+            End If
+            On Error Resume Next
+                sh.Run sh.RegRead("HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VBScripting\UninstallString")
+                If Err Then
+                    UninstallFromProgramsAndFeatures = False
+                Else UninstallFromProgramsAndFeatures = True
+                End If
+            On Error Goto 0
+        End Function
+        Const flagFile = "Setup.bat"
+        Sub CreateFlagFile
+            If Not fso.FileExists(flagFile) Then
+                fso.CreateTextFile flagFile, CreateNew
+            End If
+        End Sub
+        Sub DeleteFlagFile
+            On Error Resume Next
+                fso.DeleteFile(flagFile)
+            On Error Goto 0
+        End Sub
+
+        Sub StopScripts
+            If Not stopScriptsChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Dim response
+            If reqConfirmChkBox.checked Then
+                response = MsgBox( _
+                    "Stop all instances of wscript.exe?" & vbLf & vbLf & _
+                    "This may prevent some C# compiler errors if one or more scripts are using the project's .NET libraries.", _
+                    settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                KillProcessesByName("wscript.exe")
+            ElseIf vbCancel = response Then
+                Exit Sub
+            End If
+            AwaitNextItem
+        End Sub
+        Sub KillProcessesByName(processName)
+            Dim id, IDs
+            Execute includer.Read("WMIUtility")
+            With New WMIUtility
+                IDs = .GetProcessIDsByName(processName)
+                For Each id In IDs
+                    .TerminateProcessById(id)
+                Next
+            End With
+        End Sub
+
+        Sub RunSetup
+            If Not runSetupChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Dim response
+            If reqConfirmChkBox.checked Then
+                response = MsgBox("Run Setup?", settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                CreateFlagFile
+                sh.Run "Setup.vbs"
+                nextItem = nextItem + 1
+                window.setTimeout "AwaitSetupCompletion", 1000, VBScript
+            ElseIf vbNo = response Then
+                AwaitNextItem
+            End If
+        End Sub
+
+        Sub RunTestSuites
+            If Not runTestsChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Feedback "Waiting for tests to complete.<br><br>After each test finishes, and after inspecting for errors, close the console window(s)."
+            Dim file
+            For Each file In fso.GetFolder(format(Array("%s\%s", projectFolder, suiteFolder))).Files
+                If bitCancel And SuiteResult(file) Then
+                    ClearFeedback
+                    Exit Sub
+                End If
+            Next
+            ClearFeedback
+            AwaitNextItem
+        End Sub
+        Function SuiteResult(suiteCandidate)
+            Dim response, suite
+            If InStr(suiteCandidate.Name, suiteFilter) Then
+                Set suite = suiteCandidate
+            Else SuiteResult = bitNoMatch
+                Exit Function
+            End If
+            If reqConfirmChkBox.checked Then
+                response = MsgBox(format(Array("Run %s?", suite.Name)), settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                sh.Run format(Array("cmd /k cscript ""%s""", suite.Path)),, synchronous
+                SuiteResult = bitYes Or bitMatch
+            ElseIf vbCancel = response Then
+                SuiteResult = bitCancel Or bitMatch
+            Else SuiteResult = bitNo Or bitMatch
+            End If
+        End Function
+        Const bitMatch = 1, bitNoMatch = 0
+
+        Sub GenerateDocs
+            If Not generateDocsChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Dim i, response, item
+            For i = 1 To UBound(docGenerators)
+                item = fso.GetAbsolutePathName(docGenerators(i))
+                If reqConfirmChkBox.checked Then
+                    response = MsgBox(format(Array("Run %s?", item)), settings, caption)
+                Else response = vbYes
+                End If
+                If vbYes = response Then
+                    sh.Run format(Array("""%s""", item)),, synchronous
+                ElseIf vbCancel = response Then
+                    Exit Sub
+                End If
+            Next
+            AwaitNextItem
+        End Sub
+
+        Sub OpenProgramsAndFeatures
+            If Not openProgramsAndFeaturesChkBox.checked Then
+                AwaitNextItem
+                Exit Sub
+            End If
+            Dim response
+            If reqConfirmChkBox.checked Then
+                response = MsgBox("Open Programs and features?", settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                sh.Run "control /name Microsoft.ProgramsAndFeatures"
+            ElseIf vbCancel = response Then
+                Exit Sub
+            End If
+            AwaitNextItem
+        End Sub
+
+        Sub OpenGit
+            If Not openGitChkBox.checked Then Exit Sub
+            Dim i, result, gitWasFound : gitWasFound = False
+            For i = 1 To UBound(gits)
+                result = GitResultsFrom(gits(i))
+                If (bitYes And result) _
+                Or (bitCancel And result) Then
+                    Exit Sub
+                End If
+                If gitFound And result Then gitWasFound = True
+            Next
+            If gitWasFound Then Exit Sub
+            MsgBox "Couldn't find a Git executable.", vbInformation, caption
+        End Sub
+        Function GitResultsFrom(git)
+            Dim result, response
+            If Not fso.FileExists(Expand(git)) Then
+                GitResultsFrom = gitLost
+                Exit Function
+            End If
+            If reqConfirmChkBox.checked Then
+                response = MsgBox(format(Array("Run %s?", git)), settings, caption)
+            Else response = vbYes
+            End If
+            If vbYes = response Then
+                sh.Run format(Array("""%s""", git))
+                result = bitYes Or gitFound
+            ElseIf vbCancel = response Then
+                result = bitCancel Or gitFound
+            Else result = bitNo Or gitFound
+            End If
+            GitResultsFrom = result
+        End Function
+        Const gitFound = 1, gitLost = 0
+
+        Function Expand(str) : Expand = sh.ExpandEnvironmentStrings(str) : End Function
+
+        Sub selectAllChkBox_OnClick
+            Dim input, inputs
+            Set inputs = document.getElementsByTagName("input")
+            For Each input In inputs
+                CheckUncheckIfPrepItem input, selectAllChkBox.checked
+            Next
+        End Sub
+        Sub CheckUncheckIfPrepItem(element, newStatus)
+            If "selectAllChkBox" = element.id _
+            Or "reqConfirmChkBox" = element.id _
+            Or Not "checkbox" = element.type Then
+                Exit Sub
+            End If
+            element.checked = newStatus
+        End Sub
+
+        Sub Document_OnKeyUp
+            If Enter = window.event.keyCode Then
+                prepBtn_OnClick
+            End If
+        End Sub
+
+        Sub Feedback(str)
+            Unhide info
+            info.innerHTML = str
+        End Sub
+        Sub ClearFeedback
+            Hide info
+            info.innerHTML = ""
+        End Sub
+        Sub Hide(element) : element.style.display = "none" : End Sub
+        Sub Unhide(element) : element.style.display = "block" : End Sub
+
+        Const CreateNew = True
+        Const Enter = 13 'window.event.keyCode
+        Const synchronous = True
+        Const VBScript = "VBScript"
+        Const bitYes = 8, bitNo = 4, bitCancel = 2
+        
+        Dim sh, fso, format, includer
+        Dim caption, settings
+        Dim projectFolder
+        Sub Window_OnLoad
+            Dim application
+            Set sh = CreateObject("WScript.Shell")
+            Set fso = CreateObject("Scripting.FileSystemObject")
+            Set application = document.getElementsByTagName("application")(0)
+            document.Title = application.applicationName
+            projectFolder = Replace(fso.GetParentFolderName(application.CommandLine), """", "")
+            Set format = GetObject("script:" & projectFolder & "\" & componentFolder & "\StringFormatter.wsc")
+            Set includer = GetObject(format(Array("script:%s\%s\Includer.wsc", projectFolder, componentFolder)))
+            includer.SetLibraryPath projectFolder & "\class"
+            caption = document.Title
+            settings = vbYesNoCancel + vbInformation + vbDefaultButton2
+            sh.CurrentDirectory = projectFolder
+        End Sub
+        Sub Window_OnUnload
+            Set sh = Nothing
+            Set fso = Nothing
+            Set format = Nothing
+            Set includer = Nothing
+        End Sub
+    </script>
+    <p class="input">
+        <input
+            type="checkbox"
+            id="reqConfirmChkBox"
+            checked />
+        <span> Require confirmation prompts </span>
+    </p>
+    <p class="input">
+        <input
+            type="checkbox"
+            id="selectAllChkBox" />
+        <span> Select/deselect all prep items </span>
+    </p>
+    <fieldset>
+        <legend class="spaceBelow"> Prep items</legend>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="uninstallChkBox" />
+            <span> Uninstall </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="stopScriptsChkBox" />
+            <span> Stop scripts </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="runSetupChkBox" />
+            <span> Run setup </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="runTestsChkBox" />
+            <span> Run tests </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="generateDocsChkBox" />
+            <span> Generate docs </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="openProgramsAndFeaturesChkBox" />
+            <span> Open Programs and Features </span>
+        </p>
+        <p class="input">
+            <input
+                type="checkbox"
+                id="openGitChkBox" />
+            <span> Open Git </span>
+        </p>
+    </fieldset>
+    <p class="input">
+        <input
+            type="button"
+            class="button spaceBelow"
+            id="prepBtn"
+            value="Run the selected prep items" />
+    </p>
+    <p id="info" class="feedback"></p>
+    <style>
+        input, span {
+            margin-top: 0px;
+        }
+        .input {
+            margin-Left: 20px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .button {
+            margin-top: 10px;
+        }
+        body {
+            font-family: sans-serif;
+            font-size: smaller;
+            cursor: default;
+            background-color: ButtonFace;
+        }
+        .spaceBelow {
+            margin-bottom: 7px;
+        }
+        fieldset {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-width: 3px;
+            padding: 12px;
+        }
+        .feedback {
+            color: darkred;
+        }
+    </style>
+</body>
+</html>
