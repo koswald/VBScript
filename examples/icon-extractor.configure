@@ -1,0 +1,6 @@
+sourceFileValue = "*.dll"
+sourceDirValue = "%SystemRoot%\System32"
+targetDirValue = format(Array("%UserProfile%\Desktop\extracted-icons\%s-%s-%s-%s-%s", Month(Now), Day(Now), Hour(Now), Minute(Now), Second(Now)))
+sourceFileTitle = format(Array("Resource file examples: %s imageres.dll %s shell32.dll %s m*.exe | p*.dll", vbLf, vbLf, vbLf))
+ms = 0 'milliseconds delay between icons and files
+

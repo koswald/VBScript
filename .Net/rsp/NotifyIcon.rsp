@@ -5,7 +5,7 @@
 /out:..\lib\NotifyIcon.dll
 
 # add module(s) and reference(s)
-/addmodule:..\lib\IconExtractor.module
+/r:..\lib\IconExtractor.dll
 /addmodule:..\lib\ComEvent.module
 /r:..\lib\Admin.dll
 

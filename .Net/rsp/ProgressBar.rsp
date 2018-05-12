@@ -3,7 +3,7 @@
 
 /target:library
 /out:..\lib\ProgressBar.dll
-/addmodule:..\lib\IconExtractor.module
+/r:..\lib\IconExtractor.dll
 
 # Create an XML doc
 /doc:..\lib\ProgressBar.xml

@@ -1,0 +1,420 @@
+<html>
+<head>
+    <hta:application
+        applicationName="Extract icons from .dll or .exe files"
+        icon="msctfui.dll"
+        innerBorder="No"
+        singleInstance="Yes"
+        scroll="No" />
+    <script language="VBScript">
+        Self.ResizeTo 600, 400
+    </script>
+</head>
+<body>
+    <script language="VBScript">
+        Option Explicit
+
+        Sub extractIconsBtn_OnClick
+            InProgressMsg "Getting the file list..."
+            window.setTimeout "PrepStatesFor ListingFiles", ms, "VBScript"
+        End Sub
+
+        Sub PrepStatesFor(status)
+            Select Case status
+
+            Case ListingFiles
+            ClearFeedback
+            Disable extractIconsBtn
+            inProgressDiv.style.display = "block"
+            fileDict.RemoveAll
+            iconsExtracted = 0
+            eStop = False
+            Disable subfoldersChkBox
+            Disable sourceDirTxtBox
+            Disable sourceBrowserBtn
+            Disable sourceFileTxtBox
+            Disable targetDirTxtBox
+            Disable targetBrowserBtn
+            Disable largeIconsChkBox
+            Disable smallIconsChkBox
+            Disable zeroIndexesOnlyChkBox
+            Disable stopBtn
+            Disable elevateBtn
+            window.setTimeout "ListFiles", ms, "VBScript"
+
+            Case ExtractingFiles
+            fileKeys = fileDict.Keys
+            iconIndex = 0
+            fileIndex = 0
+            InProgressMsg CheckingMsg & fileKeys(0)
+            targetFolder = Expand(targetDirTxtBox.value)
+            Enable stopBtn
+            stopBtn.focus
+            Disable extractIconsBtn
+
+            Case ShowingResults
+            inProgressDiv.innerHTML = ""
+            inProgressDiv.style.display = "none"
+            subfoldersChkBox.checked = False
+            Enable extractIconsBtn
+            Enable stopBtn
+            Enable subfoldersChkBox
+            Enable sourceDirTxtBox
+            Enable sourceBrowserBtn
+            Enable sourceFileTxtBox
+            Enable targetDirTxtBox
+            Enable targetBrowserBtn
+            Enable largeIconsChkBox
+            Enable smallIconsChkBox
+            Enable zeroIndexesOnlyChkBox
+            Disable stopBtn
+            Enable elevateBtn
+            End Select
+        End Sub
+        Sub Disable(element) : element.disabled = True : End Sub
+        Sub Enable(element) : element.disabled = False : End Sub
+        
+        Sub ListFiles
+            Dim dir : dir = Expand(targetDirTxtBox.value)
+            If largeIconsChkBox.checked Then
+                CreateFolder format(Array("%s\lg", dir))
+            End If
+            If smallIconsChkBox.checked Then
+                CreateFolder format(Array("%s\sm", dir))
+            End If
+            If subfoldersChkBox.checked Then
+                ListFilesBySubfolder sourceDirTxtBox.value
+            ElseIf InStr(sourceFileTxtBox.value, "*") _
+            Or InStr(sourceFileTxtBox.value, "?") _
+            Or InStr(sourceFileTxtBox.value, "|") Then
+                ListFilesByWildcard sourceDirTxtBox.value
+            Else
+                ListFile sourceDirTxtBox.value, sourceFileTxtBox.value
+            End If
+            PrepStatesFor ExtractingFiles
+            window.setTimeout "ExtractNextIcon", ms, "VBScript"
+        End Sub
+        
+        Sub ShowResults
+            PrepStatesFor ShowingResults
+            Feedback "Icons extracted: " & iconsExtracted
+            Feedback "Files processed: " & fileIndex
+            window.setTimeout "ClearEStop", ms + 200, "VBScript"
+        End Sub
+        Sub ClearEStop : eStop = False : End Sub
+
+        Sub ListFilesBySubfolder(folder)
+            Dim subfolder
+            For Each subfolder In fso.GetFolder(Expand(folder)).SubFolders
+                ListFilesBySubfolder subfolder 'recurse
+            Next
+            ListFilesByWildcard folder
+        End Sub
+
+        Sub ListFilesByWildcard(sourceDir)
+            regex.Pattern = rf.Pattern(sourceFileTxtBox.value)
+            Dim file : For Each file In fso.GetFolder(Expand(sourceDir)).Files
+                If regex.Test(file.Name) Then
+                    ListFile sourceDir, file.Name
+                End If
+            Next
+        End Sub
+
+        Sub ListFile(sourceDir, sourceFile)
+            fileDict.Add format(Array("%s\%s", sourceDir, sourceFile)), ""
+        End Sub
+
+        Sub ExtractNextIcon
+            If eStop Or fileIndex > UBound(fileKeys) Then ShowResults : Exit Sub
+            Dim file : file = fileKeys(fileIndex)
+            If iconIndex = 0 Then
+                iconCount = extractor.IconCount(file)
+            End If
+            If (zeroIndexesOnlyChkBox.checked And iconIndex > 0) _
+            Or iconIndex >= iconCount Then
+                iconIndex = 0
+                fileIndex = fileIndex + 1
+                window.setTimeout "ExtractNextIcon", ms, "VBScript"
+                Exit Sub
+            End If
+            Dim base : base = fso.GetBaseName(file)
+            Dim ext : ext = fso.GetExtensionName(file)
+            Dim largeTarget : largeTarget = format(Array( _
+                "%s\lg\%s_%s_%s_Lg.ico", _
+                targetFolder, base, ext, iconIndex))
+            Dim smallTarget : smallTarget = format(Array( _
+                "%s\sm\%s_%s_%s_Sm.ico", _
+                targetFolder, base, ext, iconIndex))
+            If largeIconsChkBox.checked Then
+                On Error Resume Next
+                    extractor.Save file, iconIndex, largeTarget, True
+                On Error Goto 0
+            End If
+            If smallIconsChkBox.checked Then
+                On Error Resume Next
+                    extractor.Save file, iconIndex, smallTarget, False
+                On Error Goto 0
+            End If
+            Dim suspect : For Each suspect In Array(largeTarget, smallTarget)
+                RemoveIfZeroSize suspect
+            Next
+            Dim msg : If iconIndex = 0 Then msg = CheckingMsg Else msg = format(Array("Extracting icon %s from<br />", iconIndex))
+            InProgressMsg msg & fileKeys(fileIndex)
+            If fileIndex > UBound(fileKeys) Then
+                ShowResults
+                Exit Sub
+            Else iconIndex = iconIndex + 1
+            End If
+            window.setTimeout "ExtractNextIcon", ms, "VBScript"
+        End Sub
+
+        Sub RemoveIfZeroSize(filespec)
+            If Not fso.FileExists(filespec) Then Exit Sub
+            If fso.GetFile(filespec).Size > 0 Then
+                iconsExtracted = iconsExtracted + 1
+                Exit Sub
+            End If
+            On Error Resume Next
+                fso.DeleteFile filespec
+            On Error Goto 0
+        End Sub
+
+        Sub sourceBrowserBtn_OnClick
+            browser.Title = "Choose the icon source folder"
+            browser.InitialDirectory = "%ProgramFiles%"
+            Dim folder : folder = browser.FolderName
+            If Not "" = folder Then sourceDirTxtBox.value = folder
+        End Sub
+
+        Sub targetBrowserBtn_OnClick
+            browser.Title = "Create or choose a destination folder for the icons"
+            browser.InitialDirectory = "%UserProfile%\Desktop"
+            Dim folder : folder = browser.FolderName
+            If Not "" = folder Then targetDirTxtBox.value = folder
+        End Sub
+
+        Sub stopBtn_OnClick
+            eStop = True
+            Disable stopBtn
+        End Sub
+        
+        Sub elevateBtn_OnClick
+            With CreateObject("Shell.Application")
+                .ShellExecute "mshta", application.CommandLine,, "runas"
+            End With
+            Self.Close
+        End Sub
+
+        Sub Document_OnKeyUp
+            Dim key : key = window.event.keyCode
+            If F6 = key Then sh.Run format(Array("""%s"" %s", Expand(WordPad), application.commandLine))
+            If Enter = key Then
+                If eStop Then Exit Sub
+                If extractIconsBtn.disabled Then Exit Sub
+                window.setTimeout "extractIconsBtn_OnClick", ms, "VBScript"
+            End If
+            If Esc = key Then Self.Close
+        End Sub
+
+        Sub smallIconsChkBox_OnClick : CheckIconChoices : End Sub
+        Sub largeIconsChkBox_OnClick : CheckIconChoices : End Sub
+        Sub CheckIconChoices
+            If Not smallIconsChkBox.checked And Not largeIconsChkBox.checked Then Disable extractIconsBtn Else Enable extractIconsBtn
+        End Sub
+
+        Sub CreateFolder(newDir)
+            Dim parentDir : parentDir = fso.GetParentFolderName(newDir)
+            If Not fso.FolderExists(parentDir) Then CreateFolder parentDir
+            If Not fso.FolderExists(newDir) Then fso.CreateFolder newDir
+        End Sub
+
+        Function Expand(str)
+            Expand = sh.ExpandEnvironmentStrings(str)
+        End Function
+
+        Sub InProgressMsg(msg)
+            inProgressDiv.innerHTML = msg
+        End Sub
+
+        Sub Feedback(msg)
+            feedbackDiv.innerHTML = msg & "<br />" & feedbackDiv.innerHTML
+            window.clearTimeout timeoutId
+            timeoutId = window.setTimeout("ClearFeedback", 20000, "VBScript")
+        End Sub
+
+        Sub ClearFeedback : feedbackDiv.innerHTML = "" : End Sub
+        
+        Const ListingFiles = "Listing filles"
+        Const ExtractingFiles = "Extracting files"
+        Const ShowingResults = "Showing results"
+        Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
+        Const F1 = 112 'window.event.KeyCode
+        Const F6 = 117
+        Const F7 = 118
+        Const F8 = 119
+        Const Esc = 27
+        Const Enter = 13
+        Dim sh, fso, format, extractor, application
+        Dim regex, rf, includer, browser, log, app
+        Dim admin
+        Dim timeoutId
+        Dim fileDict
+        Dim fileKeys
+        Dim iconIndex
+        Dim fileIndex
+        Dim targetFolder
+        Dim ms
+        Dim iconsExtracted
+        Dim CheckingMsg
+        Dim eStop
+        Dim iconCount
+
+        Sub Window_OnLoad
+            Set sh = CreateObject("WScript.Shell")
+            Set fso = CreateObject("Scripting.FileSystemObject")
+            Set format = CreateObject("VBScripting.StringFormatter")
+            Set extractor = CreateObject("VBScripting.IconExtractor")
+            Set application = document.getElementsByTagName("application")(0)
+            document.Title = application.applicationName
+            Set regex = New RegExp
+            regex.IgnoreCase = True
+            Set includer = CreateObject("VBScripting.Includer")
+            Execute includer.Read("RegExFunctions")
+            Set rf = New RegExFunctions
+            Execute includer.Read("VBSLogger")
+            Set log = New VBSLogger
+            Set browser = CreateObject("VBScripting.FolderChooser")
+            Set admin = CreateObject("VBScripting.Admin")
+            Set fileDict = CreateObject("Scripting.Dictionary")
+
+            Dim sourceFileValue, sourceDirValue
+            Dim targetDirValue, sourceFileTitle
+            Execute includer.Read("VBSApp")
+            Set app = New VBSApp
+            Dim parent : parent = app.GetParentFolderName
+            Dim configFile : configFile = format(Array( _
+                "%s\%s.configure", parent, app.GetBaseName))
+            Execute includer.ReadFrom(configFile, parent)
+            
+            If admin.PrivilegesAreElevated Then Disable elevateBtn
+            sourceDirTxtBox.value = sourceDirValue
+            sourceFileTxtBox.value = sourceFileValue
+            targetDirTxtBox.value = targetDirValue
+            sourceFileTxtBox.Title = sourceFileTitle
+            CheckIconChoices
+            CheckingMsg = "Checking for icons in<br />"
+            Disable stopBtn
+        End Sub
+
+        Sub Window_OnUnload
+            Set sh = Nothing
+            Set fso = Nothing
+            Set format = Nothing
+            Set extractor = Nothing
+            Set application = Nothing
+            Set regex = Nothing
+            Set includer = Nothing
+            Set rf = Nothing
+            Set admin = Nothing
+        End Sub
+    </script>
+    <p class="label"> Source folder
+        <input
+            type="checkbox"
+            id="subfoldersChkBox"
+            class="spaceLeft" /> with subfolders
+    </p>
+    <input
+        type="text"
+        class="textInput"
+        id="sourceDirTxtBox" /> 
+    <input
+        type="button"
+        id="sourceBrowserBtn"
+        class="narrowButton"
+        title="Browse for folder"
+        value="..." /><br />
+    <p class="label"> File name(s)</p>
+    <input
+        type="text"
+        id="sourceFileTxtBox"
+        class="textInput" /><br />
+    <p class="label"> Target folder</p>
+    <input
+        type="text"
+        id="targetDirTxtBox"
+        class="textInput" />
+    <input
+        type="button"
+        id="targetBrowserBtn"
+        title="Browse for folder"
+        class="narrowButton"
+        value="..." /><br />
+    <input
+        type="checkbox"
+        id="largeIconsChkBox"
+        class="spaceTop"
+        checked /> <span class="label"> Large icons</span><br />
+    <input
+        type="checkbox"
+        id="smallIconsChkBox" 
+                /> <span class="label"> Small icons</span><br />
+    <input
+        type="checkbox"
+        id="zeroIndexesOnlyChkBox"
+        checked /> <span class="label"> Zero indexes only</span><br />
+    <input
+        type="button"
+        value="Extract icons"
+        class="spaceTop"
+        id="extractIconsBtn" />
+    <input
+        type="button"
+        value="Stop"
+        class="spaceLeft spaceTop"
+        id="stopBtn" />
+    <input
+        type="button"
+        value="Elevate"
+        class="spaceLeft spaceTop"
+        id="elevateBtn" /><br />
+    <div
+        id="inProgressDiv"
+        class="spaceTop wide">
+    </div>
+    <div
+        id="feedbackDiv"
+        class="spaceTop" />
+    </div>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: buttonface;
+            font-size: smaller;
+            cursor: default;
+        }
+        .label {
+            margin-bottom: 0px;
+        }
+        .textInput {
+            width: 94%;
+        }
+        .spaceTop, .label {
+            margin-top: 10px;
+        }
+        .narrowButton {
+            padding: 0px;
+        }
+        #feedbackDiv {
+            color: darkred;
+        }
+        .spaceLeft {
+            margin-left: 10px;
+        }
+        .wide {
+            width: 97%;
+            border-width: 0px;
+        }
+    </style>
+</body>
+</html>

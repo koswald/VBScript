@@ -3,12 +3,12 @@
     <head>
         <hta:application
             applicationName = "VBScript Statement Interpreter"
-            icon="msdt.exe"
+            icon="deskmon.dll"
             innerBorder="No"
             singleInstance="Yes">
         <script language="VBScript">
             Self.ResizeTo 660, 400
-            Self.MoveTo 920, 150
+            Self.MoveTo 600, 150
         </script>
     </head>
     <body>
@@ -91,6 +91,7 @@
             End Sub
 
             Sub ClearHistory
+                If vbCancel = MsgBox("Do you really want to clear the history?", vbOKCancel + vbInformation + vbDefaultButton2, document.Title) Then Exit Sub
                 historyStream.Close
                 With CreateObject("Scripting.FileSystemObject")
                     If .FileExists(historyFile) Then
@@ -152,9 +153,7 @@
             End Sub
 
             Sub EditHistory
-                With CreateObject("WScript.Shell")
-                    .Run "notepad """ & historyFile & """"
-                End With
+                sh.Run "notepad """ & historyFile & """"
                 document.parentWindow.Close
             End Sub
 
