@@ -251,6 +251,8 @@ namespace VBScripting
     }
     /// <summary> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
     /// <remarks> Not directly available to VBScript. See <tt>Admin.Result</tt>. </remarks>
+    [ProgId("VBScripting.EventLogResultT"),
+        Guid("2650C2AB-8CF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogResultT
     {
         /// <returns> "Source already exists" </returns>
@@ -273,6 +275,8 @@ namespace VBScripting
             get { return "Source deletion error"; } }
     }
     /// <summary> Type returned by CreateEventSource and DeleteEventSource. </summary>
+    [ProgId("VBScripting.EventLogSourceResult"),
+        Guid("2650C2AB-8DF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogSourceResult
     {
         /// <summary> Returns True if the source exists after the attempted operation has completed. </summary>

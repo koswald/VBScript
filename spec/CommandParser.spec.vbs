@@ -23,6 +23,23 @@ With New TestingFramework
             cp.GetResult
             .AssertErrorRaised
         On Error Goto 0
+
+    Dim x
+    .it "raises an error on edge case 1a: not using cmd /c"
+        On Error Resume Next
+            cp.SetCommand "If defined ProgramFilesX86 (echo 64-bit) else (echo 32-bit)"
+            cp.SetSearchPhrase "64-bit"
+            x = cp.GetResult
+            .AssertEqual "{ " & Err.Description & " }", "{ The system cannot find the file specified." & vbCrLf & " }"
+        On Error Goto 0
+
+    .it "should not raise error on edge case 1b: using cmd /c"
+        On Error Resume Next
+            cp.SetCommand "cmd /c If defined ProgramFilesX86 (echo 64-bit) else (echo 32-bit)"
+            cp.SetSearchPhrase "64-bit"
+            x = cp.GetResult
+            .AssertEqual "{ " & Err.Description & " }", "{  }"
+        On Error Goto 0
     
     'setup
         Dim searchPhrase1, searchPhrase2

@@ -9,7 +9,8 @@ namespace VBScripting
     public class ComEvent
     {
         /// <summary> Invokes a VBScript method. </summary>
-        /// <remarks> The parameter <tt>callbackRef</tt> is an object reference to a VBScript member returned by the VBScript Function GetRef. </remarks>
+        /// <parameters> callbackRef </parameters>
+        /// <remarks> The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. </remarks>
         public static void InvokeComCallback(object callbackRef)
         {
             try

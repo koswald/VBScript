@@ -1,14 +1,14 @@
-
 'Setup the VBScript utilities
 
-'Registers the windows script component, Includer.wsc,
-'other project components, and builds the VBScript
-'extension libraries (.dll files).
+'Registers or unregisters the windows script components (.wsc).
+'Compiles and registers or unregisters the VBScript
+'extension .dll libraries.
+'Creates or removes the VBScripting event log source.
+
+'Use /u to unregister/remove.
 
 'The User Account Control dialog will open
 'to verify elevation of privileges.
-
-'Use /u to uninstall
 
 Option Explicit
 
@@ -41,27 +41,27 @@ Sub Main
         PrepWscRegistrationSysWoW64
         PrepFinalInstruction
         RunBatchFile
-        DeleteScriptletKeys
+        DeleteSelectedKeys
     End If
     DeleteBatchFile
 End Sub
 
-'prepare for registering components (.wsc files),
+'prepare to register .wsc files
 'for 32-bit or 64-bit, according to system bitness
 Sub PrepWscRegistrationSystem32
     batchStream.WriteLine "echo."
     Dim file : For Each file In fso.GetFolder(componentFolder).Files
         If "wsc" = LCase(fso.GetExtensionName(file)) Then
             batchStream.WriteLine format(Array( _
-                "echo %s %s %s" & _
-                "%SystemRoot%\System32\regsvr32 %s /s ""%s""", _
-                registerVerb, fso.GetFileName(file), vbCrLf, wscFlag, file _
+                "echo %s %s" & vbCrLf & _
+                "%SystemRoot%\System32\regsvr32 %s /s /i:""%s"" scrobj.dll", _
+                registerVerb, fso.GetFileName(file), wscFlag, file _
             ))
         End If
     Next
 End Sub
 
-'prepare for registering components,
+'prepare to register .wsc files
 'for 32-bit apps on 64-bit systems
 Sub PrepWscRegistrationSysWoW64
     If wow Then Exit Sub 'not applicable to 32-bit systems
@@ -70,14 +70,14 @@ Sub PrepWscRegistrationSysWoW64
         If "wsc" = LCase(fso.GetExtensionName(file)) Then
             batchStream.WriteLine format(Array( _
                 "echo %s %s for 32-bit apps %s" & _
-                "%SystemRoot%\SysWow64\regsvr32 %s /s ""%s""", _
+                "%SystemRoot%\SysWow64\regsvr32 %s /s /i:""%s"" scrobj.dll", _
                 registerVerb, fso.GetFileName(file), vbCrLf, wscFlag, file _
             ))
         End If
     Next
 End Sub
 
-'prepare for compiling and registering/unregistering the VBS extension
+'prepare to compile and register .dll files
 Sub PrepDllRegistration
     batchStream.WriteLine "echo."
     batchStream.WriteLine format(Array("cd ""%s""", buildFolder))
@@ -122,7 +122,8 @@ Sub ProgramsAndFeaturesEntry
     reg.SetStringValue HKLM, uninstKey, "UninstallString", format(Array("wscript ""%s\Setup.vbs"" /u", InstallLocation))
     reg.SetDWORDValue HKLM, uninstKey, "NoModify", 1
     reg.SetStringValue HKLM, uninstKey, "ModifyPath", ""
-    reg.SetDWORDValue HKLM, uninstKey, "NoRepair", 1
+    reg.SetDWORDValue HKLM, uninstKey, "NoRepair", 0
+    reg.SetStringValue HKLM, uninstKey, "RepairPath", format(Array("wscript ""%s\Setup.vbs""", InstallLocation)) '""
     reg.SetStringValue HKLM, uninstKey, "HelpLink", "https://github.com/koswald/VBScript"
     reg.SetStringValue HKLM, uninstKey, "InstallLocation", InstallLocation
     reg.SetDWORDValue HKLM, uninstKey, "EstimatedSize", 1500 'kilobytes
@@ -157,27 +158,8 @@ Sub DeleteBatchFile
     End If
 End Sub
 
-'Remove the registry keys associated with script components;
-'regsvr32.exe may show a success message on unregister
-'without removing the registry keys.
-Sub DeleteScriptletKeys
+Sub DeleteSelectedKeys
     Dim keys : keys = Array("" _
-        , "Software\Classes\CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E1-11D7-86BF-00606744568C}" _
-        , "Software\Classes\VBScripting.EventExample" _
-        , "Software\Classes\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30DE-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Includer" _
-        , "Software\Classes\VBScripting.Includer" _
-        , "Software\Classes\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E2-11D7-86BF-00606744568C}" _
-        , "Software\Classes\VBScripting.KeyDeleter" _
-        , "Software\Classes\CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30DF-11D7-86BF-00606744568C}" _
-        , "Software\Classes\VBScripting.StringFormatter" _
-        , "Software\Classes\CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}" _
-        , "Software\Classes\Wow6432Node\CLSID\{ADCEC089-30E0-11D7-86BF-00606744568C}" _
-        , "Software\Classes\VBScripting.VBSApp" _
         , "Software\Microsoft\Windows\CurrentVersion\Uninstall\VBScripting" _
     )
     Dim i : For i = 1 To UBound(keys)
@@ -212,7 +194,7 @@ Sub Initialize
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
 
-    'convert relative paths to absolute paths
+    'relative paths => absolute paths
     projectFolder = fso.GetParentFolderName(WScript.ScriptFullName)
     sh.CurrentDirectory = projectFolder
     buildFolder = fso.GetAbsolutePathName(buildFolder_)
@@ -224,7 +206,7 @@ Sub Initialize
         Execute fso.OpenTextFile(configFile).ReadAll
     On Error Goto 0
 
-    'initialize required project classes
+    'instantiate components
     Set include = GetObject("script:" & componentFolder & "\Includer.wsc")
     Set format = GetObject("script:" & componentFolder & "\StringFormatter.wsc")
     Set keyDeleter = GetObject("script:" & componentFolder & "\KeyDeleter.wsc")
@@ -236,7 +218,7 @@ Sub Initialize
         Set wow = New WoWChecker
     End With
 
-    'look for arguments on the command line
+    'get command line arguments
     With WScript.Arguments
         uninstalling = False
         silent = False
@@ -254,7 +236,7 @@ Sub Initialize
             setupFlag = "/u"
             registerVerb = "Unregistering"
             setupNoun = "uninstalling"
-            wscFlag = "/u"
+            wscFlag = "/u /n"
             dllFlag = "/unregister"
             installing = False
         Else 'installing
@@ -268,7 +250,7 @@ Sub Initialize
     End With
     If Not pc Then
 
-        'restart this script to elevate privileges
+        'elevate privileges
         Dim restartArgs : restartArgs = format(Array( _
             "/c cd ""%s"" & start wscript ""%s"" %s %s", _
             projectFolder, WScript.ScriptFullName, setupFlag, silentFlag _
@@ -278,7 +260,7 @@ Sub Initialize
         WScript.Quit
     End If
 
-    'prepare batchStream
+    'prepare .bat stream
     If fso.FileExists(batchFile) Then fso.DeleteFile batchFile
     Set batchStream = fso.OpenTextFile(batchFile, ForAppending, CreateNew)
     batchStream.WriteLine "@echo off & echo."

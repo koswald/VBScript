@@ -72,16 +72,21 @@ Class TestingFramework
         SetResultPending True
     End Sub
 
+    'Method DeleteFile
+    'Parameter: a filespec
+    'Remark: Deletes the specified file. Relative paths and environment variables are allowed.
+    Sub DeleteFile(file)
+        fso.DeleteFile fso.GetAbsolutePathName(sh.ExpandEnvironmentStrings(file))
+    End Sub
+
     'Method DeleteFiles
     'Parameter: an array
-    'Remark: Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used.
+    'Remark: Deletes the specified files. The parameter is an array of filespecs. Relative paths and environment variables are allowed.
     Sub DeleteFiles(files)
-        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
         Dim file
-        For each file in files
-            If fso.FileExists(file) Then fso.DeleteFile(file)
+        For Each file In files
+            DeleteFile file
         Next
-        Set fso = Nothing
     End Sub
 
     'Function MessageAppeared
@@ -132,7 +137,7 @@ Class TestingFramework
 
     Private unit, spec, T, explanation
     Private pass, fail, result, resultPending
-    Private sh
+    Private sh, fso
     Private sendKeysWarning
 
     Private Sub Class_Initialize 'event fires on object instantiation
@@ -144,10 +149,12 @@ Class TestingFramework
             hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
         End With
         Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
     End Sub
 
     Sub Class_Terminate
         ShowPendingResult
         Set sh = Nothing
+        Set fso = Nothing
     End Sub
 End Class

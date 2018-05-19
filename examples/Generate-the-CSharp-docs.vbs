@@ -1,14 +1,17 @@
-With CreateObject("VBScripting.Includer")
-    Execute .Read("DocGeneratorCS")
-End With
+Set includer = CreateObject("VBScripting.Includer")
+Execute includer.Read("DocGeneratorCS")
 Set fso = CreateObject("Scripting.FileSystemObject")
-With CreateObject("WScript.Shell")
-    .CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
-End With
+Set sh = CreateObject("WScript.Shell")
+sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
 Set fso = Nothing
+
 With New DocGeneratorCS
     .OutputFile = "..\docs\CSharpClasses.html"
     .XmlFolder = "..\.Net\lib"
     .Generate
 ''    .ViewHtml
 End With
+
+sh.PopUp "Done generating the C# classes docs.", 3, WScript.ScriptName, vbInformation + vbSystemModal
+Set sh = Nothing
+Set includer = Nothing

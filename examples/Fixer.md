@@ -1,55 +1,71 @@
 # Fixer.hta
 
 [Overview](#overview)  
-[Example](#example)  
-[Anomaly](#anomaly)
+[Background](#background)  
+[How it works](#how-it-works)  
+[Fixing the fixer](#fixing-the-fixer)
 
 ## Overview
 
-Are you having problems running .vbs and .wsf scripts 
-on your 64-bit machine?
+Fixer.hta can help to solve certain problems 
+in 64-bit systems when the problems are 
+related to bitness, allowing you to quickly 
+toggle script bitness without resorting to 
+regedit.exe.  
 
-Fixer.hta might help with troubleshooting certain Windows&reg; 
-configuration problems that prevent `.wsf` or `.vbs` 
-scripts from running.  
+## Background
 
-> Fixer.hta may help to identify the source of a problem 
-> in the following situations:  
-> 1.) A script won't run at all, or  
-> 2.) A script can't instantiate a particular COM object.  
+For a 64-bit system configured in the typical 
+manner, the default values of the following 
+registry keys determine which executable 
+is used to open .vbs, .wsf, and .hta files:  
+```
+HKLM\Software\Classes\VBSFile\Shell\Open\Command
+HKLM\Software\Classes\WSFFile\Shell\Open\Command
+HKLM\Software\Classes\htafile\Shell\Open\Command
+```
+For a system configured to open .vbs 
+scripts with the 64-bit wscript, the 
+command might look something like,  
 
-## Example
+`%SystemRoot%\System32\wscript.exe "%1" %*`
 
-If a `.vbs` script attempts to instantiate a COM object that 
-has been incorrectly registered or compiled for 32-bit use 
-only, and the registry is configured to open `.vbs` files 
-with the 64-bit `wscript.exe`, then the script may show an error 
-similar to `ActiveX component can't create object...`.  
+## How it works
 
-This type of problem might be identified and possibly fixed by 
-using Fixer to change the registry entries that control the 
-bitness of the executables that open `.vbs` files:  
- 
-1) Double click `Fixer.bat`in order to launch `Fixer.hta`.  
-2) The User Account Control dialog will open to verify elevation 
-   privileges for Microsoft (R) HTML Application host.  
-3) In the `Fixer` window, in the `..\VBSFile\..` section,  
-   select `32-bit`, and then rerun the script.  
+**With Fixer.hta you can easily toggle the 
+bitness without resorting to regedit.exe.**
 
-## Anomaly
+When you select the *32 bit* radio button, Fixer.hta 
+changes the `System32` to `SysWow64`.  
 
-Support for .hta files was removed after an apparent conflict
-with anti-malware software, probably Avast or Windows Defender.
-Fixer.hta would freeze, preventing it from changing the registry entry
-for HKLM\Software\Classes\htafile\Open\Command (default value). 
-Fixer.hta worked fine after this capability was removed. 
-The registry entry was then successfully changed manually with regedit.exe 
-to use the 64-bit mshta.exe, before which some tests didn't run 
-as expected.
+## Fixing the fixer
 
----
+One situation where you might have to 
+jump start this process is when .hta files 
+are configured to open with the 32-bit 
+mshta.exe. In this case, the radio buttons 
+have no effect: the command stays at 
+`...\SysWow64\...`. One way to force Fixer.hta 
+to open with the 64-bit mshta.exe, is
 
-For intructions on one way to compile and register, 
-see the `build` folder [ReadMe].
+- Press Win + X, R (to open the Run dialog)
+- Type `mshta "<project folder>\examples\Fixer.hta"`
 
-[ReadMe]: ../.Net/build/ReadMe.md
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+  
+
+
+

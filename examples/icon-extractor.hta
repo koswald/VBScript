@@ -19,7 +19,7 @@
             window.setTimeout "PrepStatesFor ListingFiles", ms, "VBScript"
         End Sub
 
-        Sub PrepStatesFor(status)
+        Function PrepStatesFor(status)
             Select Case status
 
             Case ListingFiles
@@ -44,6 +44,12 @@
 
             Case ExtractingFiles
             fileKeys = fileDict.Keys
+            If -1 = UBound(fileKeys) Then
+                Feedback "No files found"
+                PrepStatesFor = False
+                PrepStatesFor ShowingResults
+                Exit Function
+            End If
             iconIndex = 0
             fileIndex = 0
             InProgressMsg CheckingMsg & fileKeys(0)
@@ -55,7 +61,6 @@
             Case ShowingResults
             inProgressDiv.innerHTML = ""
             inProgressDiv.style.display = "none"
-            subfoldersChkBox.checked = False
             Enable extractIconsBtn
             Enable stopBtn
             Enable subfoldersChkBox
@@ -70,7 +75,9 @@
             Disable stopBtn
             Enable elevateBtn
             End Select
-        End Sub
+
+            PrepStatesFor = True
+        End Function
         Sub Disable(element) : element.disabled = True : End Sub
         Sub Enable(element) : element.disabled = False : End Sub
         
@@ -91,7 +98,9 @@
             Else
                 ListFile sourceDirTxtBox.value, sourceFileTxtBox.value
             End If
-            PrepStatesFor ExtractingFiles
+            If Not PrepStatesFor(ExtractingFiles) Then
+                Exit Sub
+            End If
             window.setTimeout "ExtractNextIcon", ms, "VBScript"
         End Sub
         

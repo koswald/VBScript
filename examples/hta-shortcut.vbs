@@ -13,6 +13,7 @@ parent = fso.GetParentFolderName(hta)
 base = fso.GetBaseName(hta)
 With CreateObject("VBScripting.Includer")
     Execute .Read("VBSExtracter")
+    Execute .Read("VBSEnvironment")
 End With
 With New VBSExtracter
     .SetIgnoreCase True
@@ -43,8 +44,10 @@ Set link = sh.CreateShortcut(parent & "\" & base & ".hta.lnk")
 link.IconLocation = FindIcon(icon)
 link.Arguments = ""
 link.Description = name
-link.WorkingDirectory = """" & parent & """"
-link.TargetPath = """" & hta & """"
+With New VBSEnvironment
+    link.WorkingDirectory = .collapse(parent)
+    link.TargetPath = .collapse(hta)
+End With
 link.Save
 
 Set fso = Nothing

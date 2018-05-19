@@ -6,6 +6,14 @@
     description="Windows Script Component string formatter"
     progid="VBScripting.StringFormatter"
     classid="{ADCEC089-30DF-11D7-86BF-00606744568C}"> 
+    <script language="VBScript">
+        Sub Register
+            ''MsgBox "registering"
+        End Sub
+        Sub Unregister
+            ''MsgBox "unregistering"
+        End Sub
+    </script>
   </registration>
 
   <public>

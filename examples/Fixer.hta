@@ -1,47 +1,41 @@
-
 <!-- Easily modify which executables start .vbs and .wsf files, that is,
 whether the given file types are started by 64-bit or 32-bit executables.
-
 This HTML Application can be used to troubleshoot system configuration
 with respect to running script file types .vbs and .wsf -->
 
-<hta:application scroll="No" icon="regedit.exe" innerborder="No">
-
+<hta:application scroll="No" icon="mmcshext.dll" innerborder="No">
     <body>
-<!--
-        <fieldset> <legend id="lgdHta"> </legend>
-            <span id="spanHta"> </span> <br />
-            64-bit <input type="radio" id="rad64hta" name="nameHta" onclick="tr.SetHta64()" />
-            32-bit <input type="radio" id="rad86hta" name="nameHta" onclick="tr.SetHta86()" />
-        </fieldset>
--->
         <fieldset> <legend id="lgdVbs"> </legend>
             <span id="spanVbs"> </span> <br />
             64-bit <input type="radio" id="rad64vbs" name="nameVbs" onclick="tr.SetVbs64()" />
             32-bit <input type="radio" id="rad86vbs" name="nameVbs" onclick="tr.SetVbs86()" />
         </fieldset>
-
         <fieldset> <legend id="lgdWsf"> </legend>
             <span id="spanWsf"> </span> <br />
             64-bit <input type="radio" id="rad64wsf" name="nameWsf" onclick="tr.SetWsf64()" />
             32-bit <input type="radio" id="rad86wsf" name="nameWsf" onclick="tr.SetWsf86()" />
         </fieldset>
-
-        <span id="out"></span> <!-- debug output -->
-
+        <input 
+            type="checkbox" 
+            id="enableHta"
+            class="label" />
+        <span class="label2"> Enable hta </span><br />
+        <fieldset id="fsHta"> <legend id="lgdHta"> </legend>
+            <span id="spanHta"> </span> <br />
+            64-bit <input type="radio" id="rad64hta" name="nameHta" onclick="tr.SetHta64()" />
+            32-bit <input type="radio" id="rad86hta" name="nameHta" onclick="tr.SetHta86()" />
+        </fieldset>
         <script language="VBScript">
-
-            Dim tr : Set tr = New Troubleshooter
 
             Class Troubleshooter
 
-                'update DOM element with the registry value
+                'update HTML element with the registry value
                 Sub ShowVal(key, span)
                     span.innerHTML = GetRegValue(key)
                 End Sub
 
-                'Replace SysWoW64 with System32 or vice versa, in the specified registry key,
-                'and update the DOM element
+                'Replace SysWow64 with System32 or vice versa, in the specified registry key,
+                'and update the HTML element
                 Sub ReplaceKeyString(key, replaceWith, span)
                     SetRegValue key, regex.Replace(GetRegValue(key), replaceWith)
                     ShowVal key, span
@@ -103,55 +97,43 @@ with respect to running script file types .vbs and .wsf -->
                 Property Get REG_QWORD : REG_QWORD = 11 : End Property
 
                 'click handlers for the radio buttons
-'                Sub SetHta64 : ReplaceKeyString htaKey, System32, oSpanHta : End Sub
-'                Sub SetHta86 : ReplaceKeyString htaKey, SysWoW64, oSpanHta : End Sub
-                Sub SetVbs64 : ReplaceKeyString vbsKey, System32, oSpanVbs : End Sub
-                Sub SetVbs86 : ReplaceKeyString vbsKey, SysWoW64, oSpanVbs : End Sub
-                Sub SetWsf64 : ReplaceKeyString wsfKey, System32, oSpanWsf : End Sub
-                Sub SetWsf86 : ReplaceKeyString wsfKey, SysWoW64, oSpanWsf : End Sub
-
-                'dubugging output
-                Sub Show(msg)
-                    document.getElementById("out").innerHTML = msg
-                End Sub
-
-                Sub ShowMore(newMsg)
-                    msg = document.getElementById("out").innerHTML
-                    document.getElementById("out").innerHTML = msg & "<br />" & newMsg
-                End Sub
+                Sub SetVbs64 : ReplaceKeyString vbsKey, System32, spanVbs : End Sub
+                Sub SetVbs86 : ReplaceKeyString vbsKey, SysWow64, spanVbs : End Sub
+                Sub SetWsf64 : ReplaceKeyString wsfKey, System32, spanWsf : End Sub
+                Sub SetWsf86 : ReplaceKeyString wsfKey, SysWow64, spanWsf : End Sub
+                Sub SetHta64 : ReplaceKeyString htaKey, System32, spanHta : End Sub
+                Sub SetHta86 : ReplaceKeyString htaKey, SysWow64, spanHta : End Sub
 
                 'initialize radio button status and fieldset legend for the specified file type
-                Sub InitializeDOM(fileType)
-                    Dim o64, o86, oLgd, re, key, keyVal
+                Sub InitializeHTML(fileType)
+                    Dim x64element, x86element, legend, re, key, keyVal
                     Set re = New RegExp
                     re.IgnoreCase = True
-                    Set o64 = document.getElementById("rad64" & fileType)
-                    Set o86 = document.getElementById("rad86" & fileType)
-                    Execute("key = " & fileType & "Key") 'initialize local variable with global variable
+                    Set x64element = document.getElementById("rad64" & fileType)
+                    Set x86element = document.getElementById("rad86" & fileType)
+                    Execute "key = " & fileType & "Key"
                     keyVal = GetRegValue(key)
 
                     re.Pattern = "\\System32\\" 'regex pattern must escape \ with \
-                    If re.Test(keyVal) Then o64.checked = "checked"
+                    If re.Test(keyVal) Then x64element.checked = "checked"
                     re.Pattern = "\\SysWow64\\"
-                    If re.Test(keyVal) Then o86.checked = "checked"
+                    If re.Test(keyVal) Then x86element.checked = "checked"
 
-                    Set oLgd = document.getElementById("lgd" & fileType)
-                    oLgd.innerHTML = rootKeyShortName & "\" & key
+                    Set legend = document.getElementById("lgd" & fileType)
+                    legend.innerHTML = rootKeyShortName & "\" & key
 
-                    Set o64 = Nothing
-                    Set o86 = Nothing
+                    Set x64element = Nothing
+                    Set x86element = Nothing
                     Set re = Nothing
-                    Set oLgd = Nothing
+                    Set legend = Nothing
                 End Sub
 
                 Private sh 'WScript.Shell object
                 Private fso 'Scripting.FileSystemObject
                 Private SysWow64, System32 'for regex.Replace arg#2
-                Private oSpanHta, oSpanVbs, oSpanWsf 'span elements for display of registry values
                 Private htaKey, vbsKey, wsfKey 'registry keys
                 Private keyName, rootKeyShortName
                 Private reg, wmiRootKey
-                Private htaName, cmdLineToken, closeMessage
                 Private regex
                 Private HKCU, HKCUShortName
                 Private HKLM, HKLMShortName
@@ -166,12 +148,7 @@ with respect to running script file types .vbs and .wsf -->
                     regex.Pattern = "\\(System32|SysWow64)\\"
                     SysWow64 = "\SysWow64\" 'for regex.Replace arg#2
                     System32 = "\System32\"
-
-'                    Set oSpanHta = document.getElementById("spanHta") 'DOM elements
-                    Set oSpanVbs = document.getElementById("spanVbs")
-                    Set oSpanWsf = document.getElementById("spanWsf")
-
-'                    htaKey = "Software\Classes\htafile\Shell\Open\Command" 'registry keys
+                    htaKey = "Software\Classes\htafile\Shell\Open\Command" 'registry keys
                     vbsKey = "Software\Classes\VBSFile\Shell\Open\Command"
                     wsfKey = "Software\Classes\WSFFile\Shell\Open\Command"
                     keyName = "" 'use empty string for the default value, some other value for debugging
@@ -182,17 +159,13 @@ with respect to running script file types .vbs and .wsf -->
                     rootKeyShortName = HKLMShortName 'registry root key
                     wmiRootKey = HKLM
                     Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
-'                    ShowVal htaKey, oSpanHta 'radio button group label <= key value
-                    ShowVal vbsKey, oSpanVbs
-                    ShowVal wsfKey, oSpanWsf
 
-                    htaName = fso.GetBaseName(document.location.href)
-                    document.Title = htaName
-                    closeMessage = htaName & ".hta must be started with the .bat file of the same name, in order to ensure that the 64-bit mshta.exe is used."
-
-'                    InitializeDOM "hta"
-                    InitializeDOM "vbs"
-                    InitializeDOM "wsf"
+                    ShowVal htaKey, spanHta 'radio button group label <= key value
+                    ShowVal vbsKey, spanVbs
+                    ShowVal wsfKey, spanWsf
+                    InitializeHTML "hta"
+                    InitializeHTML "vbs"
+                    InitializeHTML "wsf"
 
                     'check for elevated privileges and restart if necessary
                     Dim admin : Set admin = CreateObject("VBScripting.Admin")
@@ -201,37 +174,52 @@ with respect to running script file types .vbs and .wsf -->
                         Dim application : Set application = document.getElementsByTagName("application")(0)
                         sa.ShellExecute "mshta", application.CommandLine,, "runas"
                         Set sa = Nothing
+                        Set admin = Nothing
                         document.ParentWindow.Close
                     End If
                     Set admin = Nothing
+                    document.Title = fso.GetBaseName(document.location.href)
                 End Sub
-
                 Sub Class_Terminate
                     Set sh = Nothing
                     Set fso = Nothing
                     Set regex = Nothing
-                    Set oSpanHta = Nothing
-                    Set oSpanVbs = Nothing
-                    Set oSpanWsf = Nothing
                     Set reg = Nothing
                 End Sub
-
             End Class
 
+            Sub enableHta_OnClick
+                If enableHta.checked Then
+                    fsHta.disabled = False
+                Else fsHta.disabled = True
+                End If
+            End Sub
+
+            Dim tr 
+            Sub Window_OnLoad
+                Set tr = New Troubleshooter
+                enableHta_OnClick
+            End Sub
             Sub Window_OnUnload
                 Set tr = Nothing
             End Sub
-
         </script>
     </body>
     <style> 
         body { 
-            font-family: "Calibri", Arial, sans-serif; } 
+            font-family: sans-serif;
+            font-size: smaller;
+        } 
         fieldset { 
-            padding-left: 1em; 
-            margin-left: 1em; 
-            padding-bottom: 1em; 
-            margin-bottom: .75em; } 
-        #out { padding-top: 1em; } 
+            padding: 1em; 
+            margin: 1em;
+            margin-top: .1em;
+        } 
+        .label {
+            margin-left: 1em;
+        }
+        .label2 {
+            margin-bottom: .1em;
+        }
     </style>
 </hta:application>

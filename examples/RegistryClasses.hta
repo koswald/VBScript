@@ -32,13 +32,17 @@
             root = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
             fileType.value = Trim(fileType.value)
             progId.value = Trim(progId.value)
-            typeKey = format(Array("Software\Classes\.%s", fileType.value))
+            If "" = fileType.value Then
+                typeKey = ""
+            Else typeKey = format(Array("Software\Classes\.%s", fileType.value))
+            End If
+            
             Dim pidString : Set pidString = GetRegString(root, typeKey, "")
             If "*" = fileType.value Then
                 pid = "*"
                 typeKey = ""
                 pidIsFromRegistry = False
-            ElseIf pidString.Exists And useRegPid.checked Then
+            ElseIf pidString.Exists And useRegPid.checked And Not "" = typeKey Then
                 progId.value = pidString.value
                 pid = pidString.value
                 pidIsFromRegistry = True
@@ -233,7 +237,8 @@
                 Disable command
                 Disable browseForCommandButton
             End If
-            If "" = fileType.value Then
+            If "" = fileType.value _
+            Or "" = typeKey Then
                 Disable deleteFileType
                 Disable configureClassButton
             End If
@@ -275,6 +280,7 @@
         End Sub
 
         Sub deleteFileType_OnClick
+            If "" = typeKey Then Exit Sub
             If Not FileTypeIsDeletable Then Exit Sub
             TryDeletingKey root, typeKey
             RefreshFields
@@ -321,7 +327,9 @@
                 "Choose a file to use with the verb ""%s""", _
                 verbs(verbSelector.selectedIndex) _
             ))
-            browser.InitialDirectory = "%ProgramFiles%"
+            browser.InitialDirectory = "%UserProfile%"
+            browser.Filter = "Script files (*.vbs; *.wsf)|*.vbs;*.wsf|HTA files (*.hta)|*.hta|All files (*.*)|*.*"
+            browser.FilterIndex = 3
             Dim file : file = browser.FileName
             If Not "" = file Then
                 Dim starter : starter = ""
@@ -343,9 +351,12 @@
         End Sub
 
         Sub progId_OnKeyUp
-            useRegPid.checked = False
-            Set focusOnThis = progId
-            RefreshFields
+            If "" = progId.value Then
+                useRegPid.checked = True
+            Else useRegPid.checked = False
+                Set focusOnThis = progId
+                RefreshFields
+            End If
         End Sub
         
         Sub verbSelector_OnChange
@@ -391,7 +402,9 @@
             newVerbSubfields.style.display = "none"
             initialVerb = newVerb.value
             newVerb.value = ""
-            If Not pidIsFromRegistry And Not "*" = pid Then
+            If Not pidIsFromRegistry _
+            And Not "*" = pid _
+            And Not "" = typeKey Then
                 regProv.CreateKey root, typeKey
                 reg.SetStringValue root, typeKey, "", pid
             End If
@@ -411,32 +424,6 @@
         Sub elevateButton_OnClick
             sa.ShellExecute "mshta", application.commandLine,, "runas"
             Self.close
-        End Sub
-
-        Dim descr, icon, iconKey, template, templateKey
-
-        Sub configureClassButton_OnClick
-            If classSubfields.style.display = "none" Then
-                Hide newVerbSubfields
-                Unhide classSubfields
-                shellNewLegend.innerHTML = format(Array("%s\%s\%s\ShellNew", GetRootString(root), typeKey, pid))
-                progIdLegend.innerHTML = format(Array("%s\%s", getRootString(root), pidKey))
-                Set descr = GetRegString(root, pidKey, "")
-                classDescription.value = descr.value
-                iconKey = format(Array("%s\DefaultIcon", pidKey))
-                Set icon = GetRegString(root, iconKey, "")
-                iconFile.value = icon.value
-                templateKey = format(Array("%s\%s\ShellNew", typeKey, pid))
-                Set template = GetRegString(root, templateKey, "FileName")
-                templateFile.value = template.value
-                Dim nfString : Set nfString = GetRegString(root, templateKey, "NullFile")
-                If nfString.Exists Then
-                    templateFile.disabled = True
-                    nullFileCheckbox.checked = True
-                Else nullFileCheckbox.checked = False
-                End If
-            Else Hide classSubfields
-            End If
         End Sub
 
         Sub nullFileCheckbox_OnClick
@@ -471,9 +458,35 @@
             End If
         End Sub
 
+        Dim descr, icon, iconKey, template, templateKey
+        Sub configureClassButton_OnClick
+            If "" = typeKey Then Exit Sub
+            If classSubfields.style.display = "none" Then
+                Hide newVerbSubfields
+                Unhide classSubfields
+                shellNewLegend.innerHTML = format(Array("%s\%s\%s\ShellNew", GetRootString(root), typeKey, pid))
+                progIdLegend.innerHTML = format(Array("%s\%s", getRootString(root), pidKey))
+                Set descr = GetRegString(root, pidKey, "")
+                classDescription.value = descr.value
+                iconKey = format(Array("%s\DefaultIcon", pidKey))
+                Set icon = GetRegString(root, iconKey, "")
+                iconFile.value = icon.value
+                templateKey = format(Array("%s\%s\ShellNew", typeKey, pid))
+                Set template = GetRegString(root, templateKey, "FileName")
+                templateFile.value = template.value
+                Dim nfString : Set nfString = GetRegString(root, templateKey, "NullFile")
+                If nfString.Exists Then
+                    templateFile.disabled = True
+                    nullFileCheckbox.checked = True
+                Else nullFileCheckbox.checked = False
+                End If
+            Else Hide classSubfields
+            End If
+        End Sub
         Sub saveClassButton_OnClick
             regProv.CreateKey root, iconKey
             regProv.CreateKey root, templateKey
+            reg.SetStringValue root, typeKey, "", pid
             Set descr = GetRegString(root, pidKey, "")
             If NotExpanded = descr.StringType Then
                 reg.SetStringValue root, pidKey, "", classDescription.value
@@ -500,12 +513,15 @@
             Hide classSubfields
         End Sub
 
+        Const Esc = 27
         Const F1 = 112
         Const F6 = 117
         Const F7 = 118
         Const F8 = 119
         Sub Document_OnKeyUp
-            If F1 = window.event.keyCode Then
+            If Esc = window.event.keyCode Then
+                self.Close
+            ElseIf F1 = window.event.keyCode Then
                 sh.Run "RegistryClasses.md"
             ElseIf F6 = window.event.keyCode Then
                 sh.Run "notepad " & application.commandLine
@@ -700,7 +716,7 @@
     <select id="hiveSelector" onchange="RefreshFields"></select>
 
     <!-- File type -->
-    <p class="inputLabel"> File type: extension name or *</p>
+    <p class="inputLabel"> File type: extension name or * </p>
     <input
         type="text"
         id="fileType"
@@ -713,7 +729,7 @@
         class="spaceLeft spaceBottom" /><br />
 
     <!-- ProgId -->
-    <span class="inputLabel spaceTop"> ProgId or *</span>
+    <span class="inputLabel spaceTop"> ProgId </span>
     <input
         type="checkbox"
         id="useRegPid"

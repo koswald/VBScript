@@ -1,11 +1,9 @@
 Option Explicit : Initialize
-With CreateObject("VBScripting.Includer")
-    Execute .Read("TestingFramework")
-End With
 With New TestingFramework
 
     .describe "IconExtractor class"
-        Dim extractor : Set extractor = CreateObject("VBScripting.IconExtractor")
+        Dim extractor
+        Set extractor = CreateObject("VBScripting.IconExtractor")
 
     .it "should get the number of icons in a file"
         .AssertEqual extractor.IconCount("%SystemRoot%\System32\imageres.dll"), 412
@@ -16,18 +14,21 @@ With New TestingFramework
         extractor.Save resFile, 0, icoFile, True
         .AssertEqual fso.GetFile(Expand(icoFile)).Size > 0, True
 
+    .DeleteFile icoFile
     Teardown
 End With
 
-Dim fso, sh
+Dim fso, sh, includer
 Sub Initialize
     Set fso = CreateObject("Scripting.FileSystemObject")
     Set sh = CreateObject("WScript.Shell")
+    Set includer = CreateObject("VBScripting.Includer")
+    ExecuteGlobal includer.Read("TestingFramework")
 End Sub
 Sub Teardown
-    fso.DeleteFile(Expand(icoFile))
     Set fso = Nothing
     Set sh = Nothing
+    Set includer = Nothing
 End Sub
 Function Expand(str)
     Expand = sh.ExpandEnvironmentStrings(str)

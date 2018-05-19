@@ -184,8 +184,10 @@
          <h4 class="heading" id=1>CommandParser</h4>
          <div class="detail">
             <p>Command Parser</p>
-            <p></p>
             <p>Runs a specified command and searches the output for a phrase</p>
+            <p></p>
+            <p>Example:</p>
+            <pre> Dim includer : Set includer = CreateObject("VBScripting.Includer") <br> Execute includer.Read("CommandParser") <br> Dim cp : Set cp = New CommandParser <br> cp.SetCommand "cmd /c If defined ProgramFiles^(X86^) (echo 64-bit) else (echo 32-bit)" <br> cp.SetSearchPhrase "64-bit" <br> MsgBox cp.GetResult 'typically True on 64-bit systems</pre>
             <p></p>
             <table>
                <tr>
@@ -771,7 +773,173 @@
       </div>
 
       <div>
-         <h4 class="heading" id=11>PrivilegeChecker</h4>
+         <h4 class="heading" id=11>MathFunctions</h4>
+         <div class="detail">
+            <p>Math functions not provided with VBScript</p>
+            <p>The native math functions are Sin, Cos, Tan, Atn, Log</p>
+            Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>
+            <p></p>
+            <table>
+               <tr>
+                  <th>Procedure type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Sec</td>
+                  <td>Angle in radians</td>
+                  <td>Secant</td>
+                  <td>Sec = 1 / Cos(X)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Cosec</td>
+                  <td>Angle in radians</td>
+                  <td>Cosecant</td>
+                  <td>Cosec = 1 / Sin(X)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Cotan</td>
+                  <td>Angle in radians</td>
+                  <td>Cotangent</td>
+                  <td>Cotan = 1 / Tan(X)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Arcsin</td>
+                  <td>A ratio</td>
+                  <td>Arcsine</td>
+                  <td>Arcsin = Atn(X / Sqr(-X * X + 1))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Arccos</td>
+                  <td>A ratio</td>
+                  <td>Inverse Cosine</td>
+                  <td>Arccos = Atn(-X / Sqr(-X * X + 1)) + 2 * Atn(1)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Arcsec</td>
+                  <td>A ratio</td>
+                  <td>Inverse Secant</td>
+                  <td>Arcsec = Atn(X / Sqr(X * X - 1)) + Sgn((X) -1) * (2 * Atn(1))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Arccosec</td>
+                  <td>A ratio</td>
+                  <td>Inverse Cosecant</td>
+                  <td>Arccosec = Atn(X / Sqr(X * X - 1)) + (Sgn(X) - 1) * (2 * Atn(1))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Arccotan</td>
+                  <td>A ratio</td>
+                  <td>Inverse Cotangent</td>
+                  <td>Arccotan = Atn(X) + 2 * Atn(1)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HSin</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Sine</td>
+                  <td>HSin = (Exp(X) - Exp(-X)) / 2</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HCos</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Cosine</td>
+                  <td>HCos = (Exp(X) + Exp(-X)) / 2</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HTan</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Tangent</td>
+                  <td>HTan = (Exp(X) - Exp(-X)) / (Exp(X) + Exp(-X))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HSec</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Secant</td>
+                  <td>HSec = 2 / (Exp(X) + Exp(-X))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HCosec</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Cosecant</td>
+                  <td>HCosec = 2 / (Exp(X) - Exp(-X))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HCotan</td>
+                  <td>Hyperbolic angle</td>
+                  <td>Hyperbolic Cotangent</td>
+                  <td>HCotan = (Exp(X) + Exp(-X)) / (Exp(X) - Exp(-X))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArcsin</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Sine of X</td>
+                  <td>HArcsin = Log(X + Sqr(X * X + 1))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArccos</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Cosine of X</td>
+                  <td>HArccos = Log(X + Sqr(X * X - 1))</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArctan</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Tangent of X</td>
+                  <td>HArctan = Log((1 + X) / (1 - X)) / 2</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArcsec</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Secant of X</td>
+                  <td>HArcsec = Log((Sqr(-X * X + 1) + 1) / X)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArccosec</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Cosecant of X</td>
+                  <td>HArccosec = Log((Sgn(X) * Sqr(X * X + 1) +1) / X)</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HArccotan</td>
+                  <td>X</td>
+                  <td>Inverse Hyperbolic Cotangent of X</td>
+                  <td>HArccotan = Log((X + 1) / (X - 1)) / 2</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>LogN</td>
+                  <td>X, N</td>
+                  <td>Logarithm of X to base N</td>
+                  <td>LogN = Log(X) / Log(N)</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h4 class="heading" id=12>PrivilegeChecker</h4>
          <div class="detail">
             <p>Default property Privileged returns True if the calling script has elevated privileges.</p>
             <p>Usage example</p>
@@ -799,7 +967,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=12>RegExFunctions</h4>
+         <h4 class="heading" id=13>RegExFunctions</h4>
          <div class="detail">
             <p>Regular Expression functions - a work in progress</p>
             <p></p>
@@ -875,7 +1043,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=13>RegistryUtility</h4>
+         <h4 class="heading" id=14>RegistryUtility</h4>
          <div class="detail">
             <p>Provides functions relating to the Windows&reg; registry</p>
             <p></p>
@@ -1053,7 +1221,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=14>ShellConstants</h4>
+         <h4 class="heading" id=15>ShellConstants</h4>
          <div class="detail">
             <p>Constants for use with WScript.Shell.Run</p>
             <p></p>
@@ -1112,7 +1280,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=15>SpecialFolders</h4>
+         <h4 class="heading" id=16>SpecialFolders</h4>
          <div class="detail">
             <p>An enum and wrapper for WScript.Shell.SpecialFolders</p>
             <p>Usage example</p>
@@ -1264,7 +1432,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=16>StringFormatter</h4>
+         <h4 class="heading" id=17>StringFormatter</h4>
          <div class="detail">
             <p> StringFormatter.vbs is the script for StringFormatter.wsc</p>
             <p></p>
@@ -1327,7 +1495,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=17>TestingFramework</h4>
+         <h4 class="heading" id=18>TestingFramework</h4>
          <div class="detail">
             <p>A lightweight testing framework</p>
             <p>Usage example</p>
@@ -1387,10 +1555,17 @@
                </tr>
                <tr>
                   <td>Method</td>
+                  <td>DeleteFile</td>
+                  <td>a filespec</td>
+                  <td>N/A</td>
+                  <td>Deletes the specified file. Relative paths and environment variables are allowed.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
                   <td>DeleteFiles</td>
                   <td>an array</td>
                   <td>N/A</td>
-                  <td>Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used.</td>
+                  <td>Deletes the specified files. The parameter is an array of filespecs. Relative paths and environment variables are allowed.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -1418,7 +1593,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=18>TextStreamer</h4>
+         <h4 class="heading" id=19>TextStreamer</h4>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
             <p>Methods for use with the text stream that is returned by the Open method:</p>
@@ -1598,7 +1773,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=19>TimeFunctions</h4>
+         <h4 class="heading" id=20>TimeFunctions</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1655,7 +1830,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=20>ValidFileName</h4>
+         <h4 class="heading" id=21>ValidFileName</h4>
          <div class="detail">
             <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
@@ -1683,7 +1858,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=21>VBSApp</h4>
+         <h4 class="heading" id=22>VBSApp</h4>
          <div class="detail">
             <p>VBSApp class</p>
             <p>Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.</p>
@@ -1855,7 +2030,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=22>VBSArguments</h4>
+         <h4 class="heading" id=23>VBSArguments</h4>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments</p>
             <p></p>
@@ -1879,7 +2054,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=23>VBSArrays</h4>
+         <h4 class="heading" id=24>VBSArrays</h4>
          <div class="detail">
             <table>
                <tr>
@@ -1915,7 +2090,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=24>VBSClipboard</h4>
+         <h4 class="heading" id=25>VBSClipboard</h4>
          <div class="detail">
             <p>Clipboard procedures</p>
             <p></p>
@@ -1946,7 +2121,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=25>VBSEnvironment</h4>
+         <h4 class="heading" id=26>VBSEnvironment</h4>
          <div class="detail">
             <table>
                <tr>
@@ -2038,7 +2213,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=26>VBSEventLogger</h4>
+         <h4 class="heading" id=27>VBSEventLogger</h4>
          <div class="detail">
             <p>Logs messages to the Application event log.</p>
             <p></p>
@@ -2139,7 +2314,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=27>VBSExtracter</h4>
+         <h4 class="heading" id=28>VBSExtracter</h4>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <p></p>
@@ -2191,7 +2366,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=28>VBSFileSystem</h4>
+         <h4 class="heading" id=29>VBSFileSystem</h4>
          <div class="detail">
             <p>General utility functions</p>
             <p></p>
@@ -2306,7 +2481,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=29>VBSHoster</h4>
+         <h4 class="heading" id=30>VBSHoster</h4>
          <div class="detail">
             <p>Manage which script host is hosting the currently running script</p>
             <p></p>
@@ -2351,7 +2526,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=30>VBSLogger</h4>
+         <h4 class="heading" id=31>VBSLogger</h4>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
             <p>Instantiation </p>
@@ -2452,7 +2627,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=31>VBSPower</h4>
+         <h4 class="heading" id=32>VBSPower</h4>
          <div class="detail">
             <p>Power functions: shutdown, restart, logoff, sleep, and hibernate.</p>
             <p></p>
@@ -2532,7 +2707,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=32>VBSStopwatch</h4>
+         <h4 class="heading" id=33>VBSStopwatch</h4>
          <div class="detail">
             <p>A timer</p>
             <p></p>
@@ -2577,7 +2752,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=33>VBSTestRunner</h4>
+         <h4 class="heading" id=34>VBSTestRunner</h4>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -2647,7 +2822,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=34>VBSTroubleshooter</h4>
+         <h4 class="heading" id=35>VBSTroubleshooter</h4>
          <div class="detail">
             <table>
                <tr>
@@ -2669,7 +2844,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=35>VBSValidator</h4>
+         <h4 class="heading" id=36>VBSValidator</h4>
          <div class="detail">
             <p>A working example of how validation can be accomplished.</p>
             <p></p>
@@ -2735,7 +2910,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=36>WindowsUpdatesPauser</h4>
+         <h4 class="heading" id=37>WindowsUpdatesPauser</h4>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
             <p>For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.</p>
@@ -2802,7 +2977,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=37>WMIUtility</h4>
+         <h4 class="heading" id=38>WMIUtility</h4>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object</p>
             <p></p>
@@ -2903,7 +3078,7 @@
       </div>
 
       <div>
-         <h4 class="heading" id=38>WoWChecker</h4>
+         <h4 class="heading" id=39>WoWChecker</h4>
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.</p>
             <p></p>

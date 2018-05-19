@@ -14,8 +14,7 @@
     <script language="VBScript">
         Option Explicit
         
-        Dim componentFolder
-        Dim suiteFolder, suiteFilter
+        Dim componentFolder, suiteFolder, suiteFilter
         componentFolder = "class\wsc"
         suiteFolder = "spec\suite"
         suiteFilter = "TestLauncher"
@@ -49,7 +48,8 @@
             nextItem = nextItem + 1
             window.setTimeout prepItems(nextItem), 1, VBScript
         End Sub
-        
+
+        Const flagFile = "Setup.bat"
         Sub RunSetupUninstall
             If Not uninstallChkBox.checked Then
                 AwaitNextItem
@@ -77,7 +77,6 @@
             Else sh.Run "wscript Setup.vbs /u /s"
             End If
         End Sub
-
         Sub AwaitSetupCompletion
             If fso.FileExists(flagFile) Then
                 Feedback "Waiting for Setup/Uninstall to finish.<br><br>After Setup/uninstall has finished, and after inspecting for errors, close the console window."
@@ -99,16 +98,10 @@
                 End If
             On Error Goto 0
         End Function
-        Const flagFile = "Setup.bat"
         Sub CreateFlagFile
             If Not fso.FileExists(flagFile) Then
                 fso.CreateTextFile flagFile, CreateNew
             End If
-        End Sub
-        Sub DeleteFlagFile
-            On Error Resume Next
-                fso.DeleteFile(flagFile)
-            On Error Goto 0
         End Sub
 
         Sub StopScripts
@@ -242,7 +235,7 @@
             If Not openGitChkBox.checked Then Exit Sub
             Dim i, result, gitWasFound : gitWasFound = False
             For i = 1 To UBound(gits)
-                result = GitResultsFrom(gits(i))
+                result = GitResult(gits(i))
                 If (bitYes And result) _
                 Or (bitCancel And result) Then
                     Exit Sub
@@ -252,10 +245,10 @@
             If gitWasFound Then Exit Sub
             MsgBox "Couldn't find a Git executable.", vbInformation, caption
         End Sub
-        Function GitResultsFrom(git)
-            Dim result, response
+        Function GitResult(git)
+            Dim response
             If Not fso.FileExists(Expand(git)) Then
-                GitResultsFrom = gitLost
+                GitResult = gitLost
                 Exit Function
             End If
             If reqConfirmChkBox.checked Then
@@ -264,12 +257,11 @@
             End If
             If vbYes = response Then
                 sh.Run format(Array("""%s""", git))
-                result = bitYes Or gitFound
+                GitResult = bitYes Or gitFound
             ElseIf vbCancel = response Then
-                result = bitCancel Or gitFound
-            Else result = bitNo Or gitFound
+                GitResult = bitCancel Or gitFound
+            Else GitResult = bitNo Or gitFound
             End If
-            GitResultsFrom = result
         End Function
         Const gitFound = 1, gitLost = 0
 

@@ -1,25 +1,39 @@
-# VBScript Utilities
+# VBScripting utilities
 
-This project has a number of facets:
+This project features
 
-- [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).
-- [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).
-- A [doc generator for the C# classes].
-- A [doc generator for the VBScript classes].
-- A lightweight [testing framework].
-- A [logger].
-- [Examples].  
+- [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
+- [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
+- [Tests](spec).  
+- A VBScript statement [interpreter]/console.  
+- An ultralight [testing framework].  
+- A [logger].  
+- A [registry classes] manager UI.  
+- An [icon extractor] UI.  
+- A [startup items] editor UI.  
+- A [speech synthesis] UI.  
+- A [system tray icon] proof of concept.
+- A [progress bar] proof of concept.
+- A script for keeping the computer awake while 
+  giving a [presentation], with a system tray icon.  
+- A [doc generator for the C# classes].  
+- A [doc generator for the VBScript classes].  
+- More [examples] of .vbs and .hta scripts.  
 
 ## Requirements
 
-Windows 10, 8, 7, Vista, Server 20xx, ... 98.
+Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
 Clone the repo and double-click [Setup.vbs]. 
-This will register the required Windows Script Component 
-file (.wsc) used to manage dependencies, and build the 
-[VBScript extensions]. You will be prompted to elevate privileges.
+This will register the Windows Script Component 
+files, and compile and register the [VBScript extensions]. 
+You will be prompted to elevate privileges.
+
+## Reference  
+
+[Scripting documentation online]
 
 ---
 
@@ -31,7 +45,17 @@ Read or edit the [wiki](../../wiki)
 [doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
 [testing framework]: class/TestingFramework.vbs
 [logger]: class/VBSLogger.vbs
-[Examples]: examples
-[C# examples]: .Net
+[examples]: examples
 [Setup.vbs]: Setup.vbs
 [VBScript extensions]: .Net
+[registry classes]: examples/RegistryClasses.hta
+[icon extractor]: examples/icon-extractor.hta
+[startup items]: examples/StartItems.hta
+[speech synthesis]: examples/SpeechSynthesis.hta
+[speech synthesis]: examples/SpeechSynthesis.hta
+[presentation]: examples/Presentation.vbs
+[interpreter]: examples/VBSInterpreter.hta
+[system tray icon]: .Net/test/NotifyIcon-test.vbs
+[progress bar]: .Net/test/ProgressBar-test.vbs
+[Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84)
+

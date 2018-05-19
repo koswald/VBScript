@@ -1,7 +1,7 @@
 
 Class VBSEnvironment
 
-    'TODO sort array so that longer variables get expanded first:
+    'TODO sort array so that longer variables get collapsed first:
     'Expected: %ProgramFiles%; Actual: %HOMEDRIVE%\Program Files
 
     Private defaults, filtered, nonFiltered
@@ -96,18 +96,50 @@ Class VBSEnvironment
     'Returns an array
     'Remark: Returns an array of common environment variables pre-installed with some versions of Windows&reg;. Not exhaustive.
     Property Get GetDefaults 'variables that often come pre-installed with Windows
-        GetDefaults = Array( _
-            "tmp", "temp", "AllUsersProfile", _
-            "AppData", "CommonProgramFiles", "ComputerName", "ComSpec", "DFSTracingOn", _
-            "FP_No_Host_Check", "HomeDrive", "HomePath", "LocalAppData", "LogOnServer", _
-            "Number_Of_Processors", "OS", "Path", "PathExt", "Processor_Architecture", _
-            "Processor_Identifier", "Processor_Level", "Processor_Revision", "ProgramData", _
-            "ProgramFiles", "PSModulePath", "Public", "SessionName", "SystemDrive", _
-            "SystemRoot", "Trace_Format_Search_Path", "UserDomain", "UserName", _
-            "UserProfile", "WinDir", "Prompt", _
-            "OnlineServices", "PCBrand", "Platform", "CommonProgramFiles\(x86\)", _
-            "CommonProgramW6432", "Processor_ArchiteW6432", "ProgramFiles\(x86\)", _
-            "ProgramW6432", "ConfigSetRoot" )
+        GetDefaults = Array("tmp" _
+            , "temp" _
+            , "AllUsersProfile" _
+            , "AppData" _
+            , "CommonProgramFiles" _
+            , "ProgramFiles" _
+            , "ProgramFiles\(x86\)" _
+            , "CommonProgramFiles\(x86\)" _
+            , "CommonProgramW6432" _
+            , "ProgramW6432" _
+            , "ComputerName" _
+            , "ComSpec" _
+            , "DFSTracingOn" _
+            , "FP_No_Host_Check" _
+            , "HomeDrive" _
+            , "HomePath" _
+            , "LocalAppData" _
+            , "LogOnServer" _
+            , "Number_Of_Processors" _
+            , "OS" _
+            , "Path" _
+            , "PathExt" _
+            , "Processor_Architecture" _
+            , "Processor_Identifier" _
+            , "Processor_Level" _
+            , "Processor_Revision" _
+            , "ProgramData" _
+            , "PSModulePath" _
+            , "Public" _
+            , "SessionName" _
+            , "SystemDrive" _
+            , "SystemRoot" _
+            , "Trace_Format_Search_Path" _
+            , "UserDomain" _
+            , "UserName" _
+            , "UserProfile" _
+            , "WinDir" _
+            , "Prompt" _
+            , "OnlineServices" _
+            , "PCBrand" _
+            , "Platform" _
+            , "Processor_ArchiteW6432" _
+            , "ConfigSetRoot" _
+        )
     End Property
 
     Private Function IsADefault(name)

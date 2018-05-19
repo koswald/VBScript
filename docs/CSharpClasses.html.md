@@ -49,7 +49,7 @@
 | Member name | Member of | Remarks | Returns | Parameters | Kind | Namespace |
 | :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
 | ComEvent | | Invokes VBS members from C#. <span class="red"> This class is not accessible from VBScript. </span>  |  |  | Type | VBScripting |
-| InvokeComCallback | ComEvent | Invokes a VBScript method. The parameter <tt>callbackRef</tt> is an object reference to a VBScript member returned by the VBScript Function GetRef. |  |  | Method | VBScripting |
+| InvokeComCallback | ComEvent | Invokes a VBScript method. The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. |  | callbackRef | Method | VBScripting |
 
 ## EventLogger
 

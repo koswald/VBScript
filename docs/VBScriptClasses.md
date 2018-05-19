@@ -13,6 +13,7 @@
 [Includer](#includer)  
 [KeyDeleter](#keydeleter)  
 [MathConstants](#mathconstants)  
+[MathFunctions](#mathfunctions)  
 [PrivilegeChecker](#privilegechecker)  
 [RegExFunctions](#regexfunctions)  
 [RegistryUtility](#registryutility)  
@@ -87,8 +88,12 @@ Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</
 
 ## CommandParser
 Command Parser  
-  
 Runs a specified command and searches the output for a phrase  
+  
+Example:  
+```vb
+ Dim includer : Set includer = CreateObject("VBScripting.Includer") <br> Execute includer.Read("CommandParser") <br> Dim cp : Set cp = New CommandParser <br> cp.SetCommand "cmd /c If defined ProgramFiles^(X86^) (echo 64-bit) else (echo 32-bit)" <br> cp.SetSearchPhrase "64-bit" <br> MsgBox cp.GetResult 'typically True on 64-bit systems
+```
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -287,6 +292,35 @@ Deletes a registry key and all of its subkeys.
 | Property | Pi | None | 3.14159... | None |
 | Property | DEGRAD | None | Pi/180 | Used to convert degrees to radians |
 | Property | RADEG | None | 180/Pi | Used to convert radians to degrees |
+
+## MathFunctions
+Math functions not provided with VBScript  
+The native math functions are Sin, Cos, Tan, Atn, Log  
+Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>  
+  
+| Procedure | Name | Parameter | Return | Comment |
+| :-------- | :--- | :-------- | :----- | :------ |
+| Property | Sec | Angle in radians | Secant | Sec = 1 / Cos(X) |
+| Property | Cosec | Angle in radians | Cosecant | Cosec = 1 / Sin(X) |
+| Property | Cotan | Angle in radians | Cotangent | Cotan = 1 / Tan(X) |
+| Property | Arcsin | A ratio | Arcsine | Arcsin = Atn(X / Sqr(-X * X + 1)) |
+| Property | Arccos | A ratio | Inverse Cosine | Arccos = Atn(-X / Sqr(-X * X + 1)) + 2 * Atn(1) |
+| Property | Arcsec | A ratio | Inverse Secant | Arcsec = Atn(X / Sqr(X * X - 1)) + Sgn((X) -1) * (2 * Atn(1)) |
+| Property | Arccosec | A ratio | Inverse Cosecant | Arccosec = Atn(X / Sqr(X * X - 1)) + (Sgn(X) - 1) * (2 * Atn(1)) |
+| Property | Arccotan | A ratio | Inverse Cotangent | Arccotan = Atn(X) + 2 * Atn(1) |
+| Property | HSin | Hyperbolic angle | Hyperbolic Sine | HSin = (Exp(X) - Exp(-X)) / 2 |
+| Property | HCos | Hyperbolic angle | Hyperbolic Cosine | HCos = (Exp(X) + Exp(-X)) / 2 |
+| Property | HTan | Hyperbolic angle | Hyperbolic Tangent | HTan = (Exp(X) - Exp(-X)) / (Exp(X) + Exp(-X)) |
+| Property | HSec | Hyperbolic angle | Hyperbolic Secant | HSec = 2 / (Exp(X) + Exp(-X)) |
+| Property | HCosec | Hyperbolic angle | Hyperbolic Cosecant | HCosec = 2 / (Exp(X) - Exp(-X)) |
+| Property | HCotan | Hyperbolic angle | Hyperbolic Cotangent | HCotan = (Exp(X) + Exp(-X)) / (Exp(X) - Exp(-X)) |
+| Property | HArcsin | X | Inverse Hyperbolic Sine of X | HArcsin = Log(X + Sqr(X * X + 1)) |
+| Property | HArccos | X | Inverse Hyperbolic Cosine of X | HArccos = Log(X + Sqr(X * X - 1)) |
+| Property | HArctan | X | Inverse Hyperbolic Tangent of X | HArctan = Log((1 + X) / (1 - X)) / 2 |
+| Property | HArcsec | X | Inverse Hyperbolic Secant of X | HArcsec = Log((Sqr(-X * X + 1) + 1) / X) |
+| Property | HArccosec | X | Inverse Hyperbolic Cosecant of X | HArccosec = Log((Sgn(X) * Sqr(X * X + 1) +1) / X) |
+| Property | HArccotan | X | Inverse Hyperbolic Cotangent of X | HArccotan = Log((X + 1) / (X - 1)) / 2 |
+| Property | LogN | X, N | Logarithm of X to base N | LogN = Log(X) / Log(N) |
 
 ## PrivilegeChecker
 Default property Privileged returns True if the calling script has elevated privileges.  
@@ -508,7 +542,8 @@ Usage example
 | Method | ShowPendingResult | None | N/A | Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place. |
 | Method | AssertEqual | actual, expected | N/A | Asserts that the specified two variants, of any subtype, are equal. |
 | Method | AssertErrorRaised | None | N/A | Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block. |
-| Method | DeleteFiles | an array | N/A | Deletes the specified files. The parameter is an array of filespecs. Relative paths may be used. |
+| Method | DeleteFile | a filespec | N/A | Deletes the specified file. Relative paths and environment variables are allowed. |
+| Method | DeleteFiles | an array | N/A | Deletes the specified files. The parameter is an array of filespecs. Relative paths and environment variables are allowed. |
 | Property | MessageAppeared | caption, seconds, keys | a boolean | Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. |
 | Method | ShowSendKeysWarning | None | N/A | Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. |
 | Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. |

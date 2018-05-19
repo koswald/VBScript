@@ -1,7 +1,8 @@
-
 'Command Parser
-'
 'Runs a specified command and searches the output for a phrase
+'
+'Example:
+'<pre> Dim includer : Set includer = CreateObject("VBScripting.Includer") <br> Execute includer.Read("CommandParser") <br> Dim cp : Set cp = New CommandParser <br> cp.SetCommand "cmd /c If defined ProgramFiles^(X86^) (echo 64-bit) else (echo 32-bit)" <br> cp.SetSearchPhrase "64-bit" <br> MsgBox cp.GetResult 'typically True on 64-bit systems</pre>
 '
 Class CommandParser
 

@@ -58,11 +58,15 @@ Sub ListenForCallbacks
     Wend
 End Sub
 
-Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5
+'icon options
 Const icon1 = "%SystemRoot%\System32\powercpl.dll|5|False|%SystemRoot%\System32\powercpl.dll|6|False"
 Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False"
 Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True"
 Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False"
+Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False"
+Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True"
+Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5
+
 Const synchronous = True
 Const largeIcon = True, smallIcon = False
 Const PresentationState = 3, NormalState = 0

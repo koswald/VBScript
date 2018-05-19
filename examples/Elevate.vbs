@@ -1,8 +1,10 @@
-'Elevate privileges, restore original current directory
+'Elevate privileges
+'Use as a drop target or from the command line.
+
 Option Explicit
 With WScript.Arguments
     If .Count = 0 Then
-        Err.Raise 1,, "Expected at least one command line argument: the file to open with elevated privileges."
+        Err.Raise 1,, "Expected a command line argument: the file to open with elevated privileges."
     End If
     Dim i, args : args = ""
     For i = 0 To .Count - 1
