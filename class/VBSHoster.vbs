@@ -51,7 +51,7 @@ Class VBSHoster
     'restart the script with the specified host, preserving the arguments
     Private Sub RestartWith(host)
         sh.Run format (Array( _
-            "%ComSpec% %s %s //nologo %s %s", _
+            "%ComSpec% %s %s //nologo ""%s"" %s", _
             switch, host, WScript.ScriptName, GetArgsString _
         ))
         WScript.Quit
