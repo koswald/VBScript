@@ -26,10 +26,9 @@ Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
-Clone the repo and double-click [Setup.vbs]. 
+Clone or download the repo and run [Setup.vbs]. 
 This will register the Windows Script Component 
 files, and compile and register the [VBScript extensions]. 
-You will be prompted to elevate privileges.
 
 ## Reference  
 

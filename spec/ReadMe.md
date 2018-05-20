@@ -6,12 +6,11 @@
 
 Each test file contains one or more *specs*, or specifications.
 Most are not strictly *unit tests*.
-Code coverage is probably somewhere between 10% and 30%.
 
 ## Launching tests
 
 The tests may be initiated by running directly by double clicking or from a command prompt, type `cscript <filename>`.
-'Suites' or collections of tests may be run using the `TestLauncher*` files in the [examples](../examples) folder.
+'Suites' or collections of tests may be run using the `TestLauncher*` files in the [suite](suite) folder.
 
 ## Different kinds of tests
 
