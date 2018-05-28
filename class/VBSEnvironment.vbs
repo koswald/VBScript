@@ -1,23 +1,4 @@
-
 Class VBSEnvironment
-
-    'TODO sort array so that longer variables get collapsed first:
-    'Expected: %ProgramFiles%; Actual: %HOMEDRIVE%\Program Files
-
-    Private defaults, filtered, nonFiltered
-    Private userEnv, sysEnv, proEnv, volEnv
-    Private sh
-
-    Sub Class_Initialize
-        defaults = GetDefaults
-        filtered = "filtered"
-        nonFiltered = "nonFiltered"
-        Set sh = CreateObject("WScript.Shell")
-        Set userEnv = sh.Environment("user")
-        Set sysEnv = sh.Environment("system")
-        Set proEnv = sh.Environment("process")
-        Set volEnv = sh.Environment("volatile")
-    End Sub
 
     'Function Expand
     'Parameter: a string
@@ -154,13 +135,10 @@ Class VBSEnvironment
     End Function
 
     Private Property Get CollapseByVarType(s, varType, filter)
-
         Dim i, arr : arr = GetVarNameArray(sh.Environment(varType), filter)
-
         For i = 0 To UBound(arr)
             s = CollapseOneVar(s, arr(i))
         Next
-
         CollapseByVarType = s
     End Property
 
@@ -182,28 +160,35 @@ Class VBSEnvironment
     End Function
 
     Private Function CollapseOneVar(str, varName)
-
         Dim s : s = str
         s = TryCollapse(s, varName)
-
         'if no replacements were made, try upper case
-
         'If s = str Then s = TryCollapse(UCase(s), varName)
-
         'if still no replacements were made, restore the original
-
         'If s = UCase(str) Then s = str
-
         CollapseOneVar = s
     End Function
 
     Private Function TryCollapse(str, varName)
-
         Dim unexpanded : unexpanded = "%" & varName & "%"
         Dim exp : exp = sh.ExpandEnvironmentStrings(unexpanded)
         TryCollapse = Replace(str, exp, unexpanded)
-
     End Function
+
+    Private defaults, filtered, nonFiltered
+    Private userEnv, sysEnv, proEnv, volEnv
+    Private sh
+
+    Sub Class_Initialize
+        defaults = GetDefaults
+        filtered = "filtered"
+        nonFiltered = "nonFiltered"
+        Set sh = CreateObject("WScript.Shell")
+        Set userEnv = sh.Environment("user")
+        Set sysEnv = sh.Environment("system")
+        Set proEnv = sh.Environment("process")
+        Set volEnv = sh.Environment("volatile")
+    End Sub
 
     Sub Class_Terminate
         Set sh = Nothing
