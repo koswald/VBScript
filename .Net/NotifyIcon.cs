@@ -52,6 +52,8 @@ namespace VBScripting
         /// <remarks> The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </remarks>
         public void SetIconByIcoFile(string fileName)
         {
+            if (this.notifyIcon.Icon != null)
+                this.notifyIcon.Icon.Dispose();
             try
             {
                 this.notifyIcon.Icon = new Icon(Environment.ExpandEnvironmentVariables(fileName));
@@ -59,11 +61,11 @@ namespace VBScripting
             catch (Exception e)
             {
                 Admin.Log(string.Format(
-                    "File: {0}\n\n{1}",
+                    "Exception at VBScripting.NotifyIcon.SetIconbyIcoFile\nFile: {0}\n\n{1}",
                     fileName, e.ToString()
                 ));
-                this.Dispose();
-                throw;
+                throw new Exception(string.Format(
+                    "Failed to set icon from file {0}", fileName), e);
             }
         }
 
@@ -72,6 +74,8 @@ namespace VBScripting
         /// <remarks> Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </remarks>
         public void SetIconByDllFile(string fileName, int index, bool largeIcon)
         {
+            if (this.notifyIcon.Icon != null)
+                this.notifyIcon.Icon.Dispose();
             try
             {
                 this.notifyIcon.Icon = VBScripting.IconExtractor.Extract(System.Environment.ExpandEnvironmentVariables(fileName), index, largeIcon);
@@ -79,11 +83,11 @@ namespace VBScripting
             catch (Exception e)
             {
                 Admin.Log(string.Format(
-                    "File: {0}\nIndex: {1}\n\n{2}",
+                    "Exception at VBScripting.NotifyIcon.SetIconByDllFile\nFile: {0}\nIndex: {1}\n\n{2}",
                     fileName, index, e.ToString()
                 ));
-                this.Dispose();
-                throw;
+                throw new Exception(string.Format(
+                    "Failed to set icon from file {0}; index: {1}; largeIcon: {2}.", fileName, index, largeIcon), e);
             }
         }
 
