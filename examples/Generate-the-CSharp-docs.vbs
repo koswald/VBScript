@@ -6,7 +6,7 @@ sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
 Set fso = Nothing
 
 With New DocGeneratorCS
-    .OutputFile = "..\docs\CSharpClasses.html"
+    .OutputFile = "..\docs\CSharpClasses"
     .XmlFolder = "..\.Net\lib"
     .Generate
 ''    .ViewHtml
