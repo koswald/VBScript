@@ -264,4 +264,8 @@ Sub Initialize
     If fso.FileExists(batchFile) Then fso.DeleteFile batchFile
     Set batchStream = fso.OpenTextFile(batchFile, ForAppending, CreateNew)
     batchStream.WriteLine "@echo off & echo."
+
+    Dim appData : appData = "%AppData%\VBScripting"
+    appData = sh.ExpandEnvironmentStrings(appData)
+    If Not fso.FolderExists(appData) Then fso.CreateFolder appData
 End Sub
