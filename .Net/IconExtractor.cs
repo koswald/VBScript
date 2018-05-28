@@ -15,6 +15,13 @@ namespace VBScripting
         Guid("2650C2AB-6AF8-495F-AB4D-6C61BD463EA4")]
     public class IconExtractor : IIconExtractor
     {
+        private ImageFormat imageFormat;
+
+        /// <summary> Constructor. </summary>
+        public IconExtractor()
+        {
+            SetImageFormatBmp();
+        }
         /// <summary> Extracts an icon from a .dll or .exe and saves it to a file. </summary>
         /// <parameters> resFile, index, icoFile, largeIcon </parameters>
         /// <remarks> Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. </remarks>
@@ -29,7 +36,7 @@ namespace VBScripting
             {
                 iconPointer = GetPointer(inFile, index, largeIcon);
                 icon = ExtractIcon(iconPointer);
-                icon.ToBitmap().Save(stream, ImageFormat.Bmp);
+                icon.ToBitmap().Save(stream, imageFormat);
             }
             catch (Exception e)
             {
@@ -44,11 +51,18 @@ namespace VBScripting
                     stream.Dispose();
                 if (icon != null)
                     icon.Dispose();
-//                if (iconPointer != (int)IntPtr.Zero)
-//                    DisposeIcon(iconPointer);
             }
         }
-
+        /// <summary> Change the image format to BMP. Default is BMP. </summary>
+        public void SetImageFormatBmp()
+        {
+            imageFormat = ImageFormat.Bmp;
+        }
+        /// <summary> Change the image format to PNG. Default is BMP. </summary>
+        public void SetImageFormatPng()
+        {
+            imageFormat = ImageFormat.Png;
+        }
         // resolve relative path or no path => absolute path
         private string Resolve(string unresolved)
         {
@@ -150,6 +164,12 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(1)]
         int IconCount(string file);
+        /// <summary> </summary>
+        [DispId(2)]
+        void SetImageFormatBmp();
+        /// <summary> </summary>
+        [DispId(3)]
+        void SetImageFormatPng();
     }
 
 }
