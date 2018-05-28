@@ -16,9 +16,9 @@ Const invalidInChromeFileName = "%20_#" 'Chrome won't open a local .html file wi
 'Remarks: Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config.
 Function GetValidFileName(fileNameCandidate)
     Dim maxLength
-    With CreateObject("VBScripting.Includer")
-        Execute .Read("ValidFileName.config") 'get maxLength
-    End With
+    Dim includer : Set includer = CreateObject("VBScripting.Includer")
+    Execute includer.Read("ValidFileName.config") 'get maxLength
+    Set includer = Nothing
     Dim arr, i, x : x = fileNameCandidate
     arr = Split(invalidInFileName, "_")
     For i = 0 to UBound(arr)

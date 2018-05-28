@@ -2,5 +2,5 @@
 Set cee = WScript.CreateObject("VBScripting.EventExample", "cee_")
 cee.FireTestEvent
 Sub cee_TestEvent
-    WScript.Echo "Event fired successfully."
+    MsgBox "Event fired successfully.", vbInformation, WScript.ScriptName
 End Sub

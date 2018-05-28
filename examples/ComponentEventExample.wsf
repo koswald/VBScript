@@ -6,7 +6,7 @@
     <script language="VBScript">
         vee.FireTestEvent
         Sub vee_TestEvent
-            WScript.Echo "Event fired successfully."
+            MsgBox "Event fired successfully.", vbInformation, WScript.ScriptName
         End Sub
     </script>
 </job>
