@@ -248,9 +248,9 @@
   <tr>
     <td> InvokeComCallback </td>
     <td> ComEvent </td>
-    <td> Invokes a VBScript method. The parameter <tt>callbackRef</tt> is an object reference to a VBScript member returned by the VBScript Function GetRef. </td>
+    <td> Invokes a VBScript method. The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. </td>
     <td>  </td>
-    <td>  </td>
+    <td> callbackRef </td>
     <td> Method </td>
     <td> VBScripting </td>
   </tr>
@@ -599,11 +599,38 @@
     <td> VBScripting </td>
   </tr>
   <tr>
+    <td> (Constructor) </td>
+    <td> IconExtractor </td>
+    <td> Constructor.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
     <td> Save </td>
     <td> IconExtractor </td>
     <td> Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. </td>
     <td>  </td>
     <td> resFile, index, icoFile, largeIcon </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> SetImageFormatBmp </td>
+    <td> IconExtractor </td>
+    <td> Change the image format to BMP. Default is BMP.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
+    <td> SetImageFormatPng </td>
+    <td> IconExtractor </td>
+    <td> Change the image format to PNG. Default is BMP.  </td>
+    <td>  </td>
+    <td>  </td>
     <td> Method </td>
     <td> VBScripting </td>
   </tr>
@@ -619,7 +646,7 @@
   <tr>
     <td> IconCount </td>
     <td> IconExtractor </td>
-    <td> Returns the number of icons A relative path or environmental variable is allowed. </td>
+    <td> Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. </td>
     <td> an int </td>
     <td> filespec (.dll or .exe) </td>
     <td> Method </td>
@@ -628,7 +655,7 @@
   <tr>
     <td> GetPointer </td>
     <td> IconExtractor </td>
-    <td> Gets a pointer to an icon. Must be disposed later with DisposeIcon(pointer), in order to release memory. A relative path or environmental variable is allowed. </td>
+    <td> Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. </td>
     <td> integer </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
@@ -637,7 +664,7 @@
   <tr>
     <td> ExtractIcon </td>
     <td> IconExtractor </td>
-    <td> Gets an icon.  </td>
+    <td> Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). </td>
     <td> Icon </td>
     <td> integer </td>
     <td> Method </td>
@@ -646,7 +673,7 @@
   <tr>
     <td> DisposeIcon </td>
     <td> IconExtractor </td>
-    <td> Dispose icon by pointer (an int).  </td>
+    <td> Dispose an icon by pointer (an int).  </td>
     <td> Returns true for success. </td>
     <td> pointer </td>
     <td> Method </td>

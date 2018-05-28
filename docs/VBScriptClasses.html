@@ -2521,6 +2521,13 @@
                   <td>N/A</td>
                   <td>Sets cscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges.</td>
                </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>GetDefaultHost</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default.</td>
+               </tr>
             </table>
          </div>
       </div>
@@ -3072,6 +3079,13 @@
                   <td>None</td>
                   <td>an object</td>
                   <td>Returns a BIOS object with this method: Version</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Battery</td>
+                  <td>None</td>
+                  <td>an object</td>
+                  <td>Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object.</td>
                </tr>
             </table>
          </div>

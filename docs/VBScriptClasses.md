@@ -14,6 +14,7 @@
 [KeyDeleter](#keydeleter)  
 [MathConstants](#mathconstants)  
 [MathFunctions](#mathfunctions)  
+[NewClass_](#newclass_)  
 [PrivilegeChecker](#privilegechecker)  
 [RegExFunctions](#regexfunctions)  
 [RegistryUtility](#registryutility)  
@@ -807,6 +808,7 @@ Manage which script host is hosting the currently running script
 | Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. |
 | Method | SetDefaultHostWScript | None | N/A | Sets wscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges. |
 | Method | SetDefaultHostCScript | None | N/A | Sets cscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges. |
+| Property | GetDefaultHost | None | a string | Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default. |
 
 ## VBSLogger
 A lightweight VBScript logger  
@@ -946,6 +948,7 @@ Examples of the Windows Management Instrumentation object
 | Property | os | None | an object | Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles |
 | Property | pc | None | an object | Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory |
 | Property | Bios | None | an object | Returns a BIOS object with this method: Version |
+| Property | Battery | None | an object | Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object. |
 
 ## WoWChecker
 Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.  
