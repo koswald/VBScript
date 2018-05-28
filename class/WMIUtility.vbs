@@ -1,4 +1,3 @@
-
 'Examples of the Windows Management Instrumentation object
 '
 Class WMIUtility
@@ -129,7 +128,6 @@ Class WMIUtility
     Function partitions
         Set partitions = GetResults(select_ & all & from & Win32_DiskPartition)
     End Function
-
     Property Get Win32_DiskPartition : Win32_DiskPartition = "Win32_DiskPartition" : End Property
 
     'Function disks
@@ -138,7 +136,6 @@ Class WMIUtility
     Function disks
         Set disks = GetResults(select_ & all & from & Win32_LogicalDisk)
     End Function
-
     Property Get Win32_LogicalDisk : Win32_LogicalDisk = "Win32_LogicalDisk" : End Property
 
     'Function cpu
@@ -150,7 +147,6 @@ Class WMIUtility
             Set cpu = process : Exit For
         Next
     End Function
-
     Property Get Win32_Processor : Win32_Processor = "Win32_Processor" : End Property
 
     'Function os
@@ -162,7 +158,6 @@ Class WMIUtility
             Set os = process : Exit For
         Next
     End Function
-
     Property Get Win32_OperatingSystem : Win32_OperatingSystem = "Win32_OperatingSystem" : End Property
 
     'Function pc
@@ -174,7 +169,6 @@ Class WMIUtility
             Set pc = process : Exit For
         Next
     End Function
-
     Property Get Win32_ComputerSystem : Win32_ComputerSystem = "Win32_ComputerSystem" : End Property
 
     'Function Bios
@@ -186,8 +180,18 @@ Class WMIUtility
             Set Bios = process : Exit For
         Next
     End Function
-
     Property Get Win32_Bios : Win32_Bios = "Win32_Bios" : End Property
+
+    'Function Battery
+    'Returns an object
+    'Remark: Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object.
+    Function Battery
+        Dim bat
+        For Each bat in GetResults(select_ & all & from & Win32_Battery)
+            Set Battery = bat : Exit For
+        Next
+    End Function
+    Property Get Win32_Battery : Win32_Battery = "Win32_Battery" : End Property
 
     Sub SetPC(newPC) : computer = newPC : End Sub
     Private Property Get localPC : localPC = "." : End Property
@@ -201,5 +205,4 @@ Class WMIUtility
          from = " from "
          where = " where "
     End Sub
-
 End Class
