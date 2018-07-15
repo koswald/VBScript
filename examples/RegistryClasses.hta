@@ -5,7 +5,6 @@
         helpFile="RegistryClasses.md"
         icon="regedit.exe"
         innerBorder="No"
-        singleInstance="Yes"
         scroll="No">
     <script language="VBScript">
         Dim baseWidth : baseWidth = 444
@@ -226,6 +225,7 @@
                 Disable browse4IconButton
                 Disable browse4TemplateButton
             ElseIf admin.PrivilegesAreElevated Then
+                elevateButton.title = ""
                 Disable elevateButton
             End If
             If InStr(verbKey, "\\") _
@@ -237,8 +237,7 @@
                 Disable command
                 Disable browseForCommandButton
             End If
-            If "" = fileType.value _
-            Or "" = typeKey Then
+            If "" = fileType.value Then
                 Disable deleteFileType
                 Disable configureClassButton
             End If
@@ -280,7 +279,6 @@
         End Sub
 
         Sub deleteFileType_OnClick
-            If "" = typeKey Then Exit Sub
             If Not FileTypeIsDeletable Then Exit Sub
             TryDeletingKey root, typeKey
             RefreshFields
@@ -423,7 +421,7 @@
 
         Sub elevateButton_OnClick
             sa.ShellExecute "mshta", application.commandLine,, "runas"
-            Self.close
+            document.ParentWindow.close
         End Sub
 
         Sub nullFileCheckbox_OnClick
@@ -576,7 +574,7 @@
         End Function        
 
         Function FileTypeIsDeletable
-            Const dontDelete = "* exe com vbs wsf"
+            Const dontDelete = "* exe com"
             Dim i, donts : donts = Split(LCase(dontDelete))
             For i = 0 To UBound(donts)
                 If LCase(donts(i)) = LCase(fileType.value) Then FileTypeIsDeletable = False : Exit Function
@@ -748,16 +746,18 @@
         class="spaceLeft" /><br />
 
     <!-- Verb selector -->
-    <p class="inputLabel"> Verbs</p>
+    <p class="inputLabel"> Verbs 
+        <input
+            type="checkbox"
+            id="extended"
+            class="spaceLeft" />
+        <span> Require shift + right click with the selected verb </span>
+    </p>
     <select id="verbSelector" class="spaceRight"></select>
     <input
         type="button"
         id="deleteVerb"
         value="Delete verb" /><br />
-    <input
-        type="checkbox"
-        id="extended" />
-    <span> Require shift + right click with this verb</span><br />
 
     <!-- Command -->
     <div id="commandFields">
@@ -793,6 +793,7 @@
         type="button"
         id="elevateButton"
         value="Elevate"
+        title="Elevate privileges"
         class="spaceTop" />
 
     <!-- New verb subfields -->

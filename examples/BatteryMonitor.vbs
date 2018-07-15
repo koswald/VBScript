@@ -5,7 +5,6 @@ Setup
 Main
 
 Sub Main
-''  notifier.AddMenuItem "Show warning (test)", GetRef("ShowWarning")
     notifier.AddMenuItem "Exit Battery Monitor", GetRef("Quit")
     notifier.Visible = True
     WaitForCallbacks
@@ -19,20 +18,21 @@ Sub WaitForCallbacks
 End Sub
 Sub ResetIcon
     index = IconIndex
-    If IndexHasNotChanged Then Exit Sub
-    notifier.SetIconByDllFile resFile, index, False
+    If index = previousIndex Then Exit Sub
+    notifier.SetIconByDllFile resFile, index, iconSize
     previousIndex = index
 End Sub
-Function IndexHasNotChanged
-    If index = previousIndex Then IndexHasNotChanged = True Else IndexHasNotChanged = False
-End Function
 Function IconIndex
     Dim percent : percent = Charge
     Dim status : If PluggedIn Then status = "Plugged in" Else status = "Not plugged in"
     notifier.Text = format(Array( _
         "Battery charge %s%" & vbLf & _
         "%s", percent, status))
-    If percent < 11 Then
+    resFile = resFile1
+    If PluggedIn Then
+        IconIndex = 2
+        resFile = resFile2
+    ElseIf percent < 11 Then
         IconIndex = 9
     ElseIf percent < 31 Then
         IconIndex = 10
@@ -69,7 +69,12 @@ Function Battery
     Set Battery = wmi.Battery
 End Function
 
-Const resFile = "%SystemRoot%\System32\wpdshext.dll"
+Const resFile1 = "%SystemRoot%\System32\wpdshext.dll"
+Const resFile2 = "%SystemRoot%\System32\powercpl.dll"
+Const smallIcon = False
+Const largeIcon = True
+Dim resFile
+Dim iconSize
 Dim index, previousIndex
 Dim neverBeenWarned
 Dim notifier, wmi, format, stopwatch
@@ -87,6 +92,7 @@ Sub Setup
     Set stopwatch = New VBSStopwatch
     neverBeenWarned = True
     previousIndex = -1
+    iconSize = smallIcon
 
     Set includer = Nothing
     Set fso = Nothing

@@ -20,7 +20,7 @@ Class DocGeneratorCS
     'Property OutputFile
     'Parameters: -
     'Returns: -
-    'Remarks: Required. Gets or sets the path and base name of the output files, not including  the .html and .md filename extensions. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.
+    'Remarks: Required. Gets or sets the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.
     Property Get OutputFile : OutputFile = Expand(outFile_) : End Property
     Property Let OutputFile(newValue)
         outFile_ = newValue

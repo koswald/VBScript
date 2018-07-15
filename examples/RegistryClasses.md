@@ -11,9 +11,8 @@ With RegistryClasses.hta you can manage certain
 aspects of Windows classes without directly using 
 regedit.exe, such as
 
-- Creating a new file type.
-- Adding a new verb to an existing file type.
-- Adding a new verb to an existing class.
+- Creating a new class and file type.
+- Creating a new verb for an existing class.
 
 > WARNING: Backup the registry before making changes!
 

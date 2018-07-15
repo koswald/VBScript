@@ -4,7 +4,6 @@
         applicationName="Extract icons from .dll or .exe files"
         icon="msctfui.dll"
         innerBorder="No"
-        singleInstance="Yes"
         scroll="No" />
     <script language="VBScript">
         Self.ResizeTo 600, 400
@@ -196,7 +195,7 @@
         End Sub
 
         Sub targetBrowserBtn_OnClick
-            browser.Title = "Create or choose a destination folder for the icons"
+            browser.Title = "Create or choose a destination folder for the icons that will be extracted"
             browser.InitialDirectory = "%UserProfile%\Desktop"
             Dim folder : folder = browser.FolderName
             If Not "" = folder Then targetDirTxtBox.value = folder
@@ -215,14 +214,17 @@
         End Sub
 
         Sub Document_OnKeyUp
-            Dim key : key = window.event.keyCode
-            If F6 = key Then sh.Run format(Array("""%s"" %s", Expand(WordPad), application.commandLine))
-            If Enter = key Then
+            If F6 = window.event.keyCode Then
+                sh.Run format(Array("""%s"" %s", Expand(WordPad), application.commandLine))
+            ElseIf F9 = window.event.keyCode Then
+                sh.Run "notepad """ & configFile & """"
+            ElseIf Enter = window.event.keyCode Then
                 If eStop Then Exit Sub
                 If extractIconsBtn.disabled Then Exit Sub
                 window.setTimeout "extractIconsBtn_OnClick", ms, "VBScript"
+            ElseIf Esc = window.event.keyCode Then
+                Self.Close
             End If
-            If Esc = key Then Self.Close
         End Sub
 
         Sub smallIconsChkBox_OnClick : CheckIconChoices : End Sub
@@ -253,32 +255,7 @@
 
         Sub ClearFeedback : feedbackDiv.innerHTML = "" : End Sub
         
-        Const ListingFiles = "Listing filles"
-        Const ExtractingFiles = "Extracting files"
-        Const ShowingResults = "Showing results"
-        Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
-        Const F1 = 112 'window.event.KeyCode
-        Const F6 = 117
-        Const F7 = 118
-        Const F8 = 119
-        Const Esc = 27
-        Const Enter = 13
-        Dim sh, fso, format, extractor, application
-        Dim regex, rf, includer, browser, log, app
-        Dim admin
-        Dim timeoutId
-        Dim fileDict
-        Dim fileKeys
-        Dim iconIndex
-        Dim fileIndex
-        Dim targetFolder
-        Dim ms
-        Dim iconsExtracted
-        Dim CheckingMsg
-        Dim eStop
-        Dim iconCount
-
-        Sub Window_OnLoad
+        Sub InitializeObjects
             Set sh = CreateObject("WScript.Shell")
             Set fso = CreateObject("Scripting.FileSystemObject")
             Set format = CreateObject("VBScripting.StringFormatter")
@@ -295,27 +272,8 @@
             Set browser = CreateObject("VBScripting.FolderChooser")
             Set admin = CreateObject("VBScripting.Admin")
             Set fileDict = CreateObject("Scripting.Dictionary")
-
-            Dim sourceFileValue, sourceDirValue
-            Dim targetDirValue, sourceFileTitle
-            Execute includer.Read("VBSApp")
-            Set app = New VBSApp
-            Dim parent : parent = app.GetParentFolderName
-            Dim configFile : configFile = format(Array( _
-                "%s\%s.configure", parent, app.GetBaseName))
-            Execute includer.ReadFrom(configFile, parent)
-            
-            If admin.PrivilegesAreElevated Then Disable elevateBtn
-            sourceDirTxtBox.value = sourceDirValue
-            sourceFileTxtBox.value = sourceFileValue
-            targetDirTxtBox.value = targetDirValue
-            sourceFileTxtBox.Title = sourceFileTitle
-            CheckIconChoices
-            CheckingMsg = "Checking for icons in<br />"
-            Disable stopBtn
         End Sub
-
-        Sub Window_OnUnload
+        Sub ReleaseObjects
             Set sh = Nothing
             Set fso = Nothing
             Set format = Nothing
@@ -324,14 +282,92 @@
             Set regex = Nothing
             Set includer = Nothing
             Set rf = Nothing
+            Set log = Nothing
+            Set browser = Nothing
             Set admin = Nothing
+            Set fileDict = Nothing
+        End Sub
+
+        Const ListingFiles = "Listing filles"
+        Const ExtractingFiles = "Extracting files"
+        Const ShowingResults = "Showing results"
+        Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
+        Const F1 = 112 'window.event.KeyCode
+        Const F6 = 117
+        Const F7 = 118
+        Const F8 = 119
+        Const F9 = 120
+        Const Esc = 27
+        Const Enter = 13
+        Const ForWriting = 2
+        Const CreateNew = True
+        Dim sh, fso, format, extractor, application
+        Dim regex, rf, includer, browser, log
+        Dim admin
+        Dim timeoutId
+        Dim fileDict
+        Dim fileKeys
+        Dim iconIndex
+        Dim fileIndex
+        Dim targetFolder
+        Dim ms
+        Dim iconsExtracted
+        Dim CheckingMsg
+        Dim eStop
+        Dim iconCount
+        Dim configFile
+
+        Sub Window_OnLoad
+            InitializeObjects
+
+            'populate fields from the config file,
+            'and/or create the config file
+            Dim sourceFileValue
+            Dim sourceDirValue
+            Dim targetDirValue
+            configFile = format(Array( _
+                "%s\VBScripting\%s.configure", _
+                Expand("%AppData%"), _
+                fso.GetBaseName(document.location.href)))
+            On Error Resume Next
+                Execute fso.OpenTextFile(configFile).ReadAll
+                If Err Then
+                    Dim configStream : Set configStream = fso.OpenTextFile(configFile, ForWriting, CreateNew)
+                    configStream.WriteLine "sourceDirValue = ""%SystemRoot%\System32"""
+                    configStream.WriteLine "sourceFileValue = ""*.dll | *.exe"""
+                    configStream.WriteLine "targetDirValue = format(Array(""%UserProfile%\Desktop\extracted-icons\%s-%s-%s-%s-%s"", Month(Now), Day(Now), Hour(Now), Minute(Now), Second(Now)))"
+                    configStream.Close
+                End If
+            Err.Clear
+                Execute fso.OpenTextFile(configFile).ReadAll
+                If Err Then
+                    Feedback format(Array( _
+                        "Error reading the config file. <br />" & _
+                        "File: %s <br />" & _
+                        "Error description: %s", _
+                        configFile, Err.Description))
+                End If
+            On Error Goto 0
+            
+            If admin.PrivilegesAreElevated Then Disable elevateBtn
+            sourceDirTxtBox.value = sourceDirValue
+            sourceFileTxtBox.value = sourceFileValue
+            targetDirTxtBox.value = targetDirValue
+            CheckIconChoices
+            CheckingMsg = "Checking for icons in<br />"
+            Disable stopBtn
+        End Sub
+
+        Sub Window_OnUnload
+            ReleaseObjects
         End Sub
     </script>
+
     <p class="label"> Source folder
         <input
             type="checkbox"
             id="subfoldersChkBox"
-            class="spaceLeft" /> with subfolders
+            class="spaceLeft" /> and all subfolders
     </p>
     <input
         type="text"
@@ -341,14 +377,14 @@
         type="button"
         id="sourceBrowserBtn"
         class="narrowButton"
-        title="Browse for folder"
+        title="Browse for source folder"
         value="..." /><br />
-    <p class="label"> File name(s)</p>
+    <p class="label"> File name(s) </p>
     <input
         type="text"
         id="sourceFileTxtBox"
         class="textInput" /><br />
-    <p class="label"> Target folder</p>
+    <p class="label"> Target folder </p>
     <input
         type="text"
         id="targetDirTxtBox"
@@ -356,7 +392,7 @@
     <input
         type="button"
         id="targetBrowserBtn"
-        title="Browse for folder"
+        title="Browse for target folder"
         class="narrowButton"
         value="..." /><br />
     <input

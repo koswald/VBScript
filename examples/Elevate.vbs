@@ -1,4 +1,4 @@
-'Elevate privileges
+'Elevate privileges of the specified file
 'Use as a drop target or from the command line.
 
 Option Explicit

@@ -6,9 +6,6 @@
         innerBorder="No"
         singleInstance="Yes"
         scroll="no">
-    <script language="VBScript">
-        Self.ResizeTo 400, 450
-    </script>
 </head>
 <body>
     <script language="VBScript">
@@ -49,7 +46,7 @@
             window.setTimeout prepItems(nextItem), 1, VBScript
         End Sub
 
-        Const flagFile = "Setup.bat"
+        Dim flagFile : flagFile = "Setup.bat"
         Sub RunSetupUninstall
             If Not uninstallChkBox.checked Then
                 AwaitNextItem
@@ -310,7 +307,7 @@
         Dim caption, settings
         Dim projectFolder
         Sub Window_OnLoad
-            Dim application
+            Self.ResizeTo 400, 450
             Set sh = CreateObject("WScript.Shell")
             Set fso = CreateObject("Scripting.FileSystemObject")
             Set application = document.getElementsByTagName("application")(0)
@@ -322,6 +319,8 @@
             caption = document.Title
             settings = vbYesNoCancel + vbInformation + vbDefaultButton2
             sh.CurrentDirectory = projectFolder
+
+            Dim application
         End Sub
         Sub Window_OnUnload
             Set sh = Nothing
@@ -333,8 +332,7 @@
     <p class="input">
         <input
             type="checkbox"
-            id="reqConfirmChkBox"
-            checked />
+            id="reqConfirmChkBox" />
         <span> Require confirmation prompts </span>
     </p>
     <p class="input">

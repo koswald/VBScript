@@ -1,8 +1,7 @@
-
 'Generate html and markdown documentation for VBScript code based on well-formed comments.
 
 'Usage Example
-'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
+'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
 '
 'Example of well-formed comments before a Sub statement
 ' Note: A remark is required for Methods (Subs).
@@ -91,10 +90,10 @@ Class DocGenerator
     End Sub
 
     Private Sub InitializeDocFiles
-        docFile = docFolder & "\" & docName
+        docFile = docFolder & "\" & docName & ".html"
         outputStreamer.SetFile docFile
         Set doc = outputStreamer.Open
-        Set md = fso.OpenTextFile(docFolder & "\" & fso.GetBaseName(docName) & ".md", 2, True)
+        Set md = fso.OpenTextFile(docFolder & "\" & docName & ".md", 2, True)
     End Sub
 
     Private Sub InitializeLiterals
@@ -152,7 +151,7 @@ Class DocGenerator
 
     'Method SetDocName
     'Parameter: a filename
-    'Remark: Required. Must be set before calling the Generate method. Specifies the name of the documentation file, including the filename extension (.html suggested).
+    'Remark: Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name.
     Sub SetDocName(newDocName) : docName = newDocName : End Sub
 
     'Method SetTitle
@@ -297,8 +296,7 @@ Class DocGenerator
         IndentIncrease
         If Instr(generalContent, "<") Then
             WriteLine generalContent
-        Else
-            WriteLine "<p>" & generalContent & "</p>"
+        Else WriteLine "<p>" & generalContent & "</p>"
         End If
         IndentDecrease
         md.WriteLine GetColorizedOrGetNowrap(generalContent)
@@ -309,15 +307,14 @@ Class DocGenerator
             GetColorizedOrGetNowrap = markup & "  "
         ElseIf colorize_ Then
             GetColorizedOrGetNowrap = GetColorized(markup)
-        Else
-            GetColorizedOrGetNowrap = GetNowrap(markup)
+        Else GetColorizedOrGetNowrap = GetNowrap(markup)
         End If
     End Function
 
     Function GetNowrap(markup)
         Dim lines : lines = markup
         lines = Replace(lines, "<br />", "<br/>")
-        lines = Replace(lines, " ", "Â ") 'Alt+0160 = non-breaking space
+        lines = Replace(lines, " ", " ") 'Alt+0160 = non-breaking space
         lines = Replace(lines, "<pre>", "<pre><code style='white-space: nowrap;'>")
         lines = Replace(lines, "</pre>", "</code></pre>")
         GetNowrap = lines
@@ -341,6 +338,7 @@ Class DocGenerator
     Property Let Colorize(value) : colorize_ = value : End Property
     Private colorize_
 
+    'pre content has been deprecated, that is, preceeding code with two single quotes ('') has been deprecated in favor of wrapping VBScript code with "pre" tags and other code with "code" tags. See the class introductory comments.
     Private Sub WritePreContentToDoc
         If postClassStatement = status Then Exit Sub
         If Not ScriptHeaderWritten Then
@@ -417,7 +415,6 @@ Class DocGenerator
         ElseIf property_ =  routineType Then
 
             msg = "Properties may have parameters; may have Remarks; must have Returns. NOTE: Property Set and Property Let do not require a return value but still must have a 'Return or 'Returns comment."
-            'TODO: allow Property Let and Property Set to have no return comment
             If "" = returnsContent Then RaiseContentError msg
             If "" = parametersContent Then parametersContent = "None"
             If "" = remarksContent Then remarksContent = "None"
@@ -509,7 +506,7 @@ Class DocGenerator
         doc.WriteLine ""
         IndentIncrease
 
-        md.WriteLine "# VBScript Classes"
+        md.WriteLine "# " & docTitle
         md.WriteLine ""
         md.WriteLine "### Contents"
         md.WriteLine ""
@@ -525,7 +522,7 @@ Class DocGenerator
     End Sub
 
     Private Sub WriteBottomSection
-        WriteLine "<p> <em> See also the <a href=""https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx""> VBScript docs </a> </em> </p>"
+        WriteLine "<p> <em> See also the <a href=""https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)""> VBScript docs </a> </em> </p>"
         WriteLine "<span class=""debugOutput""></span>"
         WriteLine "<script type=""text/javascript"" src=""lib/docScript.js""></script>"
         IndentDecrease

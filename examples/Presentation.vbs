@@ -8,7 +8,6 @@ Sub NormalMode
     notifyIcon.DisableMenuItem normalModeMenuIndex
     notifyIcon.EnableMenuItem presentationModeMenuIndex
     notifyIcon.SetIconByDllFile icon(ico_normFile), icon(ico_normIndex), icon(ico_normType)
-    notifyIcon.Text = "Presentation mode is off"
     PublishStatus "Normal"
     csTimer.Stop
 End Sub
@@ -52,19 +51,21 @@ End Sub
 Sub ListenForCallbacks
     While True
         If "Presentation" = status Then
-            notifyIcon.Text = format(Array("Presentation mode is on%sNormal mode resumes in %s min.", vbLf, Round(csTimer.Interval/60000 - stopwatch/60, 0)))
+            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(csTimer.Interval/60000 - stopwatch/60, 0)))
+        Else notifyIcon.Text = "Presentation mode is off"
         End If
         WScript.Sleep 200
     Wend
 End Sub
 
 'icon options
-Const icon1 = "%SystemRoot%\System32\powercpl.dll|5|False|%SystemRoot%\System32\powercpl.dll|6|False"
-Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False"
-Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True"
-Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False"
-Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False"
-Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True"
+Const icon1 = "%SystemRoot%\System32\powercpl.dll|5|False|%SystemRoot%\System32\powercpl.dll|6|False" 'moon & sun
+Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False" 'green & yellow shields
+Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True" 'monitor with moon & monitor without
+Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False" 'dark LED & green LED
+Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False" 'dark flat screen & bright flat screen / small icons
+Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True" 'dark flat screen & bright flat screen / large icons
+Const icon7 = "%SystemRoot%\System32\comres.dll|8|False|%SystemRoot%\System32\comres.dll|12|False" 'checkmark on green shield & checkmark on gold shield
 Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5
 
 Const synchronous = True

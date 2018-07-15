@@ -30,9 +30,10 @@ Clone or download the repo and run [Setup.vbs].
 This will register the Windows Script Component 
 files, and compile and register the [VBScript extensions]. 
 
-## Reference  
+## References  
 
-[Scripting documentation online]
+[Scripting documentation online]  
+[Scripting links]
 
 ---
 
@@ -56,5 +57,6 @@ Read or edit the [wiki](../../wiki)
 [interpreter]: examples/VBSInterpreter.hta
 [system tray icon]: .Net/test/NotifyIcon-test.vbs
 [progress bar]: .Net/test/ProgressBar-test.vbs
-[Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84)
+[Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84) "docs.microsoft.com"
+[Scripting links]: https://technet.microsoft.com/en-us/library/cc498722.aspx "technet.microsoft.com"
 

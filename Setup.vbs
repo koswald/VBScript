@@ -1,6 +1,6 @@
 'Setup the VBScript utilities
 
-'Registers or unregisters the windows script components (.wsc).
+'Registers or unregisters the windows script component (.wsc) files.
 'Compiles and registers or unregisters the VBScript
 'extension .dll libraries.
 'Creates or removes the VBScripting event log source.
@@ -9,16 +9,13 @@
 
 'The User Account Control dialog will open
 'to verify elevation of privileges.
-
 Option Explicit
-
 componentFolder_ = "class\wsc"
 buildFolder_ = ".Net\build"
 
 Initialize
 Main
 ReleaseObjectMemory
-
 Sub Main
     If installing Then
         PrepWscRegistrationSystem32
@@ -98,7 +95,7 @@ End Sub
 Sub RunBatchFile
     batchStream.Close
     If inspectBatchFile Then
-        sh.Run "notepad " & batchFile
+        sh.Run "notepad """ & batchFile & """"
         If vbCancel = MsgBox(format(Array("Click OK to proceed with %s the VBScript Utilities after inspecting the batch file.", setupNoun)), vbInformation + vbOKCancel + vbSystemModal, "Proceed? - " & WScript.ScriptName) Then DeleteBatchFile : ReleaseObjectMemory : WScript.Quit
     End If
     sh.Run format(Array("cmd /c %s", batchFile)),, synchronous
@@ -117,7 +114,7 @@ Sub ProgramsAndFeaturesEntry
     Const uninstKey = "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\VBScripting"
     Dim InstallLocation : InstallLocation = fso.GetParentFolderName(WScript.ScriptFullName)
     reg.CreateKey HKLM, uninstKey
-    reg.SetStringValue HKLM, uninstKey, "DisplayName", "VBScripting utility classes and extensions"
+    reg.SetStringValue HKLM, uninstKey, "DisplayName", "VBScripting Utility Classes and Extensions"
     reg.SetDWORDValue HKLM, uninstKey, "NoRemove", 0
     reg.SetStringValue HKLM, uninstKey, "UninstallString", format(Array("wscript ""%s\Setup.vbs"" /u", InstallLocation))
     reg.SetDWORDValue HKLM, uninstKey, "NoModify", 1
@@ -127,7 +124,7 @@ Sub ProgramsAndFeaturesEntry
     reg.SetStringValue HKLM, uninstKey, "HelpLink", "https://github.com/koswald/VBScript"
     reg.SetStringValue HKLM, uninstKey, "InstallLocation", InstallLocation
     reg.SetDWORDValue HKLM, uninstKey, "EstimatedSize", 1500 'kilobytes
-    reg.SetExpandedStringValue HKLM, uninstKey, "DisplayIcon", "%SystemRoot%\System32\wscript.exe,1"
+    reg.SetExpandedStringValue HKLM, uninstKey, "DisplayIcon", "%SystemRoot%\System32\wscript.exe,2"
     reg.SetStringValue HKLM, uninstKey, "Publisher", "Karl Oswald"
     reg.SetStringValue HKLM, uninstKey, "HelpTelephone", ""
     reg.SetStringValue HKLM, uninstKey, "Contact", ""

@@ -35,24 +35,6 @@ End With
 
 Teardown
 
-Sub Teardown
-    Set fso = Nothing
-    Set sh = Nothing
-    Set format = Nothing
-End Sub
-
-Dim sh, fso, format
-Dim flags
-Dim uninstalling
-
-Sub Setup
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Set sh = CreateObject("WScript.Shell")
-    Set format = CreateObject("VBScripting.StringFormatter")
-    flags = ""
-    uninstalling = False
-End Sub
-
 Function Expand(path)
     Expand = sh.ExpandEnvironmentStrings(path)
 End Function
@@ -64,3 +46,20 @@ Function Resolve(relativePath)
         Err.Raise 4,, "Expected .wsc file. Actual file: " & Resolve
     End If
 End Function
+
+Dim sh, fso, format
+Dim flags
+Dim uninstalling
+Sub Setup
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set sh = CreateObject("WScript.Shell")
+    Set format = CreateObject("VBScripting.StringFormatter")
+    flags = ""
+    uninstalling = False
+End Sub
+
+Sub Teardown
+    Set fso = Nothing
+    Set sh = Nothing
+    Set format = Nothing
+End Sub

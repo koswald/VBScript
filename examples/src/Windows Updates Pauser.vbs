@@ -1,14 +1,13 @@
-
 'script for "Windows Updates Pauser.hta"
 
 Sub PauseUpdates
     wup.PauseUpdates
-    UpdateStatus(wup.GetStatus)
+    UpdateStatus wup.GetStatus
 End Sub
 
 Sub ResumeUpdates
     wup.ResumeUpdates
-    UpdateStatus(wup.GetStatus)
+    UpdateStatus wup.GetStatus
 End Sub
 
 Sub UpdateStatus(status)

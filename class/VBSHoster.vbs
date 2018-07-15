@@ -26,6 +26,25 @@ Class VBSHoster
     'Remark: Sets cscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges.
     Sub SetDefaultHostCScript : sa.ShellExecute "wscript.exe", "//h:cscript", "", "runas" : End Sub
 
+    'Property GetDefaultHost
+    'Returns: a string
+    'Remark: Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default.
+    Property Get GetDefaultHost
+        If "Open" = sh.RegRead(DefaultHostKey) Then
+            GetDefaultHost = "wscript.exe"
+        ElseIf "Open2" = sh.RegRead(DefaultHostKey) Then
+            GetDefaultHost = "cscript.exe"
+        Else GetDefaultHost = "Default host could not be determined."
+        End If
+    End Property
+
+    'current default host key
+    'if value is Open2 then current host is cscript; if Open then wscript
+    'intended for use with the RegRead method of WScript.Shell
+    Property Get DefaultHostKey
+        DefaultHostKey = "HKLM\SOFTWARE\Classes\VBSFile\Shell\"
+    End Property
+
     Private args
     Private sh, sa
     Private switch

@@ -1,25 +1,22 @@
-<!doctype html>
-
-<!-- Pause Windows Updates to get more bandwidth.
-     Don't forget to resume. -->
-
 <html>
-    <head>
-        <hta:application
-            ApplicationName="Windows Updates Pauser"
-            scroll="No"
-            icon="iesetup.dll"
-            border="None"
-            innerborder="No"
-            SingleInstance="Yes" >
-    </head>
-    <body>
-        <input type="button" value="Pause" onclick="PauseUpdates()" />
-        <input type="button" value="Resume" onclick="ResumeUpdates()" />
-        <input type="button" value =" ... " onclick="OpenConfigFile()" />
-        <input type="button" value="  x  " onclick="SelfClose()" />
+<head>
+    <hta:application
+        ApplicationName="Windows Updates Pauser"
+        purpose="Pause Windows Update to get more bandwidth"
+        caution="Don't forget to resume!"
+        scroll="No"
+        icon="iesetup.dll"
+        border="None"
+        innerborder="No"
+        SingleInstance="Yes" >
+</head>
+<body>
+    <input type="button" value="Pause" onclick="PauseUpdates()" />
+    <input type="button" value="Resume" onclick="ResumeUpdates()" />
+    <input type="button" value =" ... " onclick="OpenConfigFile()" />
+    <input type="button" value="  x  " onclick="SelfClose()" />
 
-        <script language="VBScript" src="src/Windows Updates Pauser.vbs"> </script>
-        <link rel="stylesheet" href="href/Windows Updates Pauser.css" />
-    </body>
+    <script language="VBScript" src="src/Windows Updates Pauser.vbs"> </script>
+    <link rel="stylesheet" href="href/Windows Updates Pauser.css" />
+</body>
 </html>

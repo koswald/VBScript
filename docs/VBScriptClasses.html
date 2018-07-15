@@ -241,7 +241,7 @@
          <div class="detail">
             <p>Generate html and markdown documentation for VBScript code based on well-formed comments.</p>
             <p>Usage Example</p>
-            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs.html"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
             <p></p>
             <p>Example of well-formed comments before a Sub statement</p>
             <p> Note: A remark is required for Methods (Subs).</p>
@@ -288,7 +288,7 @@
                   <td>SetDocName</td>
                   <td>a filename</td>
                   <td>N/A</td>
-                  <td>Required. Must be set before calling the Generate method. Specifies the name of the documentation file, including the filename extension (.html suggested).</td>
+                  <td>Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -359,7 +359,7 @@
                   <td>OutputFile</td>
                   <td>-</td>
                   <td>-</td>
-                  <td>Required. Gets or sets the path and base name of the output files, not including  the .html and .md filename extensions. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.</td>
+                  <td>Required. Gets or sets the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -3154,7 +3154,7 @@
             </table>
          </div>
       </div>
-      <p> <em> See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> VBScript docs </a> </em> </p>
+      <p> <em> See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)"> VBScript docs </a> </em> </p>
       <span class="debugOutput"></span>
       <script type="text/javascript" src="lib/docScript.js"></script>
    </body>

@@ -3,7 +3,7 @@
 
 'convert text to sound
 Sub Speak
-    ss.SpeakAsync words.value
+    synthesizer.SpeakAsync words.value
     words.select 'select all; prepare to overwrite the previous words
 End Sub
 
@@ -18,7 +18,7 @@ End Sub
 Sub ChangeVoice
     voiceIndex = voiceIndex + 1
     If voiceIndex > UBound(voices) Then voiceIndex = 0
-    ss.Voice = voices(voiceIndex)
+    synthesizer.Voice = voices(voiceIndex)
     voiceButton.Title = "Current voice: " & voices(voiceIndex)
     words.select
 End Sub
@@ -27,10 +27,10 @@ Const width = 30, height = 30 'window size in percent of screen
 Const xPos = 50, yPos = 50 'window position in percent of screen
 Const EnterKey = 13
 Dim words, voiceButton 'html elements
-Dim ss 'speech synthesis object
+Dim synthesizer 'speech synthesis object
 Dim voices, voiceIndex, nVoices
 
-'initialize html elements and the ss object
+'initialize html elements and the synthesizer object
 Sub Window_OnLoad
     Dim application : Set application = document.getElementsByTagName("application")(0)
     document.title = application.ApplicationName
@@ -106,17 +106,17 @@ Sub Window_OnLoad
 
     'get the speech synthesizer
     On Error Resume Next
-        Set ss = CreateObject("VBScripting.SpeechSynthesis")
+        Set synthesizer = CreateObject("VBScripting.SpeechSynthesis")
         If Err Then
             MsgBox "Failed to find or initiailize the SpeechSynthesis library.", vbCritical, "Initialization failure"
             Self.close
         End If
     On Error Goto 0
-    voices = ss.Voices
+    voices = synthesizer.Voices
     voiceIndex = 0
     nVoices = UBound(voices) + 1 'number of installed, enabled voices
     If nVoices > 0 Then
-        ss.Voice = voices(voiceIndex)
+        synthesizer.Voice = voices(voiceIndex)
         voiceButton.Title = "Current voice: " & voices(voiceIndex)
     End If
     If nVoices < 2 Then voiceButton.disabled = True
@@ -126,6 +126,6 @@ Sub Window_OnLoad
 End Sub
 
 Sub Window_OnUnload
-    Set ss = Nothing
+    Set synthesizer = Nothing
     Set words = Nothing
 End Sub

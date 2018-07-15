@@ -8,10 +8,6 @@
             scroll="No"
             singleInstance="Yes">
         </hta:application>
-        <script language="VBScript">
-            Self.ResizeTo 750, 400
-            Self.MoveTo 800, 300
-        </script>
     </head>
     <body>
         <script language="VBScript">
@@ -26,6 +22,17 @@
             Dim feedback
 
             Sub Window_OnLoad
+                Dim width, height, xPos, yPos 'window size and position in percent of screen
+                width = 65 : height = 65 : xPos = 50 : yPos = 50
+                With document.parentWindow.screen
+                    Dim pxWidth, pxHeight
+                    pxWidth = .availWidth * width * .01
+                    pxHeight = .availHeight * height * .01
+                    self.ResizeTo pxWidth, pxHeight
+                    self.MoveTo _
+                        (.availWidth - pxWidth) * xPos * .01005, _
+                        (.availHeight - pxHeight) * yPos * .0102
+                End With
                 Set si = New StartupItems
                 Dim vc : Set vc = CreateObject("VBScripting.Admin")
                 privilegesAreElevated = vc.PrivilegesAreElevated
@@ -122,6 +129,7 @@
                 Next
 
                 With document.body.style
+                    .cursor = "default"
                     .fontFamily = "sans-serif"
                     .fontSize = "13"
                 End With
