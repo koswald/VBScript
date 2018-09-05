@@ -35,27 +35,36 @@ Sub PublishStatus(newStatus)
     Set stream = Nothing
 End Sub
 Sub SetDurationUI
+    currentValue = Round(csTimer.IntervalInHours, 4)
+    prompt = format(Array("Enter the desired duration of Presentation mode / Phone charger mode, in hours.%sCurrent value: %s", vbLf & vbLf, currentValue))
+    caption = WScript.ScriptName
+    suggestedValue = currentValue
     sa.MinimizeAll
-    Dim currentValue : currentValue = Round(csTimer.IntervalInHours, 4)
-    Dim response : response = InputBox(format(Array("Enter the desired duration of Presentation mode / Phone charger mode, in hours.%sCurrent value: %s", vbLf & vbLf, currentValue)), WScript.ScriptName, currentValue)
+    response = InputBox(prompt, caption, suggestedValue)
     sa.UndoMinimizeAll
     If "" = response Then Exit Sub
     csTimer.IntervalInHours =  response
     If "Presentation" = status Then
         PresentationMode 'reset timers
     End If
+
+    Dim currentValue, response, prompt, caption, suggestedValue
 End Sub
 Sub Help
     shell.PopUp helpMessage, 80, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
 Sub ListenForCallbacks
     While True
+        intervalInMinutes = CLng(csTimer.Interval)/60000
+        elapsedMinutes = stopwatch/60
         If "Presentation" = status Then
-            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(csTimer.Interval/60000 - stopwatch/60, 0)))
+            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
         Else notifyIcon.Text = "Presentation mode is off"
         End If
         WScript.Sleep 200
     Wend
+
+    Dim elapsedMinutes, intervalInMinutes
 End Sub
 
 'icon options
@@ -72,11 +81,12 @@ Const synchronous = True
 Const largeIcon = True, smallIcon = False
 Const PresentationState = 3, NormalState = 0
 Const ForWriting = 2, CreateNew = True
-Dim watcher, notifyIcon, shell, fso, csTimer, sa, stopwatch, includer, format
-Dim normalModeMenuIndex, presentationModeMenuIndex
-Dim purpose, helpUrl, helpMessage
-Dim statusFile, status
-Dim icon
+Dim watcher, notifyIcon, shell, fso, csTimer, sa, stopwatch, includer, format 'objects
+Dim normalModeMenuIndex, presentationModeMenuIndex 'integer corresponding to current status
+Dim purpose, helpUrl, helpMessage 'strings
+Dim statusFile 'filespec of file to which status is published
+Dim status 'string: '"Presentation" or "Normal"
+Dim icon '4-element array: filespec and index for Presentation and Normal modes
 
 Sub Setup
     Set shell = CreateObject("WScript.Shell")
@@ -98,7 +108,7 @@ Sub Setup
     notifyIcon.Visible = True
 
     Set csTimer = CreateObject("VBScripting.Timer")
-    csTimer.IntervalInHours = 1.5
+    csTimer.IntervalInHours = 2.5
     csTimer.AutoReset = False
     Set csTimer.Callback = GetRef("NormalMode")
 

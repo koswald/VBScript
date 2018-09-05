@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Timers;
+using System;
 
 namespace VBScripting
 {
@@ -15,10 +16,15 @@ namespace VBScripting
         public long Interval { get; set; }
         /// <summary> Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed. </summary>
         public object Callback { get; set; }
-        /// <summary> Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is True. If False, the callback is invoked only once, until the timer is restarted with the Start method. </summary>
+        /// <summary> Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method. </summary>
         public bool AutoReset { get; set; }
 
-        /// <summary> Starts or restarts rhe timer. </summary>
+        /// <summary> Constructor </summary>
+        public Timer()
+        {
+            Interval = 60000;
+        }
+        /// <summary> Starts or restarts the timer. </summary>
         public void Start()
         {
             if (timer != null)
@@ -38,13 +44,10 @@ namespace VBScripting
         /// <summary> Stops the timer. </summary>
         public void Stop()
         {
-            if (timer != null)
-            {
-                timer.Stop();
-            }
+            Dispose();
         }
-        /// <summary> Disposes of rhe timer'a resources. </summary>
-        public void Dispose ()
+        /// <summary> Disposes of the timer's resources. </summary>
+        public void Dispose()
         {
             if (timer != null)
             {
@@ -53,10 +56,10 @@ namespace VBScripting
             }
         }
         /// <summary> Gets or sets the interval in hours. </summary>
-        public long IntervalInHours
+        public float IntervalInHours
         {
-            get { return (long) Interval/3600000;  }
-            set { Interval = value*3600000; }
+            get { return (float) Interval/3600000; }
+            set { Interval = Convert.ToInt64(value*3600000); }
         }
     }
     /// <summary> COM interface for VBScripting.Timer. </summary>
@@ -84,6 +87,6 @@ namespace VBScripting
         void Dispose ();
         /// <summary> </summary>
         [DispId(6)]
-        long IntervalInHours { get; set; }
+        float IntervalInHours { get; set; }
     }
 }

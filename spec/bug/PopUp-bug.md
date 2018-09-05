@@ -42,6 +42,7 @@ Using the `With <object> ... End With` syntax in a script that also uses the Wsh
     Set sh = Nothing
     Set includer = Nothing
     ```
+- Note that the `Set includer = Nothing` statement is called after all PopUp method calls.
 
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />

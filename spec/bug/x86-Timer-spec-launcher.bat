@@ -1,0 +1,1 @@
+%SystemRoot%\SysWow64\cmd.exe /k %SystemRoot%\SysWow64\cscript /nologo x86-Timer.spec.vbs

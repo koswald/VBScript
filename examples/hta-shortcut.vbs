@@ -3,7 +3,7 @@
 'and creates a shortcut to the .hta with that info
 
 With WScript.Arguments
-    If .Count = 0 Then Err.Raise 1,, "Argument required: an .hta file"
+    If .Count = 0 Then Err.Raise 1,, "Argument required: an .hta filespec"
     hta = .item(0)
 End With
 Set fso = CreateObject("Scripting.FileSystemObject")
@@ -27,7 +27,7 @@ With New VBSExtracter
     .SetFile hta
     icon = .extract
 
-    'applicationName is similar, but in addition to word characters, 
+    'applicationName is similar to above, but in addition to word characters, 
     'there may be multiple instances of . or - or
     '... others will have to be added later as they are encountered
     .SetPattern "applicationName\s*=\s*""?[\w-\.\s]+""?\s*?"

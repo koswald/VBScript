@@ -40,6 +40,7 @@
             If "*" = fileType.value Then
                 pid = "*"
                 typeKey = ""
+                progId.value = ""
                 pidIsFromRegistry = False
             ElseIf pidString.Exists And useRegPid.checked And Not "" = typeKey Then
                 progId.value = pidString.value
@@ -326,8 +327,8 @@
                 verbs(verbSelector.selectedIndex) _
             ))
             browser.InitialDirectory = "%UserProfile%"
-            browser.Filter = "Script files (*.vbs; *.wsf)|*.vbs;*.wsf|HTA files (*.hta)|*.hta|All files (*.*)|*.*"
-            browser.FilterIndex = 3
+            browser.Filter = "Script files (*.vbs; *.wsf)|*.vbs;*.wsf|HTA files (*.hta)|*.hta|EXE files (*.exe)|*.exe|All files (*.*)|*.*"
+            browser.FilterIndex = 4
             Dim file : file = browser.FileName
             If Not "" = file Then
                 Dim starter : starter = ""

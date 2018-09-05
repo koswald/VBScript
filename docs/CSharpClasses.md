@@ -219,12 +219,13 @@
 | :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
 | Timer | | Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  |  |  | Type | VBScripting |
 | ITimer | | COM interface for VBScripting.Timer.  |  |  | Type | VBScripting |
-| Start | Timer | Starts or restarts rhe timer.  |  |  | Method | VBScripting |
+| (Constructor) | Timer | Constructor  |  |  | Method | VBScripting |
+| Start | Timer | Starts or restarts the timer.  |  |  | Method | VBScripting |
 | Stop | Timer | Stops the timer.  |  |  | Method | VBScripting |
-| Dispose | Timer | Disposes of rhe timer'a resources.  |  |  | Method | VBScripting |
+| Dispose | Timer | Disposes of the timer's resources.  |  |  | Method | VBScripting |
 | Interval | Timer | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100.  |  |  | Property | VBScripting |
 | Callback | Timer | Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed.  |  |  | Property | VBScripting |
-| AutoReset | Timer | Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is True. If False, the callback is invoked only once, until the timer is restarted with the Start method.  |  |  | Property | VBScripting |
+| AutoReset | Timer | Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method.  |  |  | Property | VBScripting |
 | IntervalInHours | Timer | Gets or sets the interval in hours.  |  |  | Property | VBScripting |
 
 ## Watcher
