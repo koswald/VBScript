@@ -11,9 +11,9 @@ namespace VBScripting
     public class Timer : ITimer
     {
         private System.Timers.Timer timer;
-        
-        /// <summary> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. </summary>
-        public long Interval { get; set; }
+
+        /// <summary> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max 2147483647.</summary>
+        public int Interval { get; set; }
         /// <summary> Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed. </summary>
         public object Callback { get; set; }
         /// <summary> Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method. </summary>
@@ -59,7 +59,7 @@ namespace VBScripting
         public float IntervalInHours
         {
             get { return (float) Interval/3600000; }
-            set { Interval = Convert.ToInt64(value*3600000); }
+            set { Interval = Convert.ToInt32(value*3600000); }
         }
     }
     /// <summary> COM interface for VBScripting.Timer. </summary>
@@ -69,7 +69,7 @@ namespace VBScripting
     {
         /// <summary> </summary>
         [DispId(0)]
-        long Interval { get; set; }
+        int Interval { get; set; }
         /// <summary> </summary>
         [DispId(1)]
         object Callback { get; set; }

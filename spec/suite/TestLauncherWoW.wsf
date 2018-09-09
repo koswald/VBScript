@@ -29,7 +29,7 @@
             Set testRunner = New VBSTestRunner
             Dim wow : Set wow = New WoWChecker
             Dim app : Set app = New VBSApp
-            If (Not wow.isWoW) Or (Not "cscript.exe" = app.GetExe) Then
+            If Not wow.isWoW Or Not "cscript.exe" = app.GetExe Then
                 app.SetUserInteractive False
                 app.RestartWith "%SystemRoot%\SysWoW64\cscript.exe", "/k", privilegesNotElevated
             End If

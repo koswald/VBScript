@@ -11,8 +11,8 @@ namespace VBScripting
         Guid("2650C2AB-C000-495F-AB4D-6C61BD463EA4")]
     public class Watcher : IWatcher
     {
-        private long _resetPeriod;
-        private int _currentState;
+        private int _resetPeriod;
+        private byte _currentState;
         private bool _watch;
         private System.Timers.Timer timer;
 
@@ -39,8 +39,8 @@ namespace VBScripting
                 }
             }
         }
-        /// <summary> Gets or sets an integer describing the current thread execution state. </summary>
-        public int CurrentState
+        /// <summary> Gets or sets an integer describing the current thread execution state. Intended for internal use and testing only.</summary>
+        public byte CurrentState
         {
             get { return _currentState; }
             set
@@ -63,9 +63,9 @@ namespace VBScripting
                 timer.Dispose();
             }
         }
-        /// <summary> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000. </summary>
-        // Also initializes/resets the internal timer.
-        public long ResetPeriod
+        /// <summary> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30000. Max 2147483647.</summary>
+        // Set also initializes/resets the internal timer.
+        public int ResetPeriod
         {
             get { return _resetPeriod; }
             set
@@ -102,13 +102,13 @@ namespace VBScripting
     {
         /// <summary> </summary>
         [DispId(0)]
-        long ResetPeriod { get; set; }
+        int ResetPeriod { get; set; }
         /// <summary> </summary>
         [DispId(1)]
         bool Watch { get; set; }
         /// <summary> </summary>
         [DispId(3)]
-        int CurrentState { get; set; }
+        byte CurrentState { get; set; }
         /// <summary> </summary>
         [DispId(5)]
         void Dispose();
