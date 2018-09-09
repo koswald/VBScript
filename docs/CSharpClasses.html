@@ -35,6 +35,15 @@
     <td> VBScripting </td>
   </tr>
   <tr>
+    <td> IsAdministrator </td>
+    <td> Admin </td>
+    <td> Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  </td>
+    <td>  </td>
+    <td>  </td>
+    <td> Method </td>
+    <td> VBScripting </td>
+  </tr>
+  <tr>
     <td> Log </td>
     <td> Admin </td>
     <td> Logs the specified message to the event log.  </td>
@@ -1526,7 +1535,7 @@
   <tr>
     <td> Interval </td>
     <td> Timer </td>
-    <td> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100.  </td>
+    <td> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max 2147483647.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -1629,7 +1638,7 @@
   <tr>
     <td> CurrentState </td>
     <td> Watcher </td>
-    <td> Gets or sets an integer describing the current thread execution state.  </td>
+    <td> Gets or sets an integer describing the current thread execution state. Intended for internal use and testing only.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -1638,7 +1647,7 @@
   <tr>
     <td> ResetPeriod </td>
     <td> Watcher </td>
-    <td> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000.  </td>
+    <td> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30000. Max 2147483647.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>

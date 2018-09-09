@@ -22,6 +22,7 @@
 | :---------- | :-------- | :------ | :------ | :--------- | :--- | :-------- |
 | Admin | | Provide miscellaneous system admin. features.  |  |  | Type | VBScripting |
 | IAdmin | | COM interface for VBScripting.Admin  |  |  | Type | VBScripting |
+| IsAdministrator | Admin | Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  |  |  | Method | VBScripting |
 | Log | Admin | Logs the specified message to the event log.  |  | message | Method | VBScripting |
 | GetLogs | Admin | Get an array of logs entries from the Application log. Returns an array of logs (strings) from the specified event source that contain the specified message string. Searches the Application log only. | an array | source, message | Method | VBScripting |
 | SourceExists | Admin | Gets whether the specified EventLog source exists.  | a boolean | source | Method | VBScripting |
@@ -223,7 +224,7 @@
 | Start | Timer | Starts or restarts the timer.  |  |  | Method | VBScripting |
 | Stop | Timer | Stops the timer.  |  |  | Method | VBScripting |
 | Dispose | Timer | Disposes of the timer's resources.  |  |  | Method | VBScripting |
-| Interval | Timer | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100.  |  |  | Property | VBScripting |
+| Interval | Timer | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max 2147483647.  |  |  | Property | VBScripting |
 | Callback | Timer | Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed.  |  |  | Property | VBScripting |
 | AutoReset | Timer | Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method.  |  |  | Property | VBScripting |
 | IntervalInHours | Timer | Gets or sets the interval in hours.  |  |  | Property | VBScripting |
@@ -238,6 +239,6 @@
 | Dispose | Watcher | Disposes of the object's resources.  |  |  | Method | VBScripting |
 | MonitorOff | Watcher | Turn off the monitor(s).  |  |  | Method | VBScripting |
 | Watch | Watcher | Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. Default is False.  |  |  | Property | VBScripting |
-| CurrentState | Watcher | Gets or sets an integer describing the current thread execution state.  |  |  | Property | VBScripting |
-| ResetPeriod | Watcher | Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30,000.  |  |  | Property | VBScripting |
+| CurrentState | Watcher | Gets or sets an integer describing the current thread execution state. Intended for internal use and testing only.  |  |  | Property | VBScripting |
+| ResetPeriod | Watcher | Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30000. Max 2147483647.  |  |  | Property | VBScripting |
 | Privileged | Watcher | Gets a boolean indicating whether privileges are elevated.  |  |  | Property | VBScripting |
