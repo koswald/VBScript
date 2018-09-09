@@ -3,6 +3,8 @@
 
 /target:library
 /out:..\lib\Admin.dll
+/reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.DirectoryServices.AccountManagement.dll"
+
 
 # Create an XML doc
 /doc:..\lib\Admin.xml
