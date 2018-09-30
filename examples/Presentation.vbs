@@ -1,7 +1,11 @@
 Option Explicit
-purpose = "Show a system tray icon with options to prevent the computer and/or monitor from going to sleep."
+purpose = "Show a notification area icon with a menu option to prevent the computer and monitor from going to sleep."
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the monitor is turned off, initially."
-Call Setup
+Setup
+csTimer.IntervalInHours = .9
+icon = Split(icon1, "|")
+NormalMode
+ListenForCallbacks
 
 Sub NormalMode
     watcher.Watch = False
@@ -55,7 +59,7 @@ Sub Help
 End Sub
 Sub ListenForCallbacks
     While True
-        intervalInMinutes = CLng(csTimer.Interval)/60000
+        intervalInMinutes = csTimer.Interval/60000
         elapsedMinutes = stopwatch/60
         If "Presentation" = status Then
             notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
@@ -104,11 +108,10 @@ Sub Setup
     notifyIcon.AddMenuItem "Phone charger mode", GetRef("ChargerMode")
     notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
     notifyIcon.AddMenuItem "Help", GetRef("Help")
-    notifyIcon.AddMenuItem "Exit", GetRef("CloseAndExit")
+    notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef("CloseAndExit")
     notifyIcon.Visible = True
 
     Set csTimer = CreateObject("VBScripting.Timer")
-    csTimer.IntervalInHours = 2.5
     csTimer.AutoReset = False
     Set csTimer.Callback = GetRef("NormalMode")
 
@@ -117,10 +120,6 @@ Sub Setup
     Set includer = CreateObject("VBScripting.Includer")
     Execute includer.Read("VBSStopwatch")
     Set stopwatch = New VBSStopwatch
-
-    icon = Split(icon1, "|")
-    NormalMode
-    ListenForCallbacks
 End Sub
 Sub CloseAndExit
     PublishStatus "Normal"
@@ -135,5 +134,6 @@ Sub CloseAndExit
     Set sa = Nothing
     Set includer = Nothing
     Set stopwatch = Nothing
+    Set format = Nothing
     WScript.Quit
 End Sub
