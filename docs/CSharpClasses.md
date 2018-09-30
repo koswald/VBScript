@@ -224,7 +224,7 @@
 | Start | Timer | Starts or restarts the timer.  |  |  | Method | VBScripting |
 | Stop | Timer | Stops the timer.  |  |  | Method | VBScripting |
 | Dispose | Timer | Disposes of the timer's resources.  |  |  | Method | VBScripting |
-| Interval | Timer | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max 2147483647.  |  |  | Property | VBScripting |
+| Interval | Timer | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max is 2,147,483,647 milliseconds, or 24 days 20 hours 31 minutes 23.647 seconds.  |  |  | Property | VBScripting |
 | Callback | Timer | Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed.  |  |  | Property | VBScripting |
 | AutoReset | Timer | Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method.  |  |  | Property | VBScripting |
 | IntervalInHours | Timer | Gets or sets the interval in hours.  |  |  | Property | VBScripting |

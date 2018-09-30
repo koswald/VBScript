@@ -12,7 +12,7 @@ namespace VBScripting
     {
         private System.Timers.Timer timer;
 
-        /// <summary> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max 2147483647.</summary>
+        /// <summary> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max is 2,147,483,647 milliseconds, or 24 days 20 hours 31 minutes 23.647 seconds.</summary>
         public int Interval { get; set; }
         /// <summary> Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed. </summary>
         public object Callback { get; set; }
