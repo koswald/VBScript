@@ -27,8 +27,6 @@ End Sub
 Sub ChargerMode
     shell.Run "rundll32 user32.dll,LockWorkStation",, synchronous
     WScript.Sleep 1000
-    watcher.MonitorOff
-    WScript.Sleep 1000
     PresentationMode
 End Sub
 Sub PublishStatus(newStatus)
