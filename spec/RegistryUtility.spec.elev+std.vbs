@@ -27,7 +27,7 @@ With New TestingFramework
         Else
             rootKey = r.HKCU 'privileges are not elevated
             rootKeyName = "HKCU"
-            subKey = "Software\VBScripts\AA_RegistryUtility.spec.vbs_Test_Delete_Me"
+            subKey = "Software\VBScripting\AA_RegistryUtility.spec.vbs_Test_Delete_Me"
         End If
         Dim sh : Set sh = CreateObject("WScript.Shell")
         Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
