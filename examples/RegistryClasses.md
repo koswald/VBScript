@@ -58,6 +58,6 @@ Open command prompt at any folder
 
 ## References
 
-[Extending Shortcut Menus](https://msdn.microsoft.com/en-us/library/windows/desktop/cc144101(v=vs.85).aspx "msdn.microsoft.com")  
+[Extending Shortcut Menus](https://docs.microsoft.com/en-us/windows/desktop/shell/context "docs.microsoft.com")  
 [Use JavaScript to place cursor at end of text in text input element
 ](https://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element#26900921 "stackoverflow.com")

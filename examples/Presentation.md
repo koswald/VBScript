@@ -40,6 +40,6 @@ Specifically, you may want to increase the value that controls when the followin
 [PresentationSettings.hta]: PresentationSettings.hta
 [How to change Lock screen timeout before display turn off on Windows 10]: https://www.windowscentral.com/how-extend-lock-screen-timeout-display-turn-windows-10 "windowscentral.com"
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]: https://www.online-tech-tips.com/windows-7/does-your-windows-7-computer-display-turn-off-every-15-minutes/ "online-tech-tips.com"
-[Canonical Names of Control Panel Items]: https://msdn.microsoft.com/en-us/library/windows/desktop/ee330741.aspx "msdn.microsoft.com"
-[SetThreadExecutionState]: https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx "msdn.microsoft.com"
+[Canonical Names of Control Panel Items]: https://docs.microsoft.com/en-us/windows/desktop/shell/controlpanel-canonical-names "docs.microsoft.com"
+[SetThreadExecutionState]: https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate "docs.microsoft.com"
 

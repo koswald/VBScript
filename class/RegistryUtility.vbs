@@ -6,7 +6,7 @@
 '
 'Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.
 '
-'StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online</a>.
+'StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.
 '
 Class RegistryUtility
 

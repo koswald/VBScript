@@ -3,7 +3,7 @@
 
 'The native math functions are Sin, Cos, Tan, Atn, Log
 
-'Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>
+'Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>
 '
 Class MathFunctions
 

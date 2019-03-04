@@ -4,8 +4,8 @@ using System.Timers;
 
 namespace VBScripting
 {
-    /// <summary> Provides something like presentation mode for Windows systems that don't have presentation.exe. </summary>
-    /// <remarks> Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
+    /// <summary> Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. </summary>
+    /// <remarks> Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
     [ProgId("VBScripting.Watcher"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-C000-495F-AB4D-6C61BD463EA4")]

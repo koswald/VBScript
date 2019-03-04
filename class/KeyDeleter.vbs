@@ -98,7 +98,7 @@ Class KeyDeleter
     Private result_
     'Property Result
     'Returns: an integer
-    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://msdn.microsoft.com/en-us/library/aa393978(v=vs.85).aspx">WbemErrEnum</a>
+    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a>
     Public Property Get Result : Result = result_ : End Property
     Private delete_
     'Property: Delete

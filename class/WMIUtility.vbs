@@ -184,7 +184,7 @@ Class WMIUtility
 
     'Function Battery
     'Returns an object
-    'Remark: Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object.
+    'Remark: Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object.
     Function Battery
         Dim bat
         For Each bat in GetResults(select_ & all & from & Win32_Battery)
