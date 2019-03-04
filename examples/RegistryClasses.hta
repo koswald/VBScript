@@ -144,7 +144,7 @@
             Set GetRegString = New RegString.Init(value, strType, exists)
         End Function
         
-        Sub TryDeletingKey(root, key)'
+        Sub TryDeletingKey(root, key)
             Const success = 0
             Dim response : response = MsgBox(format(Array( _
                 "Do you really want to delete the registry key %s\%s?", _
@@ -747,12 +747,12 @@
         class="spaceLeft" /><br />
 
     <!-- Verb selector -->
-    <p class="inputLabel"> Verbs 
+    <p class="inputLabel"> Verb
         <input
             type="checkbox"
             id="extended"
             class="spaceLeft" />
-        <span> Require shift + right click with the selected verb </span>
+        <span> Require <i> shift </i> + right click </span>
     </p>
     <select id="verbSelector" class="spaceRight"></select>
     <input
