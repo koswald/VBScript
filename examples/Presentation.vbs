@@ -1,8 +1,8 @@
 Option Explicit
 purpose = "Show a notification area icon with a menu option to prevent the computer and monitor from going to sleep."
-helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the monitor is turned off, initially."
+helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the workstation is locked, initially."
 Setup
-csTimer.IntervalInHours = .9
+csTimer.IntervalInHours = 2.1 'default
 icon = Split(icon1, "|")
 NormalMode
 ListenForCallbacks
@@ -25,48 +25,65 @@ Sub PresentationMode
     csTimer.Start
 End Sub
 Sub ChargerMode
-    shell.Run "rundll32 user32.dll,LockWorkStation",, synchronous
-    WScript.Sleep 1000
+    LockWorkStation
     PresentationMode
+End Sub
+Sub StartScreenSaver
+    sh.Run "%SystemRoot%\system32\scrnsave.scr"
+End Sub
+Sub LockWorkStation
+    sh.Run "rundll32 user32.dll,LockWorkStation",, synchronous
+End Sub
+Sub EditScript
+    sh.Run format(Array("notepad ""%s""", WScript.ScriptFullName))
 End Sub
 Sub PublishStatus(newStatus)
     status = newStatus
-    Dim stream : Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
+    Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
     stream.WriteLine newStatus
     stream.Close
     Set stream = Nothing
+
+    Dim stream 'text stream for writing
 End Sub
 Sub SetDurationUI
     currentValue = Round(csTimer.IntervalInHours, 4)
-    prompt = format(Array("Enter the desired duration of Presentation mode / Phone charger mode, in hours.%sCurrent value: %s", vbLf & vbLf, currentValue))
+    prompt = format(Array(" Enter the desired duration in hours %s of Presentation mode / Phone charger mode. %s Current value: %s", vbLf, vbLf & vbLf, currentValue))
     caption = WScript.ScriptName
     suggestedValue = currentValue
     sa.MinimizeAll
     response = InputBox(prompt, caption, suggestedValue)
+    While Not IsNumeric(response)
+        sh.PopUp "Presentation mode duration must be numeric.", 4, WScript.ScriptName, vbSystemModal + vbInformation
+        response = InputBox(prompt, caption, suggestedValue)
+    Wend
     sa.UndoMinimizeAll
     If "" = response Then Exit Sub
-    csTimer.IntervalInHours =  response
+    csTimer.IntervalInHours = response
     If "Presentation" = status Then
         PresentationMode 'reset timers
     End If
 
-    Dim currentValue, response, prompt, caption, suggestedValue
+    Dim currentValue 'current duration of Presentation mode in hours, if it were to be activated or reactivated
+    Dim response 'InputBox return value
+    Dim prompt, caption, suggestedValue 'InputBox aruments
 End Sub
 Sub Help
-    shell.PopUp helpMessage, 80, WScript.ScriptName, vbInformation + vbSystemModal
+    sh.PopUp helpMessage, 80, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
 Sub ListenForCallbacks
     While True
         intervalInMinutes = csTimer.Interval/60000
         elapsedMinutes = stopwatch/60
         If "Presentation" = status Then
-            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
+            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in ~%s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
         Else notifyIcon.Text = "Presentation mode is off"
         End If
-        WScript.Sleep 200
+        WScript.Sleep 2000
     Wend
 
-    Dim elapsedMinutes, intervalInMinutes
+    Dim elapsedMinutes 'how long Presentation mode has been activated
+    Dim intervalInMinutes 'C# timer's current setting for the max. time that Presentation mode will last before reverting to normal mode
 End Sub
 
 'icon options
@@ -77,22 +94,21 @@ Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgc
 Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False" 'dark flat screen & bright flat screen / small icons
 Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True" 'dark flat screen & bright flat screen / large icons
 Const icon7 = "%SystemRoot%\System32\comres.dll|8|False|%SystemRoot%\System32\comres.dll|12|False" 'checkmark on green shield & checkmark on gold shield
-Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5
+Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5 'icon array indexes
 
-Const synchronous = True
-Const largeIcon = True, smallIcon = False
-Const PresentationState = 3, NormalState = 0
-Const ForWriting = 2, CreateNew = True
-Dim watcher, notifyIcon, shell, fso, csTimer, sa, stopwatch, includer, format 'objects
-Dim normalModeMenuIndex, presentationModeMenuIndex 'integer corresponding to current status
+Const synchronous = True 'sh.Run constant, arg #3
+Const ForWriting = 2, CreateNew = True 'fso.OpenTextFile constants, args #2 and #3
+Dim sh, fso, sa 'native WScript objects
+Dim watcher, notifyIcon, csTimer, stopwatch, includer, format 'objects from github.com/koswald/vbscript
+Dim normalModeMenuIndex, presentationModeMenuIndex 'integer: notification icon menu index
 Dim purpose, helpUrl, helpMessage 'strings
-Dim statusFile 'filespec of file to which status is published
+Dim statusFile 'filespec of the file to which status is published
 Dim status 'string: '"Presentation" or "Normal"
-Dim icon '4-element array: filespec and index for Presentation and Normal modes
+Dim icon 'array: filespec, index, and icon type (large/True or small/False) for Presentation and Normal modes
 
 Sub Setup
-    Set shell = CreateObject("WScript.Shell")
-    Dim dataFolder : dataFolder = shell.ExpandEnvironmentStrings("%AppData%\VBScripting")
+    Set sh = CreateObject("WScript.Shell")
+    dataFolder = sh.ExpandEnvironmentStrings("%AppData%\VBScripting")
     Set fso = CreateObject("Scripting.FileSystemObject")
     If Not fso.FolderExists(dataFolder) Then fso.CreateFolder dataFolder
     Set format = CreateObject("VBScripting.StringFormatter")
@@ -105,6 +121,9 @@ Sub Setup
         presentationModeMenuIndex = 1
     notifyIcon.AddMenuItem "Phone charger mode", GetRef("ChargerMode")
     notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
+    notifyIcon.AddMenuItem "Start screensaver", GetRef("StartScreenSaver")
+    notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef("LockWorkStation")
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef("EditScript")
     notifyIcon.AddMenuItem "Help", GetRef("Help")
     notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef("CloseAndExit")
     notifyIcon.Visible = True
@@ -118,6 +137,8 @@ Sub Setup
     Set includer = CreateObject("VBScripting.Includer")
     Execute includer.Read("VBSStopwatch")
     Set stopwatch = New VBSStopwatch
+
+    Dim datafolder
 End Sub
 Sub CloseAndExit
     PublishStatus "Normal"
@@ -127,7 +148,7 @@ Sub CloseAndExit
     Set notifyIcon = Nothing
     csTimer.Dispose
     Set csTimer = Nothing
-    Set shell = Nothing
+    Set sh = Nothing
     Set fso = Nothing
     Set sa = Nothing
     Set includer = Nothing

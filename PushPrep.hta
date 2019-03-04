@@ -157,7 +157,7 @@
                 AwaitNextItem
                 Exit Sub
             End If
-            Feedback "Waiting for tests to complete.<br><br>After each test finishes, and after inspecting for errors, close the console window(s)."
+            Feedback "Waiting for tests to complete.<br><br>After each test suite finishes, and after inspecting for errors, close the console window(s)."
             Dim file
             For Each file In fso.GetFolder(format(Array("%s\%s", projectFolder, suiteFolder))).Files
                 If bitCancel And SuiteResult(file) Then
@@ -268,10 +268,10 @@
             Dim input, inputs
             Set inputs = document.getElementsByTagName("input")
             For Each input In inputs
-                CheckUncheckIfPrepItem input, selectAllChkBox.checked
+                CheckOrUncheckPrepItem input, selectAllChkBox.checked
             Next
         End Sub
-        Sub CheckUncheckIfPrepItem(element, newStatus)
+        Sub CheckOrUncheckPrepItem(element, newStatus)
             If "selectAllChkBox" = element.id _
             Or "reqConfirmChkBox" = element.id _
             Or Not "checkbox" = element.type Then
