@@ -24,6 +24,11 @@
 '
 'Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
 '
+'WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>
+''' Visual Studio markdown add-in and Git-Flavored markdown may render differently.
+''' A vertical bar may be in comments for 
+'''     DocGenerator (VBScript) class (usage example and SetFilesToDocument method).
+'
 
 Class DocGenerator
 
@@ -161,7 +166,7 @@ Class DocGenerator
 
     'Method SetFilesToDocument
     'Parameter: wildcard(s)
-    'Remark: Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;
+    'Remark: Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
     Private Sub ValidateConfiguration

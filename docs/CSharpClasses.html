@@ -9,227 +9,227 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> Admin </td>
-    <td> </td>
     <td> Provide miscellaneous system admin. features.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IAdmin </td>
-    <td> </td>
     <td> COM interface for VBScripting.Admin  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IsAdministrator </td>
-    <td> Admin </td>
     <td> Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Log </td>
-    <td> Admin </td>
     <td> Logs the specified message to the event log.  </td>
     <td>  </td>
     <td> message </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> GetLogs </td>
-    <td> Admin </td>
     <td> Get an array of logs entries from the Application log. Returns an array of logs (strings) from the specified event source that contain the specified message string. Searches the Application log only. </td>
     <td> an array </td>
     <td> source, message </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceExists </td>
-    <td> Admin </td>
     <td> Gets whether the specified EventLog source exists.  </td>
     <td> a boolean </td>
     <td> source </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> CreateEventSource </td>
-    <td> Admin </td>
     <td> Creates the specified EventLog source.  </td>
     <td> an EventLogSourceResult </td>
     <td> source </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> DeleteEventSource </td>
-    <td> Admin </td>
     <td> Deletes the specified EventLog source and all of its logs.  </td>
     <td> an EventLogSourceResult </td>
     <td> source </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> MonitorOff </td>
-    <td> Admin </td>
     <td> Turn off the monitor(s)  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> PrivilegesAreElevated </td>
-    <td> Admin </td>
     <td> Gets whether the current process has elevated privileges.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EventSource </td>
-    <td> Admin </td>
     <td> Gets the name of the event log source for this namespace (VBScripting).  </td>
     <td> a string </td>
     <td>  </td>
     <td> Property </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> LogName </td>
-    <td> Admin </td>
     <td> Gets the name of the log to which events will be logged.  </td>
     <td> a string </td>
     <td>  </td>
     <td> Property </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Result </td>
-    <td> Admin </td>
     <td> Gets an EventLogResultT object. VBScript example: <pre> Set returnValue = adm.CreateEventSource <br/> If returnValue.Result = adm.Result.SourceCreationException Then <br/>     MsgBox returnValue.Message <br/> End If</pre> </td>
     <td> an EventLogResultT </td>
     <td>  </td>
     <td> Property </td>
+    <td> Admin </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EventLogResultT </td>
-    <td> </td>
     <td> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. Not directly available to VBScript. See <tt>Admin.Result</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceAlreadyExists </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source already exists" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceCreated </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source created" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceCreationException </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source creation error" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceDoesNotExist </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source does not exist" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceDeleted </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source deleted" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceDeletionException </td>
-    <td> EventLogResultT </td>
     <td>   </td>
     <td> "Source deletion error" </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogResultT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EventLogSourceResult </td>
-    <td> </td>
     <td> Type returned by CreateEventSource and DeleteEventSource.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SourceExists </td>
-    <td> EventLogSourceResult </td>
     <td> Returns True if the source exists after the attempted operation has completed.  </td>
     <td> a boolean </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogSourceResult </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Message </td>
-    <td> EventLogSourceResult </td>
     <td> Returns a message descriptive of the outcome of the operation.  </td>
     <td> a string </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogSourceResult </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Result </td>
-    <td> EventLogSourceResult </td>
     <td> Returns a string: one of the EventLogResultT strings.  </td>
     <td> a string </td>
     <td>  </td>
     <td> Property </td>
+    <td> EventLogSourceResult </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -238,29 +238,29 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> ComEvent </td>
-    <td> </td>
     <td> Invokes VBS members from C#. <span class="red"> This class is not accessible from VBScript. </span>  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> InvokeComCallback </td>
-    <td> ComEvent </td>
     <td> Invokes a VBScript method. The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. </td>
     <td>  </td>
     <td> callbackRef </td>
     <td> Method </td>
+    <td> ComEvent </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -269,38 +269,38 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> IEventLogger </td>
-    <td> </td>
     <td> A COM Interface for VBScripting.EventLogger.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EventLogger </td>
-    <td> </td>
     <td> Provides system logging for VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> log </td>
-    <td> EventLogger </td>
     <td> Writes the specified message to the Application event log.  </td>
     <td>  </td>
     <td> message </td>
     <td> Method </td>
+    <td> EventLogger </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -309,155 +309,155 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> FileChooser </td>
-    <td> </td>
     <td> Provides a file chooser dialog for VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IFileChooser </td>
-    <td> </td>
     <td> The COM interface for FileChooser  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> FileChooser </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FileName </td>
-    <td> FileChooser </td>
     <td> Opens a dialog enabling the user to browse for and choose a file. Returns the filespec of the chosen file. Returns an empty string if the user cancels. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FileNames </td>
-    <td> FileChooser </td>
     <td> Opens a dialog enabling the user to browse for and choose multiple files. Gets a string array of filespecs. Returns an empty array if the user cancels. Requires Multiselect to have been set to True. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FileNamesString </td>
-    <td> FileChooser </td>
     <td> Opens a dialog enabling the user to browse for and choose multiple files. Gets a string of filespecs delimited by a vertical bar (|). Returns an empty string if the user cancels. Requires Multiselect to have been set to True. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> InitialDirectory </td>
-    <td> FileChooser </td>
     <td> Gets or sets directory at which the dialog opens.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ERInitialDirectory </td>
-    <td> FileChooser </td>
     <td> Gets the initial directory with relative path resolved and environment variables expanded. Improves testability. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Filter </td>
-    <td> FileChooser </td>
     <td> Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br/> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br/> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre> </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FilterIndex </td>
-    <td> FileChooser </td>
     <td> Gets or sets the index controlling which filter item is initially selected. An integer. The index is 1-based. The default is 1. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Title </td>
-    <td> FileChooser </td>
     <td> Gets or sets the dialog titlebar text. The default text is "Browse for a file." </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Multiselect </td>
-    <td> FileChooser </td>
     <td> Gets or sets whether multiple files can be selected. The default is False. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> DereferenceLinks </td>
-    <td> FileChooser </td>
     <td> Indicates whether the returned file is the referenced file or the .lnk file itself. Gets or sets, if the selected file is a .lnk file, whether the filespec returned refers to the .lnk file itself (False) or to the file that the .lnk file points to (True). The default is False. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> DefaultExt </td>
-    <td> FileChooser </td>
     <td> Gets or sets the file extension name that is automatically supplied when one is not specified. A string. The default is "txt". </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ValidateNames </td>
-    <td> FileChooser </td>
     <td> Gets or sets whether to validate the file name(s).  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> CheckFileExists </td>
-    <td> FileChooser </td>
     <td> Gets or sets whether to check that the file exists.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -466,56 +466,56 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> IFolderChooser </td>
-    <td> </td>
     <td> COM interface for FolderChooser.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FolderChooser </td>
-    <td> </td>
     <td> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> InitialDirectory </td>
-    <td> FolderChooser </td>
     <td> Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Title </td>
-    <td> FolderChooser </td>
     <td> Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FolderName </td>
-    <td> FolderChooser </td>
     <td> Opens a dialog and returns the folder selected by the user.  </td>
     <td> a path </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -524,56 +524,56 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> IFolderChooser2 </td>
-    <td> </td>
     <td> COM interface for FolderChooser2.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FolderChooser2 </td>
-    <td> </td>
     <td> Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> InitialDirectory </td>
-    <td> FolderChooser2 </td>
     <td> Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser2 </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Title </td>
-    <td> FolderChooser2 </td>
     <td> Sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser2 </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FolderName </td>
-    <td> FolderChooser2 </td>
     <td> Opens a dialog and returns the folder selected by the user.  </td>
     <td> a path </td>
     <td>  </td>
     <td> Property </td>
+    <td> FolderChooser2 </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -582,110 +582,110 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> IconExtractor </td>
-    <td> </td>
     <td> Extracts an icon from a .dll or .exe file. <span class="red"> Not all members of this class are accessible to VBScript. </span> </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IIconExtractor </td>
-    <td> </td>
     <td> A COM Interface for VBScripting.IconExtractor.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> IconExtractor </td>
     <td> Constructor.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Save </td>
-    <td> IconExtractor </td>
     <td> Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. </td>
     <td>  </td>
     <td> resFile, index, icoFile, largeIcon </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetImageFormatBmp </td>
-    <td> IconExtractor </td>
     <td> Change the image format to BMP. Default is BMP.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetImageFormatPng </td>
-    <td> IconExtractor </td>
     <td> Change the image format to PNG. Default is BMP.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Extract </td>
-    <td> IconExtractor </td>
     <td> Extracts an icon from the specified .dll or .exe file. <span class="red"> This method is static and so it is not directly available to VBScript. </span> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. </td>
     <td> an icon </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IconCount </td>
-    <td> IconExtractor </td>
     <td> Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. </td>
     <td> an int </td>
     <td> filespec (.dll or .exe) </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> GetPointer </td>
-    <td> IconExtractor </td>
     <td> Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. </td>
     <td> integer </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ExtractIcon </td>
-    <td> IconExtractor </td>
     <td> Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). </td>
     <td> Icon </td>
     <td> integer </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> DisposeIcon </td>
-    <td> IconExtractor </td>
     <td> Dispose an icon by pointer (an int).  </td>
     <td> Returns true for success. </td>
     <td> pointer </td>
     <td> Method </td>
+    <td> IconExtractor </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -694,308 +694,308 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> NotifyIcon </td>
-    <td> </td>
     <td> Provides a system tray icon for VBScript, for illustration purposes.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> INotifyIcon </td>
-    <td> </td>
     <td> The COM interface for NotifyIcon.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> NotifyIcon </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetIconByIcoFile </td>
-    <td> NotifyIcon </td>
     <td> Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </td>
     <td>  </td>
     <td> fileName </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetIconByDllFile </td>
-    <td> NotifyIcon </td>
     <td> Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </td>
     <td>  </td>
     <td> fileName, index, largeIcon </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetBalloonTipIcon </td>
-    <td> NotifyIcon </td>
     <td> Sets the icon of the "balloon tip" or notification. The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </td>
     <td>  </td>
     <td> type </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> NotifyIcon </td>
     <td> Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ShowBalloonTip </td>
-    <td> NotifyIcon </td>
     <td> Show the balloon tip.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> AddMenuItem </td>
-    <td> NotifyIcon </td>
     <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
     <td>  </td>
     <td> menuText, callbackRef </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> InvokeCallbackByIndex </td>
-    <td> NotifyIcon </td>
     <td> Provide callback testability from VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> DisableMenuItem </td>
-    <td> NotifyIcon </td>
     <td> Disable a menu item  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EnableMenuItem </td>
-    <td> NotifyIcon </td>
     <td> Enable a menu item  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ShowContextMenu </td>
-    <td> NotifyIcon </td>
     <td> Show the context menu. Public in order to provide testability from VBScript. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetBalloonTipCallback </td>
-    <td> NotifyIcon </td>
     <td> Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Text </td>
-    <td> NotifyIcon </td>
     <td> Gets or sets the text shown when the mouse hovers over the system tray icon.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Visible </td>
-    <td> NotifyIcon </td>
     <td> Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> BalloonTipTitle </td>
-    <td> NotifyIcon </td>
     <td> Gets or sets the title of the "balloon tip" or notification.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> BalloonTipText </td>
-    <td> NotifyIcon </td>
     <td> Gets or sets the text of the "balloon tip" or notification.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> BalloonTipLifetime </td>
-    <td> NotifyIcon </td>
     <td> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ToolTipIcon </td>
-    <td> NotifyIcon </td>
     <td> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> </td>
     <td> a ToolTipIconT </td>
     <td>  </td>
     <td> Property </td>
+    <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ToolTipIconT </td>
-    <td> </td>
     <td> Supplies the type required by NotifyIcon.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Error </td>
-    <td> ToolTipIconT </td>
     <td>   </td>
     <td> 1 </td>
     <td>  </td>
     <td> Property </td>
+    <td> ToolTipIconT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Info </td>
-    <td> ToolTipIconT </td>
     <td>   </td>
     <td> 2 </td>
     <td>  </td>
     <td> Property </td>
+    <td> ToolTipIconT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> None </td>
-    <td> ToolTipIconT </td>
     <td>   </td>
     <td> 3 </td>
     <td>  </td>
     <td> Property </td>
+    <td> ToolTipIconT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Warning </td>
-    <td> ToolTipIconT </td>
     <td>   </td>
     <td> 4 </td>
     <td>  </td>
     <td> Property </td>
+    <td> ToolTipIconT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> CallbackEventSettings </td>
-    <td> </td>
     <td> Settings for saving VBScript method references. This class is not accessible from VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> CallbackEventSettings </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> CallbackEventSettings </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> AddRef </td>
-    <td> CallbackEventSettings </td>
     <td> Adds a CallbackReference instance reference to the list.  </td>
     <td>  </td>
     <td> callbackRef </td>
     <td> Method </td>
+    <td> CallbackEventSettings </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Refs </td>
-    <td> CallbackEventSettings </td>
     <td> Gets or sets a list of callback references.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> CallbackEventSettings </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> CallbackReference </td>
-    <td> </td>
     <td> An orderly way to save the index and callback reference for a single menu item. This class is not accessible to VBScript. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> CallbackReference </td>
     <td> Constructor  </td>
     <td>  </td>
     <td> index, reference </td>
     <td> Method </td>
+    <td> CallbackReference </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Index </td>
-    <td> CallbackReference </td>
     <td> This Index corresponds to the Index of a menuItem in the context menu.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> CallbackReference </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Reference </td>
-    <td> CallbackReference </td>
     <td> COM object generated by VBScript's GetRef Function.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> CallbackReference </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -1004,281 +1004,281 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> ProgressBar </td>
-    <td> </td>
     <td> Supplies a progress bar to VBScript, for illustration purposes.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IProgressBar </td>
-    <td> </td>
     <td> Exposes the ProgressBar members to COM/VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> PerformStep </td>
-    <td> ProgressBar </td>
     <td> Advances the progress bar one step.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FormSize </td>
-    <td> ProgressBar </td>
     <td> Sets the size of the window.  </td>
     <td>  </td>
     <td> width, height </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> PBarSize </td>
-    <td> ProgressBar </td>
     <td> Sets the size of the progress bar.  </td>
     <td>  </td>
     <td> width, height </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FormLocation </td>
-    <td> ProgressBar </td>
     <td> Sets the position of the window.  </td>
     <td>  </td>
     <td> x, y </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FormLocationByPercentage </td>
-    <td> ProgressBar </td>
     <td> Sets the position of the window.  </td>
     <td>  </td>
     <td> x, y </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> PBarLocation </td>
-    <td> ProgressBar </td>
     <td> Sets the location of the progress bar within the window.  </td>
     <td>  </td>
     <td> x, y </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SuspendLayout </td>
-    <td> ProgressBar </td>
     <td> Suspends drawing of the window temporarily.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ResumeLayout </td>
-    <td> ProgressBar </td>
     <td> Resumes drawing the window.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetIconByIcoFile </td>
-    <td> ProgressBar </td>
     <td> Sets the icon given the filespec of an .ico file. Environment variables are allowed. </td>
     <td>  </td>
     <td> fileName </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SetIconByDllFile </td>
-    <td> ProgressBar </td>
     <td> Sets the icon given the filespec of a .dll or .exe file and an index. The index is an integer that identifies the icon. Environment variables are allowed. </td>
     <td>  </td>
     <td> fileName, index </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> ProgressBar </td>
     <td> Disposes of the object's resources.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Visible </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the progress bar's visibility. A boolean. The default is False. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Minimum </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the value at which there is no apparent progress. An integer. The default is 0. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Maximum </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the value at which the progress appears to be complete. An integer. The default is 100. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Value </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the apparent progress. An integer. Should be at or above the minimum and at or below the maximum. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Step </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the increment between steps.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Caption </td>
-    <td> ProgressBar </td>
     <td> Gets or sets the window title-bar text.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Debug </td>
-    <td> ProgressBar </td>
     <td> Gets or sets whether the type is under development. Affects the behavior of two methods, SetIconByIcoFile and SetIconByDllFile, if exceptions are thrown: when debugging, a message box is shown. Default is False. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> BorderStyle </td>
-    <td> ProgressBar </td>
     <td> Provides an object useful in VBScript for setting FormBorderStyle.  </td>
     <td> a FormBorderStyleT </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FormBorderStyle </td>
-    <td> ProgressBar </td>
     <td> Sets the style of the window border. An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre> </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> ProgressBar </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FormBorderStyleT </td>
-    <td> </td>
     <td> Enumeration of border styles. This class is available to VBScript via the <tt>ProgressBar.BorderStyle</tt> property. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Fixed3D </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 1 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FixedDialog </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 2 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FixedSingle </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 3 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> FixedToolWindow </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 4 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> None </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 5 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Sizable </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 6 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SizableToolWindow </td>
-    <td> FormBorderStyleT </td>
     <td>   </td>
     <td> 7 </td>
     <td>  </td>
     <td> Property </td>
+    <td> FormBorderStyleT </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -1287,182 +1287,182 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> SpeechSynthesis </td>
-    <td> </td>
     <td> Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>, which may not be available on older machines. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ISpeechSynthesis </td>
-    <td> </td>
     <td> The COM interface for <tt>VBScripting.SpeechSynthesis</tt>.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> SpeechSynthesis </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Speak </td>
-    <td> SpeechSynthesis </td>
     <td> Convert text to speech. This method is synchronous. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SpeakAsync </td>
-    <td> SpeechSynthesis </td>
     <td> Convert text to speech. This method is asynchronous. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Pause </td>
-    <td> SpeechSynthesis </td>
     <td> Pause speech synthesis.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Resume </td>
-    <td> SpeechSynthesis </td>
     <td> Resume speech synthesis.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Voices </td>
-    <td> SpeechSynthesis </td>
     <td> Gets an array of the names of the installed, enabled voices. Each element of the array can be used to set <tt>Voice</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> SpeechSynthesis </td>
     <td> Disposes the SpeechSynthesis object's resources.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Voice </td>
-    <td> SpeechSynthesis </td>
     <td> Gets or sets the current voice by name. A string. One of the names from the <tt>Voices</tt> array. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SynthesizerState </td>
-    <td> SpeechSynthesis </td>
     <td> Gets the state of the SpeechSynthesizer. Read only. Returns an integer equal to one of the <tt>State</tt> method return values. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Volume </td>
-    <td> SpeechSynthesis </td>
     <td> Gets or sets the volume. An integer from 0 to 100. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> State </td>
-    <td> SpeechSynthesis </td>
     <td> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <tt>SynthesizerState</tt>.  </td>
     <td> a SynthersizerStateT </td>
     <td>  </td>
     <td> Property </td>
+    <td> SpeechSynthesis </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> SynthesizerStateT </td>
-    <td> </td>
     <td> Enumerates the synthesizer states. Not intended for use in VBScript. See <tt>SpeechSynthesis.State</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> SynthesizerStateT </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> SynthesizerStateT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Ready </td>
-    <td> SynthesizerStateT </td>
     <td>   </td>
     <td> 1 </td>
     <td>  </td>
     <td> Property </td>
+    <td> SynthesizerStateT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Paused </td>
-    <td> SynthesizerStateT </td>
     <td>   </td>
     <td> 2 </td>
     <td>  </td>
     <td> Property </td>
+    <td> SynthesizerStateT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Speaking </td>
-    <td> SynthesizerStateT </td>
     <td>   </td>
     <td> 3 </td>
     <td>  </td>
     <td> Property </td>
+    <td> SynthesizerStateT </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Unexpected </td>
-    <td> SynthesizerStateT </td>
     <td>   </td>
     <td> 4 </td>
     <td>  </td>
     <td> Property </td>
+    <td> SynthesizerStateT </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -1471,101 +1471,101 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> Timer </td>
-    <td> </td>
     <td> Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ITimer </td>
-    <td> </td>
     <td> COM interface for VBScripting.Timer.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> Timer </td>
     <td> Constructor  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Start </td>
-    <td> Timer </td>
     <td> Starts or restarts the timer.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Stop </td>
-    <td> Timer </td>
     <td> Stops the timer.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> Timer </td>
     <td> Disposes of the timer's resources.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Interval </td>
-    <td> Timer </td>
     <td> Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max is 2,147,483,647 milliseconds, or 24 days 20 hours 31 minutes 23.647 seconds.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Callback </td>
-    <td> Timer </td>
     <td> Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> AutoReset </td>
-    <td> Timer </td>
     <td> Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IntervalInHours </td>
-    <td> Timer </td>
     <td> Gets or sets the interval in hours.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Timer </td>
     <td> VBScripting </td>
   </tr>
 </table>
@@ -1574,92 +1574,92 @@
 <table>
   <tr>
     <th> Member name </th>
-    <th> Member of </th>
     <th> Remarks </th>
     <th> Returns </th>
     <th> Parameters </th>
     <th> Kind </th>
+    <th> Member of </th>
     <th> Namespace </th>
   </tr>
   <tr>
     <td> Watcher </td>
-    <td> </td>
-    <td> Provides something like presentation mode for Windows systems that don't have presentation.exe. Uses <a href="https://msdn.microsoft.com/en-us/library/aa373208(v=vs.85).aspx"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </td>
+    <td> Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> IWatcher </td>
-    <td> </td>
     <td> The COM interface for VBScripting.Watcher.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
+    <td> </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> (Constructor) </td>
-    <td> Watcher </td>
     <td> Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Dispose </td>
-    <td> Watcher </td>
     <td> Disposes of the object's resources.  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> MonitorOff </td>
-    <td> Watcher </td>
     <td> Turn off the monitor(s).  </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Watch </td>
-    <td> Watcher </td>
     <td> Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. Default is False.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> CurrentState </td>
-    <td> Watcher </td>
     <td> Gets or sets an integer describing the current thread execution state. Intended for internal use and testing only.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> ResetPeriod </td>
-    <td> Watcher </td>
     <td> Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30000. Max 2147483647.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> Privileged </td>
-    <td> Watcher </td>
     <td> Gets a boolean indicating whether privileges are elevated.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
+    <td> Watcher </td>
     <td> VBScripting </td>
   </tr>
 </table>

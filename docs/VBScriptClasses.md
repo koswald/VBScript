@@ -153,13 +153,15 @@ Use three single quotes for remarks that should not appear in the documentation 
   
 Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
   
+WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>  
+  
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
 | Method | SetScriptFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder containing the scripts to include in the generated documentation. Environment variables OK. Relative paths OK. |
 | Method | SetDocFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK. |
 | Method | SetDocName | a filename | N/A | Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name. |
 | Method | SetTitle | a string | N/A | Required. Must be set before calling the Generate method. Sets the title for the documentation. |
-| Method | SetFilesToDocument | wildcard(s) | N/A | Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
+| Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
 | Method | Generate | None | N/A | Generate comment-based documentation for the scripts in the specified folder. |
 | Method | View | None | N/A | Open the documentation file for viewing |
 | Property | Colorize | - | - | Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
@@ -289,7 +291,7 @@ Deletes a registry key and all of its subkeys.
 | Property | HKLM | None | &H80000002 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKU | None | &H80000003 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCC | None | &H80000005 | Provides a value suitable for the first parameter of the DeleteKey method. |
-| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://msdn.microsoft.com/en-us/library/aa393978(v=vs.85).aspx">WbemErrEnum</a> |
+| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> |
 | Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. |
 
 ## MathConstants
@@ -302,7 +304,7 @@ Deletes a registry key and all of its subkeys.
 ## MathFunctions
 Math functions not provided with VBScript  
 The native math functions are Sin, Cos, Tan, Atn, Log  
-Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>  
+Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -397,7 +399,7 @@ Usage example
   
 Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.  
   
-StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online</a>.  
+StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
   
 | Procedure | Name | Parameter | Return | Comment |
 | :-------- | :--- | :-------- | :----- | :------ |
@@ -893,7 +895,7 @@ See also TestingFramework
 | :-------- | :--- | :-------- | :----- | :------ |
 | Method | Run | None | N/A | Initiate the specified tests |
 | Method | SetSpecFolder | a folder | N/A | Optional. Specifies the folder containing the test files. Can be a relative path, relative to the calling script. Default is the parent folder of the calling script. |
-| Method | SetSpecPattern | a regular expression | N/A | Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with | delimiter. |
+| Method | SetSpecPattern | wildcard(s) | N/A | Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124 delimiter. |
 | Method | SetSpecFile | a file | N/A | Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run. See SetSpecPattern. |
 | Method | SetSearchSubfolders | a boolean | N/A | Optional. Specifies whether to search subfolders for test files. True or False. Default is False. |
 | Method | SetPrecision | 0, 1, or 2 | N/A | Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2. |
@@ -948,7 +950,7 @@ Examples of the Windows Management Instrumentation object
 | Property | os | None | an object | Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles |
 | Property | pc | None | an object | Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory |
 | Property | Bios | None | an object | Returns a BIOS object with this method: Version |
-| Property | Battery | None | an object | Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object. |
+| Property | Battery | None | an object | Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object. |
 
 ## WoWChecker
 Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.  

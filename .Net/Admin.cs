@@ -68,7 +68,7 @@ namespace VBScripting
         /// <returns> a string </returns>
         public string LogName { get { return logName; } }
 
-        /// <summary> Logs the specified message to the event log. </summary>
+        /// <summary> Logs the specified message to the event log (source="VBScripting"). </summary>
         /// <parameters> message </parameters>
         public static void Log(string msg)
         {

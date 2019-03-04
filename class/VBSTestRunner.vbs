@@ -90,8 +90,8 @@ Class VBSTestRunner
     End Sub
 
     'Method SetSpecPattern
-    'Parameter a regular expression
-    'Remark Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with | delimiter.
+    'Parameter: wildcard(s)
+    'Remark Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124 delimiter.
     Sub SetSpecPattern(wildcard)
         specPattern = rf.Pattern(wildcard)
     End Sub

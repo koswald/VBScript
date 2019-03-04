@@ -261,6 +261,8 @@
             <p></p>
             <p>Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.</p>
             <p></p>
+            WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>
+            <p></p>
             <table>
                <tr>
                   <th>Procedure type</th>
@@ -302,7 +304,7 @@
                   <td>SetFilesToDocument</td>
                   <td>wildcard(s)</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which files to document: default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;</td>
+                  <td>Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -723,7 +725,7 @@
                   <td>Result</td>
                   <td>None</td>
                   <td>an integer</td>
-                  <td>Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://msdn.microsoft.com/en-us/library/aa393978(v=vs.85).aspx">WbemErrEnum</a></td>
+                  <td>Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a></td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -777,7 +779,7 @@
          <div class="detail">
             <p>Math functions not provided with VBScript</p>
             <p>The native math functions are Sin, Cos, Tan, Atn, Log</p>
-            Adapted from the Script56.chm. See also the <a href="https://msdn.microsoft.com/en-us/library/t0aew7h6(v=vs.84).aspx"> online docs </a>
+            Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>
             <p></p>
             <table>
                <tr>
@@ -1052,7 +1054,7 @@
             <p></p>
             <p>Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.</p>
             <p></p>
-            StdRegProv docs <a href="https://msdn.microsoft.com/en-us/library/aa393664(v=vs.85).aspx"> online</a>.
+            StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.
             <p></p>
             <table>
                <tr>
@@ -2792,9 +2794,9 @@
                <tr>
                   <td>Method</td>
                   <td>SetSpecPattern</td>
-                  <td>a regular expression</td>
+                  <td>wildcard(s)</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with | delimiter.</td>
+                  <td>Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124 delimiter.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -3085,7 +3087,7 @@
                   <td>Battery</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Returns a <a href="https://msdn.microsoft.com/en-us/library/aa394074(VS.85).aspx"> Win32_Battery</a> object.</td>
+                  <td>Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object.</td>
                </tr>
             </table>
          </div>
