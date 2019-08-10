@@ -3,7 +3,7 @@
 
 /target:library
 /out:..\lib\SpeechSynthesis.dll
-/reference:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll"
+/reference:"C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll"
 
 # Create an XML doc
 /doc:..\lib\SpeechSynthesis.xml
