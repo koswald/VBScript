@@ -94,7 +94,7 @@
             document.Title = application.applicationName
             Set format = CreateObject("VBScripting.StringFormatter")
             Set app = CreateObject("VBScripting.VBSApp")
-            app.Init(document)
+            app.Init document
             Set includer = CreateObject("VBScripting.Includer")
             Set extractor = CreateObject("VBScripting.IconExtractor")
             Execute includer.Read("WMIUtility")

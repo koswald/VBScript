@@ -9,7 +9,6 @@ With New DocGeneratorCS
     .OutputFile = "..\docs\CSharpClasses"
     .XmlFolder = "..\.Net\lib"
     .Generate
-''    .ViewHtml
 End With
 
 sh.PopUp "Done generating the C# classes docs.", 3, WScript.ScriptName, vbInformation + vbSystemModal

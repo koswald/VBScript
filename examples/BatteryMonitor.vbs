@@ -13,7 +13,7 @@ End Sub
 Sub WaitForCallbacks
     While True
         ResetIcon
-        WScript.Sleep 500
+        WScript.Sleep 2000
     Wend
 End Sub
 Sub ResetIcon

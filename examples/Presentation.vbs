@@ -1,6 +1,8 @@
 Option Explicit
 purpose = "Show a notification area icon with a menu option to prevent the computer and monitor from going to sleep."
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the workstation is locked, initially."
+requires = "Sleep (menu item) functionality requires psshutdown from https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
+
 Setup
 csTimer.IntervalInHours = 2.1 'default
 icon = Split(icon1, "|")
@@ -68,6 +70,14 @@ Sub SetDurationUI
     Dim response 'InputBox return value
     Dim prompt, caption, suggestedValue 'InputBox aruments
 End Sub
+Sub Sleep
+    sh.Run "psshutdown -d -t 0", hidden
+End Sub
+Sub MonitorOff
+    With CreateObject("VBScripting.Admin")
+        .MonitorOff
+    End With
+End Sub
 Sub Help
     sh.PopUp helpMessage, 80, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
@@ -76,7 +86,7 @@ Sub ListenForCallbacks
         intervalInMinutes = csTimer.Interval/60000
         elapsedMinutes = stopwatch/60
         If "Presentation" = status Then
-            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in ~%s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
+            notifyIcon.Text = format(Array(" Presentation mode is on %s Normal mode resumes in %s min.", vbLf, Round(intervalInMinutes - elapsedMinutes, 0)))
         Else notifyIcon.Text = "Presentation mode is off"
         End If
         WScript.Sleep 2000
@@ -97,6 +107,7 @@ Const icon7 = "%SystemRoot%\System32\comres.dll|8|False|%SystemRoot%\System32\co
 Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5 'icon array indexes
 
 Const synchronous = True 'sh.Run constant, arg #3
+Const hidden = 0 'sh.Run constant, arg #2
 Const ForWriting = 2, CreateNew = True 'fso.OpenTextFile constants, args #2 and #3
 Dim sh, fso, sa 'native WScript objects
 Dim watcher, notifyIcon, csTimer, stopwatch, includer, format 'objects from github.com/koswald/vbscript
@@ -105,6 +116,7 @@ Dim purpose, helpUrl, helpMessage 'strings
 Dim statusFile 'filespec of the file to which status is published
 Dim status 'string: '"Presentation" or "Normal"
 Dim icon 'array: filespec, index, and icon type (large/True or small/False) for Presentation and Normal modes
+Dim requires 'string: used for internal documentation only
 
 Sub Setup
     Set sh = CreateObject("WScript.Shell")
@@ -123,6 +135,8 @@ Sub Setup
     notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
     notifyIcon.AddMenuItem "Start screensaver", GetRef("StartScreenSaver")
     notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef("LockWorkStation")
+    notifyIcon.AddMenuItem "Sleep", GetRef("Sleep")
+    notifyIcon.AddMenuItem "Turn off monitor", GetRef("MonitorOff")
     notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef("EditScript")
     notifyIcon.AddMenuItem "Help", GetRef("Help")
     notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef("CloseAndExit")
