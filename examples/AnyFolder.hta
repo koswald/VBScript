@@ -1,0 +1,24 @@
+<!-- AnyFolder.hta, a SendTo drop target -->
+
+<!-- Because .hta files may not be directly allowed 
+as drop targets, the launcher script AnyFolder.wsf 
+may beused to launch this file. For example, a 
+shortcut to AnyFolder.wsf can be placed in the 
+SendTo folder instead of a shortcut to this file. -->
+
+<html>
+    <head>
+        <hta:application 
+            applicationName="Send to any folder"
+            icon="occache.dll"
+            innerborder="No"
+            scroll="No"
+            maximizeButton="No"
+            singleInstance="Yes">
+        <script
+            language="VBScript"
+            src="src/AnyFolder.vbs">
+        </script>
+    </head>
+    <body />
+</html>
