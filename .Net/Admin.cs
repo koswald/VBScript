@@ -1,3 +1,6 @@
+// admin utility for VBScript
+// requires assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll" or similar
+
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Runtime.InteropServices;

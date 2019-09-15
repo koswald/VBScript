@@ -1875,9 +1875,9 @@
             <p>Alternate method for both .hta and .vbs/.wsf,</p>
              <pre>  Set app = CreateObject("VBScripting.VBSApp") <br />  If "HTMLDocument" = TypeName(document) Then <br />      app.Init document <br />  Else app.Init WScript <br />  End If </pre>
             <p>Examples</p>
-             <pre>  'test.vbs "arg one" "arg two" <br />  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp <br />  MsgBox app.GetName 'test.vbs <br />  MsgBox app.GetArg(1) 'arg two <br />  MsgBox app.GetArgsCount '2 <br />  app.Quit </pre>
+             <pre>  'test.vbs "arg one" "arg two" <br />  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSApp") <br />  End With <br />  Dim app : Set app = New VBSApp <br />  MsgBox app.GetFileName 'test.vbs <br />  MsgBox app.GetArg(1) 'arg two <br />  MsgBox app.GetArgsCount '2 <br />  app.Quit </pre>
             <p></p>
-             <pre>  &lt;!-- test.hta "arg one" "arg two" --> <br />  &lt;hta:application icon="msdt.exe"> <br />      &lt;script language="VBScript"> <br />          With CreateObject("VBScripting.Includer") <br />              Execute .read("VBSApp") <br />          End With <br />          Dim app : Set app = New VBSApp <br />          MsgBox app.GetName 'test.hta <br />          MsgBox app.GetArg(1) 'arg two <br />          MsgBox app.GetArgsCount '2 <br />          app.Quit <br />      &lt;/script> <br />  &lt;/hta:application> </pre>
+             <pre>  &lt;!-- test.hta "arg one" "arg two" --> <br />  &lt;hta:application icon="msdt.exe"> <br />      &lt;script language="VBScript"> <br />          With CreateObject("VBScripting.Includer") <br />              Execute .read("VBSApp") <br />          End With <br />          Dim app : Set app = New VBSApp <br />          MsgBox app.GetFileName 'test.hta <br />          MsgBox app.GetArg(1) 'arg two <br />          MsgBox app.GetArgsCount '2 <br />          app.Quit <br />      &lt;/script> <br />  &lt;/hta:application> </pre>
             <p></p>
             <table>
                <tr>

@@ -651,7 +651,7 @@ Examples
       Execute .read("VBSApp") 
   End With 
   Dim app : Set app = New VBSApp 
-  MsgBox app.GetName 'test.vbs 
+  MsgBox app.GetFileName 'test.vbs 
   MsgBox app.GetArg(1) 'arg two 
   MsgBox app.GetArgsCount '2 
   app.Quit 
@@ -665,7 +665,7 @@ Examples
               Execute .read("VBSApp") 
           End With 
           Dim app : Set app = New VBSApp 
-          MsgBox app.GetName 'test.hta 
+          MsgBox app.GetFileName 'test.hta 
           MsgBox app.GetArg(1) 'arg two 
           MsgBox app.GetArgsCount '2 
           app.Quit 

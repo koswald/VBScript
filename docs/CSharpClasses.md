@@ -194,7 +194,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| SpeechSynthesis | Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Speech.dll</tt>, which may not be available on older machines. |  |  | Type | | VBScripting |
+| SpeechSynthesis | Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>, which may not be available on older machines. |  |  | Type | | VBScripting |
 | ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>.  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | SpeechSynthesis | VBScripting |
 | Speak | Convert text to speech. This method is synchronous. |  |  | Method | SpeechSynthesis | VBScripting |
