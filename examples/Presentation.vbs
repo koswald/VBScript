@@ -5,7 +5,7 @@ requires = "Sleep (menu item) functionality requires psshutdown from https://doc
 
 Setup
 csTimer.IntervalInHours = 2.1 'default
-icon = Split(icon1, "|")
+icon = Split(icon3, "|")
 NormalMode
 ListenForCallbacks
 
@@ -97,7 +97,6 @@ Sub ListenForCallbacks
 End Sub
 
 'icon options
-Const icon1 = "%SystemRoot%\System32\powercpl.dll|5|False|%SystemRoot%\System32\powercpl.dll|6|False" 'moon & sun
 Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False" 'green & yellow shields
 Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True" 'monitor with moon & monitor without
 Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False" 'dark LED & green LED
