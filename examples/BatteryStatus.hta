@@ -19,7 +19,10 @@
         Option Explicit
 
         Sub Main
-            extractor.SetImageFormatPng
+            On Error Resume Next
+                extractor.SetImageFormatPng
+                If Err Then sh.PopUp "Error setting image format to PNG.", 3, app.GetFileName, vbInformation + vbSystemModal
+            On Error Goto 0
             extractor.Save resFile, IconIndex, imageFile, largeIcon
             Set image = document.createElement("img")
             image.src = imageFile

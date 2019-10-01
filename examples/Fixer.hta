@@ -27,6 +27,15 @@ with respect to running script file types .vbs and .wsf -->
         </fieldset>
         <script language="VBScript">
 
+            Sub Document_OnKeyUp
+                If F1 = window.event.keyCode Then
+                    With CreateObject("WScript.Shell")
+                        .Run "Fixer.md"
+                    End With
+                End If
+                Const F1 = 112
+            End Sub
+
             Class Troubleshooter
 
                 'update HTML element with the registry value

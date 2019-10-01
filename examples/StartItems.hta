@@ -5,7 +5,7 @@
             applicationName="Startup items editor"
             icon="regedit.exe"
             innerBorder="No"
-            scroll="No"
+            scroll="Yes"
             singleInstance="Yes">
         </hta:application>
     </head>
@@ -25,7 +25,7 @@
             Dim OsIs64Bit 'boolean
 
             Sub Window_OnLoad
-                width = 45 : height = 52 : xPos = 50 : yPos = 50
+                width = 65 : height = 52 : xPos = 50 : yPos = 50
                 With self.screen
                     Dim pxWidth, pxHeight
                     pxWidth = .availWidth * width * .01
