@@ -33,17 +33,17 @@ With New TestingFramework
 
     .it "should get a string of command-line arguments with spaces"
         args = """Some File.txt"" ""Some File2.txt"""
-        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo " & script & " " & args)
+        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo """ & script & """ " & args)
         .AssertEqual pipe.StdOut.ReadLine, " " & args
 
     .it "should get a single command-line argument with spaces"
         arg = """Some File.txt"""
-        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo " & script & " " & arg)
+        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo """ & script & """ " & arg)
         .AssertEqual pipe.StdOut.ReadLine, " " & arg
 
     .it "should get a single command-line argument without spaces"
         arg = """SomeFile.txt"""
-        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo " & script & " " & arg)
+        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo """ & script & """ " & arg)
         .AssertEqual pipe.StdOut.ReadLine, " " & arg
 
     .it "should get a single command-line argument without spaces #2"
@@ -51,7 +51,7 @@ With New TestingFramework
         'Note: VBSArguments.GetArgumentsString wraps each argument
         'in double quotes, regardless of whether it contains spaces
         arg = "SomeFile.txt"
-        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo " & script & " " & arg)
+        Set pipe = sh.Exec("%ComSpec% /c cscript //nologo """ & script & """ " & arg)
         .AssertEqual pipe.StdOut.ReadLine, " """ & arg & """"
 
     'cleanup

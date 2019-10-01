@@ -17,13 +17,13 @@ With New TestingFramework
     .it "should raise an error on new-source SourceExists call" 'because of low privileges
         On Error Resume Next
             Dim result : result = va.SourceExists(va.EventSource & "2")
-            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+            .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
     .it "should raise an error on new-source CreateEventSource call"
         On Error Resume Next
             Set result = va.CreateEventSource(va.EventSource & "2")
-            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+            .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
     .it "should indicate a known source on CreateEventSource call"
@@ -33,7 +33,7 @@ With New TestingFramework
     .it "should raise an error on deleting non-existent source"
         On Error Resume Next
             result = va.DeleteEventSource(va.EventSource & "2")
-            .AssertEqual Err.Description, "The source was not found, but some or all event logs could not be searched.  Inaccessible logs: Security."
+            .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
     .it "should fail to delete an existing source without elevated privileges"
