@@ -1,23 +1,25 @@
 
 'Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.
 '
-'How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.
+'How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.
 '
 'Usage examples
 '<pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
 '
 Class WoWChecker
-    Private sh
+    Private sh, fso
     Private parser
     Private Pipe64Command, Pipe32Command
     Private method, ByCheckSum_, BySize_, NotSet_
 
     Sub Class_Initialize
         Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject("Scripting.FileSystemObject")
         ByCheckSum_ = "ByCheckSum"
         BySize_ = "BySize"
         NotSet_ = "NotSet"
         method = NotSet_
+        File = "cmd.exe"
         ByCheckSum
     End Sub
     
@@ -66,8 +68,8 @@ Class WoWChecker
     'Returns an object self reference
     'Remark: Optional. Specifies that the .exe files will be compared by size. BySize will not distinguish between the 32- and 64-bit .exe files if they are the same size, which is unlikely but possible. ByCheckSum is therefore more reliable.
     Function BySize
-        Pipe64Command = "%ComSpec% /c dir %SystemRoot%\System32\cmd.exe"
-        Pipe32Command = "%ComSpec% /c dir %SystemRoot%\SysWoW64\cmd.exe"
+        Pipe64Command = "%ComSpec% /c dir %SystemRoot%\System32\" & File
+        Pipe32Command = "%ComSpec% /c dir %SystemRoot%\SysWoW64\" & File
         method = BySize_
         Set BySize = Me
     End Function
@@ -76,19 +78,31 @@ Class WoWChecker
     'Returns an object self reference
     'Remark: Selected by default. Specifies that the .exe files will be compared by checksum. ByCheckSum uses CertUtil, which ships with Windows&reg; 7 through 10, and can be manually installed on older versions.
     Function ByCheckSum
-        Pipe64Command = "CertUtil -hashfile %SystemRoot%\System32\cmd.exe SHA1"
-        Pipe32Command = "CertUtil -hashfile %SystemRoot%\SysWoW64\cmd.exe SHA1"
+        Pipe64Command = "CertUtil -hashfile %SystemRoot%\System32\" & File & " SHA1"
+        Pipe32Command = "CertUtil -hashfile %SystemRoot%\SysWoW64\" & File & " SHA1"
         method = ByCheckSum_
         Set ByCheckSum = Me
     End Function
+
+    Private file_
+    'Property File
+    'Returns a string
+    'Remark: Optional. Sets or gets the name of the file used in comparisons. A file by this name must be found in both %SystemRoot%\System32 and %SystemRoot%\SysWoW64. The default is <code> cmd.exe</code>.
+    Public Property Get File : File = file_ : End Property
+    Public Property Let File(newValue) 
+        If Not fso.FileExists(Expand("%SystemRoot%\System32\" & newValue)) Or Not fso.FileExists(Expand("%SystemRoot%\SysWoW64\" & newValue)) Then Err.Raise 1,, "Can't find comparison file candidate " & newValue
+        file_ = newValue
+    End Property
+
+    Private Property Get Expand(compressedVar) : Expand = sh.ExpandEnvironmentStrings(compressedVar) : End Property
 
     Private Function GetOutput(stream)
         Dim line
         GetOutput = ""
         While Not stream.StdOut.AtEndOfStream
             line = stream.StdOut.ReadLine
-            If InStr(line, "cmd.exe") Then
-                'for the BySize method, the desired info is on the same line as "cmd.exe"
+            If InStr(line, File) Then
+                'for the BySize method, the desired info is on the same line as the name of the File
                 GetOutput = line
                 If ByCheckSum_ = method Then
                     'for the ByCheckSum method, it's on the following line
@@ -100,5 +114,6 @@ Class WoWChecker
 
     Sub Class_Terminate
         Set sh = Nothing
+        Set fso = Nothing
     End Sub
 End Class
