@@ -209,17 +209,17 @@ Class VBSApp
     
     'Property WScriptHost
     'Returns: "wscript.exe"
-    'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
+    'Remark: Can be used as an argument for the method RestartWith.
     Public Property Get WScriptHost : WScriptHost = "wscript.exe" : End Property
     
     'Property CScriptHost
     'Returns: "cscript.exe"
-    'Remark: Can be used as an argument for the method RestartIfNotPrivileged.
+    'Remark: Can be used as an argument for the method RestartWith.
     Public Property Get CScriptHost : CScriptHost = "cscript.exe" : End Property
     
     'Property GetHost
     'Returns: "wscript.exe" or "cscript.exe" or "mshta.exe"
-    'Remark: Returns the current host. Can be used as an argument for the method RestartIfNotPrivileged.
+    'Remark: Returns the current host. Can be used as an argument for the method RestartWith.
     Public Property Get GetHost : GetHost = GetExe : End Property
     
     'Determine whether the source file is a script,

@@ -16,8 +16,7 @@ This project features
 - A [progress bar] proof of concept.
 - A script for keeping the computer awake while 
   giving a [presentation], with a system tray icon.  
-- A [doc generator for the C# classes].  
-- A [doc generator for the VBScript classes].  
+- A [doc generator for the C# classes] and a [doc generator for the VBScript classes], both based on code comments.  
 - More [examples] of .vbs and .hta scripts.  
 
 ## Requirements
@@ -27,8 +26,8 @@ Windows 10, 8, 7, Vista, ... 98.
 ## Installation
 
 Clone or download the repo and run [Setup.vbs]. 
-This will register the Windows Script Component 
-files, and compile and register the [VBScript extensions]. 
+This will register the [Windows Script Component 
+files], and compile and register the [VBScript extensions]. 
 
 ## References  
 
@@ -47,6 +46,7 @@ Read or edit the [wiki](../../wiki)
 [logger]: class/VBSLogger.vbs
 [examples]: examples
 [Setup.vbs]: Setup.vbs
+[Windows Script Component files]: class/wsc
 [VBScript extensions]: .Net
 [registry classes]: examples/RegistryClasses.hta
 [icon extractor]: examples/icon-extractor.hta

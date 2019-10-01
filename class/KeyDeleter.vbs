@@ -1,5 +1,5 @@
 
-'Deletes a registry key and all of its subkeys.
+'Provides a method for deleting a registry key and all of its subkeys.
 '
 Class KeyDeleter
 
@@ -104,7 +104,7 @@ Class KeyDeleter
     'Property: Delete
     'Parameter: a boolean
     'Returns: a boolean
-    'Remark: Gets or sets the boolean that controls whether the key is actually deleted.
+    'Remark: Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing.
     Public Property Get Delete : Delete = delete_ : End Property
     Public Property Let Delete(newValue)
         If Not "Boolean" = TypeName(newValue) Then Err.Raise 1, "KeyDeleter.Delete (Let)", "Expected a Boolean."

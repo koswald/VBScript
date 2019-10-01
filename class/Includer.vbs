@@ -69,7 +69,7 @@ End Function
 
 'Function LibraryPath
 'Returns a folder path
-'Remark: Returns the resolved, absolute path of the folder that contains Includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.
+'Remark: Returns the resolved, absolute path of the <code> class</code> folder, which is the reference for relative paths passed to the Read method.
 Function LibraryPath : LibraryPath = referencePath : End Function
 
 Sub SetLibraryPath(newPath) : referencePath = newPath : End Sub

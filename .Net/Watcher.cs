@@ -95,7 +95,7 @@ namespace VBScripting
         extern static uint SetThreadExecutionState(uint esFlags);
     }
    
-    /// <summary> The COM interface for VBScripting.Watcher. </summary>
+    /// <summary> The COM interface for VBScripting.Watcher </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-C001-495F-AB4D-6C61BD463EA4")]
     public interface IWatcher

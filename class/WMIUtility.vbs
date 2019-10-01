@@ -5,7 +5,7 @@ Class WMIUtility
     'Function TerminateProcessById
     'Parameter: process id
     'Returns a boolean
-    'Remark: Terminates any Windows&reg process with the specified id. Returns True if the process was found, False if not.
+    'Remark: Terminates any Windows&reg; process with the specified id. Returns True if the process was found, False if not.
     Function TerminateProcessById(id)
         Dim scrubId : scrubId = Scrub(id)
         Dim process

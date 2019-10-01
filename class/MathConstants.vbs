@@ -2,7 +2,7 @@
 Class MathConstants
 
     'Property: Pi
-    'Returns: 3.14159...
+    'Returns: 3.14159265358979
     Property Get Pi : Pi = 4 * Atn(1) : End Property
 
     'Property: DEGRAD

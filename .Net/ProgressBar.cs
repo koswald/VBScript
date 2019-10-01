@@ -338,7 +338,7 @@ namespace VBScripting
         }
     }
 
-    /// <summary> Exposes the ProgressBar members to COM/VBScript. </summary>
+    /// <summary> Exposes the VBScripting.ProgressBar members to COM/VBScript. </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-4BF8-495F-AB4D-6C61BD463EA4")]
     public interface IProgressBar

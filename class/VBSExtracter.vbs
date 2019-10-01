@@ -23,7 +23,7 @@ Class VBSExtracter
 
     'Method SetPattern
     'Parameter: a regex pattern
-    'Remark: Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  |</strong> must preceed the special character with a <strong>\</strong>
+    'Remark: Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  &#124;</strong> must preceed the special character with a <strong>&#092;</strong>
     Sub SetPattern(pStr) : ref.SetPattern(pStr) : End Sub
 
     'Method SetFile

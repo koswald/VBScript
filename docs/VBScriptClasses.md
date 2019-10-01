@@ -14,7 +14,6 @@
 [KeyDeleter](#keydeleter)  
 [MathConstants](#mathconstants)  
 [MathFunctions](#mathfunctions)  
-[NewClass_](#newclass_)  
 [PrivilegeChecker](#privilegechecker)  
 [RegExFunctions](#regexfunctions)  
 [RegistryUtility](#registryutility)  
@@ -48,6 +47,9 @@
 
 ## Chooser
 Get a folder or file chosen by the user  
+  
+<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net extenstions. See FolderChooser.cs and FileChooser.cs in the .Net folder.  
+  
 Usage example  
   
 ```vb
@@ -63,8 +65,8 @@ Usage example
 Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.  
 Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | File | None | a file path | Opens a Choose File dialog and returns the path of a file chosen by the user. Returns an empty string if no folder was selected. Note: The title bar text will say Choose File to Upload. |
 | Property | Folder | None | a folder path | Opens a Browse For Folder dialog and returns the path of a folder chosen by the user. Returns an empty string if no folder was selected. |
 | Property | FolderTitle | None | the folder title | Opens a Browse For Folder dialog and returns the title of a folder chosen by the user. The title for a normal folder is just the folder name. For a special folder like %UserProfile%, it may be something entirely different. Returns an empty string if no folder was selected. |
@@ -101,8 +103,8 @@ Example:
  MsgBox cp.GetResult 'typically True on 64-bit systems
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetCommand | newCmd | N/A | Sets the command to run whose output will be searched. Required before calling GetResult. |
 | Method | SetSearchPhrase | newSearchPhrase | N/A | Sets a phase to search for in the command's output. Required before calling GetResult. |
 | Property | GetResult | None | a boolean | Runs the sepecified command and returns True if the specified phrase is found in the command output. |
@@ -110,7 +112,7 @@ Example:
 | Method | SetStopPhrase | newStopPhrase | N/A | Sets a unique phrase to identify the line that follows the last line of the search. Optional. By defualt, the output is searched to the end. |
 
 ## DocGenerator
-Generate html and markdown documentation for VBScript code based on well-formed comments.  
+Generate html and markdown documentation for VBScript code based on well-formed code comments.  
 Usage Example  
 ```vb
  With CreateObject("VBScripting.Includer")
@@ -118,12 +120,12 @@ Usage Example
  End With
  With New DocGenerator
      .SetTitle "VBScript Utility Classes Documentation"
-     .SetDocName "TheDocs"
+     .SetDocName "VBScriptClasses"
      .SetFilesToDocument "*.vbs | *.wsf | *.wsc"
-     .SetScriptFolder = "..\..\class"
-     .SetDocFolder = "..\.."
+     .SetScriptFolder = "..\class"
+     .SetDocFolder = "..\docs"
      .Generate
-     .View
+     .ViewMarkdown
  End With
 ```
   
@@ -144,27 +146,31 @@ Note: A Returns (or Return or Returns: or Return:) is required with a Property o
 'Remark: A remark is not required for a Property or Function.
 ```
 Notes for the comment syntax at the beginning of a script  
-Use a single quote (') for general comments <br />  
+Use a single quote ( ' ) for general comments <br />  
 - use a single quote by itself for an empty line <br />  
 - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
 - Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
   
 Use three single quotes for remarks that should not appear in the documentation <br />  
   
-Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
+Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
   
-WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>  
+Include a vertical bar ( &#124; ) in comments with &amp;#124;  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+Visual Studio and VS Code extensions may render differently than Git-Flavored Markdown.  
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetScriptFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder containing the scripts to include in the generated documentation. Environment variables OK. Relative paths OK. |
 | Method | SetDocFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK. |
 | Method | SetDocName | a filename | N/A | Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name. |
 | Method | SetTitle | a string | N/A | Required. Must be set before calling the Generate method. Sets the title for the documentation. |
 | Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
 | Method | Generate | None | N/A | Generate comment-based documentation for the scripts in the specified folder. |
-| Method | View | None | N/A | Open the documentation file for viewing |
-| Property | Colorize | - | - | Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
+| Method | View | None | N/A | Open the html document in the default viewer. Same as ViewHtml. |
+| Method | ViewHtml | None | N/A | Open the html document in the default viewer. Same as View method. |
+| Method | ViewMarkdown | None | N/A | Open the markdown document in the default viewer. |
+| Property | Colorize | boolean | boolean | Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
 
 ## DocGeneratorCS
  DocGeneratorCS class  
@@ -174,10 +180,10 @@ WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code
  Within these tags, html tags are supported. <br />  
  Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Property | XmlFolder | - | - | Required. Gets or sets the folder containing the .xml files autogenerated by the C# compiler. Relative paths and environment variables are supported. |
-| Property | OutputFile | - | - | Required. Gets or sets the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported. |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | XmlFolder | folder | folder | Required. Sets (or gets) the folder containing the .xml files autogenerated by the C# compiler. Relative paths and environment variables are supported. |
+| Property | OutputFile | filespec | filespec | Required. Sets (or gets) the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported. |
 | Method | Generate | None | N/A | Generates html and markdown code documentation. Requires .xml files to have been generated by the C# compiler. |
 | Method | ViewHtml | None | N/A | Opens the html document with the default viewer. |
 | Method | ViewMarkdown | None | N/A | Opens the markdown document with the default viewer. |
@@ -197,8 +203,8 @@ End With
   
 Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | SetFile | a filespec | an object self reference | Required. Specifies the file whose encoding is to be determined. Relative paths are permitted, relative to the current directory. |
 | Property | isUTF16LE | None | a boolean | Returns a boolean indicating whether the file specified by SetFile is Unicode Little Endian, <strong> aka Unicode</strong>. |
 | Property | isUTF16BE | None | a boolean | Returns a boolean indicating whether the file specified by SetFile is Unicode Big Endian. |
@@ -213,10 +219,16 @@ Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/ef
 
 ## EscapeMd
 EscapeMd and EscapeMd2 Functions  
-Escapes markdown special characters.  
+Escape markdown special characters.  
+Usage example  
+```vb
+    Dim includer : Set includer = CreateObject("VBScripting.Includer")
+    ExecuteGlobal includer.Read("EscapeMD")
+    MsgBox EscapeMd("```") ' \`\`\`
+```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | EscapeMd | unescaped string | escaped string | Returns a string with Markdown special characters escaped. |
 | Property | EscapeMd2 | unescaped string | escaped string | Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>. |
 
@@ -230,8 +242,8 @@ Usage example
  InputBox "",, New GUIDGenerator
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Generate | None | a GUID | Returns a unique GUID. Generate is the default property for the class, so the property name is optional. A sample GUID: {928507A9-7958-4E6E-A0B1-C33A5D4D602A} |
 | Method | SetUppercase | None | N/A | Configure the Generate property to return uppercase, the default. |
 | Method | SetLowercase | None | N/A | Configure the Generate property to return lowercase |
@@ -240,8 +252,8 @@ Usage example
 HTAApp class  
 Supports the VBSApp class, providing .hta functionality.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | Sleep | an integer | N/A | Pauses execution of the script or .hta for the specified number of milliseconds. |
 | Method | PrepareToSleep | None | N/A | Required before calling the Sleep method when AlwaysPrepareToSleep is False in HTAApp.config. |
 | Property | GetFilespec | None | a string | Returns the filespec of the calling .hta file. |
@@ -273,18 +285,18 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
   
 <code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetObj | className | An object | Returns an object based on the VBScript class with the specified name. Requires a .wsc Windows Script Component file in \class\wsc. See StringFormatter.wsc for an example. |
 | Property | Read | a file | the file contents | Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the <code> class</code> folder. The file name extension may be omitted for .vbs files. |
 | Property | ReadFrom | file, path | file contents | Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files. |
-| Property | LibraryPath | None | a folder path | Returns the resolved, absolute path of the folder that contains Includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods. |
+| Property | LibraryPath | None | a folder path | Returns the resolved, absolute path of the <code> class</code> folder, which is the reference for relative paths passed to the Read method. |
 
 ## KeyDeleter
-Deletes a registry key and all of its subkeys.  
+Provides a method for deleting a registry key and all of its subkeys.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | DeleteKey | root, key | N/A | Deletes the specified registry key and all of its subkeys. Use one of the root constants for the first parameter. |
 | Property | HKCR | None | &H80000000 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCU | None | &H80000001 | Provides a value suitable for the first parameter of the DeleteKey method. |
@@ -292,12 +304,12 @@ Deletes a registry key and all of its subkeys.
 | Property | HKU | None | &H80000003 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCC | None | &H80000005 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> |
-| Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. |
+| Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing. |
 
 ## MathConstants
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Property | Pi | None | 3.14159... | None |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Pi | None | 3.14159265358979 | None |
 | Property | DEGRAD | None | Pi/180 | Used to convert degrees to radians |
 | Property | RADEG | None | 180/Pi | Used to convert radians to degrees |
 
@@ -306,8 +318,8 @@ Math functions not provided with VBScript
 The native math functions are Sin, Cos, Tan, Atn, Log  
 Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Sec | Angle in radians | Secant | Sec = 1 / Cos(X) |
 | Property | Cosec | Angle in radians | Cosecant | Cosec = 1 / Sin(X) |
 | Property | Cotan | Angle in radians | Cotangent | Cotan = 1 / Tan(X) |
@@ -347,8 +359,8 @@ Usage example
   
 Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Privileged | None | a boolean | Returns True if the calling script is running with elevated privileges, False if not. Privileged is the default property. |
 
 ## RegExFunctions
@@ -373,9 +385,9 @@ Usage example
   MsgBox s 'M od tS 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Property | Pattern | wildcard | a regex expression | Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |. |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Pattern | wildcard | a regex expression | Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with &#124; |
 | Property | re | None | an object reference | Returns a reference to the RegExp object instance |
 | Method | SetPattern | a regex pattern | N/A | Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance |
 | Method | SetTestString | a string | N/A | Required before calling FirstMatch or GetSubMatches. Specifies the string against which the regex pattern will be tested. |
@@ -401,8 +413,8 @@ Set valueName to vbEmpty or "" (two double quotes) to specify a key's default va
   
 StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetPC | a computer name | N/A | Optional. A dot (.) can be used for the local computer (default), in place of the computer name. |
 | Property | Reg | None | an object | Returns a reference to the StdRegProv object. |
 | Property | GetStringValue | rootKey, subKey, valueName | a string | Returns the value of the specified registry location. The specified registry entry must be of type string (REG_SZ). |
@@ -429,8 +441,8 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 ## ShellConstants
 Constants for use with WScript.Shell.Run  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | RunHidden | None | 0 | Window opens hidden. <br /> For use with Run method parameter #2 |
 | Property | RunNormal | None | 1 | Window opens normal. <br /> For use with Run method parameter #2 |
 | Property | RunMinimized | None | 2 | Window opens minimized. <br /> For use with Run method parameter #2 |
@@ -450,8 +462,8 @@ Usage example
      MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetPath | a special folder alias | a folder path | Returns the absolute path of the specified special folder. This is the default property, so the property name is optional. |
 | Property | GetAliasList | None | a string | Returns a comma + space delimited list of the aliases of all the special folders. |
 | Property | GetAliasArray | None | an array of strings | Returns an array of the aliases of all the special folders. |
@@ -508,11 +520,11 @@ Usage examples:
  WScript.Echo fm.pluralize(12, "egg") '12 eggs 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Format | array | a string | Returns a formatted string. The parameter is an array whose first element contains the pattern of the returned string. The first %s in the pattern is replaced by the next element in the array. The second %s in the pattern is replaced by the next element in the array, and so on. Variant subtypes tested OK with %s include string, integer, and single. Format is the default property for the class, so the property name is optional. If there are too many or too few %s instances, then an error will be raised. |
 | Method | SetSurrogate | a string | N/A | Optional. Sets the string that the Format method will replace with the specified array element(s), %s by default. |
-| Property | Pluralize | count, noun | a string | Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring | red herrings", "|")</code>. |
+| Property | Pluralize | count, noun | a string | Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring &#124; red herrings", "&#124;")</code>. |
 | Method | SetZeroSingular | None | N/A | Optional. Changes the default behavior of considering a count of zero to be plural. |
 | Method | SetZeroPlural | None | N/A | Optional. Restores the default behavior of considering a count of zero to be plural. |
 
@@ -542,8 +554,8 @@ Usage example
   
  See also VBSTestRunner  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | describe | unit description | N/A | Sets the description for the unit under test. E.g. .describe "DocGenerator class" |
 | Method | it | an expectation | N/A | Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer" |
 | Property | GetSpec | None | a string | Returns the specification string for the current spec. |
@@ -561,8 +573,8 @@ Open a file as a text stream for reading, writing, or appending.
 Methods for use with the text stream that is returned by the Open method:  
 <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Open | None | an object | Returns a text stream object according to the specified settings (methods beginning with Set...) |
 | Method | SetFile | a filespec | N/A | Specifies the file to be opened by the text streamer. Can include environment variable names. The default file is a random-named .txt file on the desktop. |
 | Method | SetFolder | a folder | N/A | Specifies the folder of the file to be opened by the text streamer. Can include environment variables. Default is %UserProfile%\Desktop |
@@ -588,8 +600,8 @@ Methods for use with the text stream that is returned by the Open method:
 | Property | GetStreamFormat | None | a tristate boolean | Gets the current StreamFormat setting. Returns one of these stream constants: tbAscii, tbUnicode, tbSystemDefault |
 
 ## TimeFunctions
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetFirstDOW | an integer | N/A | Specifies the first day of the week. Parameter can be one of the VBScript constants vbSunday, vbMonday, ... |
 | Property | LetDOWBeAbbreviated | a boolean | N/A | Specifies whether day-of-the-week strings should be abbreviated: Default is False. |
 | Property | TwoDigit | a number | a two-char string | Returns a two-char string that may have a leading 0, given a numeric integer/string/variant of length one or two |
@@ -598,11 +610,11 @@ Methods for use with the text stream that is returned by the Open method:
 | Property | GetFormattedTime | a date | a date string | Returns a formatted 24-hr time string: e.g. 13:38:45 or 00:45:32 |
 
 ## ValidFileName
-Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.  
+VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.  
 Usage Example  
 ```vb
      With CreateObject("VBScripting.Includer") 
-         Execute .Read("ValidFileName") 
+         ExecuteGlobal .Read("ValidFileName") 
      End With 
   
      MsgBox GetValidFileName("test\ing") 'test-ing 
@@ -610,9 +622,11 @@ Usage Example
   
 ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Property | GetValidFileName | a file name candidate | a valid file name | Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config. |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | GetValidFileName | a file name candidate | a valid file name | Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > &#124; %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config. |
+| Property | InvalidWindowsFilenameChars | None | an array | Returns an array of characters that are not allowed in Windows&reg; filenames. |
+| Property | InvalidChromeFilenameStrings | None | an array | Returns an array of strings, any one of which if included in the filename of a local .html file, Chrome will not open the file. |
 
 ## VBSApp
 VBSApp class  
@@ -673,8 +687,8 @@ Examples
   </hta:application> 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetArgs | None | array of strings | Returns an array of command-line arguments. |
 | Property | GetArgsString | None | a string | Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih double quotes. The return string has a leading space, by design, unless there are no arguments. |
 | Property | GetArg | an integer | a string | Returns the command-line argument having the specified zero-based index. |
@@ -692,20 +706,20 @@ Examples
 | Property | GetVisibility | None | 0 (hidden) or 1 (normal) | Returns the current visibility setting. SetUserInteractive also affects this setting. |
 | Method | Quit | None | N/A | Gracefully closes the hta/script. |
 | Method | Sleep | an integer | N/A | Pauses execution of the script or .hta for the specified number of milliseconds. |
-| Property | WScriptHost | None | "wscript.exe" | Can be used as an argument for the method RestartIfNotPrivileged. |
-| Property | CScriptHost | None | "cscript.exe" | Can be used as an argument for the method RestartIfNotPrivileged. |
-| Property | GetHost | None | "wscript.exe" or "cscript.exe" or "mshta.exe" | Returns the current host. Can be used as an argument for the method RestartIfNotPrivileged. |
+| Property | WScriptHost | None | "wscript.exe" | Can be used as an argument for the method RestartWith. |
+| Property | CScriptHost | None | "cscript.exe" | Can be used as an argument for the method RestartWith. |
+| Property | GetHost | None | "wscript.exe" or "cscript.exe" or "mshta.exe" | Returns the current host. Can be used as an argument for the method RestartWith. |
 
 ## VBSArguments
 Functions related to VBScript command-line arguments  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetArgumentsString | None | a string containing all command-line arguments | For use when restarting a script, in order to retain the original arguments. Each argument is wrapped wih quotes, which are stripped off as they are read back in. The return string has a leading space, by design, unless there are no arguments |
 
 ## VBSArrays
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Uniques | an array | an array | Returns an array with no duplicate items, given an array that may have some. |
 | Property | RemoveFirstElement | an array of strings | an array of strings | Returns a array without the first element of the specified array. |
 | Property | CollectionToArray | a collection of strings | array of strings | Can be used to convert the WScript.Arguments object to an array, for example. |
@@ -713,14 +727,14 @@ Functions related to VBScript command-line arguments
 ## VBSClipboard
 Clipboard procedures  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetClipboardText | a string | N/A | Copies the specified string to the clipboard. Uses clip.exe, which shipped with Windows&reg; Vista / Server 2003 through Windows 10. |
 | Property | GetClipboardText | None | a string | Returns text from the clipboard |
 
 ## VBSEnvironment
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Expand | a string | a string | Expands environment variable(s); e.g. convert %UserProfile% to C:\Users\user42 |
 | Property | Collapse | a string | a string | Collapses a string that may contain one or more substrings that can be shortened to an environment variable. |
 | Method | CreateUserVar | varName, varValue | N/A | Create or set a user environment variable |
@@ -756,8 +770,8 @@ Usage example:
   logger.OpenViewer 'open EventVwr.msc 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | Log | eventType, message | N/A | Adds an event entry to a log file with the specified message. This is the default method, so the method name is optional. |
 | Method | CreateCustomView | None | N/A | Creates a Custom View in the Event Viewer, eventvwr.msc, named WSH Logs. The User Account Control dialog will open, in order to confirm elevation of privileges. Based on VBSEventLoggerCustomView.xml. |
 | Method | OpenViewer | None | N/A | Opens the Windows&reg; Event Viewer, eventvwr.msc |
@@ -773,9 +787,9 @@ Usage example:
 ## VBSExtracter
 For extracting a string from a text file, given a regular expression  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Method | SetPattern | a regex pattern | N/A | Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  |</strong> must preceed the special character with a <strong>\</strong> |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Method | SetPattern | a regex pattern | N/A | Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  &#124;</strong> must preceed the special character with a <strong>&#092;</strong> |
 | Method | SetFile | filespec | N/A | Required. Specifies the file to extract text from. |
 | Method | SetIgnoreCase | a boolean | N/A | Set whether to ignore case when matching text. Default is False. |
 | Property | Extract | None | a string | Returns the first string that matches the specified regex pattern. Returns an empty string if there is no match. Before calling this method, you must specify the file and the pattern: see SetPattern and SetFile. |
@@ -784,8 +798,8 @@ For extracting a string from a text file, given a regular expression
 ## VBSFileSystem
 General utility functions  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | SBaseName | None | a file name, no extension | Returns the name of the calling script, without the file name extension. |
 | Property | SName | None | a file name | Returns the name of the calling script, including file name extension |
 | Property | SFullName | None | a filespec | Returns the filespec of the calling script |
@@ -795,17 +809,17 @@ General utility functions
 | Method | SetReferencePath | a path | N/A | Optional. Specifies the base path from which relative paths should be referenced. By default, the reference path is the parent folder of the calling script. See also Resolve and ResolveTo. |
 | Property | Resolve | a relative path | a resolved path | Resolves a relative path (e.g. "../lib/WMI.vbs"), to an absolute path (e.g. "C:\Users\user42\lib\WMI.vbs"). The relative path is by default relative to the parent folder of the calling script, but this behavior can be changed with SetReferencePath. See also property ResolveTo. |
 | Property | ResolveTo | relativePath, absolutePath | a resolved path | Resolves the specified relative path, e.g. "../lib/WMI.vbs", relative to the specified absolute path, and returns the resolved absolute path, e.g. "C:\Users\user42\lib\WMI.vbs". Environment variables are allowed. |
-| Property | Expand | a string | an expanded string | Expands environment strings. E.g. %WinDir% => C:\Windows |
+| Property | Expand | a string | an expanded string | Given a string which may contain environment variables, returns the string with environment variable(s) expanded. E.g. %WinDir% => C:\Windows |
 | Method | Elevate | command, arguments, folder | N/A | Runs the specified command with elevated privileges, with the specified arguments and working folder |
 | Property | FoldersAreTheSame | folder1, folder2 | a boolean | Determines whether the two specified folders are the same. If so, returns True. |
 | Method | DeleteFile | filespec | N/A | Deletes the specified file. |
-| Method | SetForceDelete | boolean | N/A | Controls the behavior of the DeleteFile method: Specify True to force a file deletion. Optional. Default is False. |
+| Method | SetForceDelete | boolean | N/A | Controls the behavior of the DeleteFile method: Specify True to force a file deletion even when the file is read-only. Optional. Default is False. |
 
 ## VBSHoster
 Manage which script host is hosting the currently running script  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | EnsureCScriptHost | None | N/A | Restart the script hosted with CScript if it isn't already hosted with CScript.exe |
 | Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. |
 | Method | SetDefaultHostWScript | None | N/A | Sets wscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges. |
@@ -833,8 +847,8 @@ Usage method two. This method has the advantage that the name of the calling scr
      log.Close 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | Log | a string | N/A | Opens the log file, writes the specified string, then closes the log file. This is the default method for the VBSLogger class. |
 | Method | SetLogFolder | a folder path | N/A | Optional. Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed. See GetDefaultLogFolder. |
 | Method | Open | None | N/A | Opens the log file for writing. The log file is opened and remains open for writing. While it is open, other processes/scripts will be unable to write to it. |
@@ -850,8 +864,8 @@ Usage method two. This method has the advantage that the name of the calling scr
 ## VBSPower
 Power functions: shutdown, restart, logoff, sleep, and hibernate.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Shutdown | None | a boolean | Shuts down the computer. Returns True if the operation completes with no errors. |
 | Property | Restart | None | a boolean | Restarts the computer. Returns True if the operation completes with no errors. |
 | Property | Logoff | None | a boolean | Logs off the computer. Returns True if the operation completes with no errors. |
@@ -865,8 +879,8 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 ## VBSStopwatch
 A timer  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | Split | None | a rounded number (Single) | Returns the seconds elapsed since object instantiation or since calling the Reset method. Split is the default Property. |
 | Method | SetPrecision | 0, 1, or 2 | N/A | Sets the number of decimal places to round the Split function return value. Default is 2. |
 | Property | GetPrecision | None | 0, 1, or 2 | Returns the current precision. |
@@ -891,26 +905,26 @@ Usage example
   
 See also TestingFramework  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | Run | None | N/A | Initiate the specified tests |
 | Method | SetSpecFolder | a folder | N/A | Optional. Specifies the folder containing the test files. Can be a relative path, relative to the calling script. Default is the parent folder of the calling script. |
-| Method | SetSpecPattern | wildcard(s) | N/A | Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124 delimiter. |
+| Method | SetSpecPattern | wildcard(s) | N/A | Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124; delimiter. |
 | Method | SetSpecFile | a file | N/A | Optional. Specifies a single file to test. Include the filename extension. E.g. SomeClass.spec.vbs. A relative path is OK, relative to the spec folder. If no spec file is specified, all test files matching the specified pattern will be run. See SetSpecPattern. |
 | Method | SetSearchSubfolders | a boolean | N/A | Optional. Specifies whether to search subfolders for test files. True or False. Default is False. |
 | Method | SetPrecision | 0, 1, or 2 | N/A | Optional. Sets the number of decimal places for reporting the elapsed time. Default is 2. |
 | Method | SetRunCount | an integer | N/A | Optional. Sets the number of times to run the test(s). Default is 1. |
 
 ## VBSTroubleshooter
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | LogAscii | a string | N/A | Write to the log the Ascii codes for each character in the specified string. |
 
 ## VBSValidator
 A working example of how validation can be accomplished.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetClassName | None | the class name | Returns                           "VBSValidator". Useful for verifying Err.Source in a unit test. |
 | Property | IsBoolean | a boolean candidate | a boolean | Returns True if the parameter is a boolean subtype; False if not. |
 | Property | EnsureBoolean | a boolean candidate | boolean | Raises an error if the parameter is not a boolean. Unless an error is raised, returns the same value passed to it. |
@@ -923,8 +937,8 @@ A working example of how validation can be accomplished.
 Pause Windows Updates to get more bandwidth. Don't forget to resume.  
 For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Method | PauseUpdates | None | N/A | Pauses Windows Updates. |
 | Method | ResumeUpdates | None | N/A | Resumes Windows Updates. |
 | Property | GetStatus | None | a string | Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name (internal name: profileName). |
@@ -936,9 +950,9 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 ## WMIUtility
 Examples of the Windows Management Instrumentation object  
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
-| Property | TerminateProcessById | process id | a boolean | Terminates any Windows&reg process with the specified id. Returns True if the process was found, False if not. |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | TerminateProcessById | process id | a boolean | Terminates any Windows&reg; process with the specified id. Returns True if the process was found, False if not. |
 | Property | TerminateProcessByIdAndName | id, name | a boolean | Terminates a process with the specified id and name. Returns True if the process was found, False if not. |
 | Method | TerminateProcessByIdAndNameDelayed | id, name, milliseconds | N/A | Terminates a process with the specified id (integer), name (string, e.g. notepad.exe), and delay (integer: milliseconds), asynchronously. |
 | Property | GetProcessIDsByName | a process name | a boolean | Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>. |
@@ -955,7 +969,7 @@ Examples of the Windows Management Instrumentation object
 ## WoWChecker
 Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.  
   
-How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.  
+How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.  
   
 Usage examples  
 ```vb
@@ -966,11 +980,12 @@ Usage examples
  MsgBox New WoWChecker 
 ```
   
-| Procedure | Name | Parameter | Return | Comment |
-| :-------- | :--- | :-------- | :----- | :------ |
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
 | Property | OSIs64Bit | None | a boolean | Returns a boolean that indicates whether the Windows OS is 64-bit. |
 | Property | isWoW | None | a boolean | Returns a boolean that indicates whether the calling script was itself called by a SysWoW64 (32-bit) .exe file. This is the class default property. |
 | Property | isSysWoW64 | None | a boolean | Wraps isWoW: Same as calling isWoW. |
 | Property | isSystem32 | None | a boolean | Returns the opposite of isSysWoW64 |
 | Property | BySize | None | an object self reference | Optional. Specifies that the .exe files will be compared by size. BySize will not distinguish between the 32- and 64-bit .exe files if they are the same size, which is unlikely but possible. ByCheckSum is therefore more reliable. |
 | Property | ByCheckSum | None | an object self reference | Selected by default. Specifies that the .exe files will be compared by checksum. ByCheckSum uses CertUtil, which ships with Windows&reg; 7 through 10, and can be manually installed on older versions. |
+| Property | File | None | a string | Optional. Sets or gets the name of the file used in comparisons. A file by this name must be found in both %SystemRoot%\System32 and %SystemRoot%\SysWoW64. The default is <code> cmd.exe</code>. |

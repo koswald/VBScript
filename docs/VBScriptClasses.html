@@ -14,6 +14,9 @@
          <h4 class="heading" id=0>Chooser</h4>
          <div class="detail">
             <p>Get a folder or file chosen by the user</p>
+            <p></p>
+            <strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net extenstions. See FolderChooser.cs and FileChooser.cs in the .Net folder.
+            <p></p>
             <p>Usage example</p>
             <p></p>
             <pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("Chooser")<br /> End With <br /><br /> Dim choose : Set choose = New Chooser <br /> MsgBox choose.folder <br /> MsgBox choose.file </pre>
@@ -23,7 +26,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -191,7 +194,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -239,9 +242,9 @@
       <div>
          <h4 class="heading" id=2>DocGenerator</h4>
          <div class="detail">
-            <p>Generate html and markdown documentation for VBScript code based on well-formed comments.</p>
+            <p>Generate html and markdown documentation for VBScript code based on well-formed code comments.</p>
             <p>Usage Example</p>
-            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
+            <pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "VBScriptClasses"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\class"<br />     .SetDocFolder = "..\docs"<br />     .Generate<br />     .ViewMarkdown<br /> End With</pre>
             <p></p>
             <p>Example of well-formed comments before a Sub statement</p>
             <p> Note: A remark is required for Methods (Subs).</p>
@@ -252,20 +255,22 @@
             <p></p>
             <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
             <p>Notes for the comment syntax at the beginning of a script</p>
-            Use a single quote (') for general comments <br />
+            Use a single quote ( ' ) for general comments <br />
             - use a single quote by itself for an empty line <br />
             - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
             - Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
             <p></p>
             Use three single quotes for remarks that should not appear in the documentation <br />
             <p></p>
-            <p>Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.</p>
+            <p>Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.</p>
             <p></p>
-            WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>
+            <p>Include a vertical bar ( &#124; ) in comments with &amp;#124;</p>
+            <p></p>
+            <p>Visual Studio and VS Code extensions may render differently than Git-Flavored Markdown.</p>
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -318,13 +323,27 @@
                   <td>View</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Open the documentation file for viewing</td>
+                  <td>Open the html document in the default viewer. Same as ViewHtml.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>ViewHtml</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Open the html document in the default viewer. Same as View method.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>ViewMarkdown</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Open the markdown document in the default viewer.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>Colorize</td>
-                  <td>-</td>
-                  <td>-</td>
+                  <td>boolean</td>
+                  <td>boolean</td>
                   <td>Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.</td>
                </tr>
             </table>
@@ -343,7 +362,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -352,16 +371,16 @@
                <tr>
                   <td>Property</td>
                   <td>XmlFolder</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Required. Gets or sets the folder containing the .xml files autogenerated by the C# compiler. Relative paths and environment variables are supported.</td>
+                  <td>folder</td>
+                  <td>folder</td>
+                  <td>Required. Sets (or gets) the folder containing the .xml files autogenerated by the C# compiler. Relative paths and environment variables are supported.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>OutputFile</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Required. Gets or sets the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.</td>
+                  <td>filespec</td>
+                  <td>filespec</td>
+                  <td>Required. Sets (or gets) the path and base name of the output files. Do not include the .html or .md extension name: they will be added automatically. Older versions, if any, will be overwritten. Relative paths and environment variables are supported.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -399,7 +418,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -490,11 +509,13 @@
          <h4 class="heading" id=5>EscapeMd</h4>
          <div class="detail">
             <p>EscapeMd and EscapeMd2 Functions</p>
-            <p>Escapes markdown special characters.</p>
+            <p>Escape markdown special characters.</p>
+            <p>Usage example</p>
+            <pre>    Dim includer : Set includer = CreateObject("VBScripting.Includer")<br />    ExecuteGlobal includer.Read("EscapeMD")<br />    MsgBox EscapeMd("```") ' \`\`\`</pre>
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -527,7 +548,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -566,7 +587,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -627,7 +648,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -659,7 +680,7 @@
                   <td>LibraryPath</td>
                   <td>None</td>
                   <td>a folder path</td>
-                  <td>Returns the resolved, absolute path of the folder that contains Includer.wsc, which is the reference for relative paths passed to the Read and ReadFrom methods.</td>
+                  <td>Returns the resolved, absolute path of the <code> class</code> folder, which is the reference for relative paths passed to the Read method.</td>
                </tr>
             </table>
          </div>
@@ -668,11 +689,11 @@
       <div>
          <h4 class="heading" id=9>KeyDeleter</h4>
          <div class="detail">
-            <p>Deletes a registry key and all of its subkeys.</p>
+            <p>Provides a method for deleting a registry key and all of its subkeys.</p>
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -732,7 +753,7 @@
                   <td>Delete</td>
                   <td>a boolean</td>
                   <td>a boolean</td>
-                  <td>Gets or sets the boolean that controls whether the key is actually deleted.</td>
+                  <td>Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing.</td>
                </tr>
             </table>
          </div>
@@ -743,7 +764,7 @@
          <div class="detail">
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -753,7 +774,7 @@
                   <td>Property</td>
                   <td>Pi</td>
                   <td>None</td>
-                  <td>3.14159...</td>
+                  <td>3.14159265358979</td>
                   <td>None</td>
                </tr>
                <tr>
@@ -783,7 +804,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -951,7 +972,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -978,7 +999,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -989,7 +1010,7 @@
                   <td>Pattern</td>
                   <td>wildcard</td>
                   <td>a regex expression</td>
-                  <td>Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |.</td>
+                  <td>Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with &#124;</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -1058,7 +1079,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1229,7 +1250,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1290,7 +1311,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1451,7 +1472,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1476,7 +1497,7 @@
                   <td>Pluralize</td>
                   <td>count, noun</td>
                   <td>a string</td>
-                  <td>Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring | red herrings", "|")</code>.</td>
+                  <td>Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring &#124; red herrings", "&#124;")</code>.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -1507,7 +1528,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1603,7 +1624,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1779,7 +1800,7 @@
          <div class="detail">
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1834,15 +1855,15 @@
       <div>
          <h4 class="heading" id=21>ValidFileName</h4>
          <div class="detail">
-            <p>Provides for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
+            <p>VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
-            <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .Read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
+            <pre>     With CreateObject("VBScripting.Includer") <br />         ExecuteGlobal .Read("ValidFileName") <br />     End With <br />  <br />     MsgBox GetValidFileName("test\ing") 'test-ing </pre>
             <p></p>
             <p>ValidFileName.vbs provides an example of introductory comments in a script that lacks a Class statement: With DocGenerator.vbs, a line beginning with '''' (four single quotes) may be used instead of a Class statement, in order to end the introductory comments section.</p>
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -1853,7 +1874,21 @@
                   <td>GetValidFileName</td>
                   <td>a file name candidate</td>
                   <td>a valid file name</td>
-                  <td>Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > | %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config.</td>
+                  <td>Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > &#124; %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>InvalidWindowsFilenameChars</td>
+                  <td>None</td>
+                  <td>an array</td>
+                  <td>Returns an array of characters that are not allowed in Windows&reg; filenames.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>InvalidChromeFilenameStrings</td>
+                  <td>None</td>
+                  <td>an array</td>
+                  <td>Returns an array of strings, any one of which if included in the filename of a local .html file, Chrome will not open the file.</td>
                </tr>
             </table>
          </div>
@@ -1881,7 +1916,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2011,21 +2046,21 @@
                   <td>WScriptHost</td>
                   <td>None</td>
                   <td>"wscript.exe"</td>
-                  <td>Can be used as an argument for the method RestartIfNotPrivileged.</td>
+                  <td>Can be used as an argument for the method RestartWith.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>CScriptHost</td>
                   <td>None</td>
                   <td>"cscript.exe"</td>
-                  <td>Can be used as an argument for the method RestartIfNotPrivileged.</td>
+                  <td>Can be used as an argument for the method RestartWith.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>GetHost</td>
                   <td>None</td>
                   <td>"wscript.exe" or "cscript.exe" or "mshta.exe"</td>
-                  <td>Returns the current host. Can be used as an argument for the method RestartIfNotPrivileged.</td>
+                  <td>Returns the current host. Can be used as an argument for the method RestartWith.</td>
                </tr>
             </table>
          </div>
@@ -2038,7 +2073,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2060,7 +2095,7 @@
          <div class="detail">
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2098,7 +2133,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2127,7 +2162,7 @@
          <div class="detail">
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2228,7 +2263,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2322,7 +2357,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2333,7 +2368,7 @@
                   <td>SetPattern</td>
                   <td>a regex pattern</td>
                   <td>N/A</td>
-                  <td>Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  |</strong> must preceed the special character with a <strong>\</strong></td>
+                  <td>Required. Specifies the text to be extracted. Non-regex expressions containing any of the regex special characters <strong>(  )  .  $  +  [  ?  \  ^  {  &#124;</strong> must preceed the special character with a <strong>&#092;</strong></td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -2374,7 +2409,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2448,7 +2483,7 @@
                   <td>Expand</td>
                   <td>a string</td>
                   <td>an expanded string</td>
-                  <td>Expands environment strings. E.g. %WinDir% => C:\Windows</td>
+                  <td>Given a string which may contain environment variables, returns the string with environment variable(s) expanded. E.g. %WinDir% => C:\Windows</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -2476,7 +2511,7 @@
                   <td>SetForceDelete</td>
                   <td>boolean</td>
                   <td>N/A</td>
-                  <td>Controls the behavior of the DeleteFile method: Specify True to force a file deletion. Optional. Default is False.</td>
+                  <td>Controls the behavior of the DeleteFile method: Specify True to force a file deletion even when the file is read-only. Optional. Default is False.</td>
                </tr>
             </table>
          </div>
@@ -2489,7 +2524,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2548,7 +2583,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2642,7 +2677,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2722,7 +2757,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2771,7 +2806,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2796,7 +2831,7 @@
                   <td>SetSpecPattern</td>
                   <td>wildcard(s)</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124 delimiter.</td>
+                  <td>Optional. Specifies which file types to run. Default is *.spec.vbs. Standard wildcard notation with &#124; delimiter.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -2835,7 +2870,7 @@
          <div class="detail">
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2859,7 +2894,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2926,7 +2961,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -2992,7 +3027,7 @@
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -3003,7 +3038,7 @@
                   <td>TerminateProcessById</td>
                   <td>process id</td>
                   <td>a boolean</td>
-                  <td>Terminates any Windows&reg process with the specified id. Returns True if the process was found, False if not.</td>
+                  <td>Terminates any Windows&reg; process with the specified id. Returns True if the process was found, False if not.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -3098,14 +3133,14 @@
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.</p>
             <p></p>
-            <p>How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script must be running in a 32-bit process.</p>
+            <p>How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.</p>
             <p></p>
             <p>Usage examples</p>
             <pre> MsgBox New WoWChecker.BySize.isWoW <br /> MsgBox New WoWChecker.isWoW <br /> With New WoWChecker : .BySize : MsgBox .isWoW : End With <br /> With New WoWChecker.BySize : MsgBox .isWoW : End With <br /> MsgBox New WoWChecker </pre>
             <p></p>
             <table>
                <tr>
-                  <th>Procedure type</th>
+                  <th>Member type</th>
                   <th>Name</th>
                   <th>Parameter(s)</th>
                   <th>Return value</th>
@@ -3152,6 +3187,13 @@
                   <td>None</td>
                   <td>an object self reference</td>
                   <td>Selected by default. Specifies that the .exe files will be compared by checksum. ByCheckSum uses CertUtil, which ships with Windows&reg; 7 through 10, and can be manually installed on older versions.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>File</td>
+                  <td>None</td>
+                  <td>a string</td>
+                  <td>Optional. Sets or gets the name of the file used in comparisons. A file by this name must be found in both %SystemRoot%\System32 and %SystemRoot%\SysWoW64. The default is <code> cmd.exe</code>.</td>
                </tr>
             </table>
          </div>

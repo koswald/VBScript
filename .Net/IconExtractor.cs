@@ -153,7 +153,7 @@ namespace VBScripting
         }
     }
 
-    /// <summary> A COM Interface for VBScripting.IconExtractor. </summary>
+    /// <summary> A COM Interface for VBScripting.IconExtractor </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-6BF8-495F-AB4D-6C61BD463EA4")]
     public interface IIconExtractor

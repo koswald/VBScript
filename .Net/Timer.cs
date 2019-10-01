@@ -62,7 +62,7 @@ namespace VBScripting
             set { Interval = Convert.ToInt32(value*3600000); }
         }
     }
-    /// <summary> COM interface for VBScripting.Timer. </summary>
+    /// <summary> COM interface for VBScripting.Timer </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-C021-495F-AB4D-6C61BD463EA4")]
     public interface ITimer

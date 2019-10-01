@@ -8,12 +8,12 @@ sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
 Set fso = Nothing
 
 With New DocGenerator
- .SetTitle "VBScript Utility Classes Documentation"
- .SetScriptFolder "..\class" 'location of the scripts to document, relative to this script
- .SetFilesToDocument "*.vbs | *.wsf | *.wsc" 'filename(s) of the scripts to document
- .SetDocFolder "..\docs" 'location of the target documentation file, relative to this script
- .SetDocName "VBScriptClasses"
- .Generate
+    .SetTitle "VBScript Utility Classes Documentation"
+    .SetScriptFolder "..\class" 'location of the scripts to document, relative to this script
+    .SetFilesToDocument "*.vbs | *.wsf | *.wsc" 'filename(s) of the scripts to document
+    .SetDocFolder "..\docs" 'location of the target documentation file, relative to this script
+    .SetDocName "VBScriptClasses"
+    .Generate
 End With
 
 sh.PopUp "Done generating the VBScripting classes docs.", 3, WScript.ScriptName, vbInformation + vbSystemModal

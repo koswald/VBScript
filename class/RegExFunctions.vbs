@@ -23,7 +23,7 @@ Class RegExFunctions
     'Function Pattern
     'Parameter: wildcard
     'Returns: a regex expression
-    'Remark: Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with |.
+    'Remark: Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with &#124;
     Function Pattern(wildcard)
         'See docs\algorithm\ReadMe.md for more comments
         Dim i, arrwp, wp : wp = wildcard '=> wildcard-to-pattern

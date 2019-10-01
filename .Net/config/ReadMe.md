@@ -30,5 +30,4 @@ To undo the index update, run the `update-index` command as above except with `-
 
 
 [exeLocations]: ./exeLocations.bat
-[CreateEventSource]: ./CreateEventSource.vbs
 [ReadMe]: ../build/ReadMe.md

@@ -46,7 +46,6 @@ In order to sign the output files,
     of the project folders.
 - See the [config folder ReadMe] for git configuration recommendations.
 
-[DotNetCompiler.config]: ../../class/DotNetCompiler.config "../../class/DotNetCompiler.config"
 [exeLocations.bat]: ../config/exeLocations.bat "../config/exeLocations.bat"
 [_common.rsp]: ../rsp/_common.rsp
 [config folder ReadMe]: ../config/ReadMe.md#recommended-git-configuration

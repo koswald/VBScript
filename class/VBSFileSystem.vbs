@@ -114,7 +114,7 @@ Class VBSFileSystem
     'Property Expand
     'Returns an expanded string
     'Parameter: a string
-    'Remark: Expands environment strings. E.g. %WinDir% => C:\Windows
+    'Remark: Given a string which may contain environment variables, returns the string with environment variable(s) expanded. E.g. %WinDir% => C:\Windows
     Property Get Expand(str) : Expand = sh.ExpandEnvironmentStrings(str) : End Property
 
     'Method Elevate
@@ -141,7 +141,7 @@ Class VBSFileSystem
 
     'Method SetForceDelete
     'Parameter: boolean
-    'Remark: Controls the behavior of the DeleteFile method: Specify True to force a file deletion. Optional. Default is False.
+    'Remark: Controls the behavior of the DeleteFile method: Specify True to force a file deletion even when the file is read-only. Optional. Default is False.
     Sub SetForceDelete(newForceDelete)
         forceDelete = newForceDelete
     End Sub

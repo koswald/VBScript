@@ -226,7 +226,7 @@ namespace VBScripting
 
         private object balloonTipCallback;
         
-        /// <summary> Sets the VBScript callback Sub or Function reference. </summary>
+        /// <summary> Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. </summary>
         /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre></remarks>
         public void SetBalloonTipCallback(object callbackRef)
         {
@@ -234,7 +234,7 @@ namespace VBScripting
         }
     }
 
-    /// <summary> The COM interface for NotifyIcon. </summary>
+    /// <summary> The COM interface for VBScripting.NotifyIcon </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-5BF8-495F-AB4D-6C61BD463EA4")]
     public interface INotifyIcon

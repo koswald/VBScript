@@ -1,6 +1,9 @@
 'EscapeMd and EscapeMd2 Functions
 
-'Escapes markdown special characters.
+'Escape markdown special characters.
+
+'Usage example
+'<pre>    Dim includer : Set includer = CreateObject("VBScripting.Includer")<br />    ExecuteGlobal includer.Read("EscapeMD")<br />    MsgBox EscapeMd("```") ' \`\`\`</pre>
 '
 ''''
 

@@ -1,12 +1,15 @@
 
 'Get a folder or file chosen by the user
-
+'
+'<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net extenstions. See FolderChooser.cs and FileChooser.cs in the .Net folder.
+'
 'Usage example
 '
 '<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("Chooser")<br /> End With <br /><br /> Dim choose : Set choose = New Chooser <br /> MsgBox choose.folder <br /> MsgBox choose.file </pre>
 '
 'Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.
 'Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.
+
 '
 Class Chooser
 

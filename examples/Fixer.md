@@ -49,8 +49,8 @@ have no effect: the command stays at
 `...\SysWow64\...`. One way to force Fixer.hta 
 to open with the 64-bit mshta.exe, is
 
-- Press Win + X, R (to open the Run dialog)
-- Type `mshta "<project folder>\examples\Fixer.hta"`
+- Open a cmd.exe console window at %SystemRoot%\System32
+- Type `mshta.exe "<project folder>\examples\Fixer.hta"`
 
 <br>
 <br>

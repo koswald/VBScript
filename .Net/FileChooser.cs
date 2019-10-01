@@ -232,7 +232,7 @@ namespace VBScripting
         }
     }
 
-    /// <summary> The COM interface for FileChooser </summary>
+    /// <summary> The COM interface for VBScripting.FileChooser </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-3BF8-495F-AB4D-6C61BD463EA4")]
     public interface IFileChooser

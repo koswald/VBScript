@@ -200,7 +200,7 @@ namespace VBScripting
         public int Unexpected { get { return 4; } private set { } }
     }
 
-    /// <summary> The COM interface for <tt>VBScripting.SpeechSynthesis</tt>. </summary>
+    /// <summary> The COM interface for <tt>VBScripting.SpeechSynthesis</tt> </summary>
     [Guid("2650C2AB-2BF8-495F-AB4D-6C61BD463EA4")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     public interface ISpeechSynthesis

@@ -12,7 +12,7 @@ using System.IO;
 
 namespace VBScripting
 {
-    /// <summary> COM interface for FolderChooser. </summary>
+    /// <summary> COM interface for VBScripting.FolderChooser </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-B1F8-495F-AB4D-6C61BD463EA4")]
     public interface IFolderChooser

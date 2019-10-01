@@ -1,7 +1,7 @@
-'Generate html and markdown documentation for VBScript code based on well-formed comments.
+'Generate html and markdown documentation for VBScript code based on well-formed code comments.
 
 'Usage Example
-'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "TheDocs"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\..\class"<br />     .SetDocFolder = "..\.."<br />     .Generate<br />     .View<br /> End With</pre>
+'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "VBScriptClasses"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\class"<br />     .SetDocFolder = "..\docs"<br />     .Generate<br />     .ViewMarkdown<br /> End With</pre>
 '
 'Example of well-formed comments before a Sub statement
 ' Note: A remark is required for Methods (Subs).
@@ -15,19 +15,18 @@
 
 'Notes for the comment syntax at the beginning of a script
 
-'Use a single quote (') for general comments <br />
+'Use a single quote ( ' ) for general comments <br />
 '- use a single quote by itself for an empty line <br />
 '- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
 '- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
 '
 'Use three single quotes for remarks that should not appear in the documentation <br />
 '
-'Use four single quotes (''''), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
+'Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
 '
-'WORK IN PROGRESS Include a vertical bar (&#124;) in comments markdown with <code>&#124;</code>
-''' Visual Studio markdown add-in and Git-Flavored markdown may render differently.
-''' A vertical bar may be in comments for 
-'''     DocGenerator (VBScript) class (usage example and SetFilesToDocument method).
+'Include a vertical bar ( &#124; ) in comments with &amp;#124;
+'
+'Visual Studio and VS Code extensions may render differently than Git-Flavored Markdown.
 '
 
 Class DocGenerator
@@ -199,9 +198,19 @@ Class DocGenerator
     End Sub
 
     'Method View
-    'Remark: Open the documentation file for viewing
+    'Remark: Open the html document in the default viewer. Same as ViewHtml.
     Sub View
         sh.Run """" & docFile & """"
+    End Sub
+
+    'Method ViewHtml
+    'Remark: Open the html document in the default viewer. Same as View method.
+    Sub ViewHtml : View : End Sub
+
+    'Method ViewMarkdown
+    'Remark: Open the markdown document in the default viewer.
+    Sub ViewMarkdown
+        sh.Run """" & docFolder & "\" & docName & ".md"""
     End Sub
 
     Private Sub WriteScriptSection(File)
@@ -274,15 +283,15 @@ Class DocGenerator
         IndentIncrease
         WriteLine "<tr>"
         IndentIncrease
-        WriteLine "<th>Procedure type</th>"
+        WriteLine "<th>Member type</th>"
         WriteLine "<th>Name</th>"
         WriteLine "<th>Parameter(s)</th>"
         WriteLine "<th>Return value</th>"
         WriteLine "<th>Comment</th>"
         IndentDecrease
         WriteLine "</tr>"
-        md.WriteLine "| Procedure | Name | Parameter | Return | Comment |"
-        md.WriteLine "| :-------- | :--- | :-------- | :----- | :------ |"
+        md.WriteLine "| Member type | Name | Parameter | Returns | Comment |"
+        md.WriteLine "| :---------- | :--- | :-------- | :------ | :------ |"
         TableHeaderWritten = True
     End Sub
 
@@ -319,7 +328,7 @@ Class DocGenerator
     Function GetNowrap(markup)
         Dim lines : lines = markup
         lines = Replace(lines, "<br />", "<br/>")
-        lines = Replace(lines, " ", " ") 'Alt+0160 = non-breaking space
+        lines = Replace(lines, " ", "ï¿½") 'Alt+0160 = non-breaking space
         lines = Replace(lines, "<pre>", "<pre><code style='white-space: nowrap;'>")
         lines = Replace(lines, "</pre>", "</code></pre>")
         GetNowrap = lines
@@ -336,8 +345,8 @@ Class DocGenerator
     End Function
 
     'Property Colorize
-    'Parameters: -
-    'Returns: -
+    'Parameters: boolean
+    'Returns: boolean
     'Remarks: Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.
     Property Get Colorize : Colorize = colorize_ : End Property
     Property Let Colorize(value) : colorize_ = value : End Property

@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace VBScripting
 {
-    /// <summary> A COM Interface for VBScripting.EventLogger. </summary>
+    /// <summary> A COM Interface for VBScripting.EventLogger </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-1BF8-495F-AB4D-6C61BD463EA4")]
     public interface IEventLogger

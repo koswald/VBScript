@@ -41,7 +41,7 @@ Class StringFormatter
     'Property Pluralize
     'Parameters: count, noun
     'Returns a string
-    'Remark: Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring | red herrings", "|")</code>.
+    'Remark: Returns a string that may or may not be pluralized, depending on the specified count. If the noun has irregular pluralization, pass in a two-element array: <code> Split("person people")</code>. Otherwise, you may pass in either a singular noun as a string, <code> red herring</code>, or else a two-element array, <code> Split("red herring &#124; red herrings", "&#124;")</code>.
     Property Get Pluralize(count, noun_)
         Dim s : s = count & " "
         Dim noun : noun = noun_

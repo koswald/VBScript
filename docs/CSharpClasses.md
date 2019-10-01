@@ -56,7 +56,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IEventLogger | A COM Interface for VBScripting.EventLogger.  |  |  | Type | | VBScripting |
+| IEventLogger | A COM Interface for VBScripting.EventLogger  |  |  | Type | | VBScripting |
 | EventLogger | Provides system logging for VBScript.  |  |  | Type | | VBScripting |
 | log | Writes the specified message to the Application event log.  |  | message | Method | EventLogger | VBScripting |
 
@@ -65,7 +65,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | FileChooser | Provides a file chooser dialog for VBScript.  |  |  | Type | | VBScripting |
-| IFileChooser | The COM interface for FileChooser  |  |  | Type | | VBScripting |
+| IFileChooser | The COM interface for VBScripting.FileChooser  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | FileChooser | VBScripting |
 | FileName | Opens a dialog enabling the user to browse for and choose a file. Returns the filespec of the chosen file. Returns an empty string if the user cancels. |  |  | Property | FileChooser | VBScripting |
 | FileNames | Opens a dialog enabling the user to browse for and choose multiple files. Gets a string array of filespecs. Returns an empty array if the user cancels. Requires Multiselect to have been set to True. |  |  | Property | FileChooser | VBScripting |
@@ -85,7 +85,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IFolderChooser | COM interface for FolderChooser.  |  |  | Type | | VBScripting |
+| IFolderChooser | COM interface for VBScripting.FolderChooser  |  |  | Type | | VBScripting |
 | FolderChooser | Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory.  |  |  | Property | FolderChooser | VBScripting |
 | Title | Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser | VBScripting |
@@ -95,7 +95,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IFolderChooser2 | COM interface for FolderChooser2.  |  |  | Type | | VBScripting |
+| IFolderChooser2 | COM interface for VBScripting.FolderChooser2  |  |  | Type | | VBScripting |
 | FolderChooser2 | Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. |  |  | Property | FolderChooser2 | VBScripting |
 | Title | Sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser2 | VBScripting |
@@ -106,7 +106,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | IconExtractor | Extracts an icon from a .dll or .exe file. <span class="red"> Not all members of this class are accessible to VBScript. </span> |  |  | Type | | VBScripting |
-| IIconExtractor | A COM Interface for VBScripting.IconExtractor.  |  |  | Type | | VBScripting |
+| IIconExtractor | A COM Interface for VBScripting.IconExtractor  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor.  |  |  | Method | IconExtractor | VBScripting |
 | Save | Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. |  | resFile, index, icoFile, largeIcon | Method | IconExtractor | VBScripting |
 | SetImageFormatBmp | Change the image format to BMP. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
@@ -122,7 +122,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | NotifyIcon | Provides a system tray icon for VBScript, for illustration purposes.  |  |  | Type | | VBScripting |
-| INotifyIcon | The COM interface for NotifyIcon.  |  |  | Type | | VBScripting |
+| INotifyIcon | The COM interface for VBScripting.NotifyIcon  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | NotifyIcon | VBScripting |
 | SetIconByIcoFile | Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. |  | fileName | Method | NotifyIcon | VBScripting |
 | SetIconByDllFile | Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. |  | fileName, index, largeIcon | Method | NotifyIcon | VBScripting |
@@ -134,7 +134,7 @@
 | DisableMenuItem | Disable a menu item  |  |  | Method | NotifyIcon | VBScripting |
 | EnableMenuItem | Enable a menu item  |  |  | Method | NotifyIcon | VBScripting |
 | ShowContextMenu | Show the context menu. Public in order to provide testability from VBScript. |  |  | Method | NotifyIcon | VBScripting |
-| SetBalloonTipCallback | Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> |  |  | Method | NotifyIcon | VBScripting |
+| SetBalloonTipCallback | Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> |  |  | Method | NotifyIcon | VBScripting |
 | Text | Gets or sets the text shown when the mouse hovers over the system tray icon.  |  |  | Property | NotifyIcon | VBScripting |
 | Visible | Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings. |  |  | Property | NotifyIcon | VBScripting |
 | BalloonTipTitle | Gets or sets the title of the "balloon tip" or notification.  |  |  | Property | NotifyIcon | VBScripting |
@@ -160,7 +160,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | ProgressBar | Supplies a progress bar to VBScript, for illustration purposes.  |  |  | Type | | VBScripting |
-| IProgressBar | Exposes the ProgressBar members to COM/VBScript.  |  |  | Type | | VBScripting |
+| IProgressBar | Exposes the VBScripting.ProgressBar members to COM/VBScript.  |  |  | Type | | VBScripting |
 | PerformStep | Advances the progress bar one step.  |  |  | Method | ProgressBar | VBScripting |
 | FormSize | Sets the size of the window.  |  | width, height | Method | ProgressBar | VBScripting |
 | PBarSize | Sets the size of the progress bar.  |  | width, height | Method | ProgressBar | VBScripting |
@@ -195,7 +195,8 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | SpeechSynthesis | Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. |  |  | Type | | VBScripting |
-| ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>.  |  |  | Type | | VBScripting |
+| ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>
+  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | SpeechSynthesis | VBScripting |
 | Speak | Convert text to speech. This method is synchronous. |  |  | Method | SpeechSynthesis | VBScripting |
 | SpeakAsync | Convert text to speech. This method is asynchronous. |  |  | Method | SpeechSynthesis | VBScripting |
@@ -219,7 +220,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Timer | Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  |  |  | Type | | VBScripting |
-| ITimer | COM interface for VBScripting.Timer.  |  |  | Type | | VBScripting |
+| ITimer | COM interface for VBScripting.Timer  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | Timer | VBScripting |
 | Start | Starts or restarts the timer.  |  |  | Method | Timer | VBScripting |
 | Stop | Stops the timer.  |  |  | Method | Timer | VBScripting |
@@ -234,7 +235,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Watcher | Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
-| IWatcher | The COM interface for VBScripting.Watcher.  |  |  | Type | | VBScripting |
+| IWatcher | The COM interface for VBScripting.Watcher  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  |  |  | Method | Watcher | VBScripting |
 | Dispose | Disposes of the object's resources.  |  |  | Method | Watcher | VBScripting |
 | MonitorOff | Turn off the monitor(s).  |  |  | Method | Watcher | VBScripting |
