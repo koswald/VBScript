@@ -18,7 +18,7 @@ Function GetValidFileName(fileNameCandidate)
     Set includer = Nothing
     Dim arr, i, x : x = fileNameCandidate
     arr = InvalidWindowsFilenameChars
-    If "Empty" = TypeName(arr) Then Err.Raise 1,, "Use ExecuteGlobal, not Execute, with Function-based scripts like ValidFileName.vbs"
+    If "Empty" = TypeName(arr) Then Err.Raise 1,, "Use ExecuteGlobal, not Execute, with Function-based scripts like ValidFileName.vbs, when scope is not global."
     For i = 0 to UBound(arr)
         x = Replace(x, arr(i), "-")
     Next
