@@ -10,7 +10,7 @@ Sub Main
 
         .describe "ValidFileName.vbs"
 
-        .it "should raise an error when Execute is used" 'to instantiate ValidFileName.vbs functions when scope is not global
+        .it "should raise an error when Execute is used with non-global scope"
             Execute includer.read("ValidFileName")
             On Error Resume Next
                 Dim x : x = GetValidFileName("xx")
