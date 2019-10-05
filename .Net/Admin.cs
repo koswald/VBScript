@@ -1,5 +1,5 @@
 // admin utility for VBScript
-// requires assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll" or similar
+// requires assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll"
 
 using System.Diagnostics;
 using System.Security.Principal;
@@ -39,9 +39,9 @@ namespace VBScripting
             get { return PrivilegesAreElevated; }
         }
 
-        /// <summary> Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.</summary>
+        /// <summary> Gets whether the current user is in the Administrator group (on the current machine). Slow. May take five seconds or longer. Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.</summary>
         // requires using statement: System.DirectoryServices.AccountManagement
-        // requires assembly reference: C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.DirectoryServices.AccountManagement.dll
+        // requires assembly reference: C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll
         public static bool IsAdministrator()
         {
             using (var pc = new PrincipalContext(ContextType.Machine, Environment.UserDomainName))
@@ -53,7 +53,7 @@ namespace VBScripting
             }
         }
         /// <summary> </summary>
-        // VBScript wrapper for the static IsAdministrator
+        // VBScript/COM wrapper for the static IsAdministrator
         public bool isAdministrator()
         {
             return IsAdministrator();

@@ -1,5 +1,5 @@
 
-# csc.exe switches for IconExtractor.cs
+# csc.exe compiler switches for IconExtractor.cs
 
 /target:library
 /out:..\lib\IconExtractor.dll

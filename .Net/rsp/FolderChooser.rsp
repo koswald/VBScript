@@ -1,5 +1,5 @@
 
-# csc.exe switches for FolderChooser.cs
+# csc.exe compiler switches for FolderChooser.cs
 
 /target:library
 /out:..\lib\FolderChooser.dll
