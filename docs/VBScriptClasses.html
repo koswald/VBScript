@@ -309,7 +309,7 @@
                   <td>SetFilesToDocument</td>
                   <td>wildcard(s)</td>
                   <td>N/A</td>
-                  <td>Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;</td>
+                  <td>Specifies which files to document. Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -344,7 +344,7 @@
                   <td>Colorize</td>
                   <td>boolean</td>
                   <td>boolean</td>
-                  <td>Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.</td>
+                  <td>Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.</td>
                </tr>
             </table>
          </div>
@@ -355,9 +355,8 @@
          <div class="detail">
             <p> DocGeneratorCS class</p>
             <p></p>
-             Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />
-             Four base tags are supported: summary, parameters, returns, and remarks.<br />
-             Within these tags, html tags are supported. <br />
+             Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash ( /// ) code comments.<br />
+             Four base tags are supported: summary, parameters, returns, and remarks. Within these tags, html tags are allowed, although Markdown typically does not render all html tags. <br />
             <p> Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.</p>
             <p></p>
             <table>
@@ -412,7 +411,7 @@
          <div class="detail">
             <p>Provides various properties to analyze a file's encoding. </p>
             <p></p>
-            <p>FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a very bad assumption.</p>
+            <p>FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.</p>
             <p></p>
             <p>Usage example</p>
             <pre>With CreateObject("VBScripting.Includer")<br />    Execute .read("EncodingAnalyzer")<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>

@@ -49,7 +49,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| ComEvent | Invokes VBS members from C#. <span class="red"> This class is not accessible from VBScript. </span>  |  |  | Type | | VBScripting |
+| ComEvent | Invokes VBS members from C#. <span> This class is not accessible from VBScript. </span>  |  |  | Type | | VBScripting |
 | InvokeComCallback | Invokes a VBScript method. The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. |  | callbackRef | Method | ComEvent | VBScripting |
 
 ## EventLogger
@@ -89,7 +89,7 @@
 | FolderChooser | Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory.  |  |  | Property | FolderChooser | VBScripting |
 | Title | Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser | VBScripting |
-| FolderName | Opens a dialog and returns the folder selected by the user.  | a path |  | Property | FolderChooser | VBScripting |
+| FolderName | Opens a dialog and returns the folder selected by the user. Returns an empty string if the user cancels.  | a path |  | Property | FolderChooser | VBScripting |
 
 ## FolderChooser2
 
@@ -99,19 +99,19 @@
 | FolderChooser2 | Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. |  |  | Property | FolderChooser2 | VBScripting |
 | Title | Sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser2 | VBScripting |
-| FolderName | Opens a dialog and returns the folder selected by the user.  | a path |  | Property | FolderChooser2 | VBScripting |
+| FolderName | Opens a dialog and returns the folder selected by the user. Returns an empty string if the user cancels.  | a path |  | Property | FolderChooser2 | VBScripting |
 
 ## IconExtractor
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IconExtractor | Extracts an icon from a .dll or .exe file. <span class="red"> Not all members of this class are accessible to VBScript. </span> |  |  | Type | | VBScripting |
+| IconExtractor | Extracts an icon from a .dll or .exe file. <span> Not all members of this class are accessible to VBScript. </span> |  |  | Type | | VBScripting |
 | IIconExtractor | A COM Interface for VBScripting.IconExtractor  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor.  |  |  | Method | IconExtractor | VBScripting |
 | Save | Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. |  | resFile, index, icoFile, largeIcon | Method | IconExtractor | VBScripting |
 | SetImageFormatBmp | Change the image format to BMP. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
 | SetImageFormatPng | Change the image format to PNG. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
-| Extract | Extracts an icon from the specified .dll or .exe file. <span class="red"> This method is static and so it is not directly available to VBScript. </span> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
+| Extract | Extracts an icon from the specified .dll or .exe file. <span> This method is static and so it is not directly available to VBScript. </span> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
 | IconCount | Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. | an int | filespec (.dll or .exe) | Method | IconExtractor | VBScripting |
 | GetPointer | Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. | integer | file, index, largeIcon | Method | IconExtractor | VBScripting |
 | ExtractIcon | Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). | Icon | integer | Method | IconExtractor | VBScripting |

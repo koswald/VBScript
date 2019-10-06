@@ -165,19 +165,18 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 | Method | SetDocFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK. |
 | Method | SetDocName | a filename | N/A | Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name. |
 | Method | SetTitle | a string | N/A | Required. Must be set before calling the Generate method. Sets the title for the documentation. |
-| Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
+| Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document. Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
 | Method | Generate | None | N/A | Generate comment-based documentation for the scripts in the specified folder. |
 | Method | View | None | N/A | Open the html document in the default viewer. Same as ViewHtml. |
 | Method | ViewHtml | None | N/A | Open the html document in the default viewer. Same as View method. |
 | Method | ViewMarkdown | None | N/A | Open the markdown document in the default viewer. |
-| Property | Colorize | boolean | boolean | Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
+| Property | Colorize | boolean | boolean | Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
 
 ## DocGeneratorCS
  DocGeneratorCS class  
   
- Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash (///) code comments.<br />  
- Four base tags are supported: summary, parameters, returns, and remarks.<br />  
- Within these tags, html tags are supported. <br />  
+ Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash ( /// ) code comments.<br />  
+ Four base tags are supported: summary, parameters, returns, and remarks. Within these tags, html tags are allowed, although Markdown typically does not render all html tags. <br />  
  Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -191,7 +190,7 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 ## EncodingAnalyzer
 Provides various properties to analyze a file's encoding.   
   
-FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a very bad assumption.  
+FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.  
   
 Usage example  
 ```vb

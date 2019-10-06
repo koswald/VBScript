@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 namespace VBScripting
 {
     /// <summary> Extracts an icon from a .dll or .exe file. </summary>
-    /// <remarks><span class="red"> Not all members of this class are accessible to VBScript. </span></remarks>
+    /// <remarks><span> Not all members of this class are accessible to VBScript. </span></remarks>
     [ProgId("VBScripting.IconExtractor"),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-6AF8-495F-AB4D-6C61BD463EA4")]
@@ -81,7 +81,7 @@ namespace VBScripting
         [DllImport("user32.dll", EntryPoint = "DestroyIcon", SetLastError=true)]
         private static extern int DestroyIcon(IntPtr pointer);
 
-        /// <summary> Extracts an icon from the specified .dll or .exe file. <span class="red"> This method is static and so it is not directly available to VBScript. </span></summary>
+        /// <summary> Extracts an icon from the specified .dll or .exe file. <span> This method is static and so it is not directly available to VBScript. </span></summary>
         /// <parameters> file, index, largeIcon </parameters>
         /// <remarks> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory.</remarks>
         /// <returns> an icon </returns>
