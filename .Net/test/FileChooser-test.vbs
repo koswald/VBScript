@@ -32,7 +32,6 @@ If vbCancel = MsgBox(msg, mode, caption) Then Quit
 
 'multifile settings
 fc.Title = "Testing: Select multiple files."
-fc.Multiselect = True
 
 'open the dialog and get the response
 Dim files : files = fc.FileNames

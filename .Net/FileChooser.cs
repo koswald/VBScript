@@ -37,6 +37,7 @@ namespace VBScripting
         {
             get
             {
+                this.Multiselect = false;
                 DialogResult result = chooser.ShowDialog();
 
                 if (result == DialogResult.OK)
@@ -55,11 +56,12 @@ namespace VBScripting
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. </summary>
-        /// <remarks> Gets a string array of filespecs. Returns an empty array if the user cancels. Requires Multiselect to have been set to True. </remarks>
+        /// <remarks> Gets a string array of filespecs. Returns an empty array if the user cancels. </remarks>
         public object FileNames
         {
             get
             {
+                this.Multiselect = true;
                 DialogResult result = chooser.ShowDialog();
 
                 if (result == DialogResult.OK)
@@ -75,11 +77,12 @@ namespace VBScripting
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose multiple files. </summary>
-        /// <remarks> Gets a string of filespecs delimited by a vertical bar (|). Returns an empty string if the user cancels. Requires Multiselect to have been set to True. </remarks>
+        /// <remarks> Gets a string of filespecs delimited by a vertical bar ( | ). Returns an empty string if the user cancels. </remarks>
         public string FileNamesString
         {
             get
             {
+                this.Multiselect = true;
                 DialogResult result = chooser.ShowDialog();
 
                 if (result == DialogResult.OK)
