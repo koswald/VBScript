@@ -189,7 +189,10 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 | Method | ViewMarkdown | None | N/A | Opens the markdown document with the default viewer. |
 
 ## EncodingAnalyzer
-Provides various properties to analyze a file's encoding  
+Provides various properties to analyze a file's encoding.   
+  
+FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a very bad assumption.  
+  
 Usage example  
 ```vb
 With CreateObject("VBScripting.Includer")
@@ -200,8 +203,6 @@ With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
     MsgBox "isUTF16LE: " & .isUTF16LE
 End With
 ```
-  
-CAUTION: The algorithm used assumes that there is a Byte Order Mark, which in many cases may not be a correct assumption.  
   
 Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
   

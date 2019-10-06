@@ -1,10 +1,10 @@
 
-'Provides various properties to analyze a file's encoding
-
+'Provides various properties to analyze a file's encoding. 
+'
+'FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.
+'
 'Usage example
 '<pre>With CreateObject("VBScripting.Includer")<br />    Execute .read("EncodingAnalyzer")<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>
-'
-'CAUTION: The algorithm used assumes that there is a Byte Order Mark, which in many cases may not be a correct assumption.
 '
 'Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.
 '
