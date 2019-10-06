@@ -2,6 +2,4 @@
 
 # ReadMe.md
 
-The `lib` folder contains scripting and styling for the [documentation].
-
-[documentation]: ../TheDocs.html
+The `lib` folder contains scripting and styling for the documentation.
