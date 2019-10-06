@@ -201,6 +201,8 @@ With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
 End With
 ```
   
+CAUTION: The algorithm used assumes that there is a Byte Order Mark, which in many cases may not be a correct assumption.  
+  
 Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |

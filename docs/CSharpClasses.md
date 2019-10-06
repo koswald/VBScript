@@ -22,7 +22,7 @@
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Admin | Provide miscellaneous system admin. features.  |  |  | Type | | VBScripting |
 | IAdmin | COM interface for VBScripting.Admin  |  |  | Type | | VBScripting |
-| IsAdministrator | Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  |  |  | Method | Admin | VBScripting |
+| IsAdministrator | Gets whether the current user is in the Administrator group (on the current machine). Slow. May take five seconds or longer. Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  |  |  | Method | Admin | VBScripting |
 | Log | Logs the specified message to the event log (source="VBScripting").  |  | message | Method | Admin | VBScripting |
 | GetLogs | Get an array of logs entries from the Application log. Returns an array of logs (strings) from the specified event source that contain the specified message string. Searches the Application log only. | an array | source, message | Method | Admin | VBScripting |
 | SourceExists | Gets whether the specified EventLog source exists.  | a boolean | source | Method | Admin | VBScripting |

@@ -9,7 +9,7 @@ Sub Main
     With New TestingFramework
 
         .describe "ValidFileName.vbs"
-            
+
         .it "should raise an error when Execute is used with non-global scope."
             Execute includer.read("ValidFileName")
             On Error Resume Next

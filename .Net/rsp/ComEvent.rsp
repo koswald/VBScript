@@ -1,5 +1,5 @@
 
-# csc.exe switches for ComEvent.cs
+# csc.exe compiler switches for ComEvent.cs
 
 /target:module
 /out:..\lib\ComEvent.module

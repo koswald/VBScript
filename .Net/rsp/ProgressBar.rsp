@@ -1,5 +1,5 @@
 
-# csc.exe switches for ProgressBar.cs
+# csc.exe compiler switches for ProgressBar.cs
 
 /target:library
 /out:..\lib\ProgressBar.dll

@@ -1,5 +1,5 @@
 
-# csc.exe switches for Timer.cs
+# csc.exe compiler switches for Timer.cs
 
 /target:library
 /out:..\lib\Timer.dll
