@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace VBScripting
 {
-    /// <summary> Invokes VBS members from C#. <span> This class is not accessible from VBScript. </span></summary>
+    /// <summary> Invokes VBS members from C#. <strong>This class is not accessible from VBScript. </strong> </summary>
     [Guid("2650C2AB-7AF8-495F-AB4D-6C61BD463EA4")]
     public class ComEvent
     {

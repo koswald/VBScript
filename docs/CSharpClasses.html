@@ -591,7 +591,7 @@
   </tr>
   <tr>
     <td> IconExtractor </td>
-    <td> Extracts an icon from a .dll or .exe file. <span> Not all members of this class are accessible to VBScript. </span> </td>
+    <td> Extracts an icon from a .dll or .exe file. <strong> Not all members of this class are accessible to VBScript. </strong> </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -645,7 +645,7 @@
   </tr>
   <tr>
     <td> Extract </td>
-    <td> Extracts an icon from the specified .dll or .exe file. <span> This method is static and so it is not directly available to VBScript. </span> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. </td>
+    <td> Extracts an icon from the specified .dll or .exe file. <strong> This method is static and so it is not directly available to VBScript. </strong> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. </td>
     <td> an icon </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
@@ -663,7 +663,7 @@
   </tr>
   <tr>
     <td> GetPointer </td>
-    <td> Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. </td>
+    <td> Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. <strong> This method is not available to VBScript.</strong> </td>
     <td> integer </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
@@ -672,7 +672,7 @@
   </tr>
   <tr>
     <td> ExtractIcon </td>
-    <td> Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). </td>
+    <td> Gets an icon. <strong> This method is not available to VBScript. </strong> Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). </td>
     <td> Icon </td>
     <td> integer </td>
     <td> Method </td>
@@ -681,7 +681,7 @@
   </tr>
   <tr>
     <td> DisposeIcon </td>
-    <td> Dispose an icon by pointer (an int).  </td>
+    <td> Dispose an icon by pointer (an int). <strong> This method is not available to VBScript. </strong>  </td>
     <td> Returns true for success. </td>
     <td> pointer </td>
     <td> Method </td>
