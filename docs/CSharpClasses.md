@@ -58,7 +58,7 @@
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | IEventLogger | A COM Interface for VBScripting.EventLogger  |  |  | Type | | VBScripting |
 | EventLogger | Provides system logging for VBScript.  |  |  | Type | | VBScripting |
-| log | Writes the specified message to the Application event log.  |  | message | Method | EventLogger | VBScripting |
+| log | Writes the specified message to the Application event log (source=VBScripting).  |  | message | Method | EventLogger | VBScripting |
 
 ## FileChooser
 

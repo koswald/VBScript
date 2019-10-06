@@ -27,7 +27,7 @@ namespace VBScripting
         Guid("2650C2AB-1AF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogger : IEventLogger
     {
-        /// <summary> Writes the specified message to the Application event log. </summary>
+        /// <summary> Writes the specified message to the Application event log (source=VBScripting). </summary>
         /// <parameters> message </parameters>
         public void log(string message)
         {
