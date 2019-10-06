@@ -54,7 +54,7 @@ namespace VBScripting
             set { _title = value; }
         }
 
-        /// <summary> Opens a dialog and returns the folder selected by the user. </summary>
+        /// <summary> Opens a dialog and returns the folder selected by the user. Returns an empty string if the user cancels. </summary>
         /// <returns> a path </returns>
         public string FolderName
         {
