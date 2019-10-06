@@ -165,7 +165,7 @@ Class DocGenerator
 
     'Method SetFilesToDocument
     'Parameter: wildcard(s)
-    'Remark: Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;
+    'Remark: Specifies which files to document. Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124;
     Sub SetFilesToDocument(newFilesToDocument) : filesToDocument = rf.Pattern(newFilesToDocument) : End Sub
 
     Private Sub ValidateConfiguration
@@ -347,7 +347,7 @@ Class DocGenerator
     'Property Colorize
     'Parameters: boolean
     'Returns: boolean
-    'Remarks: Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.
+    'Remarks: Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.
     Property Get Colorize : Colorize = colorize_ : End Property
     Property Let Colorize(value) : colorize_ = value : End Property
     Private colorize_
