@@ -1,7 +1,7 @@
 
 'Get a folder or file chosen by the user
 '
-'<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net extenstions. See FolderChooser.cs and FileChooser.cs in the .Net folder.
+'<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net <a href="../.Net/ReadMe.md"> extenstions</a>, which are more user and developer friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .Net folder.
 '
 'Usage example
 '
@@ -9,7 +9,6 @@
 '
 'Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.
 'Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.
-
 '
 Class Chooser
 

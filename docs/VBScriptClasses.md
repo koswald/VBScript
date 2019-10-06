@@ -48,7 +48,7 @@
 ## Chooser
 Get a folder or file chosen by the user  
   
-<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net extenstions. See FolderChooser.cs and FileChooser.cs in the .Net folder.  
+<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net <a href="../.Net/ReadMe.md"> extenstions</a>, which are more user and developer friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .Net folder.  
   
 Usage example  
   
@@ -165,12 +165,12 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 | Method | SetDocFolder | a folder | N/A | Required. Must be set before calling the Generate method. Sets the folder of the documentation file. Environment variables OK. Relative paths OK. |
 | Method | SetDocName | a filename | N/A | Required. Must be set before calling the Generate method. Specifies the name of the documentation file. Do not include the extension name. |
 | Method | SetTitle | a string | N/A | Required. Must be set before calling the Generate method. Sets the title for the documentation. |
-| Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document..Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
+| Method | SetFilesToDocument | wildcard(s) | N/A | Specifies which files to document. Optional. Default is <strong> *.vbs </strong>. Separate multiple wildcards with &#124; |
 | Method | Generate | None | N/A | Generate comment-based documentation for the scripts in the specified folder. |
 | Method | View | None | N/A | Open the html document in the default viewer. Same as ViewHtml. |
 | Method | ViewHtml | None | N/A | Open the html document in the default viewer. Same as View method. |
 | Method | ViewMarkdown | None | N/A | Open the markdown document in the default viewer. |
-| Property | Colorize | boolean | boolean | Gets or sets whether a &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
+| Property | Colorize | boolean | boolean | Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
 
 ## DocGeneratorCS
  DocGeneratorCS class  
