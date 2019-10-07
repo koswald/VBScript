@@ -128,7 +128,7 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Sets the position of the window. </summary>
+        /// <summary> Sets the position of the window, in pixels. </summary>
         /// <parameters> x, y </parameters>
         public void FormLocation(int x, int y)
         {
@@ -141,7 +141,7 @@ namespace VBScripting
         }
 
 
-        /// <summary> Sets the position of the window. </summary>
+        /// <summary> Sets the position of the window, as a percentage of screen width and height. </summary>
         /// <parameters> x, y </parameters>
         public void FormLocationByPercentage(int x, int y)
         {
@@ -384,6 +384,10 @@ namespace VBScripting
         void FormLocation(int x, int y);
 
         /// <summary> </summary>
+        [DispId(15)]
+        void FormLocationByPercentage(int x, int y);
+
+        /// <summary> </summary>
         [DispId(12)]
         void PBarLocation(int x, int y);
 
@@ -396,8 +400,8 @@ namespace VBScripting
         void ResumeLayout(bool performLayout);
 
         /// <summary> </summary>
-        [DispId(15)]
-        void FormLocationByPercentage(int x, int y);
+        [DispId(20)]
+        void SetIconByIcoFile(string fileName);
 
         /// <summary> </summary>
         [DispId(16)]
@@ -414,10 +418,6 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(19)]
         int FormBorderStyle { set; }
-
-        /// <summary> </summary>
-        [DispId(20)]
-        void SetIconByIcoFile(string fileName);
 
         /// <summary> </summary>
         [DispId(21)]

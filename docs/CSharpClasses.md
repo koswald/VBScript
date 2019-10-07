@@ -123,26 +123,26 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | NotifyIcon | Provides a system tray icon for VBScript, for illustration purposes.  |  |  | Type | | VBScripting |
-| INotifyIcon | The COM interface for NotifyIcon.  |  |  | Type | | VBScripting |
+| INotifyIcon | The COM interface for VBScripting.NotifyIcon  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | NotifyIcon | VBScripting |
+| Dispose | Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. |  |  | Method | NotifyIcon | VBScripting |
 | SetIconByIcoFile | Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. |  | fileName | Method | NotifyIcon | VBScripting |
 | SetIconByDllFile | Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. |  | fileName, index, largeIcon | Method | NotifyIcon | VBScripting |
 | SetBalloonTipIcon | Sets the icon of the "balloon tip" or notification. The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. |  | type | Method | NotifyIcon | VBScripting |
-| Dispose | Disposes of the icon resources when it is no longer needed. If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. |  |  | Method | NotifyIcon | VBScripting |
 | ShowBalloonTip | Show the balloon tip.  |  |  | Method | NotifyIcon | VBScripting |
 | AddMenuItem | Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. |  | menuText, callbackRef | Method | NotifyIcon | VBScripting |
 | InvokeCallbackByIndex | Provide callback testability from VBScript.  |  |  | Method | NotifyIcon | VBScripting |
+| ShowContextMenu | Show the context menu. Public in order to provide testability from VBScript. |  |  | Method | NotifyIcon | VBScripting |
+| SetBalloonTipCallback | Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> |  |  | Method | NotifyIcon | VBScripting |
 | DisableMenuItem | Disable a menu item  |  |  | Method | NotifyIcon | VBScripting |
 | EnableMenuItem | Enable a menu item  |  |  | Method | NotifyIcon | VBScripting |
-| ShowContextMenu | Show the context menu. Public in order to provide testability from VBScript. |  |  | Method | NotifyIcon | VBScripting |
-| SetBalloonTipCallback | Sets the VBScript callback Sub or Function reference. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> |  |  | Method | NotifyIcon | VBScripting |
 | Text | Gets or sets the text shown when the mouse hovers over the system tray icon.  |  |  | Property | NotifyIcon | VBScripting |
 | Visible | Gets or sets the icon's visibility. A boolean. Required. Set this property to True after initializing other settings. |  |  | Property | NotifyIcon | VBScripting |
 | BalloonTipTitle | Gets or sets the title of the "balloon tip" or notification.  |  |  | Property | NotifyIcon | VBScripting |
 | BalloonTipText | Gets or sets the text of the "balloon tip" or notification.  |  |  | Property | NotifyIcon | VBScripting |
 | BalloonTipLifetime | Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  |  |  | Property | NotifyIcon | VBScripting |
-| ToolTipIcon | Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> | a ToolTipIconT |  | Property | NotifyIcon | VBScripting |
-| ToolTipIconT | Supplies the type required by NotifyIcon.ToolTipIcon This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. |  |  | Type | | VBScripting |
+| ToolTipIcon | Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. VBScript example: <pre> obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre> | a ToolTipIconT |  | Property | NotifyIcon | VBScripting |
+| ToolTipIconT | Supplies the type required by NotifyIcon.ToolTipIcon <strong> This class is not directly accessible from VBScript, however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </strong> |  |  | Type | | VBScripting |
 | Error |   | 1 |  | Property | ToolTipIconT | VBScripting |
 | Info |   | 2 |  | Property | ToolTipIconT | VBScripting |
 | None |   | 3 |  | Property | ToolTipIconT | VBScripting |
@@ -151,22 +151,22 @@
 | (Constructor) | Constructor  |  |  | Method | CallbackEventSettings | VBScripting |
 | AddRef | Adds a CallbackReference instance reference to the list.  |  | callbackRef | Method | CallbackEventSettings | VBScripting |
 | Refs | Gets or sets a list of callback references.  |  |  | Property | CallbackEventSettings | VBScripting |
-| CallbackReference | An orderly way to save the index and callback reference for a single menu item. This class is not accessible to VBScript. |  |  | Type | | VBScripting |
+| CallbackReference | An orderly way to save the index and callback reference for a single menu item. <strong> This class is not accessible to VBScript. </strong> Callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  | index, reference | Method | CallbackReference | VBScripting |
 | Index | This Index corresponds to the Index of a menuItem in the context menu.  |  |  | Property | CallbackReference | VBScripting |
-| Reference | COM object generated by VBScript's GetRef Function.  |  |  | Property | CallbackReference | VBScripting |
+| Reference | COM object reference generated by VBScript's GetRef Function.  |  |  | Property | CallbackReference | VBScripting |
 
 ## ProgressBar
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | ProgressBar | Supplies a progress bar to VBScript, for illustration purposes.  |  |  | Type | | VBScripting |
-| IProgressBar | Exposes the ProgressBar members to COM/VBScript.  |  |  | Type | | VBScripting |
+| IProgressBar | Exposes the VBScripting.ProgressBar members to COM/VBScript.  |  |  | Type | | VBScripting |
 | PerformStep | Advances the progress bar one step.  |  |  | Method | ProgressBar | VBScripting |
 | FormSize | Sets the size of the window.  |  | width, height | Method | ProgressBar | VBScripting |
 | PBarSize | Sets the size of the progress bar.  |  | width, height | Method | ProgressBar | VBScripting |
-| FormLocation | Sets the position of the window.  |  | x, y | Method | ProgressBar | VBScripting |
-| FormLocationByPercentage | Sets the position of the window.  |  | x, y | Method | ProgressBar | VBScripting |
+| FormLocation | Sets the position of the window, in pixels.  |  | x, y | Method | ProgressBar | VBScripting |
+| FormLocationByPercentage | Sets the position of the window, as a percentage of screen width and height.  |  | x, y | Method | ProgressBar | VBScripting |
 | PBarLocation | Sets the location of the progress bar within the window.  |  | x, y | Method | ProgressBar | VBScripting |
 | SuspendLayout | Suspends drawing of the window temporarily.  |  |  | Method | ProgressBar | VBScripting |
 | ResumeLayout | Resumes drawing the window.  |  |  | Method | ProgressBar | VBScripting |
