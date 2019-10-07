@@ -106,17 +106,17 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IconExtractor | Extracts an icon from a .dll or .exe file. <span class="red"> Not all members of this class are accessible to VBScript. </span> |  |  | Type | | VBScripting |
-| IIconExtractor | A COM Interface for VBScripting.IconExtractor.  |  |  | Type | | VBScripting |
+| IconExtractor | Extracts an icon from a .dll or .exe file. <strong> Not all members of this class are accessible to VBScript. </strong> |  |  | Type | | VBScripting |
+| IIconExtractor | A COM Interface for VBScripting.IconExtractor  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor.  |  |  | Method | IconExtractor | VBScripting |
 | Save | Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. |  | resFile, index, icoFile, largeIcon | Method | IconExtractor | VBScripting |
 | SetImageFormatBmp | Change the image format to BMP. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
 | SetImageFormatPng | Change the image format to PNG. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
-| Extract | Extracts an icon from the specified .dll or .exe file. <span class="red"> This method is static and so it is not directly available to VBScript. </span> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
+| Extract | Extracts an icon from the specified .dll or .exe file. <strong> This method is static and so it is not directly available to VBScript. </strong> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
 | IconCount | Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. | an int | filespec (.dll or .exe) | Method | IconExtractor | VBScripting |
-| GetPointer | Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. | integer | file, index, largeIcon | Method | IconExtractor | VBScripting |
-| ExtractIcon | Gets an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). | Icon | integer | Method | IconExtractor | VBScripting |
-| DisposeIcon | Dispose an icon by pointer (an int).  | Returns true for success. | pointer | Method | IconExtractor | VBScripting |
+| GetPointer | Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. <strong> This method is not available to VBScript.</strong> | integer | file, index, largeIcon | Method | IconExtractor | VBScripting |
+| ExtractIcon | Gets an icon. <strong> This method is not available to VBScript. </strong> Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). | Icon | integer | Method | IconExtractor | VBScripting |
+| DisposeIcon | Dispose an icon by pointer (an int). <strong> This method is not available to VBScript. </strong>  | Returns true for success. | pointer | Method | IconExtractor | VBScripting |
 
 ## NotifyIcon
 
