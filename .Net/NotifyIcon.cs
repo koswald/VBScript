@@ -39,6 +39,14 @@ namespace VBScripting
             set { this.notifyIcon.Text = value; }
         }
 
+        /// <summary>  Disposes of the icon resources when it is no longer needed. </summary>
+        /// <remarks> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </remarks>
+        public void Dispose()
+        {
+            this.notifyIcon.Icon.Dispose();
+            this.notifyIcon.Dispose();
+        }
+
         /// <summary> Gets or sets the icon's visibility. A boolean. </summary>
         /// <remarks> Required. Set this property to True after initializing other settings. </remarks>
         public bool Visible
@@ -110,7 +118,7 @@ namespace VBScripting
 
         /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. </summary>
         /// <returns> a ToolTipIconT </returns>
-        /// <remarks> VBScript example: <pre>    obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre></remarks>
+        /// <remarks> VBScript example: <pre> obj.SetBallonTipIcon obj.ToolTipIcon.Warning </pre></remarks>
         public ToolTipIconT ToolTipIcon
         {
             get { return new ToolTipIconT(); }
@@ -138,14 +146,6 @@ namespace VBScripting
             {
                 this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             }
-        }
-
-        /// <summary>  Disposes of the icon resources when it is no longer needed. </summary>
-        /// <remarks> If this method is not called, the icon may persist in the system tray until the mouse hovers over it, even after the object instance has lost scope. </remarks>
-        public void Dispose()
-        {
-            this.notifyIcon.Icon.Dispose();
-            this.notifyIcon.Dispose();
         }
 
         /// <summary> Show the balloon tip. </summary>
@@ -186,17 +186,13 @@ namespace VBScripting
                 }
             }
         }
-
-        /// <summary> Disable a menu item </summary>
-        public void DisableMenuItem(int index)
+        
+        /// <summary> Show the context menu. </summary>
+        /// <remarks> Public in order to provide testability from VBScript. </remarks>
+        public void ShowContextMenu()
         {
-            this.contextMenu.MenuItems[index].Enabled = false;
-        }
-
-        /// <summary> Enable a menu item </summary>
-        public void EnableMenuItem(int index)
-        {
-            this.contextMenu.MenuItems[index].Enabled = true;
+            MethodInfo mi = typeof(System.Windows.Forms.NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+            mi.Invoke(notifyIcon, null);
         }
 
         // show the context menu on left mouse click too
@@ -206,14 +202,6 @@ namespace VBScripting
             {
                 this.ShowContextMenu();
             }
-        }
-        
-        /// <summary> Show the context menu. </summary>
-        /// <remarks> Public in order to provide testability from VBScript. </remarks>
-        public void ShowContextMenu()
-        {
-            MethodInfo mi = typeof(System.Windows.Forms.NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-            mi.Invoke(notifyIcon, null);
         }
 
         private void notifyIcon_BalloonTipClicked(object Sender, EventArgs e)
@@ -231,6 +219,18 @@ namespace VBScripting
         public void SetBalloonTipCallback(object callbackRef)
         {
             this.balloonTipCallback = callbackRef;
+        }
+
+        /// <summary> Disable a menu item </summary>
+        public void DisableMenuItem(int index)
+        {
+            this.contextMenu.MenuItems[index].Enabled = false;
+        }
+
+        /// <summary> Enable a menu item </summary>
+        public void EnableMenuItem(int index)
+        {
+            this.contextMenu.MenuItems[index].Enabled = true;
         }
     }
 
@@ -282,7 +282,7 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(12)]
         void ShowBalloonTip();
-
+        
         /// <summary> </summary>
         [DispId(13)]
         void AddMenuItem(string menuText, object callbackRef);
@@ -309,7 +309,7 @@ namespace VBScripting
     }
 
     /// <summary> Supplies the type required by NotifyIcon.ToolTipIcon </summary>
-    /// <remarks> This class is not directly accessible from VBScript , however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </remarks>
+    /// <remarks><strong> This class is not directly accessible from VBScript, however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </strong></remarks>
     [Guid("2650C2AB-5DF8-495F-AB4D-6C61BD463EA4")]
     public class ToolTipIconT
     {
@@ -363,13 +363,13 @@ namespace VBScripting
         }
     }
     /// <summary> An orderly way to save the index and callback reference for a single menu item. </summary>
-    /// <remarks> This class is not accessible to VBScript. </remarks>
+    /// <remarks><strong> This class is not accessible to VBScript. </strong> Callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. </remarks>
     [Guid("2650C2AB-5FF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackReference
     {
         /// <summary> This Index corresponds to the Index of a menuItem in the context menu. </summary>
         public int Index { get; set; }
-        /// <summary> COM object generated by VBScript's GetRef Function. </summary>
+        /// <summary> COM object reference generated by VBScript's GetRef Function. </summary>
         public object Reference { get; set; }
 
         /// <summary> Constructor </summary>
