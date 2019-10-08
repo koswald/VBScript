@@ -101,6 +101,7 @@
             End If
         End Sub
 
+        'When one of the .NET extension objects is in use, and it is desired to recompile the class file, it is necessary first to stop the instance of the script that is using the object.
         Sub StopScripts
             If Not stopScriptsChkBox.checked Then
                 AwaitNextItem
