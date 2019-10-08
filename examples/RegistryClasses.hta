@@ -651,8 +651,8 @@
             Execute includer.Read("RegistryUtility")
             Set reg = New RegistryUtility
             Set regProv = reg.Reg
-            Execute includer.Read("ValidFileName")
-            invalidChrs = Split(invalidInFileName, "_")
+            ExecuteGlobal includer.Read("ValidFileName")
+            invalidChrs = InvalidWindowsFilenameChars
             Execute includer.Read("KeyDeleter")
             Set keyZapper = New KeyDeleter
         End Sub
