@@ -3,7 +3,7 @@
 # ReadMe.md
 
 The `.Net` folder contains C# examples for creating 
-`.dll` libraries that can be called from VBScript. 
+`.dll` libraries that can be called from VBScript, extending the power of VBScript. 
 
 ## Compiling and registering
 
