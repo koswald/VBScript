@@ -4,7 +4,7 @@ helpMessage = "When presentation mode is on, the computer and monitor are typica
 requires = "Sleep (menu item) functionality requires psshutdown from https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
 
 Setup
-csTimer.IntervalInHours = 2.1 'default
+csTimer.IntervalInHours = 3.1 'default
 icon = Split(icon3, "|")
 NormalMode
 ListenForCallbacks
