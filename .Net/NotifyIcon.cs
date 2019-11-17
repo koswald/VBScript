@@ -363,7 +363,7 @@ namespace VBScripting
         }
     }
     /// <summary> An orderly way to save the index and callback reference for a single menu item. </summary>
-    /// <remarks><strong> This class is not accessible to VBScript. </strong> Callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. </remarks>
+    /// <remarks><strong> This class is not accessible to VBScript. </strong> In VBScript, callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. </remarks>
     [Guid("2650C2AB-5FF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackReference
     {
