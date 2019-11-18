@@ -22,7 +22,7 @@
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Admin | Provide miscellaneous system admin. features.  |  |  | Type | | VBScripting |
 | IAdmin | COM interface for VBScripting.Admin  |  |  | Type | | VBScripting |
-| IsAdministrator | Gets whether the current user is in the Administrator group (on the current machine). Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  |  |  | Method | Admin | VBScripting |
+| IsAdministrator | Gets whether the current user is in the Administrator group (on the current machine). Slow. May take five seconds or longer. Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.  |  |  | Method | Admin | VBScripting |
 | Log | Logs the specified message to the event log (source="VBScripting").  |  | message | Method | Admin | VBScripting |
 | GetLogs | Get an array of logs entries from the Application log. Returns an array of logs (strings) from the specified event source that contain the specified message string. Searches the Application log only. | an array | source, message | Method | Admin | VBScripting |
 | SourceExists | Gets whether the specified EventLog source exists.  | a boolean | source | Method | Admin | VBScripting |
@@ -57,9 +57,9 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IEventLogger | A COM Interface for VBScripting.EventLogger.  |  |  | Type | | VBScripting |
+| IEventLogger | A COM Interface for VBScripting.EventLogger  |  |  | Type | | VBScripting |
 | EventLogger | Provides system logging for VBScript.  |  |  | Type | | VBScripting |
-| log | Writes the specified message to the Application event log.  |  | message | Method | EventLogger | VBScripting |
+| log | Writes the specified message to the Application event log (source=VBScripting).  |  | message | Method | EventLogger | VBScripting |
 
 ## FileChooser
 
@@ -70,7 +70,7 @@
 | (Constructor) | Constructor  |  |  | Method | FileChooser | VBScripting |
 | FileName | Opens a dialog enabling the user to browse for and choose a file. Returns the filespec of the chosen file. Returns an empty string if the user cancels. |  |  | Property | FileChooser | VBScripting |
 | FileNames | Opens a dialog enabling the user to browse for and choose multiple files. Gets a string array of filespecs. Returns an empty array if the user cancels. |  |  | Property | FileChooser | VBScripting |
-| FileNamesString | Opens a dialog enabling the user to browse for and choose multiple files. Gets a string of filespecs delimited by a vertical bar (&#124;). Returns an empty string if the user cancels. |  |  | Property | FileChooser | VBScripting |
+| FileNamesString | Opens a dialog enabling the user to browse for and choose multiple files. Gets a string of filespecs delimited by a vertical bar ( &#124; ). Returns an empty string if the user cancels. |  |  | Property | FileChooser | VBScripting |
 | InitialDirectory | Gets or sets directory at which the dialog opens.  |  |  | Property | FileChooser | VBScripting |
 | ERInitialDirectory | Gets the initial directory with relative path resolved and environment variables expanded. Improves testability. |  |  | Property | FileChooser | VBScripting |
 | Filter | Gets or sets the selectable file types. Examples: <pre> fc.Filter = "All files (&#42;.&#42;)&#124;&#42;.&#42;" // the default <br/> fc.Filter = "Text files (&#42;.txt)&#124;&#42;.txt&#124;All files (&#42;.&#42;)&#124;&#42;.&#42;" <br/> fc.Filter = "Image Files(&#42;.BMP;&#42;.JPG;&#42;.GIF)&#124;&#42;.BMP;&#42;.JPG;&#42;.GIF&#124;All files (&#42;.&#42;)&#124;&#42;.&#42;" </pre> |  |  | Property | FileChooser | VBScripting |
@@ -86,21 +86,21 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IFolderChooser | COM interface for FolderChooser.  |  |  | Type | | VBScripting |
+| IFolderChooser | COM interface for VBScripting.FolderChooser  |  |  | Type | | VBScripting |
 | FolderChooser | Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory.  |  |  | Property | FolderChooser | VBScripting |
 | Title | Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser | VBScripting |
-| FolderName | Opens a dialog and returns the folder selected by the user.  | a path |  | Property | FolderChooser | VBScripting |
+| FolderName | Opens a dialog and returns the folder selected by the user. Returns an empty string if the user cancels.  | a path |  | Property | FolderChooser | VBScripting |
 
 ## FolderChooser2
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| IFolderChooser2 | COM interface for FolderChooser2.  |  |  | Type | | VBScripting |
+| IFolderChooser2 | COM interface for VBScripting.FolderChooser2  |  |  | Type | | VBScripting |
 | FolderChooser2 | Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. |  |  | Property | FolderChooser2 | VBScripting |
 | Title | Sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser2 | VBScripting |
-| FolderName | Opens a dialog and returns the folder selected by the user.  | a path |  | Property | FolderChooser2 | VBScripting |
+| FolderName | Opens a dialog and returns the folder selected by the user. Returns an empty string if the user cancels.  | a path |  | Property | FolderChooser2 | VBScripting |
 
 ## IconExtractor
 
@@ -151,7 +151,7 @@
 | (Constructor) | Constructor  |  |  | Method | CallbackEventSettings | VBScripting |
 | AddRef | Adds a CallbackReference instance reference to the list.  |  | callbackRef | Method | CallbackEventSettings | VBScripting |
 | Refs | Gets or sets a list of callback references.  |  |  | Property | CallbackEventSettings | VBScripting |
-| CallbackReference | An orderly way to save the index and callback reference for a single menu item. <strong> This class is not accessible to VBScript. </strong> Callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. |  |  | Type | | VBScripting |
+| CallbackReference | An orderly way to save the index and callback reference for a single menu item. <strong> This class is not accessible to VBScript. </strong> In VBScript, callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  | index, reference | Method | CallbackReference | VBScripting |
 | Index | This Index corresponds to the Index of a menuItem in the context menu.  |  |  | Property | CallbackReference | VBScripting |
 | Reference | COM object reference generated by VBScript's GetRef Function.  |  |  | Property | CallbackReference | VBScripting |
@@ -196,7 +196,8 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | SpeechSynthesis | Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. |  |  | Type | | VBScripting |
-| ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>.  |  |  | Type | | VBScripting |
+| ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>
+  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | SpeechSynthesis | VBScripting |
 | Speak | Convert text to speech. This method is synchronous. |  |  | Method | SpeechSynthesis | VBScripting |
 | SpeakAsync | Convert text to speech. This method is asynchronous. |  |  | Method | SpeechSynthesis | VBScripting |
@@ -220,7 +221,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Timer | Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  |  |  | Type | | VBScripting |
-| ITimer | COM interface for VBScripting.Timer.  |  |  | Type | | VBScripting |
+| ITimer | COM interface for VBScripting.Timer  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | Timer | VBScripting |
 | Start | Starts or restarts the timer.  |  |  | Method | Timer | VBScripting |
 | Stop | Stops the timer.  |  |  | Method | Timer | VBScripting |
@@ -235,7 +236,7 @@
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
 | Watcher | Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
-| IWatcher | The COM interface for VBScripting.Watcher.  |  |  | Type | | VBScripting |
+| IWatcher | The COM interface for VBScripting.Watcher  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  |  |  | Method | Watcher | VBScripting |
 | Dispose | Disposes of the object's resources.  |  |  | Method | Watcher | VBScripting |
 | MonitorOff | Turn off the monitor(s).  |  |  | Method | Watcher | VBScripting |
