@@ -2,14 +2,13 @@
 'test the VBSPower class
 
 With CreateObject("VBScripting.Includer")
-    Execute .read("VBSPower")
     Execute .read("TestingFramework")
 End With
 
 With New TestingFramework
 
     .describe "VBSPower class"
-        Dim pwr : Set pwr = New VBSPower
+        Dim pwr : Set pwr = CreateObject("VBScripting.VBSPower")
 
     'setup
         pwr.SetDebug True 'True => don't actually power down, restart, etc

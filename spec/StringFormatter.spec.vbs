@@ -60,10 +60,11 @@ With New TestingFramework
         .AssertEqual f.format(Array("Test ""%s"" %s", -1.45, -5.45)), "Test ""-1.45"" -5.45"
 
     Dim errDescr 'error description
+    Dim x
 
     .it "should raise an error if there are too many surrogates"
         On Error Resume Next
-            f.format(Array("Test ""%s"" %s %s", -1.45, -5.45))
+            x = f.format(Array("Test ""%s"" %s %s", -1.45, -5.45))
             .AssertErrorRaised
             errDescr = Err.Description
         On Error Goto 0
@@ -73,7 +74,7 @@ With New TestingFramework
 
     .it "should raise an error if there are too few surrogates"
         On Error Resume Next
-            f.format(Array("Test ""%s"" ", -1.45, -5.45))
+            x = f.format(Array("Test ""%s"" ", -1.45, -5.45))
             .AssertErrorRaised
             errDescr = Err.Description
         On Error Goto 0

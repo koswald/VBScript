@@ -122,7 +122,7 @@ Class TestingFramework
     Sub ShowSendKeysWarning
         With CreateObject("VBScripting.Includer")
             Execute .read("StringFormatter")
-	        Set sendKeysWarning = sh.Exec((New StringFormatter)(Array( _
+            Set sendKeysWarning = sh.Exec((New StringFormatter)(Array( _
                 "wscript ""%s\TestingFramework.fixture.vbs"" ""%s""", _
                 .LibraryPath, WScript.ScriptName _
             )))

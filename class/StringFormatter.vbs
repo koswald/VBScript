@@ -31,6 +31,14 @@ Class StringFormatter
         Format = pattern
     End Function
 
+    Private Sub TestPause
+        If Flag Then _
+            If vbCancel = MsgBox( _
+                "Debugging", _
+                vbOkCancel + vbExclamation _
+            ) Then WScript.Quit
+    End Sub
+
     'Method SetSurrogate
     'Parameter: a string
     'Remark: Optional. Sets the string that the Format method will replace with the specified array element(s), %s by default.

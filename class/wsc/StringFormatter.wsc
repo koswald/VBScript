@@ -8,18 +8,22 @@
     classid="{ADCEC089-30DF-11D7-86BF-00606744568C}"> 
     <script language="VBScript">
         Sub Register
-            ''MsgBox "registering"
+            'MsgBox "registering"
         End Sub
         Sub Unregister
-            ''MsgBox "unregistering"
+            'MsgBox "unregistering"
         End Sub
     </script>
   </registration>
 
   <public>
-    <property name="Format" dispid="0" /> <!-- default member -->
+    <property name="Format" dispid="0"> <!-- default member -->
+        <get internalName="Format" />
+    </property>
     <method name="SetSurrogate" />
-    <property name="Pluralize" />
+    <property name="Pluralize">
+        <get internalName="Pluralize" />
+    </property>
     <method name="SetZeroSingular" />
     <method name="SetZeroPlural" />
     <property name ="Flag">

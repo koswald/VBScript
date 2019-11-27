@@ -12,20 +12,40 @@
         <method name="ValidateKey" />
         <method name="ValidateSubkey" />
         <method name="ValidateBackslashCount" />
-        <property name="BackslashCount" />
-        <property name="MaxCount" />
-        <property name="SavedKey" />
-        <property name="SavedSubkey" />
-        <property name="Result" />
+        <property name="BackslashCount">
+            <get internalName="BackslashCount" />
+        </property>
+        <property name="MaxCount">
+            <get internalName="MaxCount" />
+        </property>
+        <property name="SavedKey">
+            <get internalName="SavedKey" />
+        </property>
+        <property name="SavedSubkey">
+            <get internalName="SavedSubkey" />
+        </property>
+        <property name="Result">
+            <get internalName="Result" />
+        </property>
         <property name="Delete">
             <get internalName="getDelete" />
             <put internalName="putDelete" />
         </property>
-        <property name="HKCR" />
-        <property name="HKCU" />
-        <property name="HKLM" />
-        <property name="HKU" />
-        <property name="HKCC" />
+        <property name="HKCR">
+            <get internalName="HKCR" />
+        </property>
+        <property name="HKCU">
+            <get internalName="HKCU" />
+        </property>
+        <property name="HKLM">
+            <get internalName="HKLM" />
+        </property>
+        <property name="HKU">
+            <get internalName="HKU" />
+        </property>
+        <property name="HKCC">
+            <get internalName="HKCC" />
+        </property>
     </public>
     <!-- import the class file -->
     <script src="../keyDeleter.vbs" language="VBScript" />

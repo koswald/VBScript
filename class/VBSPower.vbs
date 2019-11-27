@@ -80,8 +80,8 @@ Class VBSPower
     End Sub
 
     'Method SetForce
-    'Parameter: force
-    'Remark: Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close.
+    'Parameter: a boolean
+    'Remark: Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close. Windows 10 may force the specified action regardless of this setting.
     Sub SetForce(newForce) : force = newForce : End Sub
 
     'Method SetDebug
