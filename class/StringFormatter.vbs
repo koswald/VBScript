@@ -1,5 +1,3 @@
-' StringFormatter.vbs is the script for StringFormatter.wsc
-'
 'Provides string formatting functions
 '
 'Three instantiation examples:
