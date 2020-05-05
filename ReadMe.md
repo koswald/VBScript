@@ -4,7 +4,7 @@ This project features
 
 - [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
-- [Tests](spec).  
+- [Integration Tests](spec).  
 - A VBScript statement [interpreter]/console.  
 - An ultralight [testing framework].  
 - A [logger].  
