@@ -22,18 +22,19 @@ Among the options for building (compiling and registering) the class libraries a
 Features include the following:  
 
 1) [Documentation].
-2) [Manual tests] that demonstrate functionality.
-3) For an example of a COM event, or callback, see [NotifyIcon.cs]
+2) [Manual tests] that demonstrate functionality and how-to-use.
+3) [Automated integration tests].
+4) For an example of a COM event, or callback, see [NotifyIcon.cs]
    and [NotifyIcon-test.vbs].
-4) For an example of a progress bar (for illustration only), 
+5) For an example of a progress bar (for illustration only), 
    see [ProgressBar.cs] and [ProgressBar-test.vbs]. 
-5) For a simple example of making a C# method available to 
+6) For a simple example of making a C# method available to 
    VBScript, see [EventLogger.cs].
-6) For an example of a class requiring an assembly reference, and 
+7) For an example of a class requiring an assembly reference, and 
    an illustration of how to do it, see [SpeechSynthesis.cs],
    [SpeechSynthesis.rsp].
-7) For a user-friendly file chooser dialog, see [FileChooser.cs].
-8) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
+8) For a user-friendly file chooser dialog, see [FileChooser.cs].
+9) For a user-friendly folder chooser dialog, see [FolderChooser.cs] 
    and [FolderChooser2.cs]. These two files are adapted from 
    stackoverflow.com posts. The exposed features of the two are 
    identical. `FolderChooser2` is a backup in case `FolderChooser.cs`
@@ -62,6 +63,7 @@ probably not available on most Vista machines.
 [Reflection]: https://docs.microsoft.com/en-us/dotnet/api/system.reflection?view=netframework-4.7.1 "docs.microsoft.com"
 [Setup.vbs]: ../Setup.vbs
 [Manual tests]: test
+[Automated integration tests]: ../tests/dll
 
 ## Links and References
 
@@ -73,6 +75,7 @@ probably not available on most Vista machines.
 [Invoking the NotifyIcon context menu](https://stackoverflow.com/questions/2208690/invoke-notifyicons-context-menu#2208910 "stackoverflow.com")  
 [Browse for a directory in C#](https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043 "stackoverflow.com")  
 [Show detailed browser from a property grid](https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992 "stackoverflow.com")  
+[Component Object Model (COM)](https://docs.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal?redirectedfrom=MSDN "docs.microsoft.com")
 
 ##### Compiler-supported code comments
 

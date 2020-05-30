@@ -36,15 +36,18 @@ Open .hta files with WordPad.
     `"C:\Program Files\Windows NT\Accessories\wordpad.exe" "%1"`.
 - Right click an .hta file, and you should see a menu item to open the file in WordPad.
 
-Open command prompt at any folder
+Open PowerShell at any folder
 
 - Select HKEY_CURRENT_USER (recommended). Or click Elevate to elevate privileges and then select HKEY_LOCAL_MACHINE.
 - In the ProgId field, enter `Folder`.
 - Click the *New verb* button.
-- Enter `Open command prompt here` and click the *Save* button.
-- In the *Command* field, enter `cmd /k cd "%1"`.
-- Open explorer.exe, right-click a folder, and click *Open command prompt here*.
-- A command prompt should open at the selected folder.
+- Enter `Open PowerShell here` and click the *Ok* button.
+- In the *Command* field, enter `powershell -NoExit -NoLogo Set-Location '%1'`. Use `pwsh` instead of `powershell` for PowerShell Core (version 6+), and see note below. Note the single-quotes around the folder name. Double quotes will not work properly for folders with spaces.
+- Open explorer.exe, right-click a folder, and click *Open PowerShell here*.
+- A PowerShell should open at the selected folder.
+
+> *Note:* In PowerShell 6+ (PowerShell Core), a `Set-Location`
+> item in `*profile.ps1` may override this feature.
 
 ## Tips
 

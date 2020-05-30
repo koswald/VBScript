@@ -21,4 +21,4 @@ test = _
 "Select Exit from the context menu" & LT & _
     "The icon and this dialog should disappear"
 
-MsgBox test, vbSystemModal + vbInformation, WScript.ScriptName
+MsgBox test, vbSystemModal + vbInformation, "Testing VBScripting.NotifyIcon"

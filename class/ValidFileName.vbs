@@ -36,5 +36,5 @@ Function InvalidWindowsFilenameChars : InvalidWindowsFilenameChars = Split("\ / 
 
 'Function InvalidChromeFilenameStrings
 'Returns an array
-'Remark: Returns an array of strings, any one of which if included in the filename of a local .html file, Chrome will not open the file.
+'Remark: Returns an array of strings, either one of which if included in the filename of a local .html file, Chrome will not open the file.
 Function InvalidChromeFilenameStrings : InvalidChromeFilenameStrings = Split("%20 #") : End Function

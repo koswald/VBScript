@@ -1,6 +1,8 @@
 Option Explicit
 purpose = "Show a notification area icon with a menu option to prevent the computer and monitor from going to sleep."
+
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the workstation is locked, initially."
+
 requires = "Sleep (menu item) functionality requires psshutdown from https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
 
 Setup
@@ -17,6 +19,7 @@ Sub NormalMode
     PublishStatus "Normal"
     csTimer.Stop
 End Sub
+
 Sub PresentationMode
     watcher.Watch = True
     notifyIcon.EnableMenuItem normalModeMenuIndex
@@ -26,19 +29,24 @@ Sub PresentationMode
     stopwatch.Reset
     csTimer.Start
 End Sub
+
 Sub ChargerMode
     LockWorkStation
     PresentationMode
 End Sub
+
 Sub StartScreenSaver
     sh.Run "%SystemRoot%\system32\scrnsave.scr"
 End Sub
+
 Sub LockWorkStation
     sh.Run "rundll32 user32.dll,LockWorkStation",, synchronous
 End Sub
+
 Sub EditScript
     sh.Run format(Array("notepad ""%s""", WScript.ScriptFullName))
 End Sub
+
 Sub PublishStatus(newStatus)
     status = newStatus
     Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
@@ -48,6 +56,7 @@ Sub PublishStatus(newStatus)
 
     Dim stream 'text stream for writing
 End Sub
+
 Sub SetDurationUI
     currentValue = Round(csTimer.IntervalInHours, 4)
     prompt = format(Array(" Enter the desired duration in hours %s of Presentation mode / Phone charger mode. %s Current value: %s", vbLf, vbLf & vbLf, currentValue))
@@ -70,17 +79,21 @@ Sub SetDurationUI
     Dim response 'InputBox return value
     Dim prompt, caption, suggestedValue 'InputBox aruments
 End Sub
+
 Sub Sleep
     sh.Run "psshutdown -d -t 0", hidden
 End Sub
+
 Sub MonitorOff
     With CreateObject("VBScripting.Admin")
         .MonitorOff
     End With
 End Sub
+
 Sub Help
     sh.PopUp helpMessage, 80, WScript.ScriptName, vbInformation + vbSystemModal
 End Sub
+
 Sub ListenForCallbacks
     While True
         intervalInMinutes = csTimer.Interval/60000
@@ -153,6 +166,7 @@ Sub Setup
 
     Dim datafolder
 End Sub
+
 Sub CloseAndExit
     PublishStatus "Normal"
     watcher.Dispose
