@@ -17,7 +17,8 @@ This project features
 - A script for keeping the computer awake while 
   giving a [presentation], with a system tray icon.  
 - A [doc generator for the C# classes] and a [doc generator for the VBScript classes], both based on code comments.  
-- More [examples] of .vbs and .hta scripts.  
+- More [examples] of .vbs and .hta scripts.
+-  [Windows Script Component files].
 
 ## Requirements
 
@@ -26,8 +27,7 @@ Windows 10, 8, 7, Vista, ... 98.
 ## Installation
 
 Clone or download the repo and run [Setup.vbs]. 
-This will register the [Windows Script Component 
-files], and compile and register the [VBScript extensions]. 
+This will register the [Windows Script Component files], and compile and register the [VBScript extensions]. 
 
 ## References  
 

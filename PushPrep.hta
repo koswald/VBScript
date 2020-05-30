@@ -263,7 +263,9 @@
         End Function
         Const gitFound = 1, gitLost = 0
 
-        Function Expand(str) : Expand = sh.ExpandEnvironmentStrings(str) : End Function
+        Function Expand(str)
+            Expand = sh.ExpandEnvironmentStrings(str)
+        End Function
 
         Sub selectAllChkBox_OnClick
             Dim input, inputs
