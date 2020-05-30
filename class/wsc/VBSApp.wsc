@@ -8,7 +8,7 @@
         classid="{ADCEC089-30E0-11D7-86BF-00606744568C}">
     </registration>
     
-    <public>I
+    <public>
         <property name="GetArgs">
             <get internalName="GetArgs" />
         </property>
