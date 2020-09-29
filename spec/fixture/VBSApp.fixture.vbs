@@ -1,14 +1,12 @@
-'test fixture for ..\VBSApp.spec.vbs
+' Test fixture for ..\VBSApp.spec.vbs
 
-'contains the statements included in,
-'and common to, the .hta and .wsf
-'fixture files
+' This file contains the core VBScript code under test and is referenced by both the .hta and the .wsf fixture files.
 
-With New Test
+With New VBSAppTester
     .Run
 End With
 
-Class Test
+Class VBSAppTester
 
     Sub Run
 
@@ -27,8 +25,7 @@ Class Test
             app.Sleep 1
             If Err Then
                 stream.WriteLine Err.Description
-            Else
-                stream.WriteLine Err
+            Else stream.WriteLine Err ' write the error number (0)
             End If
         On Error Goto 0
 
@@ -36,7 +33,7 @@ Class Test
         stopwatch.Reset
         app.Sleep app.GetArg(2)
         stream.WriteLine stopwatch.Split
-    End Sub 'Run
+    End Sub
 
     Private app, stopwatch, fso, stream
 
@@ -55,7 +52,10 @@ Class Test
         Set fso = CreateObject("Scripting.FileSystemObject")
         Const ForWriting = 2
         Const CreateNew = True
-        Set stream = fso.OpenTextFile(base & app.GetArg(3) & "Out.txt", ForWriting, CreateNew)
+        outFile = fso.GetAbsolutePathName( base & app.GetArg(3) & "Out.txt" )
+        Set stream = fso.OpenTextFile( outFile, ForWriting, CreateNew )
+
+        Dim outFile
     End Sub
 
     Sub Class_Terminate

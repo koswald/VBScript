@@ -1,4 +1,4 @@
-<!--test fixture for ..\VBSApp.spec.vbs-->
+<!-- Test fixture for ..\VBSApp.spec.vbs -->
 
 <job>
     <script language="VBScript"
