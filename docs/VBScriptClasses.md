@@ -1,6 +1,6 @@
 # VBScript Utility Classes Documentation
 
-### Contents
+## Contents
 
 [Chooser](#chooser)  
 [CommandParser](#commandparser)  
@@ -44,8 +44,8 @@
 [WMIUtility](#wmiutility)  
 [WoWChecker](#wowchecker)  
 
-
 ## Chooser
+
 Get a folder or file chosen by the user  
   
 <strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net <a href="../.Net/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .Net folder.  
@@ -90,6 +90,7 @@ Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</
 | Method | SetMaxExecLifetime | WShellExec object, exe, milliseconds | N/A | Terminates a WShellExec process (the Browse for File window for example) after the specified time in milliseconds. Timeout of 0 prevents termination. An example of the exe: "mshta.exe". |
 
 ## CommandParser
+
 Command Parser  
 Runs a specified command and searches the output for a phrase  
   
@@ -112,6 +113,7 @@ Example:
 | Method | SetStopPhrase | newStopPhrase | N/A | Sets a unique phrase to identify the line that follows the last line of the search. Optional. By defualt, the output is searched to the end. |
 
 ## DocGenerator
+
 Generate html and markdown documentation for VBScript code based on well-formed code comments.  
 Usage Example  
 ```vb
@@ -173,6 +175,7 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 | Property | Colorize | boolean | boolean | Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
 
 ## DocGeneratorCS
+
  DocGeneratorCS class  
   
  Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash ( /// ) code comments.<br />  
@@ -188,6 +191,7 @@ Visual Studio and VS Code extensions may render differently than Git-Flavored Ma
 | Method | ViewMarkdown | None | N/A | Opens the markdown document with the default viewer. |
 
 ## EncodingAnalyzer
+
 Provides various properties to analyze a file's encoding.   
   
 FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.  
@@ -220,6 +224,7 @@ Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/ef
 | Property | GetByte | BOM byte number | an integer | Returns the Ascii value, 0 to 255, of the byte specified. The parameter must be an integer: one of 0, 1, 2, or 3. These represent the first four bytes in the file, the Byte Order Mark (BOM). |
 
 ## EscapeMd
+
 EscapeMd and EscapeMd2 Functions  
 Escape markdown special characters.  
 Usage example  
@@ -235,6 +240,7 @@ Usage example
 | Property | EscapeMd2 | unescaped string | escaped string | Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>. |
 
 ## GUIDGenerator
+
 Generate a unique GUID  
 Usage example  
 ```vb
@@ -251,6 +257,7 @@ Usage example
 | Method | SetLowercase | None | N/A | Configure the Generate property to return lowercase |
 
 ## HTAApp
+
 HTAApp class  
 Supports the VBSApp class, providing .hta functionality.  
   
@@ -262,6 +269,7 @@ Supports the VBSApp class, providing .hta functionality.
 | Property | GetArgs | None | an array | Returns the mshta.exe command line args as an array, including the .hta filespec, which has index 0. |
 
 ## Includer
+
   
 The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.  
   
@@ -295,6 +303,7 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
 | Property | LibraryPath | None | a folder path | Returns the resolved, absolute path of the <code> class</code> folder, which is the reference for relative paths passed to the Read method. |
 
 ## KeyDeleter
+
 Provides a method for deleting a registry key and all of its subkeys.  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -305,10 +314,11 @@ Provides a method for deleting a registry key and all of its subkeys.
 | Property | HKLM | None | &H80000002 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKU | None | &H80000003 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCC | None | &H80000005 | Provides a value suitable for the first parameter of the DeleteKey method. |
-| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> |
+| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>. |
 | Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing. |
 
 ## MathConstants
+
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | Pi | None | 3.14159265358979 | None |
@@ -316,6 +326,7 @@ Provides a method for deleting a registry key and all of its subkeys.
 | Property | RADEG | None | 180/Pi | Used to convert radians to degrees |
 
 ## MathFunctions
+
 Math functions not provided with VBScript  
 The native math functions are Sin, Cos, Tan, Atn, Log  
 Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>  
@@ -345,6 +356,7 @@ Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/
 | Property | LogN | X, N | Logarithm of X to base N | LogN = Log(X) / Log(N) |
 
 ## PrivilegeChecker
+
 Default property Privileged returns True if the calling script has elevated privileges.  
 Usage example  
 ```vb
@@ -366,6 +378,7 @@ Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-
 | Property | Privileged | None | a boolean | Returns True if the calling script is running with elevated privileges, False if not. Privileged is the default property. |
 
 ## RegExFunctions
+
 Regular Expression functions - a work in progress  
   
 Usage example  
@@ -399,6 +412,7 @@ Usage example
 | Property | FirstMatch | None | a string | Regarding the string specified by SetTestString, returns the first substring in the string that matches the regex pattern specified by SetPattern. |
 
 ## RegistryUtility
+
 Provides functions relating to the Windows&reg; registry  
   
 Usage example  
@@ -441,6 +455,7 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 | Property | GetRegValueTypeString | rootKey, subKey, valueName | a string | Returns a registry key value type string suitable for use with WScript.Shell RegWrite method argument #3. That is, one of "REG_SZ", "REG_EXPAND_SZ", "REG_BINARY", or "REG_DWORD". |
 
 ## ShellConstants
+
 Constants for use with WScript.Shell.Run  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -453,6 +468,7 @@ Constants for use with WScript.Shell.Run
 | Property | Asynchronous | None | False | Script execution proceeds without waiting for the called process to exit. <br /> For use with Run method parameter #3 |
 
 ## SpecialFolders
+
 An enum and wrapper for WScript.Shell.SpecialFolders  
 Usage example  
 ```vb
@@ -487,8 +503,7 @@ Usage example
 | Property | Templates | None | a string | Returns a special folder alias having the exact same characters as the property name |
 
 ## StringFormatter
- StringFormatter.vbs is the script for StringFormatter.wsc  
-  
+
 Provides string formatting functions  
   
 Three instantiation examples:  
@@ -531,6 +546,7 @@ Usage examples:
 | Method | SetZeroPlural | None | N/A | Optional. Restores the default behavior of considering a count of zero to be plural. |
 
 ## TestingFramework
+
 A lightweight testing framework  
 Usage example  
  ```vb
@@ -571,6 +587,7 @@ Usage example
 | Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. |
 
 ## TextStreamer
+
 Open a file as a text stream for reading, writing, or appending.  
 Methods for use with the text stream that is returned by the Open method:  
 <em> Reading methods: </em> Read, ReadLine, ReadAll <br /> <em> Writing methods: </em> Write, WriteLine, WriteBlankLines <br /> <em> Reading or Writing methods: </em> Close, Skip, SkipLine <br /> <em> Reading or writing properties: </em> AtEndOfLine, AtEndOfStream, Column, Line  
@@ -602,6 +619,7 @@ Methods for use with the text stream that is returned by the Open method:
 | Property | GetStreamFormat | None | a tristate boolean | Gets the current StreamFormat setting. Returns one of these stream constants: tbAscii, tbUnicode, tbSystemDefault |
 
 ## TimeFunctions
+
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Method | SetFirstDOW | an integer | N/A | Specifies the first day of the week. Parameter can be one of the VBScript constants vbSunday, vbMonday, ... |
@@ -612,6 +630,7 @@ Methods for use with the text stream that is returned by the Open method:
 | Property | GetFormattedTime | a date | a date string | Returns a formatted 24-hr time string: e.g. 13:38:45 or 00:45:32 |
 
 ## ValidFileName
+
 VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.  
 Usage Example  
 ```vb
@@ -628,9 +647,10 @@ ValidFileName.vbs provides an example of introductory comments in a script that 
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetValidFileName | a file name candidate | a valid file name | Returns a string suitable for use as a file name: Removes <strong> \ / : * ? " < > &#124; %20 # </strong> and replaces them with a hyphen/dash (-). Limits length to maxLength value in ValidFileName.config. |
 | Property | InvalidWindowsFilenameChars | None | an array | Returns an array of characters that are not allowed in Windows&reg; filenames. |
-| Property | InvalidChromeFilenameStrings | None | an array | Returns an array of strings, any one of which if included in the filename of a local .html file, Chrome will not open the file. |
+| Property | InvalidChromeFilenameStrings | None | an array | Returns an array of strings, either one of which if included in the filename of a local .html file, Chrome will not open the file. |
 
 ## VBSApp
+
 VBSApp class  
 Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.  
 This can be useful when writing a class that might be used in both types of "apps".  
@@ -713,6 +733,7 @@ Examples
 | Property | GetHost | None | "wscript.exe" or "cscript.exe" or "mshta.exe" | Returns the current host. Can be used as an argument for the method RestartWith. |
 
 ## VBSArguments
+
 Functions related to VBScript command-line arguments  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -720,6 +741,7 @@ Functions related to VBScript command-line arguments
 | Property | GetArgumentsString | None | a string containing all command-line arguments | For use when restarting a script, in order to retain the original arguments. Each argument is wrapped wih quotes, which are stripped off as they are read back in. The return string has a leading space, by design, unless there are no arguments |
 
 ## VBSArrays
+
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | Uniques | an array | an array | Returns an array with no duplicate items, given an array that may have some. |
@@ -727,6 +749,7 @@ Functions related to VBScript command-line arguments
 | Property | CollectionToArray | a collection of strings | array of strings | Can be used to convert the WScript.Arguments object to an array, for example. |
 
 ## VBSClipboard
+
 Clipboard procedures  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -735,6 +758,7 @@ Clipboard procedures
 | Property | GetClipboardText | None | a string | Returns text from the clipboard |
 
 ## VBSEnvironment
+
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | Expand | a string | a string | Expands environment variable(s); e.g. convert %UserProfile% to C:\Users\user42 |
@@ -750,6 +774,7 @@ Clipboard procedures
 | Property | GetDefaults | None | an array | Returns an array of common environment variables pre-installed with some versions of Windows&reg;. Not exhaustive. |
 
 ## VBSEventLogger
+
 Logs messages to the Application event log.  
   
 Wraps the LogEvent method of the WScript.Shell object.  
@@ -787,6 +812,7 @@ Usage example:
 | Method | OpenLogFolder | None | N/A | Opens the folder with the .evtx files that contain the event logs, by default "%SystemRoot%\System32\Winevt\Logs". Application.evtx holds the WSH data. |
 
 ## VBSExtracter
+
 For extracting a string from a text file, given a regular expression  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -798,6 +824,7 @@ For extracting a string from a text file, given a regular expression
 | Property | Extract0 | None | a string | Deprecated for not spanning multiple lines. Formerly named Extract. Returns the string that matches the specified regex pattern. Returns an empty string if there is no match. Before calling this method, you must specify the file and the pattern: see SetPattern and SetFile. |
 
 ## VBSFileSystem
+
 General utility functions  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -818,6 +845,7 @@ General utility functions
 | Method | SetForceDelete | boolean | N/A | Controls the behavior of the DeleteFile method: Specify True to force a file deletion even when the file is read-only. Optional. Default is False. |
 
 ## VBSHoster
+
 Manage which script host is hosting the currently running script  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -829,6 +857,7 @@ Manage which script host is hosting the currently running script
 | Property | GetDefaultHost | None | a string | Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default. |
 
 ## VBSLogger
+
 A lightweight VBScript logger  
 Instantiation   
 ```vb
@@ -864,6 +893,7 @@ Usage method two. This method has the advantage that the name of the calling scr
 | Property | GetLogFilePath | None | a filespec | Retreives the filespec for the log file, with environment variables expanded. Default: &lt;GetDefaultLogFolder&gt;\YYYY-MM-DD-DayOfWeek.txt |
 
 ## VBSPower
+
 Power functions: shutdown, restart, logoff, sleep, and hibernate.  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -875,10 +905,11 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 | Method | Hibernate | None | N/A | Puts the computer into hibernation. Will not work if hibernate is disabled in the Control Panel, in which case the EnableHibernation method may be used to reenable hibernation. Hibernate is more power-efficient than sleep, but recovery is slower. If the computer wakes after pressing a key or moving the mouse, then it was sleeping, not in hibernation. Recovery from hibernation typically requires pressing the power button. |
 | Method | EnableHibernation | None | N/A | Enables hibernation. The User Account Control dialog will open to request elevated privileges. |
 | Method | DisableHibernation | None | N/A | Disables hibernation. The User Account Control dialog will open to request elevated privileges. |
-| Method | SetForce | force | N/A | Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close. |
+| Method | SetForce | a boolean | N/A | Optional. Setting this to True forces the Shutdown or Restart, discarding unsaved work. Default is False. Logoff always forces apps to close. Windows 10 may force the specified action regardless of this setting. |
 | Method | SetDebug | a boolean | N/A | Used for testing. True prevents the computer from actually shutting down, etc., during testing. Default is False. |
 
 ## VBSStopwatch
+
 A timer  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -889,6 +920,7 @@ A timer
 | Method | Reset | None | N/A | Sets the timer to zero. |
 
 ## VBSTestRunner
+
 Run a test or group of tests  
 Usage example  
  ```vb
@@ -918,11 +950,13 @@ See also TestingFramework
 | Method | SetRunCount | an integer | N/A | Optional. Sets the number of times to run the test(s). Default is 1. |
 
 ## VBSTroubleshooter
+
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Method | LogAscii | a string | N/A | Write to the log the Ascii codes for each character in the specified string. |
 
 ## VBSValidator
+
 A working example of how validation can be accomplished.  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -936,6 +970,7 @@ A working example of how validation can be accomplished.
 | Property | ErrDescrInt | None | a string | " is not an integer." Useful for verifying Err.Description in a unit test. |
 
 ## WindowsUpdatesPauser
+
 Pause Windows Updates to get more bandwidth. Don't forget to resume.  
 For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.  
   
@@ -950,6 +985,7 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 | Method | OpenConfigFile | None | N/A | Opens the .config file |
 
 ## WMIUtility
+
 Examples of the Windows Management Instrumentation object  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -969,6 +1005,7 @@ Examples of the Windows Management Instrumentation object
 | Property | Battery | None | an object | Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object. |
 
 ## WoWChecker
+
 Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.  
   
 How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.  

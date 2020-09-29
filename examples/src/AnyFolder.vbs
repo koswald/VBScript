@@ -3,7 +3,7 @@
 
 Option Explicit
 
-Const width = 350, height = 120 'window size: pixels
+Const width = 350, height = 250 'window size: pixels
 Const xPos = 80, yPos = 80 'window position: percent of screen
 
 Sub Copy
@@ -35,12 +35,19 @@ Sub TransferItem(sourceItem, mode)
     ElseIf fso.FileExists(sourceItem) Then
         On Error Resume Next
             fso.CopyFile sourceItem, targetItem, True
-            If Err Then If vbCancel = MsgBox("Failed to copy file """ & sourceItem & """ to """ & targetFolder & """.", vbInformation + vbOKCancel, app.GetFileName) Then app.Quit
+            If Err Then
+                msg = Err.Description & vbLf & vbLf & "Failed to copy file """ & sourceItem & """ to """ & targetFolder & """."
+                If vbCancel = MsgBox(msg, vbInformation + vbOKCancel, app.GetFileName) Then
+                    app.Quit
+                Else Exit Sub ' attempt to transfer the next item, if any
+                End If
+            End If
         On Error Goto 0
     End If
     If moveMode = mode Then
         DeleteSourceItem sourceItem, targetItem
     End If
+    Dim msg
 End Sub
 
 'delete the source file or folder,
@@ -102,6 +109,7 @@ Sub InitializeWindow
             (.availHeight - height) * yPos * .01
     End With
     document.title = hta.applicationName 'title bar
+    document.body.style.whitespace = "nowrap"
 End Sub
 
 'instantiate objects
@@ -114,10 +122,11 @@ Sub InstantiateObjects
     End With
     Set choose = CreateObject("VBScripting.FolderChooser")
     choose.Title = hta.applicationName & ":" & vbLf & " Browse to the target folder"
-    choose.InitialDirectory = "%UserProfile%\z.{679F85CB-0220-4080-B29B-5540CC05AAB6}" 'see %drop%\h\+\Quick access folder.txt
+    choose.InitialDirectory = "%UserProfile%\z.{679F85CB-0220-4080-B29B-5540CC05AAB6}" 'see settings\+\Quick access folder.txt
 End Sub
 
 'create the HTML elements
+Dim divText
 Sub CreateHtmlElements
 
     'create the Copy button
@@ -141,6 +150,15 @@ Sub CreateHtmlElements
         .focus
     End With
     document.body.insertBefore btnMove
+
+    'create a div for text
+    Set divText = document.createElement("div")
+    With divText
+        .style.fontFamily = "sans-serif"
+        .style.fontSize = "75%"
+    End With
+    document.body.insertBefore divText
+
 End Sub
         
 'validate the command-line arguments
@@ -157,16 +175,16 @@ Sub ValidateArgs
     Dim i, s : s = ""
     For i = 0 To UBound(items)
         If fso.FileExists(items(i)) Then
-            s = s & vbLf & "F:  "
+            s = s & "<br />" & "File:  "
         ElseIf fso.FolderExists(items(i)) Then
-            s = s & vbLf & "D: "
+            s = s & "<br />" & "Folder: "
         Else
-            MsgBox items(i) & " is not an existing file or folder.", vbExclamation, hta.applicationName
+            MsgBox """" & items(i) & """ is not an existing file or folder.", vbExclamation, hta.applicationName
             Cancel    
         End If
         s = s & items(i)
     Next
-    document.body.title = "Ready to send" & s
+    divText.innerHtml = "<strong> Ready to send: </strong>" & s
 End Sub
 
 'prompt the user to choose a target folder
@@ -176,5 +194,5 @@ Sub BrowseForFolder
     If Not fso.FolderExists(targetFolder) Then Cancel
     DisableCopyAndMoveButtons False
     btnMove.focus
-    document.body.title = document.body.title & vbLf & "to" & vbLf & targetFolder
+    divText.innerHtml = divText.innerHtml & "<br /><strong> To: </strong><br />" & targetFolder
 End Sub

@@ -1,11 +1,8 @@
-###### The `spec` folder
-
-# ReadMe.md
+# The `spec` folder
 
 ## Overview
 
-Each test file contains one or more *specs*, or specifications.
-Most are not strictly *unit tests*.
+Each integration test consists of one or more *specs*, or specifications.
 
 ## Launching tests
 

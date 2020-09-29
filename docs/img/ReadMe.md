@@ -1,6 +1,3 @@
-
-###### The `img` folder
-
-# ReadMe.md
+# The `img` folder
 
 `doc.png` is used in the [wiki](../../../wiki).

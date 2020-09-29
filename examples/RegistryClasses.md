@@ -1,9 +1,9 @@
 # RegistryClasses.hta
 
-[Overview](#overview)  
-[Examples](#examples)  
-[Tips](#tips)  
-[References](#references)
+[Overview]  
+[Examples]  
+[Tips]  
+[References]
 
 ## Overview
 
@@ -13,8 +13,6 @@ regedit.exe, such as
 
 - Creating a new class and file type.
 - Creating a new verb for an existing class.
-
-> WARNING: Backup the registry before making changes!
 
 ## Examples
 
@@ -39,19 +37,22 @@ Open .hta files with WordPad.
 Open PowerShell at any folder
 
 - Select HKEY_CURRENT_USER (recommended). Or click Elevate to elevate privileges and then select HKEY_LOCAL_MACHINE.
-- In the ProgId field, enter `Folder`.
+- In the ProgId field, enter `Directory`.
 - Click the *New verb* button.
 - Enter `Open PowerShell here` and click the *Ok* button.
-- In the *Command* field, enter `powershell -NoExit -NoLogo Set-Location '%1'`. Use `pwsh` instead of `powershell` for PowerShell Core (version 6+), and see note below. Note the single-quotes around the folder name. Double quotes will not work properly for folders with spaces.
+- In the *Command* field, enter `powershell -NoExit -NoLogo Set-Location '%1'`. Use `pwsh` instead of `powershell` for PowerShell Core, and see note below. Note the single-quotes around the folder name. Double quotes will not work properly for folders with spaces.  
 - Open explorer.exe, right-click a folder, and click *Open PowerShell here*.
 - A PowerShell should open at the selected folder.
 
-> *Note:* In PowerShell 6+ (PowerShell Core), a `Set-Location`
-> item in `*profile.ps1` may override this feature.
+> *Note:*  There is a known issue with PowerShell for folders with single-quotes in  
+> the name. It is recommended not to use single-quotes in folder or file names.  
+
+> *Note:* In PowerShell 6+ (PowerShell Core), a `Set-Location` item in `*profile.ps1` may  
+> override this feature. Workaround: Modify the taskbar shortcut's 'Start in' field instead.  
 
 ## Tips
 
-- Click F1 to open this file.
+- Click F1 in `RegistryClasses.hta` to open this file.
 
 - If you might want to delete a verb in the future, without using regedit.exe, then don't use cannonical verb names such as open, opennew, print, explore, find, openas, properties, printto, runas, and runasuser.
 
@@ -64,3 +65,8 @@ Open PowerShell at any folder
 [Extending Shortcut Menus](https://docs.microsoft.com/en-us/windows/desktop/shell/context "docs.microsoft.com")  
 [Use JavaScript to place cursor at end of text in text input element
 ](https://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element#26900921 "stackoverflow.com")
+
+[Overview]: #overview
+[Examples]: #examples
+[Tips]: #tips
+[References]: #references

@@ -1,13 +1,12 @@
 # Presentation.vbs
 
-[Overview](#overview)  
-[Requirements](#requirements)  
-[References](#references)  
+[Overview]  
+[Requirements]  
+[References]  
 
 ## Overview
 
-[Presentation.vbs] provides a way to keep the computer awake while 
-giving a presentation, for systems that don't have presentation.exe.  
+[Presentation.vbs] provides a way to keep the computer awake while giving a presentation, for systems that don't have `PresentationSettings.exe`, notably Windows 10 Home systems.  
 
 Click the moon icon in the system tray to see a menu.  
   
@@ -28,16 +27,22 @@ Specifically, you may want to increase the value that controls when the followin
 [PresentationSettings.hta] is intended to make these settings accessible from a single location.
 
 ## References  
+
 [Watcher.cs documentation](../docs/CSharpClasses.md#watcher "github.com\koswald\VBScript")  
 [How to change Lock screen timeout before display turn off on Windows 10]  
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]  
 [Canonical Names of Control Panel Items]  
 [SetThreadExecutionState]  
 
+`` `` `` ``
 
+[Overview]: #overview  
+[Requirements]: #requirements  
+[References]: #references  
 
 [Presentation.vbs]: Presentation.vbs
 [PresentationSettings.hta]: PresentationSettings.hta
+
 [How to change Lock screen timeout before display turn off on Windows 10]: https://www.windowscentral.com/how-extend-lock-screen-timeout-display-turn-windows-10 "windowscentral.com"
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]: https://www.online-tech-tips.com/windows-7/does-your-windows-7-computer-display-turn-off-every-15-minutes/ "online-tech-tips.com"
 [Canonical Names of Control Panel Items]: https://docs.microsoft.com/en-us/windows/desktop/shell/controlpanel-canonical-names "docs.microsoft.com"

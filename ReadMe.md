@@ -14,11 +14,11 @@ This project features
 - A [speech synthesis] UI.  
 - A [system tray icon] proof of concept.
 - A [progress bar] proof of concept.
-- A script for keeping the computer awake while 
+- A script for keeping the computer awake while
   giving a [presentation], with a system tray icon.  
 - A [doc generator for the C# classes] and a [doc generator for the VBScript classes], both based on code comments.  
 - More [examples] of .vbs and .hta scripts.
--  [Windows Script Component files].
+- [Windows Script Component files].
 
 ## Requirements
 
@@ -26,8 +26,8 @@ Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
-Clone or download the repo and run [Setup.vbs]. 
-This will register the [Windows Script Component files], and compile and register the [VBScript extensions]. 
+Clone or download the repo and run [Setup.vbs].
+This will register the [Windows Script Component files], and compile and register the [VBScript extensions].
 
 ## References  
 
@@ -40,7 +40,7 @@ Read or edit the [wiki](../../wiki)
 
 [VBScript utility classes]: class
 [C# classes]: .Net
-[doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs 
+[doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs
 [doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
 [testing framework]: class/TestingFramework.vbs
 [logger]: class/VBSLogger.vbs
@@ -59,4 +59,3 @@ Read or edit the [wiki](../../wiki)
 [progress bar]: .Net/test/ProgressBar-test.vbs
 [Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84) "docs.microsoft.com"
 [Scripting links]: https://technet.microsoft.com/en-us/library/cc498722.aspx "technet.microsoft.com"
-

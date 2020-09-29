@@ -260,10 +260,11 @@ Class DocGenerator
         doc.WriteLine ""
         WriteLine "<div>"
         IndentIncrease
-        WriteLine "<h4 class=""heading"" id=" & id & ">" & fso.GetBaseName(File.Name) & "</h4>"
+        WriteLine "<h2 class=""heading"" id=" & id & ">" & fso.GetBaseName(File.Name) & "</h2>"
         WriteLine "<div class=""detail"">"
         md.WriteLine ""
         md.WriteLine "## "& fso.GetBaseName(File.Name)
+        md.WriteLine
         ScriptHeaderWritten = True
     End Sub
 
@@ -409,7 +410,7 @@ Class DocGenerator
         If NoComments Then Exit Sub 'don't require comments
 
         msg = "Content can't have both Method and Property content."
-        If Len(methodContent) And Len(propertyContent) Then RaiseContentError msg
+        If CBool(Len(methodContent)) And CBool(Len(propertyContent)) Then RaiseContentError msg
 
         msg = "The help content descriptor of the method or property or function should equal the method or property or function name."
         If Len(methodContent) Then
@@ -516,13 +517,13 @@ Class DocGenerator
         IndentDecrease
         WriteLine "</head>"
         WriteLine "<body onclick=""docScript.toggleDetail(event)"">"
-        WriteLine "<h3>" & docTitle & "</h3>"
+        WriteLine "<h1>" & docTitle & "</h1>"
         doc.WriteLine ""
         IndentIncrease
 
         md.WriteLine "# " & docTitle
         md.WriteLine ""
-        md.WriteLine "### Contents"
+        md.WriteLine "## Contents"
         md.WriteLine ""
         Dim baseName
         For Each File In fso.GetFolder(scriptFolder).Files
@@ -532,7 +533,6 @@ Class DocGenerator
                 md.WriteLine "[" & baseName & "](#" & LCase(baseName) & ")  "
             End If
         Next
-        md.WriteLine ""
     End Sub
 
     Private Sub WriteBottomSection

@@ -1,6 +1,4 @@
-###### The `test` folder
-
-# ReadMe.md
+# The `test` folder
 
 The `test` folder contains
 

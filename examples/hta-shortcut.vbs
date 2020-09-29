@@ -42,7 +42,7 @@ With New RegExp
     name = .Replace(name, "$1")
 End With
 Set sh = CreateObject("WScript.Shell")
-Set link = sh.CreateShortcut(parent & "\" & base & ".hta.lnk")
+Set link = sh.CreateShortcut(Expand("%UserProfile%\Desktop\") & base & ".hta.lnk")
 link.IconLocation = FindIcon(icon)
 link.Arguments = ""
 link.Description = name
