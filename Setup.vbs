@@ -1,7 +1,7 @@
-'Setup the VBScript utilities
+'Setup the VBScripting utilities
 
 'Registers or unregisters the windows script component (.wsc) files.
-'Compiles and registers or unregisters the VBScript
+'Compiles and registers or unregisters the VBScripting
 'extension .dll libraries.
 'Creates or removes the VBScripting event log source.
 
@@ -9,6 +9,7 @@
 
 'The User Account Control dialog will open
 'to verify elevation of privileges.
+
 Option Explicit
 componentFolder_ = "class\wsc"
 buildFolder_ = ".Net\build"
@@ -133,9 +134,9 @@ Sub ProgramsAndFeaturesEntry
     reg.SetStringValue HKLM, uninstKey, "Comments", ""
     reg.SetStringValue HKLM, uninstKey, "Readme", InstallLocation & "\ReadMe.md"
     reg.SetStringValue HKLM, uninstKey, "InstallDate", "" ' [YYYYMMDD]
-    reg.SetDWORDValue HKLM, uninstKey, "Version", 0
-    reg.SetDWORDValue HKLM, uninstKey, "VersionMajor", 0
-    reg.SetDWORDValue HKLM, uninstKey, "VersionMinor", 0
+    reg.SetStringValue HKLM, uninstKey, "DisplayVersion", version.MajorVersion & "." & version.MinorVersion
+    reg.SetDWORDValue HKLM, uninstKey, "VersionMajor", version.MajorVersion
+    reg.SetDWORDValue HKLM, uninstKey, "VersionMinor", version.MinorVersion
 End Sub
 
 Sub DeleteEventLogSource
@@ -184,6 +185,7 @@ Dim include, format, keyDeleter
 Dim wow
 Dim inspectBatchFile
 Dim componentFolder_, buildFolder_
+Dim version
 
 Sub Initialize
     Set sa = CreateObject("Shell.Application")
@@ -213,6 +215,8 @@ Sub Initialize
         Dim pc : Set pc = New PrivilegeChecker
         Execute .Read("WoWChecker")
         Set wow = New WoWChecker
+        Execute .Read("..\ProjectInfo.config")
+        Set version = New ProjectInformation
     End With
 
     'get command line arguments
