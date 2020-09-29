@@ -1,4 +1,3 @@
-
 'Provides various properties to analyze a file's encoding. 
 '
 'FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.

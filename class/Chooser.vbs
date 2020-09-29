@@ -1,4 +1,3 @@
-
 'Get a folder or file chosen by the user
 '
 '<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net <a href="../.Net/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .Net folder.
