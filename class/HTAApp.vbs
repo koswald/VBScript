@@ -68,11 +68,15 @@ Class HTAApp
                 'validate
                 If q = char And Not space = prevChar Then Err.Raise 1,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
                 If pos = Len(cl) Then Err.Raise 2,, "There is an odd number of double quotes in the command line arguments, " & cl
+                If space = char _
+                And q = prevChar Then
+                    'do nothing: effectively removes space from immediately after odd-numbered quote
+                Else
+                    'add the current character to the rebuild string
+                    args = args & char
+                End If
 
-                'add the current character to the rebuild string
-                args = args & char
             Else
-
                 'quote count is even...
                 'remove multiple spaces between arguments and
                 'add quotes, temporarily
