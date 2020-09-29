@@ -5,8 +5,8 @@ With New TestingFramework
         Dim extractor
         Set extractor = CreateObject("VBScripting.IconExtractor")
 
-    .it "should get the number of icons in a file"
-        .AssertEqual extractor.IconCount(resFile) >= 388, True
+    .it "should get the number of icons in " & resFile
+        .AssertEqual extractor.IconCount(resFile), 334
 
     .it "should extract an icon and save it"
         extractor.Save resFile, 289, icoFile, True
