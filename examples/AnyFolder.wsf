@@ -14,7 +14,7 @@
         End With
         Dim app : Set app = New VBSApp
         With CreateObject("WScript.Shell")
-            .Run parent & "\AnyFolder.hta " & app.GetArgsString
+            .Run """" & parent & "\AnyFolder.hta"" " & app.GetArgsString
         End With
         Set app = Nothing
     </script>

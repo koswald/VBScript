@@ -13,6 +13,7 @@ Sub Window_OnLoad
     Set includer = CreateObject("VBScripting.Includer")
     Execute includer.Read("GUIDGenerator")
     Set generator = New GUIDGenerator
+    generator.SetLowerCase
     Generate
     Set includer = Nothing
 

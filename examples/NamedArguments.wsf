@@ -1,0 +1,53 @@
+<!-- named arguments example -->
+<job>
+    <runtime>
+        <!-- define command-line argument requirements -->
+        <named 
+            name = "Folder" 
+            helpstring = "Folder to examine" 
+            required = "True" />
+        <named
+            name = "FileTypes" 
+            helpstring = "File types to list" 
+            required = "False" />
+        <named 
+            name = "ExpectedOutcome"
+            helpstring = "Expected outcome of test"
+            required = "False" />
+    </runtime>
+    <script language="VBScript">
+
+        ' Validate the named arguments
+
+        If Not WScript.Arguments.Named.Exists( "Folder" ) Then
+            WScript.Arguments.ShowUsage
+            WScript.Quit
+        End If
+        folder = WScript.Arguments.Named( "Folder" )
+        fileTypes = WScript.Arguments.Named( "FileTypes" )
+        expectedOutcome = WScript.Arguments.Named( "ExpectedOutcome")
+        If "" = fileTypes Then fileTypes = "vbs | wsf"
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        If Not fso.FolderExists( folder ) Then
+            Err.Raise 1,, "Can't find folder '" & folder & "'"
+        End If
+
+        ' Create a list of the specified files in the specified folder
+
+        For Each file in fso.GetFolder( folder ).Files
+            actualType = LCase( fso.GetExtensionName( file.Name )) 
+            For Each desiredType In Split( fileTypes, "|" )
+                If actualType = LCase( Trim( desiredType )) Then
+                    fileList = fileList & file.Name & vbCrLf
+                    Exit For
+                End If
+            Next
+        Next
+
+        ' Show the results
+
+        MsgBox "Expected outcome: " & expectedOutcome & vbLf & vbLf & _
+            fileList, vbInformation + vbSystemModal, WScript.ScriptName
+        Set fso = Nothing
+    </script>
+</job>

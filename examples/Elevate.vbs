@@ -1,26 +1,28 @@
-'Elevate privileges of the specified file
+'Elevate privileges of the specified file or command.
 'Use as a drop target or from the command line.
+'A shortcut to this file can be placed in SendTo.
 
 Option Explicit
+
 With WScript.Arguments
     If .Count = 0 Then
         Err.Raise 1,, "Expected a command line argument: the file to open with elevated privileges."
+    ElseIf .Count > 1 Then
+        Err.Raise 2,, "Can only elevate one item at a time."
     End If
-    Dim i, args : args = ""
-    For i = 0 To .Count - 1
-        If InStr(.item(i), " ") Then
-            args = args & " """ & .item(i) & """"
-        Else args = args & " " & .item(i)
-        End If
-    Next
+    Dim filespec : filespec = .item(0)
 End With
-Dim sa : Set sa = CreateObject("Shell.Application")
-Dim format : Set format = CreateObject("VBScripting.StringFormatter")
-Dim sh : Set sh = CreateObject("WScript.Shell")
-sa.ShellExecute "cmd", format(Array( _
-        "/c cd ""%s"" & start """" %s", _
-        sh.CurrentDirectory, args _
-    )),, "runas"
 
-Set sa = Nothing : Set format = Nothing : Set sh = Nothing
+With CreateObject("Scripting.FileSystemObject")
+    If Not .FileExists(filespec) Then
+        Err.Raise 3,, "Cannot find the file '" & filespec "'"
+    End If
+    Dim cmdArgs : cmdArgs = _
+        "/c cd """ & .GetParentFolderName(filespec) & """ " & _
+        "& start """" """ & filespec & """"
+End With
+
+With CreateObject("Shell.Application")
+    .ShellExecute "cmd", cmdArgs,, "runas"
+End With
 
