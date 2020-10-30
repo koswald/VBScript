@@ -27,23 +27,16 @@ End Sub
 Sub TransferItem(sourceItem, mode)
     Dim targetItem : targetItem = targetFolder & "\" & fso.GetFileName(sourceItem)
     If sourceItem = targetItem Then Exit Sub 'if source and target are the same, don't transfer and especially don't delete!
-    If fso.FolderExists(sourceItem) Then
-        On Error Resume Next
-            fso.CopyFolder sourceItem, targetItem, True
-            If Err Then If vbCancel = MsgBox("Failed to copy folder """ & sourceItem & """ to """ & targetFolder & """.", vbInformation + vbOKCancel, app.GetFileName) Then app.Quit
-        On Error Goto 0
-    ElseIf fso.FileExists(sourceItem) Then
-        On Error Resume Next
-            fso.CopyFile sourceItem, targetItem, True
-            If Err Then
-                msg = Err.Description & vbLf & vbLf & "Failed to copy file """ & sourceItem & """ to """ & targetFolder & """."
-                If vbCancel = MsgBox(msg, vbInformation + vbOKCancel, app.GetFileName) Then
-                    app.Quit
-                Else Exit Sub ' attempt to transfer the next item, if any
-                End If
+    On Error Resume Next
+        sa.Namespace(targetFolder).CopyHere sourceItem
+        If Err Then
+            msg = Err.Description & vbLf & vbLf & "Failed to copy '" & sourceItem & "' to '" & targetFolder & "'"
+            If vbCancel = MsgBox(msg, vbInformation + vbOKCancel, app.GetFileName) Then
+                app.Quit
+            Else Exit Sub ' attempt to transfer the next item, if any
             End If
-        On Error Goto 0
-    End If
+        End If
+    On Error Goto 0
     If moveMode = mode Then
         DeleteSourceItem sourceItem, targetItem
     End If
@@ -86,7 +79,8 @@ Const copyMode = 0, moveMode = 1
 Const EscKey = 27 'window.event.keyCode for the Esc key
 Const CKey = 67
 Const MKey = 77
-Dim sh, fso, app, hta, choose 'objects
+Dim sh, fso, sa 'native Windows objects
+Dim app, hta, choose 'project objects
 Dim btnCopy, btnMove 'buttons
 Dim targetFolder
 Dim items 'array of files and/or folders
@@ -116,6 +110,7 @@ End Sub
 Sub InstantiateObjects
     Set sh = CreateObject("WScript.Shell")
     Set fso = CreateObject("Scripting.FileSystemObject")
+    Set sa = CreateObject("Shell.Application")
     With CreateObject("VBScripting.Includer")
         Execute .read("VBSApp")
         Set app = New VBSApp
