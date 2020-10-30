@@ -1,0 +1,23 @@
+/* css for BatteryStatus.hta */
+body {
+    font-family: sans-serif;
+    cursor: default;
+    background-color: #ddd;
+    border-style: outset;
+    border-width: 2px;
+}
+#messageDiv {
+    color: #333;
+    font-weight: bold;
+}
+#imageContainer {
+    width: 50px;
+    float: left;
+    margin: 10px;
+    padding: 10px;
+}
+#textContainer {
+    margin-top: 22px;
+    margin-left: 60px;
+    padding: 10px;
+}

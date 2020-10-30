@@ -2,11 +2,11 @@
 
 ' Running the script with elevated privileges is not required, provided that no new folders need to be created in a target folder that requires special permissions. 
 
-' For example, if the target folder is a non-existing subfolder in %ProgramFiles%, then the script must be run with elevated privileges, or else the target folder must be created in advance. The CopyHere method itself does not require that the script be run elevated, even when the target is in the Program Files folder, because it will ask for permissions as necessary, without resorting to the UAC dialog.
+' For example, if the target folder is a non-existing subfolder in %ProgramFiles%, then the script must be run with elevated privileges, or else the target folder must be created in advance. The CopyHere method itself does not require that the script be run elevated, even when the target is in the Program Files folder, because it will ask for permissions as necessary, without resorting to the UAC dialog; however, the CopyHere method does require that the target folder exists.
 
 With New FolderCopier
     .SourceFolder = .Parent(WScript.ScriptFullName)
-    .TargetFolder = "%ProgramFiles%\Oz"
+    .TargetFolder = "%ProgramFiles%\KOswald"
     .Copy
 End With
 

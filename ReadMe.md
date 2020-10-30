@@ -34,7 +34,7 @@ This will register the [Windows Script Component files], and compile and registe
 [Scripting documentation online]  
 [Scripting links]
 
----
+`` ``
 
 Read or edit the [wiki](../../wiki)
 

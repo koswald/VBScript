@@ -54,7 +54,8 @@ Sub ShowWarning
     stopwatch.Reset
     sh.Run format(Array( _
         "mshta ""%s\BatteryStatus.hta""", _
-        sh.CurrentDirectory))
+        sh.CurrentDirectory _
+    ))
 End Sub
 Function Charge
     Charge = Battery.EstimatedChargeRemaining
@@ -85,7 +86,6 @@ Sub Setup
     Set format = CreateObject("VBScripting.StringFormatter")
     Set sh = CreateObject("WScript.Shell")
     Set fso = CreateObject("Scripting.FileSystemObject")
-    sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
     Execute includer.Read("WMIUtility")
     Set wmi = New WMIUtility
     Execute includer.Read("VBSStopwatch")

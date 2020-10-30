@@ -13,137 +13,17 @@
         BorderStyle="Normal"
         icon="powercpl.dll"
         scroll="no">
+    <link rel="stylesheet"
+        href="href/BatteryStatus.css" />
+    <script language="VBScript"
+        src="../class/VBSApp.vbs">
+    </script>
+    <script language="VBScript"
+        src="src/BatteryStatus.vbs">
+    </script>
 </head>
 <body>
-    <script language="VBScript">
-        Option Explicit
-
-        Sub Main
-            On Error Resume Next
-                extractor.SetImageFormatPng
-                If Err Then sh.PopUp "Error setting image format to PNG.", 3, app.GetFileName, vbInformation + vbSystemModal
-            On Error Goto 0
-            extractor.Save resFile, IconIndex, imageFile, largeIcon
-            Set image = document.createElement("img")
-            image.src = imageFile
-            image.alt = "Battery image"
-            imageContainer.insertBefore image
-
-            Set messageDiv = document.createElement("div")
-            textContainer.insertBefore messageDiv
-            messageDiv.innerHTML = format(Array( _
-                "Battery charge %s% <br /> %s", _
-                Charge, Status _
-            ))
-            window.setTimeout "self.Close()", 7777, "VBScript"
-        End Sub
-
-        Sub Document_OnKeyUp
-            If Esc = window.event.keyCode Then
-                self.Close
-            End If
-        End Sub
-
-        Function IconIndex
-            Dim percent : percent = Charge
-            If percent < 11 Then
-                IconIndex = 9
-            ElseIf percent < 31 Then
-                IconIndex = 10
-            ElseIf percent < 51 Then
-                IconIndex = 11
-            ElseIf percent < 71 Then
-                IconIndex = 12
-            Else IconIndex = 13
-            End If
-        End Function
-        Function Charge
-            Charge = Battery.EstimatedChargeRemaining
-        End Function
-        Function Status
-            If Battery.BatteryStatus = 2 Then
-                Status = "Plugged in"
-            Else Status = "Not plugged in"
-            End If
-        End Function
-        Function Battery : Set Battery = wmi.Battery : End Function
-
-        Const largeIcon = True
-        Const resFile = "%SystemRoot%\System32\wpdshext.dll"
-        Const Esc = 27
-        Dim extractor, wmi, format, app, includer 'project objects
-        Dim image, messageDiv 'html objects
-        Dim imageFile 'string
-        Dim application 'hta object
-        Dim fso, sh
-
-        Sub Window_OnLoad
-            Dim width, height 'window size in percent of screen
-            Dim xPos, yPos 'window position in percent of screen
-            width = 22
-            height = 14
-            xPos = 100
-            yPos = 50
-            With document.parentWindow.screen
-                Dim pxWidth, pxHeight
-                pxWidth = .availWidth * width * .01
-                pxHeight = .availHeight * height * .01
-                self.ResizeTo pxWidth, pxHeight
-                self.MoveTo _
-                    (.availWidth - pxWidth) * xPos * .01, _
-                    (.availHeight - pxHeight) * yPos * .0102
-            End With
-            Set application = document.getElementsByTagName("application")(0)
-            document.Title = application.applicationName
-            Set format = CreateObject("VBScripting.StringFormatter")
-            Set app = CreateObject("VBScripting.VBSApp")
-            app.Init document
-            Set includer = CreateObject("VBScripting.Includer")
-            Set extractor = CreateObject("VBScripting.IconExtractor")
-            Execute includer.Read("WMIUtility")
-            Set wmi = New WMIUtility
-            Set sh = CreateObject("WScript.Shell")
-            sh.CurrentDirectory = app.GetParentFolderName
-            imageFile = format(Array("%s.png", app.GetBaseName))
-            Set fso = CreateObject("Scripting.FileSystemObject")
-            Main
-        End Sub
-        Sub Window_OnUnload
-            If fso.FileExists(imageFile) Then fso.DeleteFile imageFile
-            Set fso = Nothing
-            Set sh = Nothing
-            Set format = Nothing
-            Set application = Nothing
-            Set app = Nothing
-            Set includer = Nothing
-            Set extractor = Nothing
-        End Sub
-    </script>
     <div id="imageContainer"></div>
     <div id="textContainer"></div>
-    <style>
-        body {
-            font-family: sans-serif;
-            cursor: default;
-            background-color: #ddd;
-            border-style: outset;
-            border-width: 2px;
-        }
-        #messageDiv {
-            color: #333;
-            font-weight: bold;
-        }
-        #imageContainer {
-            width: 50px;
-            float: left;
-            margin: 10px;
-            padding: 10px;
-        }
-        #textContainer {
-            margin-top: 22px;
-            margin-left: 60px;
-            padding: 10px;
-        }
-    </style>
 </body>
 </html>

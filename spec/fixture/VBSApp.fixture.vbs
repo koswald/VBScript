@@ -10,6 +10,13 @@ Class VBSAppTester
 
     Sub Run
 
+        If Not "TextStream" = TypeName(stream) Then
+            ' Failed to create the output file in Sub Class_Initialize.
+            errMsg = "Running the VBSApp integration test from %ProgramFiles% requires elevated privileges."
+            sh.PopUp errMsg, timeout, app.GetFileName, vbInformation
+            app.Quit
+        End If
+
         stream.WriteLine app.GetArg(1)
         stream.WriteLine app.GetArgsString
         stream.WriteLine app.GetArgsCount
@@ -33,9 +40,13 @@ Class VBSAppTester
         stopwatch.Reset
         app.Sleep app.GetArg(2)
         stream.WriteLine stopwatch.Split
+
+        Const timeout = 20 ' seconds; 0 => indefinite
+        Dim errMsg
     End Sub
 
-    Private app, stopwatch, fso, stream
+    Private fso, sh, stream ' Windows-native objects
+    Private app, stopwatch ' project objects
 
     Sub Class_Initialize
         Set app = CreateObject("VBScripting.VBSApp")
@@ -53,7 +64,10 @@ Class VBSAppTester
         Const ForWriting = 2
         Const CreateNew = True
         outFile = fso.GetAbsolutePathName( base & app.GetArg(3) & "Out.txt" )
-        Set stream = fso.OpenTextFile( outFile, ForWriting, CreateNew )
+        On Error Resume Next
+            Set stream = fso.OpenTextFile( outFile, ForWriting, CreateNew )
+        On Error Goto 0
+        Set sh = CreateObject("WScript.Shell")
 
         Dim outFile
     End Sub
