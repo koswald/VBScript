@@ -4,7 +4,7 @@ using System.Timers;
 
 namespace VBScripting
 {
-    /// <summary> Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. </summary>
+    /// <summary> Provides something like presentation mode for Windows systems that don't have PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. </summary>
     /// <remarks> Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
     [ProgId("VBScripting.Watcher"),
         ClassInterface(ClassInterfaceType.None),

@@ -235,7 +235,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| Watcher | Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
+| Watcher | Provides something like presentation mode for Windows systems that don't have PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
 | IWatcher | The COM interface for VBScripting.Watcher  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  |  |  | Method | Watcher | VBScripting |
 | Dispose | Disposes of the object's resources.  |  |  | Method | Watcher | VBScripting |
