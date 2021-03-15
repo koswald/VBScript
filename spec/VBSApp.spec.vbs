@@ -1,6 +1,6 @@
 ' Test the VBSApp class
 
-' The intention of the class under test is to enable the VBScript code to be identical or nearly identical whether called from an .hta or .wsf or .vbs file. Accordingly, the core test code is in a single .vbs file that is referenced by both the .hta and .wsf test fixtures.
+' The intention of the class under test is to enable the VBScript code to be identical or nearly identical whether called from an .hta or .wsf or .vbs file. Accordingly, the core test code is in a single .vbs file, .\fixture\VBSApp.fixture.vbs, that is referenced by both the .hta and .wsf test fixtures.
 
 Option Explicit
 
@@ -42,6 +42,7 @@ Class VBSAppClassTester
             WScript.Sleep 50
             j = j + 1
             If j = 200 Then
+                WScript.StdOut.WriteLine vbLf & WScript.ScriptName & ":"
                 WScript.StdOut.WriteLine vbLf & "Excessive wait for the process"
                 WScript.StdOut.WriteLine vbLf & command
                 WScript.StdOut.WriteLine vbLf & "to finish. Please try again."

@@ -195,7 +195,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| SpeechSynthesis | Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. |  |  | Type | | VBScripting |
+| SpeechSynthesis | Provide a wrapper for the .NET speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. |  |  | Type | | VBScripting |
 | ISpeechSynthesis | The COM interface for <tt>VBScripting.SpeechSynthesis</tt>
   |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | SpeechSynthesis | VBScripting |
@@ -235,12 +235,12 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| Watcher | Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
+| Watcher | Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
 | IWatcher | The COM interface for VBScripting.Watcher  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  |  |  | Method | Watcher | VBScripting |
 | Dispose | Disposes of the object's resources.  |  |  | Method | Watcher | VBScripting |
-| MonitorOff | Turn off the monitor(s).  |  |  | Method | Watcher | VBScripting |
-| Watch | Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. Default is False.  |  |  | Property | Watcher | VBScripting |
+| MonitorOff | Turns off the monitor(s).  |  |  | Method | Watcher | VBScripting |
+| Watch | Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. The default is False.  |  |  | Property | Watcher | VBScripting |
 | CurrentState | Gets or sets an integer describing the current thread execution state. Intended for internal use and testing only.  |  |  | Property | Watcher | VBScripting |
 | ResetPeriod | Gets or sets the time in milliseconds between idle-timer resets. Optional. Default is 30000. Max 2147483647.  |  |  | Property | Watcher | VBScripting |
 | Privileged | Gets a boolean indicating whether privileges are elevated.  |  |  | Property | Watcher | VBScripting |

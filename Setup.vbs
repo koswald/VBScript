@@ -12,7 +12,7 @@
 
 Option Explicit
 componentFolder_ = "class\wsc"
-buildFolder_ = ".Net\build"
+buildFolder_ = ".NET\build"
 
 Initialize
 Main

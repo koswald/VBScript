@@ -77,7 +77,7 @@ Sub SetDurationUI
 
     Dim currentValue 'current duration of Presentation mode in hours, if it were to be activated or reactivated
     Dim response 'InputBox return value
-    Dim prompt, caption, suggestedValue 'InputBox aruments
+    Dim prompt, caption, suggestedValue 'InputBox arguments
 End Sub
 
 Sub Sleep

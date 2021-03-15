@@ -39,7 +39,7 @@ This will register the [Windows Script Component files], and compile and registe
 Read or edit the [wiki](../../wiki)
 
 [VBScript utility classes]: class
-[C# classes]: .Net
+[C# classes]: .NET
 [doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs
 [doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
 [testing framework]: class/TestingFramework.vbs
@@ -47,7 +47,7 @@ Read or edit the [wiki](../../wiki)
 [examples]: examples
 [Setup.vbs]: Setup.vbs
 [Windows Script Component files]: class/wsc
-[VBScript extensions]: .Net
+[VBScript extensions]: .NET
 [registry classes]: examples/RegistryClasses.hta
 [icon extractor]: examples/icon-extractor.hta
 [startup items]: examples/StartItems.hta
@@ -55,7 +55,7 @@ Read or edit the [wiki](../../wiki)
 [speech synthesis]: examples/SpeechSynthesis.hta
 [presentation]: examples/Presentation.vbs
 [interpreter]: examples/VBSInterpreter.hta
-[system tray icon]: .Net/test/NotifyIcon-test.vbs
-[progress bar]: .Net/test/ProgressBar-test.vbs
+[system tray icon]: .NET/test/NotifyIcon-test.vbs
+[progress bar]: .NET/test/ProgressBar-test.vbs
 [Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84) "docs.microsoft.com"
 [Scripting links]: https://technet.microsoft.com/en-us/library/cc498722.aspx "technet.microsoft.com"

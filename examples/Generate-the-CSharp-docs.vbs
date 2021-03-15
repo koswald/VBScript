@@ -7,7 +7,7 @@ Set fso = Nothing
 
 With New DocGeneratorCS
     .OutputFile = "..\docs\CSharpClasses"
-    .XmlFolder = "..\.Net\lib"
+    .XmlFolder = "..\.NET\lib"
     .Generate
 End With
 

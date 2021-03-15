@@ -13,6 +13,8 @@ With New TestingFramework
     'setup
         pwr.SetDebug True 'True => don't actually power down, restart, etc
 
+    ' Calling the following methods without producing an error shows that a method with thaat name exists.
+        
     .it "should power down the computer"
         .AssertEqual TypeName(pwr.Shutdown), "Empty"
 

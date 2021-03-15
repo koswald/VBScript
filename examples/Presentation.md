@@ -16,6 +16,8 @@ Phone charger mode is the same as presentation mode except that the monitor is t
 
 ## Requirements
 
+You must have run [Setup.vbs], which installs the VBScript extensions used by [Presentation.vbs].
+
 [Presentation.vbs] may require changes to Windows settings in order to work properly.
 
 Specifically, you may want to increase the value that controls when the following components go to sleep or turn off for both AC (plugged in) and DC (battery):  
@@ -40,6 +42,7 @@ Specifically, you may want to increase the value that controls when the followin
 [Requirements]: #requirements  
 [References]: #references  
 
+[Setup.vbs]: ../Setup.vbs
 [Presentation.vbs]: Presentation.vbs
 [PresentationSettings.hta]: PresentationSettings.hta
 
@@ -47,4 +50,3 @@ Specifically, you may want to increase the value that controls when the followin
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]: https://www.online-tech-tips.com/windows-7/does-your-windows-7-computer-display-turn-off-every-15-minutes/ "online-tech-tips.com"
 [Canonical Names of Control Panel Items]: https://docs.microsoft.com/en-us/windows/desktop/shell/controlpanel-canonical-names "docs.microsoft.com"
 [SetThreadExecutionState]: https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate "docs.microsoft.com"
-

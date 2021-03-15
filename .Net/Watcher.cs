@@ -4,7 +4,7 @@ using System.Timers;
 
 namespace VBScripting
 {
-    /// <summary> Provides something like presentation mode for Windows systems that don't have presentation.exe: A way to temporarily keep the couputer from going to sleep. </summary>
+    /// <summary> Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. </summary>
     /// <remarks> Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
     [ProgId("VBScripting.Watcher"),
         ClassInterface(ClassInterfaceType.None),
@@ -22,7 +22,7 @@ namespace VBScripting
             ResetPeriod = 30000;
             Watch = false;
         }
-        /// <summary> Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. Default is False. </summary>
+        /// <summary> Gets or sets whether the system and monitor(s) should be kept from going into a suspend (sleep) state. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button. The default is False. </summary>
         public bool Watch
         {
             get { return _watch; }
@@ -80,7 +80,7 @@ namespace VBScripting
                 timer.Start();
             }
         }
-        /// <summary> Turn off the monitor(s). </summary>
+        /// <summary> Turns off the monitor(s). </summary>
         public void MonitorOff()
         {
             Admin.MonitorOff();

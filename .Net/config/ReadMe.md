@@ -11,7 +11,7 @@ If and when you change configurations files, it is recommended that you don't ch
 The following command is recommended to be run from git bash for that purpose, before staging the change(s).
 
 ``` bash
-git update-index --assume-unchanged **/*.config .Net/config/exeLocations.bat .Net/rsp/_common.rsp
+git update-index --assume-unchanged **/*.config .NET/config/exeLocations.bat .NET/rsp/_common.rsp
 ```
 
 To see the affected files, run

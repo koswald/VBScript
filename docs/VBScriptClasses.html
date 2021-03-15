@@ -15,7 +15,7 @@
          <div class="detail">
             <p>Get a folder or file chosen by the user</p>
             <p></p>
-            <strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .Net <a href="../.Net/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .Net folder.
+            <strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .NET <a href="../.NET/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.NET/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.NET/FileChooser.cs"> FileChooser.cs</a> in the .NET folder.
             <p></p>
             <p>Usage example</p>
             <p></p>
@@ -1246,7 +1246,117 @@
       </div>
 
       <div>
-         <h2 class="heading" id=15>ShellConstants</h2>
+         <h2 class="heading" id=15>SetupHelper-LAPTOP-3MLA60OJ</h2>
+         <div class="detail">
+            <p> Class SetupHelper</p>
+            <p> Supports alternative, experimental, setup scenarios: </p>
+            <p> 1. Provides experimental registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see SetupPerUser.md.</p>
+            <p> 2. An alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition.</p>
+            <p> If the calling script (the test file, for example) is not in the project root folder (recommended), then the ComponentFolder and ConfigFile must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, using the class CurrentDirectory property, so that the other properties can be set with reference to that, without ambiguity. </p>
+            <table>
+               <tr>
+                  <th>Member type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Init</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Initialize certain properties, if they have not been already.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>EnsureValidRegData</td>
+                  <td>arr, indexStart, indexStep, indexOffset, pattern</td>
+                  <td>N/A</td>
+                  <td>Ensure that the registration data to be entered into the registry is valid by raising an error when invalid data is found, which will stop the calling script, provided that the error is not supressed with an 'On Error Resume Next' statement. indexOffset: the integer to add to the current index, i, to get the array index of the partial class progid or partial interface progid.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Char2IsUpperCase</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>If the second char of the partial progid is upper case, then the type is an interface, in which case the validation may be ignored. In this project the interface is compiled into the same .dll as the associated class.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HKCU</td>
+                  <td>None</td>
+                  <td>&H80000001 (2147483649)</td>
+                  <td>Returns a value suitable for use with the root parameter of the KeyExists property.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HKLM</td>
+                  <td>None</td>
+                  <td>&H80000002 (2147483650)</td>
+                  <td>Returns a value suitable for use with the root parameter of the KeyExists property.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h2 class="heading" id=16>SetupHelper</h2>
+         <div class="detail">
+            <p> Class SetupHelper</p>
+            <p> Supports alternative, experimental, setup scenarios: </p>
+            <p> 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see SetupPerUser.md.</p>
+            <p> 2. An alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition, or after the second Windows restart.</p>
+            <p> If the calling script (the test file, for example) is not in the project root folder (recommended), then the ComponentFolder and ConfigFile must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, so that the other properties can be set with reference to that, without ambiguity. This can be done with the class CurrentDirectory property or by using the WScript.Shell CurrentDirectory property, or by other means.</p>
+            <table>
+               <tr>
+                  <th>Member type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Init</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>Initialize certain properties, if they have not been already.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>EnsureValidRegData</td>
+                  <td>arr, indexStart, indexStep, indexOffset, pattern</td>
+                  <td>N/A</td>
+                  <td>Ensure that the registration data to be entered into the registry is valid by raising an error when invalid data is found, which will stop the calling script, provided that the error is not supressed with an 'On Error Resume Next' statement. indexOffset: the integer to add to the current index, i, to get the array index of the partial class progid or partial interface progid.</td>
+               </tr>
+               <tr>
+                  <td>Method</td>
+                  <td>Char2IsUpperCase</td>
+                  <td>None</td>
+                  <td>N/A</td>
+                  <td>If the second char of the partial progid is upper case, then the type is an interface, in which case the validation may be ignored. In this project the interface is compiled into the same .dll as the associated class.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HKCU</td>
+                  <td>None</td>
+                  <td>&H80000001 (2147483649)</td>
+                  <td>Returns a value suitable for use with the root parameter of the KeyExists property.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>HKLM</td>
+                  <td>None</td>
+                  <td>&H80000002 (2147483650)</td>
+                  <td>Returns a value suitable for use with the root parameter of the KeyExists property.</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
+         <h2 class="heading" id=17>ShellConstants</h2>
          <div class="detail">
             <p>Constants for use with WScript.Shell.Run</p>
             <p></p>
@@ -1305,7 +1415,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=16>SpecialFolders</h2>
+         <h2 class="heading" id=18>SpecialFolders</h2>
          <div class="detail">
             <p>An enum and wrapper for WScript.Shell.SpecialFolders</p>
             <p>Usage example</p>
@@ -1457,7 +1567,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=17>StringFormatter</h2>
+         <h2 class="heading" id=19>StringFormatter</h2>
          <div class="detail">
             <p>Provides string formatting functions</p>
             <p></p>
@@ -1518,7 +1628,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=18>TestingFramework</h2>
+         <h2 class="heading" id=20>TestingFramework</h2>
          <div class="detail">
             <p>A lightweight testing framework</p>
             <p>Usage example</p>
@@ -1616,7 +1726,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=19>TextStreamer</h2>
+         <h2 class="heading" id=21>TextStreamer</h2>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
             <p>Methods for use with the text stream that is returned by the Open method:</p>
@@ -1796,7 +1906,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=20>TimeFunctions</h2>
+         <h2 class="heading" id=22>TimeFunctions</h2>
          <div class="detail">
             <table>
                <tr>
@@ -1853,7 +1963,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=21>ValidFileName</h2>
+         <h2 class="heading" id=23>ValidFileName</h2>
          <div class="detail">
             <p>VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
@@ -1895,7 +2005,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=22>VBSApp</h2>
+         <h2 class="heading" id=24>VBSApp</h2>
          <div class="detail">
             <p>VBSApp class</p>
             <p>Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.</p>
@@ -2067,7 +2177,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=23>VBSArguments</h2>
+         <h2 class="heading" id=25>VBSArguments</h2>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments</p>
             <p></p>
@@ -2091,7 +2201,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=24>VBSArrays</h2>
+         <h2 class="heading" id=26>VBSArrays</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2127,7 +2237,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=25>VBSClipboard</h2>
+         <h2 class="heading" id=27>VBSClipboard</h2>
          <div class="detail">
             <p>Clipboard procedures</p>
             <p></p>
@@ -2158,7 +2268,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=26>VBSEnvironment</h2>
+         <h2 class="heading" id=28>VBSEnvironment</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2250,7 +2360,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=27>VBSEventLogger</h2>
+         <h2 class="heading" id=29>VBSEventLogger</h2>
          <div class="detail">
             <p>Logs messages to the Application event log.</p>
             <p></p>
@@ -2351,7 +2461,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=28>VBSExtracter</h2>
+         <h2 class="heading" id=30>VBSExtracter</h2>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <p></p>
@@ -2403,7 +2513,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=29>VBSFileSystem</h2>
+         <h2 class="heading" id=31>VBSFileSystem</h2>
          <div class="detail">
             <p>General utility functions</p>
             <p></p>
@@ -2518,7 +2628,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=30>VBSHoster</h2>
+         <h2 class="heading" id=32>VBSHoster</h2>
          <div class="detail">
             <p>Manage which script host is hosting the currently running script</p>
             <p></p>
@@ -2570,7 +2680,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=31>VBSLogger</h2>
+         <h2 class="heading" id=33>VBSLogger</h2>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
             <p>Instantiation </p>
@@ -2671,7 +2781,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=32>VBSPower</h2>
+         <h2 class="heading" id=34>VBSPower</h2>
          <div class="detail">
             <p>Power functions: shutdown, restart, logoff, sleep, and hibernate.</p>
             <p></p>
@@ -2751,7 +2861,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=33>VBSStopwatch</h2>
+         <h2 class="heading" id=35>VBSStopwatch</h2>
          <div class="detail">
             <p>A timer</p>
             <p></p>
@@ -2796,7 +2906,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=34>VBSTestRunner</h2>
+         <h2 class="heading" id=36>VBSTestRunner</h2>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -2866,7 +2976,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=35>VBSTroubleshooter</h2>
+         <h2 class="heading" id=37>VBSTroubleshooter</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2888,7 +2998,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=36>VBSValidator</h2>
+         <h2 class="heading" id=38>VBSValidator</h2>
          <div class="detail">
             <p>A working example of how validation can be accomplished.</p>
             <p></p>
@@ -2954,7 +3064,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=37>WindowsUpdatesPauser</h2>
+         <h2 class="heading" id=39>WindowsUpdatesPauser</h2>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
             <p>For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.</p>
@@ -3021,7 +3131,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=38>WMIUtility</h2>
+         <h2 class="heading" id=40>WMIUtility</h2>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object</p>
             <p></p>
@@ -3129,7 +3239,7 @@
       </div>
 
       <div>
-         <h2 class="heading" id=39>WoWChecker</h2>
+         <h2 class="heading" id=41>WoWChecker</h2>
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.</p>
             <p></p>

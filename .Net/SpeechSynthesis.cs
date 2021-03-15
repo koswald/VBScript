@@ -1,5 +1,5 @@
 
-// .Net speech synthesis library for VBScript
+// .NET speech synthesis library for VBScript
 
 // requires an assembly reference to
 // %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll
@@ -12,7 +12,7 @@ using System.Windows.Forms; // for MessageBox
 
 namespace VBScripting
 {
-    /// <summary> Provide a wrapper for the .Net speech synthesizer for VBScript, for demonstration purposes. </summary>
+    /// <summary> Provide a wrapper for the .NET speech synthesizer for VBScript, for demonstration purposes. </summary>
     /// <remarks> Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. </remarks>
     [Guid("2650C2AB-2AF8-495F-AB4D-6C61BD463EA4")]
     [ClassInterface(ClassInterfaceType.None)]
