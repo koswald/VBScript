@@ -15,9 +15,6 @@ With WScript.Arguments
 End With
 
 With CreateObject("Scripting.FileSystemObject")
-    If Not .FileExists(filespec) Then
-        Err.Raise 3,, "Cannot find the file '" & filespec & "'"
-    End If
     Dim cmdArgs : cmdArgs = _
         "/c cd """ & .GetParentFolderName(filespec) & """" & _
         " & start """" " & app.GetArgsString
@@ -27,3 +24,4 @@ With CreateObject("Shell.Application")
     .ShellExecute "cmd", cmdArgs,, "runas"
 End With
 
+Set app = Nothing
