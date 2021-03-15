@@ -30,7 +30,9 @@ Sub TransferItem(sourceItem, mode)
     On Error Resume Next
         sa.Namespace(targetFolder).CopyHere sourceItem
         If Err Then
-            msg = Err.Description & vbLf & vbLf & "Failed to copy '" & sourceItem & "' to '" & targetFolder & "'"
+            msg = "Error : " & vbTab & Err.Description & vbLf & _
+                  "Err # : " & vbTab & Err.Number & vbLf & vbLf & _
+                  "Failed to copy '" & sourceItem & "' to '" & targetFolder & "'"
             If vbCancel = MsgBox(msg, vbInformation + vbOKCancel, app.GetFileName) Then
                 app.Quit
             Else Exit Sub ' attempt to transfer the next item, if any
