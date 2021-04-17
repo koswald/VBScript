@@ -138,7 +138,7 @@ Sub Setup
     Set format = CreateObject("VBScripting.StringFormatter")
     statusFile = format(Array("%s\%s.status", dataFolder, fso.GetBaseName(WScript.ScriptName)))
 
-    Set notifyIcon = CreateObject("VBScripting.NotifyIcon")
+    Set notifyIcon = CreateObject("VBScripting.NotifyIcon") 'Err.Number &H80131040
     notifyIcon.AddMenuItem "Normal mode", GetRef("NormalMode")
         normalModeMenuIndex = 0
     notifyIcon.AddMenuItem "Presentation mode", GetRef("PresentationMode")

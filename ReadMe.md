@@ -1,12 +1,18 @@
 # VBScripting utilities
 
-This project features
+- [Features](#features)  
+- [Requirements](#requirements)  
+- [Installation](#installation)  
+- [Uninstall](#uninstall)  
+- [Issues](#issues)  
+- [References](#references)  
+
+## Features
 
 - [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
-- [Integration Tests](spec).  
+- [Integration tests](spec) use an ultralight [testing framework] written in VBScript.
 - A VBScript statement [interpreter]/console.  
-- An ultralight [testing framework].  
 - A [logger].  
 - A [registry classes] manager UI.  
 - An [icon extractor] UI.  
@@ -28,6 +34,24 @@ Windows 10, 8, 7, Vista, ... 98.
 
 Clone or download the repo and run [Setup.vbs].
 This will register the [Windows Script Component files], and compile and register the [VBScript extensions].
+
+## Uninstall
+
+To unregister the project .dll files and .wsc files, and remove the VBScripting event log source,
+
+- run Uninstall.vbs, or
+- run Setup.vbs with the /u switch, or
+- from a powershell or cmd.exe console type
+
+    ``` cmd.exe
+    start ms-settings:appsfeatures
+    ```
+
+    then select VBScripting Utility Classes and Extensions and click Uninstall.
+
+## Issues
+
+After a Windows 10 version update, rerunning [Setup.vbs] is usually required in order to reregister project classes. A restart may be required before rerunning [Setup.vbs].  
 
 ## References  
 
@@ -55,7 +79,7 @@ Read or edit the [wiki](../../wiki)
 [speech synthesis]: examples/SpeechSynthesis.hta
 [presentation]: examples/Presentation.vbs
 [interpreter]: examples/VBSInterpreter.hta
-[system tray icon]: .NET/test/NotifyIcon-test.vbs
-[progress bar]: .NET/test/ProgressBar-test.vbs
+[system tray icon]: .Net/test/NotifyIcon-test.vbs
+[progress bar]: .Net/test/ProgressBar-test.vbs
 [Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84) "docs.microsoft.com"
 [Scripting links]: https://technet.microsoft.com/en-us/library/cc498722.aspx "technet.microsoft.com"

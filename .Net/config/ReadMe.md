@@ -2,7 +2,7 @@
 
 ## exeLocations.bat
 
-The locations of `csc.exe` and `regasm.exe` are configurable in [exeLocations].bat.
+The locations of `csc.exe` and `regasm.exe` are configurable in [exeLocations.bat]. It is expected that it would need to be changed only for rare circumstances.
 
 ## Recommended git configuration
 
@@ -24,5 +24,5 @@ To undo the index update, run the `update-index` command as above except with `-
 
 > Note: There is a private ignore file at `.git\info\exclude` in the project folder.
 
-[exeLocations]: ./exeLocations.bat
+[exeLocations.bat]: ./exeLocations.bat
 [ReadMe]: ../build/ReadMe.md

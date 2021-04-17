@@ -26,7 +26,10 @@
 '
 'Include a vertical bar ( &#124; ) in comments with &amp;#124;
 '
-'Visual Studio and VS Code extensions may render differently than Git-Flavored Markdown.
+'Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.
+'
+'Issues:
+'- Introductory comments at the beginning of a file should be followed by a line containing a single quote character, or else the markdown table may not render correctly .
 '
 
 Class DocGenerator

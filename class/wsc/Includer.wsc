@@ -2,29 +2,29 @@
 <?component error="true"?> 
 <component> 
 
-  <registration
-    description="Windows Script Component dependency manager"
-    progid="VBScripting.Includer"
-    classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
-  </registration>
+    <registration
+        description="Windows Script Component dependency manager"
+        progid="VBScripting.Includer"
+        classid="{ADCEC089-30DE-11D7-86BF-00606744568C}">
+    </registration>
 
-  <public>
-    <property name="GetObj"> <!-- return an object based on one of the project classes -->
-        <get internalName="GetObj" />
-    </property>
-    <property name="Read"> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to the "class" folder). -->
-        <get internalName="Read" />
-    </property>
-    <property name="ReadFrom"> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
-        <get internalName="ReadFrom" />
-    </property>
-    <property name="LibraryPath"> <!-- get the absolute path of the "class" folder -->
-        <get internalName="LibraryPath" />
-    </property>
-    <method name="SetLibraryPath" />
-  </public>
+    <public>
+        <property name="GetObj"> <!-- return an object based on one of the project classes -->
+            <get internalName="GetObj" />
+        </property>
+        <property name="Read"> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to the "class" folder). -->
+            <get internalName="Read" />
+        </property>
+        <property name="ReadFrom"> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
+            <get internalName="ReadFrom" />
+        </property>
+        <property name="LibraryPath"> <!-- get the absolute path of the "class" folder -->
+            <get internalName="LibraryPath" />
+        </property>
+        <method name="SetLibraryPath" />
+    </public>
 
-  <script language="VBScript" src="../EncodingAnalyzer.vbs" />
-  <script language="VBScript" src="../Includer.vbs" />
-  
+    <script language="VBScript" src="../EncodingAnalyzer.vbs" />
+    <script language="VBScript" src="../Includer.vbs" />
+
 </component>

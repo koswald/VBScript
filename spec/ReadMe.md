@@ -6,7 +6,21 @@ Each integration test consists of one or more *specs*, or specifications.
 
 ## Launching tests
 
-The tests may be initiated by running directly by double clicking or from a command prompt, type `cscript <filename>`.
+- Double click the test file, e.g. `GUIDGenerator.spec.vbs`, or
+- From a powershell or `cmd.exe` console, type
+
+``` powershell
+   cscript .\GUIDGenerator.spec.vbs
+```
+
+output:
+
+``` output
+--------- GUIDGenerator class -------------------------------------------------
+Pass      should return a valid GUID on Generate call
+Pass      should return a valid GUID on default property call
+```
+
 'Suites' or collections of tests may be run using the `TestLauncher*` files in the [suite](suite) folder.
 
 ## Different kinds of tests

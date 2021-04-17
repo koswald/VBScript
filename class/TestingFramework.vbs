@@ -1,4 +1,3 @@
-
 'A lightweight testing framework
 
 'Usage example
@@ -50,7 +49,7 @@ Class TestingFramework
     'Remark: Asserts that the specified two variants, of any subtype, are equal.
     Sub AssertEqual(var1, var2)
         ShowPendingResult
-       If var1 = var2 Then
+        If var1 = var2 Then
             SetResult pass
         Else
             SetResult fail
@@ -92,7 +91,7 @@ Class TestingFramework
     'Function MessageAppeared
     'Parameter: caption, seconds, keys
     'Returns: a boolean
-    'Remark: Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False.
+    'Remark: Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. Note: SendKeys-related features are deprecated.
     Function MessageAppeared(caption, seconds, keys)
         Dim i : i = 0
         While (Not sh.AppActivate(caption)) And i < seconds * 250
@@ -118,7 +117,7 @@ Class TestingFramework
     End Sub
 
     'Method ShowSendKeysWarning
-    'Remark: Shows a SendKeys warning: a warning message to not make mouse clicks or key presses.
+    'Remark: Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. Note: SendKeys-related features are deprecated.
     Sub ShowSendKeysWarning
         With CreateObject("VBScripting.Includer")
             Execute .read("StringFormatter")
@@ -130,7 +129,7 @@ Class TestingFramework
     End Sub
 
     'Method CloseSendKeysWarning
-    'Remark: Closes the SendKeys warning.
+    'Remark: Closes the SendKeys warning. Note: SendKeys-related features are deprecated.
     Sub CloseSendKeysWarning
         sendKeysWarning.Terminate
     End Sub

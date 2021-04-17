@@ -17,7 +17,6 @@
 [PrivilegeChecker](#privilegechecker)  
 [RegExFunctions](#regexfunctions)  
 [RegistryUtility](#registryutility)  
-[SetupHelper-LAPTOP-3MLA60OJ](#setuphelper-laptop-3mla60oj)  
 [SetupHelper](#setuphelper)  
 [ShellConstants](#shellconstants)  
 [SpecialFolders](#specialfolders)  
@@ -161,7 +160,10 @@ Use four single quotes ( '''' ), if the script doesn't contain a class statement
   
 Include a vertical bar ( &#124; ) in comments with &amp;#124;  
   
-Visual Studio and VS Code extensions may render differently than Git-Flavored Markdown.  
+Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.  
+  
+Issues:  
+- Introductory comments at the beginning of a file should be followed by a line containing a single quote character, or else the markdown table may not render correctly .  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -456,28 +458,14 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 | Property | REG_QWORD | None | 11 | Returns a registry value type constant. |
 | Property | GetRegValueTypeString | rootKey, subKey, valueName | a string | Returns a registry key value type string suitable for use with WScript.Shell RegWrite method argument #3. That is, one of "REG_SZ", "REG_EXPAND_SZ", "REG_BINARY", or "REG_DWORD". |
 
-## SetupHelper-LAPTOP-3MLA60OJ
-
- Class SetupHelper  
- Supports alternative, experimental, setup scenarios:   
- 1. Provides experimental registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see SetupPerUser.md.  
- 2. An alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition.  
- If the calling script (the test file, for example) is not in the project root folder (recommended), then the ComponentFolder and ConfigFile must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, using the class CurrentDirectory property, so that the other properties can be set with reference to that, without ambiguity.   
-| Member type | Name | Parameter | Returns | Comment |
-| :---------- | :--- | :-------- | :------ | :------ |
-| Method | Init | None | N/A | Initialize certain properties, if they have not been already. |
-| Method | EnsureValidRegData | arr, indexStart, indexStep, indexOffset, pattern | N/A | Ensure that the registration data to be entered into the registry is valid by raising an error when invalid data is found, which will stop the calling script, provided that the error is not supressed with an 'On Error Resume Next' statement. indexOffset: the integer to add to the current index, i, to get the array index of the partial class progid or partial interface progid. |
-| Method | Char2IsUpperCase | None | N/A | If the second char of the partial progid is upper case, then the type is an interface, in which case the validation may be ignored. In this project the interface is compiled into the same .dll as the associated class. |
-| Property | HKCU | None | &H80000001 (2147483649) | Returns a value suitable for use with the root parameter of the KeyExists property. |
-| Property | HKLM | None | &H80000002 (2147483650) | Returns a value suitable for use with the root parameter of the KeyExists property. |
-
 ## SetupHelper
 
  Class SetupHelper  
- Supports alternative, experimental, setup scenarios:   
- 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see SetupPerUser.md.  
- 2. An alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition, or after the second Windows restart.  
- If the calling script (the test file, for example) is not in the project root folder (recommended), then the ComponentFolder and ConfigFile must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, so that the other properties can be set with reference to that, without ambiguity. This can be done with the class CurrentDirectory property or by using the WScript.Shell CurrentDirectory property, or by other means.  
+ Supports alternative, experimental, setup scenarios:  
+ 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see [SetupPerUser.md](../SetupPerUser.md).  
+ 2. Another alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after the Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition, or after the second Windows restart.  
+ If the calling script is not in the project root folder (recommended), then the ComponentFolder and ConfigFile properties must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, so that the other properties can be set with reference to that, without ambiguity. This can be done with the class CurrentDirectory property or by using the WScript.Shell CurrentDirectory property, or by other means.  
+  
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Method | Init | None | N/A | Initialize certain properties, if they have not been already. |
@@ -614,9 +602,9 @@ Usage example
 | Method | AssertErrorRaised | None | N/A | Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block. |
 | Method | DeleteFile | a filespec | N/A | Deletes the specified file. Relative paths and environment variables are allowed. |
 | Method | DeleteFiles | an array | N/A | Deletes the specified files. The parameter is an array of filespecs. Relative paths and environment variables are allowed. |
-| Property | MessageAppeared | caption, seconds, keys | a boolean | Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. |
-| Method | ShowSendKeysWarning | None | N/A | Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. |
-| Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. |
+| Property | MessageAppeared | caption, seconds, keys | a boolean | Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. Note: SendKeys-related features are deprecated. |
+| Method | ShowSendKeysWarning | None | N/A | Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. Note: SendKeys-related features are deprecated. |
+| Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. Note: SendKeys-related features are deprecated. |
 
 ## TextStreamer
 

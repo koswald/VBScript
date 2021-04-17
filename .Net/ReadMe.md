@@ -56,7 +56,7 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 [Documenting your code with XML comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc "docs.microsoft.com")  
 [XML Documentation Comments (C# Programming Guide)](https://github.com/dotnet/docs/blob/master/docs/csharp/programming-guide/xmldoc/xml-documentation-comments.md "github.com/dotnet/docs")  
 
-``
+`` ``
 
 [Overview]: #overview
 [Compiling and registering]: #compiling-and-registering
@@ -79,4 +79,4 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 [Reflection]: https://docs.microsoft.com/en-us/dotnet/api/system.reflection?view=netframework-4.7.1 "docs.microsoft.com"
 [Setup.vbs]: ../Setup.vbs
 [Manual tests]: test
-[Automated integration tests]: ../tests/dll
+[Automated integration tests]: ../spec/dll
