@@ -263,7 +263,7 @@ Usage example
 ## HTAApp
 
 HTAApp class  
-Supports the VBSApp class, providing .hta functionality.  
+Supports the VBSApp class, providing .hta functionality. *Intended for use only within the VBSApp class*.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -299,6 +299,7 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
   
 <code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
   
+<a href="../class/wsc/ReadMe.md#registration">Alternate registration method</a>.  
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetObj | className | An object | Returns an object based on the VBScript class with the specified name. Requires a .wsc Windows Script Component file in \class\wsc. See StringFormatter.wsc for an example. |

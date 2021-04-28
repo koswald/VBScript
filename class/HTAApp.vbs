@@ -1,7 +1,7 @@
 
 'HTAApp class
 
-'Supports the VBSApp class, providing .hta functionality.
+'Supports the VBSApp class, providing .hta functionality. *Intended for use only within the VBSApp class*.
 '
 Class HTAApp
     

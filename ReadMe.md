@@ -11,7 +11,7 @@
 
 - [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
-- [Integration tests](spec) use an ultralight [testing framework] written in VBScript.
+- [Integration tests](spec/ReadMe.md) use an ultralight [testing framework] written in VBScript.
 - A VBScript statement [interpreter]/console.  
 - A [dependency manager].  
 - A [logger].  
@@ -33,22 +33,59 @@ Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
-Clone or download the repo and run [Setup.vbs].
-This will register the [Windows Script Component files], and compile and register the [VBScript extensions].
+- Clone or download the repo. If desired, put it in a location visible to all users, or run [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs).  
+
+- Double-click [Setup.vbs] or from a console window type
+
+``` cmd
+Setup.vbs
+```
+
+or for a non-interactive install type
+
+``` cmd
+Setup.vbs /s
+```
+
+This will register the [Windows Script Component files], and compile and register the [VBScript extensions].  
 
 ## Uninstall
 
 To unregister the project .dll files and .wsc files, and remove the VBScripting event log source,
 
-- run Uninstall.vbs, or
-- run Setup.vbs with the /u switch, or
-- from a powershell or cmd.exe console type
+From a console window, type
 
-    ``` cmd.exe
-    start ms-settings:appsfeatures
-    ```
+``` cmd
+Uninstall.vbs
+```
 
-    then select VBScripting Utility Classes and Extensions and click Uninstall.
+or
+
+``` cmd
+Setup.vbs /u
+```
+
+Or type
+
+``` cmd
+start ms-settings:appsfeatures
+```
+
+and then select VBScripting Utility Classes and Extensions and click Uninstall.  
+
+Or for a silent uninstall from a console window, type
+
+``` cmd
+Uninstall.vbs /s
+```
+
+or
+
+``` cmd
+Setup.vbs /u /s
+```
+
+> Note: Files are not removed.
 
 ## Issues
 
@@ -60,16 +97,16 @@ After a Windows 10 version update, rerunning [Setup.vbs] is usually required in 
 [Scripting links]
 
 [VBScript utility classes]: class
-[C# classes]: .NET
+[C# classes]: .Net
 [doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs
 [doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
-[testing framework]: class/TestingFramework.vbs
+[testing framework]: docs/VBScriptClasses.md#testingframework
 [dependency manager]: docs/VBScriptClasses.md#includer
-[logger]: class/VBSLogger.vbs
+[logger]: docs/VBScriptClasses.md#vbslogger
 [examples]: examples
 [Setup.vbs]: Setup.vbs
-[Windows Script Component files]: class/wsc
-[VBScript extensions]: .NET
+[Windows Script Component files]: class/wsc/ReadMe.md#the-wsc-folder
+[VBScript extensions]: .Net
 [registry classes]: examples/RegistryClasses.hta
 [icon extractor]: examples/icon-extractor.hta
 [startup items]: examples/StartItems.hta

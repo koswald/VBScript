@@ -19,6 +19,7 @@
 '
 '<code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>
 '
+'<a href="../class/wsc/ReadMe.md#registration">Alternate registration method</a>.
 ''''
 
 Option Explicit : Initialize
