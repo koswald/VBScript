@@ -3,7 +3,8 @@ purpose = "Show a notification area icon with a menu option to prevent the compu
 
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the workstation is locked, initially."
 
-requires = "Sleep (menu item) functionality requires psshutdown from https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
+requires = "Sleep (menu item) functionality requires psshutdown from " & link1
+Const link1 = "https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
 
 Setup
 csTimer.IntervalInHours = 3.1 'default
@@ -47,6 +48,10 @@ Sub EditScript
     sh.Run format(Array("notepad ""%s""", WScript.ScriptFullName))
 End Sub
 
+Sub EditScriptElevated
+    sa.ShellExecute "notepad", WScript.ScriptFullName,, "runas"
+End Sub 
+
 Sub PublishStatus(newStatus)
     status = newStatus
     Set stream = fso.OpenTextFile(statusFile, ForWriting, CreateNew)
@@ -81,7 +86,15 @@ Sub SetDurationUI
 End Sub
 
 Sub Sleep
-    sh.Run "psshutdown -d -t 0", hidden
+    On Error Resume Next
+        sh.Run "psshutdown -d -t 0", hidden
+        If Err Then
+            ' show error message with link that can be easily copied
+            sa.MinimizeAll
+            InputBox requires, WScript.ScriptName, link1
+            sa.UndoMinimizeAll
+        End If
+    On Error Goto 0
 End Sub
 
 Sub MonitorOff
@@ -150,6 +163,7 @@ Sub Setup
     notifyIcon.AddMenuItem "Sleep", GetRef("Sleep")
     notifyIcon.AddMenuItem "Turn off monitor", GetRef("MonitorOff")
     notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef("EditScript")
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName & " elevated", GetRef("EditScriptElevated")
     notifyIcon.AddMenuItem "Help", GetRef("Help")
     notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef("CloseAndExit")
     notifyIcon.Visible = True

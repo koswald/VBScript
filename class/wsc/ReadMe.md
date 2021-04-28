@@ -7,11 +7,13 @@
 
 ## Overview
 
-The `wsc` folder contains Windows Script Component files that make use of like-named class files from the `class` folder. After the `.wsc` files are [registered](#registration), the associated objects are instantiated by syntax similar to
+The `wsc` folder contains Windows Script Component files that make use of like-named class files from the `class` folder and [wrappers](src/ReadMe.md). After the `.wsc` files are [registered](#registration), the associated objects are instantiated by syntax similar to
 
 ```vbs
 Set formatter = CreateObject("VBScripting.StringFormatter")
 ```
+
+which is more concise than [using VBScripting\.Includer](../../docs/VBScriptClasses.md#includer).
 
 ## Registration
 

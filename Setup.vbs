@@ -88,6 +88,7 @@ End Sub
 
 Sub PrepFinalInstruction
     batchStream.WriteLine "echo."
+    If silent Then Exit Sub
     batchStream.WriteLine format(Array( _
         "echo Close this window to finish %s. & pause > nul", _
         setupNoun))
@@ -95,11 +96,11 @@ End Sub
 
 Sub RunBatchFile
     batchStream.Close
-    If inspectBatchFile Then
+    If inspectBatchFile And Not silent Then
         sh.Run "notepad """ & batchFile & """"
         If vbCancel = MsgBox(format(Array("Click OK to proceed with %s the VBScript Utilities after inspecting the batch file.", setupNoun)), vbInformation + vbOKCancel + vbSystemModal, "Proceed? - " & WScript.ScriptName) Then DeleteBatchFile : ReleaseObjectMemory : WScript.Quit
     End If
-    sh.Run format(Array("cmd /c %s", batchFile)),, synchronous
+    sh.Run format(Array("cmd /c %s", batchFile)), visibility, synchronous
 End Sub
 
 Sub CreateEventLogSource
@@ -176,9 +177,11 @@ Const batchFile = "Setup.bat"
 Const configFile = "Setup.config"
 Const ForAppending = 8
 Const CreateNew = True
+Const hidden = 0, normal = 1 ' sh.Run arg #2
 Dim batchStream
 Dim projectFolder, buildFolder, componentFolder
-Dim installing, uninstalling, registerVerb, setupNoun, silent
+Dim installing, uninstalling, registerVerb, setupNoun
+Dim silent, visibility
 Dim wscFlag, dllFlag
 Dim sa, sh, fso, reg
 Dim include, format, keyDeleter
@@ -223,6 +226,7 @@ Sub Initialize
     With WScript.Arguments
         uninstalling = False
         silent = False
+        visibility = normal
         Dim silentFlag : silentFlag = ""
         Dim i : For i = 0 To .Count - 1
             If "/u" = LCase(.item(i)) Then
@@ -230,6 +234,7 @@ Sub Initialize
             ElseIf "/s" = LCase(.item(i)) Then
                 silent = True
                 silentFlag = "/s"
+                visibility = hidden
             End If
         Next
         Dim setupFlag

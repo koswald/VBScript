@@ -56,8 +56,6 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 [Documenting your code with XML comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc "docs.microsoft.com")  
 [XML Documentation Comments (C# Programming Guide)](https://github.com/dotnet/docs/blob/master/docs/csharp/programming-guide/xmldoc/xml-documentation-comments.md "github.com/dotnet/docs")  
 
-`` ``
-
 [Overview]: #overview
 [Compiling and registering]: #compiling-and-registering
 [Features]: #features

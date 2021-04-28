@@ -36,8 +36,6 @@ Specifically, you may want to increase the value that controls when the followin
 [Canonical Names of Control Panel Items]  
 [SetThreadExecutionState]  
 
-`` `` `` ``
-
 [Overview]: #overview  
 [Requirements]: #requirements  
 [References]: #references  

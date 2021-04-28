@@ -36,8 +36,6 @@ One situation where you might have to jump start this process is when .hta files
 - Open a cmd.exe console window at %SystemRoot%\System32
 - Type `mshta.exe "<project folder>\examples\Fixer.hta"`
 
-`` `` `` ``
-
 [Overview]: #overview  
 [Background]: #background  
 [How it works]: #how-it-works  

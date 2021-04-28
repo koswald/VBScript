@@ -13,6 +13,7 @@
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
 - [Integration tests](spec) use an ultralight [testing framework] written in VBScript.
 - A VBScript statement [interpreter]/console.  
+- A [dependency manager].  
 - A [logger].  
 - A [registry classes] manager UI.  
 - An [icon extractor] UI.  
@@ -51,22 +52,19 @@ To unregister the project .dll files and .wsc files, and remove the VBScripting 
 
 ## Issues
 
-After a Windows 10 version update, rerunning [Setup.vbs] is usually required in order to reregister project classes. A restart may be required before rerunning [Setup.vbs].  
+After a Windows 10 version update, rerunning [Setup.vbs] is usually required in order to reregister project classes. A restart may be required before rerunning [Setup.vbs] after updating to Windows 10 version 20H2.  
 
 ## References  
 
 [Scripting documentation online]  
 [Scripting links]
 
-`` ``
-
-Read or edit the [wiki](../../wiki)
-
 [VBScript utility classes]: class
 [C# classes]: .NET
 [doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs
 [doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
 [testing framework]: class/TestingFramework.vbs
+[dependency manager]: docs/VBScriptClasses.md#includer
 [logger]: class/VBSLogger.vbs
 [examples]: examples
 [Setup.vbs]: Setup.vbs

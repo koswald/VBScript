@@ -17,12 +17,6 @@
     </runtime>
     <script language="VBScript">
 
-        ' Validate the named arguments
-
-        If Not WScript.Arguments.Named.Exists( "Folder" ) Then
-            WScript.Arguments.ShowUsage
-            WScript.Quit
-        End If
         folder = WScript.Arguments.Named( "Folder" )
         fileTypes = WScript.Arguments.Named( "FileTypes" )
         expectedOutcome = WScript.Arguments.Named( "ExpectedOutcome")
