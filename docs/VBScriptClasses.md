@@ -49,7 +49,7 @@
 
 Get a folder or file chosen by the user  
   
-<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .NET <a href="../.NET/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.NET/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.NET/FileChooser.cs"> FileChooser.cs</a> in the .NET folder.  
+<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .NET <a href="../.Net/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .NET folder.  
   
 Usage example  
   
