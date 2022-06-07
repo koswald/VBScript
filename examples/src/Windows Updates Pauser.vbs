@@ -31,7 +31,7 @@ Sub OpenConfigFile
     SelfClose
 End Sub
 
-Function GetInput(i) : Set GetInput = document.getElementsByTagName("input")(i) : End Function
+Function GetInput(i) : Set GetInput = document.getElementsByTagName( "input" )(i) : End Function
 Sub Enable(i) : GetInput(i).disabled = False : End Sub
 Sub Disable(i) : GetInput(i).disabled = True : End Sub
 Sub SetTitle(i, title) : GetInput(i).title = title : End Sub
@@ -44,8 +44,8 @@ Const iPause = 0, iResume = 1, iConfig = 2, iClose = 3 'button index numbers
 Sub Window_OnLoad
     Self.ResizeTo 238, 30
     Self.MoveTo 100, 0
-    With CreateObject("VBScripting.Includer")
-        Execute .read("WindowsUpdatesPauser")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "WindowsUpdatesPauser" )
     End With
     Set wup = New WindowsUpdatesPauser
     document.title = wup.GetAppName

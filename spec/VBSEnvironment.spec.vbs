@@ -1,12 +1,12 @@
 
 'test the VBSEnvironment class
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("VBSEnvironment")
-    Execute .read("TestingFramework")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "VBSEnvironment" )
+    Execute .Read( "TestingFramework" )
 End With
-Dim sh : Set sh = CreateObject("WScript.Shell")
-Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+Dim sh : Set sh = CreateObject( "WScript.Shell" )
+Dim fso : Set fso = CreateObject( "Scripting.FileSystemObject" )
 
 With New TestingFramework
 
@@ -20,14 +20,14 @@ With New TestingFramework
         Dim varValue : varValue = fso.GetBaseName(fso.GetTempName)
         'with Android Studio running on emulator,
         'creating a variable may be very slow
-        Dim userEnv : Set userEnv = sh.Environment("user")
+        Dim userEnv : Set userEnv = sh.Environment( "user" )
         env.CreateUserVar varName, varValue
 
         .AssertEqual userEnv(varName), varValue
 
     .it "should collapse a user variable"
 
-        .AssertEqual env.collapse(sh.ExpandEnvironmentStrings("%" & varName & "%")), "%" & varName & "%"
+        .AssertEqual env.collapse( sh.ExpandEnvironmentStrings("%" & varName & "%" )), "%" & varName & "%"
 
     .it "should remove a user variable"
 
@@ -39,7 +39,7 @@ With New TestingFramework
 
         varName = fso.GetBaseName(fso.GetTempName)
         varValue = fso.GetBaseName(fso.GetTempName)
-        Dim proEnv : Set proEnv = sh.Environment("process")
+        Dim proEnv : Set proEnv = sh.Environment( "process" )
         env.CreateProcessVar varName, varValue
 
         .AssertEqual proEnv(varName), varValue

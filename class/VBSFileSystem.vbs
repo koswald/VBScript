@@ -11,15 +11,15 @@ Class VBSFileSystem
     Private forceDelete
 
     Private Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSMessages")
-            Execute .read("VBSEnvironment")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSMessages" )
+            Execute .Read( "VBSEnvironment" )
         End With
 
         Set msgs = New VBSMessages
         Set env = New VBSEnvironment
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
 
         On Error Resume Next
             scriptFullName = WScript.ScriptFullName
@@ -57,7 +57,7 @@ Class VBSFileSystem
     'Returns a boolean
     'Remark: Create a folder, and if necessary create also its parent, grandparent, etc. Returns False if the folder could not be created.
     Function MakeFolder(sFolder)
-        If "" = sFolder Then Err.Raise 1, "VBSFileSystem.MakeFolder", "No folder specified."
+        If "" = sFolder Then Err.Raise 449, "VBSFileSystem.MakeFolder", "No folder specified."
         If Not fso.FolderExists(Parent(Expand(sFolder))) Then
     	    MakeFolder(Parent(sFolder))	'Recurse: create parent before child
         End If
@@ -73,7 +73,7 @@ Class VBSFileSystem
     'Returns the item's parent
     'Remark: Returns the parent of the folder or file or registry key, or removes a trailing backslash. The parent need not exist.
     Function Parent(string)
-        If 0 = InStr(string, "\") Then Parent = "" : Exit Function
+        If 0 = InStr( string, "\" ) Then Parent = "" : Exit Function
         Parent = Left(string, InStrRev(string, "\") - 1)
     End Function
 

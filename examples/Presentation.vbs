@@ -8,7 +8,7 @@ Const link1 = "https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdow
 
 Setup
 csTimer.IntervalInHours = 3.1 'default
-icon = Split(icon3, "|")
+icon = Split( icon3, "|" )
 NormalMode
 ListenForCallbacks
 
@@ -50,7 +50,7 @@ End Sub
 
 Sub EditScriptElevated
     sa.ShellExecute "notepad", WScript.ScriptFullName,, "runas"
-End Sub 
+End Sub
 
 Sub PublishStatus(newStatus)
     status = newStatus
@@ -98,7 +98,7 @@ Sub Sleep
 End Sub
 
 Sub MonitorOff
-    With CreateObject("VBScripting.Admin")
+    With CreateObject( "VBScripting.Admin" )
         .MonitorOff
     End With
 End Sub
@@ -144,38 +144,38 @@ Dim icon 'array: filespec, index, and icon type (large/True or small/False) for 
 Dim requires 'string: used for internal documentation only
 
 Sub Setup
-    Set sh = CreateObject("WScript.Shell")
+    Set sh = CreateObject( "WScript.Shell" )
     dataFolder = sh.ExpandEnvironmentStrings("%AppData%\VBScripting")
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
     If Not fso.FolderExists(dataFolder) Then fso.CreateFolder dataFolder
-    Set format = CreateObject("VBScripting.StringFormatter")
+    Set format = CreateObject( "VBScripting.StringFormatter" )
     statusFile = format(Array("%s\%s.status", dataFolder, fso.GetBaseName(WScript.ScriptName)))
 
-    Set notifyIcon = CreateObject("VBScripting.NotifyIcon") 'Err.Number &H80131040
-    notifyIcon.AddMenuItem "Normal mode", GetRef("NormalMode")
+    Set notifyIcon = CreateObject( "VBScripting.NotifyIcon" ) 'Err.Number &H80131040
+    notifyIcon.AddMenuItem "Normal mode", GetRef( "NormalMode" )
         normalModeMenuIndex = 0
-    notifyIcon.AddMenuItem "Presentation mode", GetRef("PresentationMode")
+    notifyIcon.AddMenuItem "Presentation mode", GetRef( "PresentationMode" )
         presentationModeMenuIndex = 1
-    notifyIcon.AddMenuItem "Phone charger mode", GetRef("ChargerMode")
-    notifyIcon.AddMenuItem "Set duration", GetRef("SetDurationUI")
-    notifyIcon.AddMenuItem "Start screensaver", GetRef("StartScreenSaver")
-    notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef("LockWorkStation")
-    notifyIcon.AddMenuItem "Sleep", GetRef("Sleep")
-    notifyIcon.AddMenuItem "Turn off monitor", GetRef("MonitorOff")
-    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef("EditScript")
-    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName & " elevated", GetRef("EditScriptElevated")
-    notifyIcon.AddMenuItem "Help", GetRef("Help")
-    notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef("CloseAndExit")
+    notifyIcon.AddMenuItem "Phone charger mode", GetRef( "ChargerMode" )
+    notifyIcon.AddMenuItem "Set duration", GetRef( "SetDurationUI" )
+    notifyIcon.AddMenuItem "Start screensaver", GetRef( "StartScreenSaver" )
+    notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef( "LockWorkStation" )
+    notifyIcon.AddMenuItem "Sleep", GetRef( "Sleep" )
+    notifyIcon.AddMenuItem "Turn off monitor", GetRef( "MonitorOff" )
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef( "EditScript" )
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName & " elevated", GetRef( "EditScriptElevated" )
+    notifyIcon.AddMenuItem "Help", GetRef( "Help" )
+    notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef( "CloseAndExit" )
     notifyIcon.Visible = True
 
-    Set csTimer = CreateObject("VBScripting.Timer")
+    Set csTimer = CreateObject( "VBScripting.Timer" )
     csTimer.AutoReset = False
-    Set csTimer.Callback = GetRef("NormalMode")
+    Set csTimer.Callback = GetRef( "NormalMode" )
 
-    Set watcher = CreateObject("VBScripting.Watcher")
-    Set sa = CreateObject("Shell.Application")
-    Set includer = CreateObject("VBScripting.Includer")
-    Execute includer.Read("VBSStopwatch")
+    Set watcher = CreateObject( "VBScripting.Watcher" )
+    Set sa = CreateObject( "Shell.Application" )
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Execute includer.Read( "VBSStopwatch" )
     Set stopwatch = New VBSStopwatch
 
     Dim datafolder

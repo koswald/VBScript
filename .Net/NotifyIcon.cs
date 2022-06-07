@@ -9,8 +9,8 @@ using System.Reflection;
 
 namespace VBScripting
 {
-    /// <summary> Provides a system tray icon for VBScript, for illustration purposes. </summary>
-    [ProgId("VBScripting.NotifyIcon"),
+    /// <summary> Provides a notification area (system tray) icon for VBScript, for illustration purposes. </summary>
+    [ProgId( "VBScripting.NotifyIcon" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-5AF8-495F-AB4D-6C61BD463EA4")]
     public class NotifyIcon : INotifyIcon
@@ -31,7 +31,7 @@ namespace VBScripting
             this.notifyIcon.BalloonTipClicked += new EventHandler(this.notifyIcon_BalloonTipClicked);
             this.notifyIcon.ContextMenu = this.contextMenu;
         }
-        
+
         /// <summary> Gets or sets the text shown when the mouse hovers over the system tray icon. </summary>
         public string Text
         {
@@ -57,7 +57,7 @@ namespace VBScripting
 
         /// <summary> Sets the system tray icon given an .ico file. </summary>
         /// <parameters> fileName </parameters>
-        /// <remarks> The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </remarks>
+        /// <remarks> The parameter <code>fileName</code> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </remarks>
         public void SetIconByIcoFile(string fileName)
         {
             if (this.notifyIcon.Icon != null)
@@ -79,7 +79,7 @@ namespace VBScripting
 
         /// <summary> Sets the system tray icon from a .dll or .exe file. </summary>
         /// <parameters> fileName, index, largeIcon </parameters>
-        /// <remarks> Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </remarks>
+        /// <remarks> Parameters: <code>fileName</code> is the path and name of a .dll or .exe file that contains icons. <code>index</code> is an integer that specifies which icon to use. <code>largeIcon</code> is a boolean that specifies whether to use a large or small icon. </remarks>
         public void SetIconByDllFile(string fileName, int index, bool largeIcon)
         {
             if (this.notifyIcon.Icon != null)
@@ -113,7 +113,7 @@ namespace VBScripting
             set { this.notifyIcon.BalloonTipText = value; }
         }
 
-        /// <summary> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </summary>
+        /// <summary> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista. The value is overridden by accessibility settings.  </summary>
         public int BalloonTipLifetime { get; set; }
 
         /// <summary> Gets an object useful in VBScript for selecting a ToolTipIcon type. The properties Error, Info, None, and Warning may be used with SetBalloonTipIcon. </summary>
@@ -127,7 +127,7 @@ namespace VBScripting
 
         /// <summary> Sets the icon of the "balloon tip" or notification. </summary>
         /// <parameters> type </parameters>
-        /// <remarks> The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </remarks>
+        /// <remarks> The parameter <code>type</code> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </remarks>
         public void SetBalloonTipIcon(int type)
         {
             if (type == this.ToolTipIcon.Error)
@@ -156,7 +156,7 @@ namespace VBScripting
 
         /// <summary> Add a menu item to the system tray icon's context menu. </summary>
         /// <parameters> menuText, callbackRef </parameters>
-        /// <remarks> This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
+        /// <remarks> This method can be called only from VBScript. The parameter <code>menuText</code> is a string that specifies the text that appears in the menu. The parameter <code>callbackRef</code> is a VBScript object reference returned by the VBScript GetRef Function. </remarks>
         public void AddMenuItem(string menuText, object callbackRef)
         {
             this.settings.AddRef(new CallbackReference(this.nextIndex, callbackRef));
@@ -186,7 +186,7 @@ namespace VBScripting
                 }
             }
         }
-        
+
         /// <summary> Show the context menu. </summary>
         /// <remarks> Public in order to provide testability from VBScript. </remarks>
         public void ShowContextMenu()
@@ -213,21 +213,25 @@ namespace VBScripting
         }
 
         private object balloonTipCallback;
-        
+
         /// <summary> Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. </summary>
-        /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre></remarks>
+        /// <remarks> VBScript example: <pre>    obj.SetBalloonTipCallback GetRef( "ProcedureName" ) </pre></remarks>
         public void SetBalloonTipCallback(object callbackRef)
         {
             this.balloonTipCallback = callbackRef;
         }
 
-        /// <summary> Disable a menu item </summary>
+        /// <summary> Disables a menu item. </summary>
+        /// <parameters> index </parameters>
+        /// <remarks> Parameter <em> index </em> values are integers assigned automatically as each item is added to the menu, beginning with 0.</remarks>
         public void DisableMenuItem(int index)
         {
             this.contextMenu.MenuItems[index].Enabled = false;
         }
 
-        /// <summary> Enable a menu item </summary>
+        /// <summary> Enables a menu item. </summary>
+        /// <parameters> index </parameters>
+        /// <remarks> Parameter <em> index </em> values are integers assigned automatically as each item is added to the menu, beginning with 0.</remarks>
         public void EnableMenuItem(int index)
         {
             this.contextMenu.MenuItems[index].Enabled = true;
@@ -282,7 +286,7 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(12)]
         void ShowBalloonTip();
-        
+
         /// <summary> </summary>
         [DispId(13)]
         void AddMenuItem(string menuText, object callbackRef);
@@ -309,7 +313,7 @@ namespace VBScripting
     }
 
     /// <summary> Supplies the type required by NotifyIcon.ToolTipIcon </summary>
-    /// <remarks><strong> This class is not directly accessible from VBScript, however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </strong></remarks>
+    /// <remarks><strong> This class is accessible from VBScript via the <code>NotifyIcon.ToolTipIcon</code> property. </strong></remarks>
     [Guid("2650C2AB-5DF8-495F-AB4D-6C61BD463EA4")]
     public class ToolTipIconT
     {
@@ -338,7 +342,7 @@ namespace VBScripting
             private set { }
         }
     }
-    
+
     /// <summary> Settings for saving VBScript method references. This class is not accessible from VBScript. </summary>
     [Guid("2650C2AB-5EF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackEventSettings
@@ -363,12 +367,13 @@ namespace VBScripting
         }
     }
     /// <summary> An orderly way to save the index and callback reference for a single menu item. </summary>
-    /// <remarks><strong> This class is not accessible to VBScript. </strong> In VBScript, callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. </remarks>
+    /// <remarks><strong> This class is accessible to VBScript indirectly via the AddMenuItem and SetBalloonTipCallback methods. </strong></remarks>
     [Guid("2650C2AB-5FF8-495F-AB4D-6C61BD463EA4")]
     public class CallbackReference
     {
-        /// <summary> This Index corresponds to the Index of a menuItem in the context menu. </summary>
+        /// <summary> The Index property corresponds to the index of a menu item in the notification area (system tray) context menu. </summary>
         public int Index { get; set; }
+
         /// <summary> COM object reference generated by VBScript's GetRef Function. </summary>
         public object Reference { get; set; }
 

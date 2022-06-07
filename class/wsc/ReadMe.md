@@ -10,14 +10,14 @@
 The `wsc` folder contains Windows Script Component files that make use of like-named class files from the `class` folder and [wrappers](src/ReadMe.md). After the `.wsc` files are [registered](#registration), the associated objects are instantiated by syntax similar to
 
 ```vbs
-Set formatter = CreateObject("VBScripting.StringFormatter")
+Set formatter = CreateObject( "VBScripting.StringFormatter" )
 ```
 
 which is more concise than [using VBScripting\.Includer](../../docs/VBScriptClasses.md#includer).
 
 ## Registration
 
-Usually, `.wsc` files are registered prior to [intantiation](#overview). Ways to register a `.wsc` file:
+Usually, `.wsc` files are registered prior to [instantiation](#overview). Ways to register a `.wsc` file:
 
 - [Setup.vbs](../../Setup.vbs) automatically registers project `.wsc` files.
 

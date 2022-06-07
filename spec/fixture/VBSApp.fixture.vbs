@@ -3,19 +3,51 @@
 ' This file contains the core VBScript code under test and is referenced by both the .hta and the .wsf fixture files.
 
 With New VBSAppTester
-    .Run
+    .Run "New object"
+    .Run "COM object"
 End With
 
 Class VBSAppTester
+    Private app 'the VBSApp object under test
+    Private fso 'Scripting.FileSystemObject object
+    Private incl 'VBScripting.Includer object
+    Private sh 'WScript.Shell object
+    Private stream 'text stream for writing to the output file
+    Private stopwatch 'a project object
 
-    Sub Run
+    Sub Class_Initialize
+        Dim outFile 'filespec of the output file
+        Const ForWriting = 2, CreateNew = True 'for OpenTextFile
 
-        If Not "TextStream" = TypeName(stream) Then
-            ' Failed to create the output file in Sub Class_Initialize.
-            errMsg = "Running the VBSApp integration test from %ProgramFiles% requires elevated privileges."
-            sh.PopUp errMsg, timeout, app.GetFileName, vbInformation
-            app.Quit
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        Set sh = CreateObject( "WScript.Shell" )
+        Set incl = CreateObject( "VBScripting.Includer" )
+        Set app = CreateObject( "VBScripting.VBSApp" )
+        If "HTMLDocument" = TypeName(document) Then
+            app.Init document
+        Else app.Init WScript
         End If
+        outFile = Expand( "%AppData%\VBScripting\VBSApp." & app.GetArg(3) & "Out.txt" )
+        Set stream = fso.OpenTextFile( outFile, ForWriting, CreateNew )
+        Execute incl.Read( "VBSStopwatch" )
+        Set stopwatch = New VBSStopwatch
+    End Sub
+
+    Sub Run( instantiationMethod )
+        Set app = Nothing
+        Select Case instantiationMethod
+
+        Case "COM object"
+            Set app = CreateObject( "VBScripting.VBSApp" )
+            If "HTMLDocument" = TypeName( document ) Then
+                app.Init document
+            Else app.Init WScript
+            End If
+
+        Case "New object"
+            Execute incl.Read( "VBSApp" )
+            Set app = New VBSApp
+        End Select
 
         stream.WriteLine app.GetArg(1)
         stream.WriteLine app.GetArgsString
@@ -40,42 +72,19 @@ Class VBSAppTester
         stopwatch.Reset
         app.Sleep app.GetArg(2)
         stream.WriteLine stopwatch.Split
-
-        Const timeout = 20 ' seconds; 0 => indefinite
-        Dim errMsg
     End Sub
 
-    Private fso, sh, stream ' Windows-native objects
-    Private app, stopwatch ' project objects
-
-    Sub Class_Initialize
-        Set app = CreateObject("VBScripting.VBSApp")
-        If "HTMLDocument" = TypeName(document) Then
-            app.Init document
-        Else app.Init WScript
-        End If
-        With CreateObject("VBScripting.Includer")
-            Dim base
-            Execute .read("..\spec\VBSApp.spec.config")
-            Execute .read("VBSStopwatch")
-        End With
-        Set stopwatch = New VBSStopwatch
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        Const ForWriting = 2
-        Const CreateNew = True
-        outFile = fso.GetAbsolutePathName( base & app.GetArg(3) & "Out.txt" )
-        On Error Resume Next
-            Set stream = fso.OpenTextFile( outFile, ForWriting, CreateNew )
-        On Error Goto 0
-        Set sh = CreateObject("WScript.Shell")
-
-        Dim outFile
-    End Sub
+    Function Expand( str )
+        Expand = sh.ExpandEnvironmentStrings( str )
+    End Function
 
     Sub Class_Terminate
         stream.Close
         Set stream = Nothing
         Set fso = Nothing
+        Set sh = Nothing
+        Set incl = Nothing
+        Set stopwatch = Nothing
         app.Quit
     End Sub
 

@@ -17,7 +17,7 @@ var docScript = {
         if ("" == id) return; // stray click
 
         // get the DOM element
-        var detail = document.getElementsByClassName("detail")[id];
+        var detail = document.getElementsByClassName( "detail" )[id];
 
         if (undefined === this.firstClick[id])
             this.firstClick[id] = true;
@@ -40,7 +40,7 @@ var docScript = {
 
     // show selected output while debugging
     out: function(str) {
-        document.getElementsByClassName("debugOutput")[0].innerHTML += ', ' + str;
+        document.getElementsByClassName( "debugOutput" )[0].innerHTML += ', ' + str;
     }
 
 }

@@ -1,8 +1,8 @@
 ' Class SetupHelper
 
-' Supports alternative, experimental, setup scenarios:
+' Supported alternative, experimental, setup scenarios:
 
-' 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see [SetupPerUser.md](../SetupPerUser.md).
+' 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see <a href=https://github.com/koswald/VBScript/blob/master/SetupPerUser.md> SetupPerUser.md</a>.
 
 ' 2. Another alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after the Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition, or after the second Windows restart.
 
@@ -75,7 +75,7 @@ Class SetupHelper ' original name SetupPerUser
             className = arr(i + indexOffset)
             If Char2IsUpperCase(className) Then Exit Do 'skip interface
             If Not regex.Test(arr(i)) Then
-                Err.Raise 1,, "Invalid registration data:" & vbLf & _
+                Err.Raise 5,, "Invalid registration data:" & vbLf & _
                     "array index: " & i & vbLf & _
                     "data       : " & arr(i)
             End If
@@ -467,7 +467,7 @@ Class SetupHelper ' original name SetupPerUser
     Private root_, rootString_
     Public Property Let Root(newValue)
         If Not ( HKLM = newValue ) And Not ( HKCU = newValue ) Then
-            Err.Raise 1,, "Root must be either &H" & Hex(HKCU) & " or &H" & Hex(HKLM) & "."
+            Err.Raise 5,, "Root must be either &H" & Hex(HKCU) & " or &H" & Hex(HKLM) & "."
         End If
         root_ = newValue
         If HKCU = root_ Then
@@ -481,11 +481,11 @@ Class SetupHelper ' original name SetupPerUser
     End Property
 
     'Property HKCU
-    'Returns &H80000001 (2147483649)
+    'Returns &H80000001
     'Remark: Returns a value suitable for use with the root parameter of the KeyExists property.
     Public Property Get HKCU : HKCU = &H80000001 : End Property
     'Property HKLM
-    'Returns &H80000002 (2147483650)
+    'Returns &H80000002
     'Remark: Returns a value suitable for use with the root parameter of the KeyExists property.
     Public Property Get HKLM : HKLM = &H80000002 : End Property
 
@@ -499,8 +499,8 @@ Class SetupHelper ' original name SetupPerUser
 
     Sub Class_Initialize
         synchronous = True
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         Set stdRegProv = GetObject("winmgmts:\\.\root\CIMv2:StdRegProv")
         unregistering = False
         For Each arg In WScript.Arguments

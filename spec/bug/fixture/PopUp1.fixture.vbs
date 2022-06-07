@@ -1,7 +1,7 @@
-Set sh = CreateObject("WScript.Shell")
-Set fso = CreateObject("Scripting.FileSystemObject")
-Set incl = CreateObject("VBScripting.Includer")
-Execute incl.Read("VBSLogger")
+Set sh = CreateObject( "WScript.Shell" )
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set incl = CreateObject( "VBScripting.Includer" )
+Execute incl.Read( "VBSLogger" )
 Set logger = New VBSLogger
 response = sh.PopUp("test", 2, "PopUp bug", vbOKCancel)
 Set stream = fso.OpenTextFile("fixture\PopUp1.fixture.txt", ForWriting, CreateNew)

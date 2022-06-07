@@ -1,4 +1,4 @@
-:: register.vbs a single .wsc file passed in on the command line
+:: Register a single .wsc file passed in on the command line
 @echo off
 If %1.==. (
     echo Arg required. Press a key to exit
@@ -8,4 +8,4 @@ If %1.==. (
 For %%A in (%1) do (
     echo Registering %%~nxA
 )
-..\..\examples\Register.vbs %1
+..\..\examples\RegisterWsc.wsf %1

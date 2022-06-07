@@ -1,19 +1,19 @@
 
 <job id="launcher for AnyFolder.hta">
 
-<!-- this launcher may be necessary because .hta 
+<!-- this launcher may be necessary because .hta
      files/shortcuts in the SendTo folder
      may not appear in the SendTo menu -->
 
     <script language="VBScript">
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSApp")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSApp" )
         End With
-        With CreateObject("Scripting.FileSystemObject")
+        With CreateObject( "Scripting.FileSystemObject" )
             parent = .GetParentFolderName(WScript.ScriptFullName)
         End With
         Dim app : Set app = New VBSApp
-        With CreateObject("WScript.Shell")
+        With CreateObject( "WScript.Shell" )
             .Run """" & parent & "\AnyFolder.hta"" " & app.GetArgsString
         End With
         Set app = Nothing

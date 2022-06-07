@@ -1,5 +1,7 @@
 
-'Functions related to VBScript command-line arguments
+'Functions related to VBScript command-line arguments.
+'
+'Not suitable for use with .hta files. For .hta files, use VBSApp instead.
 '
 Class VBSArguments
 

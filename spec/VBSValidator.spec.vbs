@@ -1,7 +1,7 @@
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("VBSValidator")
-    Execute .read("TestingFramework")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "VBSValidator" )
+    Execute .Read( "TestingFramework" )
 End With
 
 Dim val : Set val = New VBSValidator 'Class Under Test
@@ -23,7 +23,7 @@ With New TestingFramework
         .AssertEqual val.IsBoolean(1), False
 
     .it "should return False when IsBoolean is given a string"
-        .AssertEqual val.IsBoolean("sdfjke"), False
+        .AssertEqual val.IsBoolean( "sdfjke" ), False
 
     .it "should raise an error when EnsureBoolean is given a string"
         Dim nonBool : nonBool = "a string"

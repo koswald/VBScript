@@ -38,9 +38,9 @@ Class WMIUtility
     'Remark: Terminates a process with the specified id (integer), name (string, e.g. notepad.exe), and delay (integer: milliseconds), asynchronously.
     Sub TerminateProcessByIdAndNameDelayed(id, name, milliseconds)
         'create and run a .vbs script to end the process
-        With CreateObject("VBScripting.Includer")
-            Execute .read("TextStreamer")
-            Execute .read("StringFormatter")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "TextStreamer" )
+            Execute .Read( "StringFormatter" )
         End With
         Dim ts : Set ts = New TextStreamer
         ts.SetFolder "%Temp%"
@@ -49,7 +49,7 @@ Class WMIUtility
         Dim stream : Set stream = ts.Open
         stream.WriteLine "'automatically generated script"
         stream.WriteLine "With CreateObject(""VBScripting.Includer"")"
-        stream.WriteLine "    Execute(.read(""WMIUtility""))"
+        stream.WriteLine "    Execute .Read(""WMIUtility"")"
         stream.WriteLine "End With"
         stream.WriteLine "Dim fso : Set fso = CreateObject(""Scripting.FileSystemObject"")"
         stream.WriteLine "Dim wmi : Set wmi = New WMIUtility"
@@ -92,7 +92,7 @@ Class WMIUtility
     'Function IsRunning
     'Parameter: a process name
     'Returns a boolean
-    'Remark: Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning("notepad.exe") 'True or False</code>.
+    'Remark: Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning( "notepad.exe" ) 'True or False</code>.
     Function IsRunning(name)
         IsRunning = -1 < UBound(GetProcessIDsByName(name))
     End Function
@@ -103,7 +103,7 @@ Class WMIUtility
         Dim removes : removes = Array("=", " ", ";", "'", "\", "/", ":", "*", "?", """", "<", ">", "|", "%20")
 
         For i = 0 To UBound(removes)
-            s = Replace(s, removes(i), "")
+            s = Replace( s, removes(i), "" )
         Next
         Scrub = s
     End Property
@@ -184,7 +184,7 @@ Class WMIUtility
 
     'Function Battery
     'Returns an object
-    'Remark: Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object.
+    'Remark: Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object.
     Function Battery
         Dim bat
         For Each bat in GetResults(select_ & all & from & Win32_Battery)

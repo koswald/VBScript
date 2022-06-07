@@ -5,8 +5,8 @@ using System.Timers;
 namespace VBScripting
 {
     /// <summary> Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. </summary>
-    /// <remarks> Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
-    [ProgId("VBScripting.Watcher"),
+    /// <remarks> Uses <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a target="_blank" href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a target="_blank" href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </remarks>
+    [ProgId( "VBScripting.Watcher" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-C000-495F-AB4D-6C61BD463EA4")]
     public class Watcher : IWatcher
@@ -94,7 +94,7 @@ namespace VBScripting
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         extern static uint SetThreadExecutionState(uint esFlags);
     }
-   
+
     /// <summary> The COM interface for VBScripting.Watcher </summary>
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
         Guid("2650C2AB-C001-495F-AB4D-6C61BD463EA4")]

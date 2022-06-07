@@ -1,11 +1,11 @@
 
 'test the VBSExtracter class
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("TestingFramework")
-    Execute .read("VBSExtracter")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "TestingFramework" )
+    Execute .Read( "VBSExtracter" )
     Dim inputFile
-    Execute(.read("..\spec\VBSExtracter.spec.config"))
+    Execute .Read("..\spec\VBSExtracter.spec.config")
 End With
 Dim xtr : Set xtr = New VBSExtracter
 

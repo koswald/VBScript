@@ -1,42 +1,38 @@
+'Test the RegExFunctions object
 
-'test RegExFunctions.vbs
+Option Explicit
+Dim r 'the RegExFunctionf object under test
+Dim incl 'VBScripting.Includer object
+Dim subs 'a matches collection
+Dim sub_ 'an item in the matches collection
+Dim s 'a string
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("RegExFunctions")
-    Execute .read("TestingFramework")
-End With
+Set incl = CreateObject( "VBScripting.Includer" )
 
-Dim r : Set r = New RegExFunctions
-
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
-    .describe "RegExFunctions class"
+    .Describe "RegExFunctions class"
+        Set r = incl.LoadObject( "RegExFunctions" )
 
-    .it "should return a reference to the RegExp object"
-
+    .It "should return a reference to the RegExp object"
         Dim pattern : pattern = ".*'(\w+).*"
         r.SetPattern pattern
-
         .AssertEqual r.re.pattern = pattern, True
 
-    .it "should get the first match"
-
+    .It "should get the first match"
         r.SetTestString "A ring of red rocks"
         r.SetPattern "r[\w]+"
-
         .AssertEqual r.FirstMatch, "ring"
 
-    .it "should get submatches"
-
+    .It "should get submatches"
         'match the first three words that start with r
         r.SetPattern "(\br[\w]+).*(\br[\w]+).*(\br[\w]+)"
-
-        Dim subs : Set subs = r.GetSubMatches
-        Dim sub_, s : s = ""
+        Set subs = r.GetSubMatches
+        s = ""
         For Each sub_ in subs
             s = s & " " & sub_
         Next
-
         .AssertEqual s, " ring red rocks"
 
 End With

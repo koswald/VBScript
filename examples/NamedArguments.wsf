@@ -2,15 +2,15 @@
 <job>
     <runtime>
         <!-- define command-line argument requirements -->
-        <named 
-            name = "Folder" 
-            helpstring = "Folder to examine" 
+        <named
+            name = "Folder"
+            helpstring = "Folder to examine"
             required = "True" />
         <named
-            name = "FileTypes" 
-            helpstring = "File types to list" 
+            name = "FileTypes"
+            helpstring = "File types to list"
             required = "False" />
-        <named 
+        <named
             name = "ExpectedOutcome"
             helpstring = "Expected outcome of test"
             required = "False" />
@@ -29,7 +29,7 @@
         ' Create a list of the specified files in the specified folder
 
         For Each file in fso.GetFolder( folder ).Files
-            actualType = LCase( fso.GetExtensionName( file.Name )) 
+            actualType = LCase( fso.GetExtensionName( file.Name ))
             For Each desiredType In Split( fileTypes, "|" )
                 If actualType = LCase( Trim( desiredType )) Then
                     fileList = fileList & file.Name & vbCrLf

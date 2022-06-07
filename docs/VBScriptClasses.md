@@ -2,24 +2,29 @@
 
 ## Contents
 
+[ArrayOfObjects](#arrayofobjects)  
 [Chooser](#chooser)  
 [CommandParser](#commandparser)  
+[Configurer](#configurer)  
 [DocGenerator](#docgenerator)  
 [DocGeneratorCS](#docgeneratorcs)  
 [EncodingAnalyzer](#encodinganalyzer)  
 [EscapeMd](#escapemd)  
+[FolderSender](#foldersender)  
 [GUIDGenerator](#guidgenerator)  
 [HTAApp](#htaapp)  
 [Includer](#includer)  
 [KeyDeleter](#keydeleter)  
 [MathConstants](#mathconstants)  
 [MathFunctions](#mathfunctions)  
+[NameValue](#namevalue)  
 [PrivilegeChecker](#privilegechecker)  
 [RegExFunctions](#regexfunctions)  
 [RegistryUtility](#registryutility)  
 [SetupHelper](#setuphelper)  
 [ShellConstants](#shellconstants)  
 [SpecialFolders](#specialfolders)  
+[StartupItems](#startupitems)  
 [StringFormatter](#stringformatter)  
 [TestingFramework](#testingframework)  
 [TextStreamer](#textstreamer)  
@@ -45,17 +50,62 @@
 [WMIUtility](#wmiutility)  
 [WoWChecker](#wowchecker)  
 
+## ArrayOfObjects
+
+The default property of the ArrayOfObjects class, Items, acts like a rudimentary C# ArrayList.  
+  
+Example  
+```vb
+ Option Explicit
+ Dim aoo 'ArrayOfObjects object
+ Dim incl 'VBScripting.Includer object
+ Initialize
+ Add "tree", "pear"
+ Add "tree", "walnut"
+ ShowAll
+ ShowAll2
+ Sub Initialize
+     Set incl = CreateObject( "VBScripting.Includer" )
+     Execute incl.Read( "ArrayOfObjects" )
+     Set aoo = New ArrayOfObjects
+ End Sub
+ Sub Add( noun, example )
+     Execute incl.Read( "NameValue" )
+     aoo.Add New NameValue.Init( noun, example )
+ End Sub
+ Sub ShowAll
+     Dim obj, s
+     For Each obj In aoo() 'or aoo.Items or aoo.Items()
+         s = s & obj.Name & vbTab & obj.Value & vbLf
+     Next
+     MsgBox s,, "ShowAll"
+ End Sub
+ Sub ShowAll2
+     Dim i, s
+     For i = 0 To UBound(aoo) 'or aoo() or aoo.Items or aoo.Items()
+         s = s & aoo()(i).Name & vbTab & aoo()(i).Value & vbLf
+     Next
+     MsgBox s,, "ShowAll2"
+ End Sub
+```
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Items | None | an array of objects | Returns an array of the objects that were added using the Add method. This is default property, so the name (Items) may not need to be specified. However, it may be necessary to add empty parens to the object name: See the example. |
+| Method | Add | an object | N/A | Expands the Items array and adds the specified object to it. |
+| Property | Count | None | an integer | Returns the number of items in the Items array. |
+
 ## Chooser
 
 Get a folder or file chosen by the user  
   
-<strong> Deprecated</strong> in favor of VBScripting.FolderChooser and VBScripting.FileChooser .NET <a href="../.Net/ReadMe.md"> extenstions</a>, which are more versatile and user friendly. See <a href="../.Net/FolderChooser.cs"> FolderChooser.cs</a> and <a href="../.Net/FileChooser.cs"> FileChooser.cs</a> in the .NET folder.  
+<strong> Deprecated</strong> in favor of the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/ReadMe.md#overview"> .NET extensions</a> VBScripting.FolderChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FolderChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#folderchooser"> doc</a> ) and VBScripting.FileChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FileChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#filechooser"> doc</a> ), which are more versatile and user friendly.  
   
 Usage example  
   
 ```vb
- With CreateObject("VBScripting.Includer") 
-     Execute .read("Chooser")
+ With CreateObject( "VBScripting.Includer" ) 
+     Execute .Read( "Chooser" )
  End With 
 
  Dim choose : Set choose = New Chooser 
@@ -63,8 +113,8 @@ Usage example
  MsgBox choose.file 
 ```
   
-Browse for file <a href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.  
-Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</a>.  
+Browse for file <a target="_blank" href="http://stackoverflow.com/questions/21559775/vbscript-to-open-a-dialog-to-select-a-filepath"> reference</a>.  
+Browse for folder <a target="_blank" href="http://ss64.com/vb/browseforfolder.html"> reference</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -73,60 +123,114 @@ Browse for folder <a href="http://ss64.com/vb/browseforfolder.html"> reference</
 | Property | FolderTitle | None | the folder title | Opens a Browse For Folder dialog and returns the title of a folder chosen by the user. The title for a normal folder is just the folder name. For a special folder like %UserProfile%, it may be something entirely different. Returns an empty string if no folder was selected. |
 | Property | FolderObject | None | an object | Opens a Browse For Folder dialog and returns a Shell.Application BrowseForFolder object for a folder chosen by the user. This object has methods Title and Self.Path, corresponding to this class's FolderTitle and FolderPath, respectively. This method is recommended for when you need both the FolderTitle and FolderPath but only want the user to have to choose once. If no folder was selected, then TypeName(folderObj) = "Nothing" is True. |
 | Method | SetWindowTitle | a string | N/A | Sets the title of the Browse For Folder window: i.e. the text below the titlebar. |
-| Method | SetWindowOptions | a hex value | N/A | Sets the behavior or behaviors for the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER. |
-| Method | AddWindowOptions | a hex value | N/A | Adds a behavior or behaviors to the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER. |
-| Property | BIF_RETURNONLYFSDIRS | None | &H0001 | None |
-| Property | BIF_DONTGOBELOWDOMAIN | None | &H0002 | None |
-| Property | BIF_STATUSTEXT | None | &H0004 | None |
-| Property | BIF_RETURNFSANCESTORS | None | &H0008 | None |
-| Property | BIF_NONEWFOLDER | None | &H0200 | None |
-| Property | BIF_BROWSEFORCOMPUTER | None | &H1000 | None |
-| Property | BIF_BROWSEFORPRINTER | None | &H2000 | None |
-| Method | SetRootPath | a folder path | N/A | Sets the root folder that the Browse For Folder window will allow browsing. Environment variables are allowed. See also the UnwiselyEnableSendKeys method. |
-| Method | UnwiselyEnableSendKeys | None | N/A | Optional. Not recommended. Enables sending keystrokes to the Choose File to Upload dialog in order to open at the RootFolder. There is a risk whenever using the WScript.Shell SendKeys method that keystrokes will be sent to the wrong window. |
-| Method | WiselyDisableSendKeys | None | N/A | Default setting. Disables SendKeys. The Choose File to Upload dialog will open to the last place a file was selected, regardless of the RootFolder setting. |
-| Method | SetPatience | time in seconds | N/A | Sets the maximum time in seconds that the File method waits for the Choose File to Upload dialog to appear before abandoning attempts to open the dialog at the folder specified by RootFolder. Applies only when SendKeys is enabled. Default is 5 (seconds). |
-| Property | DialogHasOpened | a string or an object | a boolean | Waits for the specified dialog to appear, then returns False if the specified doesn't appear within the time specified by SetPatience, by default 5 (seconds). Parameter is either a string to match with the title bar text, as when browsing for a file, or else a WshScriptExec object, as when browsing for a folder. Used internally and by the unit test. |
-| Method | SetBFFileTimeout | an integer | N/A | Sets the time in seconds after which the Browse For File (Choose File to Upload) dialog will be terminated if a file has not been chosen. A timeout of 0 will allow the dialog to remain open indefinitely. Intended to allow improved testing reliability. Default is 0. |
-| Method | SetMaxExecLifetime | WShellExec object, exe, milliseconds | N/A | Terminates a WShellExec process (the Browse for File window for example) after the specified time in milliseconds. Timeout of 0 prevents termination. An example of the exe: "mshta.exe". |
 
 ## CommandParser
 
-Command Parser  
-Runs a specified command and searches the output for a phrase  
+The CommandParser class' Result method runs a command and searches its output for a phrase.  
   
 Example:  
 ```vb
- Dim includer : Set includer = CreateObject("VBScripting.Includer") 
- Execute includer.Read("CommandParser") 
+ Dim includer : Set includer = CreateObject( "VBScripting.Includer" ) 
+ Execute includer.Read( "CommandParser" ) 
  Dim cp : Set cp = New CommandParser 
- cp.SetCommand "cmd /c If defined ProgramFiles^(X86^) (echo 64-bit) else (echo 32-bit)" 
- cp.SetSearchPhrase "64-bit" 
- MsgBox cp.GetResult 'typically True on 64-bit systems
+ Dim cmd : cmd = "cmd /c If defined ProgramFiles^(X86^) (echo 64-bit) else (echo 32-bit)" 
+ Dim phrase : phrase = "64-bit" 
+ MsgBox cp.Result( cmd, phrase ) 'True expected for 64-bit systems
 ```
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Method | SetCommand | newCmd | N/A | Sets the command to run whose output will be searched. Required before calling GetResult. |
-| Method | SetSearchPhrase | newSearchPhrase | N/A | Sets a phase to search for in the command's output. Required before calling GetResult. |
-| Property | GetResult | None | a boolean | Runs the sepecified command and returns True if the specified phrase is found in the command output. |
-| Method | SetStartPhrase | newStartPhrase | N/A | Sets a unique phrase to identify the output line after which the search begins. Optional. By defualt the output is searched from the beginning. |
-| Method | SetStopPhrase | newStopPhrase | N/A | Sets a unique phrase to identify the line that follows the last line of the search. Optional. By defualt, the output is searched to the end. |
+| Property | Result | cmd, phrase | a boolean | Runs the specified command and returns a boolean: True if the specified phrase is found in the output of the specified command. Not case sensitive by default. |
+| Property | CaseSensitive | a boolean | a boolean | Gets or sets whether the search is case sensitive. Default is False.  |
+
+## Configurer
+
+Allows for keeping configuration data for a class or script separate from the code.  
+  
+Requirements  
+1. The configuration files are manually created with comma-delimited key/value pairs that are read/loaded into a dictionary and accessed through the Item property.  
+2. The configuration files must have the <code>configure</code> filename extension. See LoadUserConfig for the one exception.  
+3. The configuration files must have the same base name as the associated class file or calling script. Two exceptions: the UserConfigFile and GlobalConfigFile do not have base names.  
+4. The configuration file for a script must be located in the same folder as the script.  
+5. The configuration file for a class should be in the project's <code>class</code> folder, or else in another folder that is specified by the LibraryPath property. If using another folder, then the LibraryPath property must be set before calling the LoadClassConfig method or getting the ClassConfigFile property.  
+6. The configuration files can have in-line or whole-line # comments.  
+7. Leading and trailing whitespace is ignored in both the key and the value.  
+  
+ Note: Three config files GlobalConfigFile, UserConfigFile, and ScriptConfigFile, are loaded in that order on instantiation of the Configure class. The most recently loaded file takes precedence if there is a conflict, so if a different precedence is desired, then the files can be reloaded in a different order. A class configuration file is loaded by the <code> LoadClassConfig</code> method or the <code> LoadFile</code> method.  
+  
+Example:  
+  
+```vb
+ 'Test1.vbs (located anywhere)
+ With CreateObject( "VBScripting.Includer" )
+     Execute .Read( "Configurer" )
+ End With
+ With New Configurer
+     If .Exists( "command1" ) Then
+         MsgBox "command1: " & .Item( "command1" )
+     Else MsgBox "command1 key not found."
+     End If
+ End With
+```
+  
+<code> # Test1.configure (located in the same folder as Test1.vbs)<br /> command1, wt powershell # requires Windows Terminal</code>  
+  
+```vb
+ 'Test2.vbs (located in the "class" folder)
+ Class Test2
+     Sub Class_Initialize
+         With CreateObject( "VBScripting.Includer" )
+             Execute .Read( "Configurer" )
+         End With
+         With New Configurer
+             .LoadClassConfig me
+             If .Exists( "command2" ) Then
+                 MsgBox .Item( "command2" )
+             End If
+         End With
+     End Sub
+ End Class
+```
+  
+<code> # Test2.configure (also located in the "class" folder)<br /> command2, pwsh # requires PowerShell 6 or higher</code>  
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Item | a key (string) | a value (string) | Returns the value of the key/value pair for the specified key. Returns Empty if the key is not found. |
+| Property | Count | None | an integer | Gets the number of key/value pairs in the Configurer dictionary. |
+| Property | Exists | a string (key) | a boolean | Gets whether a given key/value pair exists in the Configurer dictionary. Parameter is the key. |
+| Property | Dictionary | None | an object reference | Returns a reference to the Configurer object's dictionary object. Properties: CompareMode, Item, Key. Methods: Add, Exists, Items, Keys, Remove, RemoveAll. See the <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84)"> online docs</a> for the Dictionary object. |
+| Method | LoadFile | a filespec | N/A | Loads the specified configuration file's key/value pairs into the object's dictionary. See Item property. See also the LoadClassConfig and LoadScriptConfig methods. |
+| Method | LoadScriptConfig | None | N/A | Loads the configuration file associated with the calling script. The configuration file's key/value pairs are added to the Configurer object's dictionary object, or if the key exists already, the value is updated. |
+| Property | ScriptConfigFile | None | a filespec | Returns the filespec of the configuration file associated with the script that is using the Configurer object, the calling script or .hta. The file doesn't have to exist. |
+| Method | LoadClassConfig | a string or an object reference | N/A | Loads the configuration file associated with a class file. The configuration file's key/value pairs are added to the Configurer object's dictionary object, or if the key exists already, the value is updated. The parameter may be 1) the class name, or 2) an object reference to an instance of the class, or 3) the keyword me, if called from within the class. |
+| Property | ClassConfigFile | a string or an object reference. | a filespec | Returns the filespec of the configuration file associated with a class (.vbs) file. The file doesn't have to exist. The parameter may be 1) the class name, or 2) an object reference to an instance of the class, or 3) the keyword me, if called from within the class. |
+| Method | LoadUserConfig | None | N/A | Loads the user configuration file at <code>%UserProfile%&#92;.VBScripting</code>. See Note for UserConfigFile. |
+| Property | UserConfigFile | None | a filespec | Returns the filespec of a user-specific configuration file, related to the project but outside of the project folders, at <code>%UserProfile%&#92;.VBScripting</code>. The file doesn't have to exist. Note: Care should be taken when privileges are elevated and the user is not a member of the Administrators group, because as privileges are elevated, %UserProfile% changes. |
+| Method | LoadGlobalConfig | None | N/A | Loads the configuration file in the project folder. See comments for the GlobalConfigFile property. Equivalent to calling <code>LoadFile GlobalConfigFile</code>. |
+| Property | GlobalConfigFile | None | a filespec | Returns the filespec of the global configuration file. The word global refers to the project only. Depending on the location of the project, the configuration file may or may not be accessible to all users. The file does not have to exist. Expected value: <code>&lt;project folder&gt;&#92;.configure</code>. |
+| Property | LibraryPath | None | a path | Gets or sets the location, i.e. the parent folder, of the class file and/or its associated configuration file. See the LoadClassConfig and LoadFile methods. Obscure. For an example, see the integration test Configurer.spec.wsf. |
+| Property | ToArray | a string | an array | Converts a string to an array. Uses the delimiter set by the Delimiter property, a vertical bar ( &#124; ) by default. Excess spaces on the left and right of each element are trimmed off. |
+| Property | PowerShell | None | a string | Returns a string useful for starting a PowerShell process. If PowerShell 6 or 7 is installed, then the return value is the expanded filespec of the first "pwsh candidates" executable found that is listed in the file <code>.configure</code> in the project's root folder. If the cross-platform PowerShell is not found, returns the string <code>powershell</code>, which may be used to start a Windows PowerShell process. Since the return value may contain spaces, the string may need to be surrounded by quotes, depending on how it is used. For example, if the return value is used as the first argument of the Shell.Appliction object's ShellExecute method, then quotes are not recommended. But if the return value is used in the first argument of the WScript.Shell object's Run method, then quotes are recommended. |
+| Property | WT | None | a string | Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if not Windows Terminal is not installed or not found. |
+| Property | Delimiter | None | a character | Gets or sets the delimiter used in converting strings to arrays. Default is a vertical bar ( &#124; ). |
+| Property | PsFallback | None | a string | Returns a ten-character string suitable for starting a Windows PowerShell process: <code>powershell</code>. This becomes the default PowerShell when the newer cross-platform PowerShell is not installed or not found. |
+| Property | Init | an object | an object self-reference | Initializes the Configurer object so that it can find the name of the calling script. The parameter is the WScript object, for .vbs or .wsf files, or the 'Document' object for .hta files. Required if the Configurer object was instantiated with the <a href="#includer"> VBScripting.Includer</a> object's experimental LoadObject method. Example: <pre> With CreateObject( "VBScripting.Includer" )<br />     Set c = .LoadObject( "Configurer" ).Init( WScript )<br /> End With</pre> |
 
 ## DocGenerator
 
 Generate html and markdown documentation for VBScript code based on well-formed code comments.  
 Usage Example  
 ```vb
- With CreateObject("VBScripting.Includer")
-     Execute .read("DocGenerator")
+ With CreateObject( "VBScripting.Includer" )
+     Execute .Read( "DocGenerator" )
  End With
  With New DocGenerator
      .SetTitle "VBScript Utility Classes Documentation"
      .SetDocName "VBScriptClasses"
      .SetFilesToDocument "*.vbs | *.wsf | *.wsc"
-     .SetScriptFolder = "..\class"
-     .SetDocFolder = "..\docs"
+     .SetScriptFolder "..\class"
+     .SetDocFolder "..\docs"
      .Generate
      .ViewMarkdown
  End With
@@ -158,12 +262,18 @@ Use three single quotes for remarks that should not appear in the documentation 
   
 Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
   
-Include a vertical bar ( &#124; ) in comments with &amp;#124;  
+For some characters to render correctly, they may need to be replaced by escape codes, even when used within &#60;code&#62; or &#60;pre&#62; tags:  
+ for &#124; use &#38;#124; (vertical bar)  
+ for &#60; use &#38;#60; (less than)  
+ for &#62; use &#38;#62; (greater than)  
+ for &#92; use &#38;#92; (backslash)  
+ for &#38; use &#38;#38; (ampersand)  
+For other characters,  <code>examples\HTML Escape Codes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.  
   
 Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.  
   
 Issues:  
-- Introductory comments at the beginning of a file should be followed by a line containing a single quote character, or else the markdown table may not render correctly .  
+- Introductory comments at the beginning of a class file should be followed by a line containing a single quote character, or else the markdown table may not render correctly.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -176,14 +286,18 @@ Issues:
 | Method | View | None | N/A | Open the html document in the default viewer. Same as ViewHtml. |
 | Method | ViewHtml | None | N/A | Open the html document in the default viewer. Same as View method. |
 | Method | ViewMarkdown | None | N/A | Open the markdown document in the default viewer. |
-| Property | Colorize | boolean | boolean | Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True. |
+| Property | Colorize | boolean | boolean | Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with Git Flavored Markdown), the code lines should not wrap. Default is True. |
 
 ## DocGeneratorCS
 
  DocGeneratorCS class  
   
- Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash ( /// ) code comments.<br />  
- Four base tags are supported: summary, parameters, returns, and remarks. Within these tags, html tags are allowed, although Markdown typically does not render all html tags. <br />  
+ Generates html and markdown documentation for C# code from compiler-generated xml files based on three-slash ( /// ) code comments.  
+  
+ Four base tags are supported: summary, parameters, returns, and remarks. Within these tags, html tags are allowed, although Markdown typically does not render all html tags.  
+  
+ Note: When changes are made to source-code comments, the code must be compiled again in order for new .xml files to be generated, before running the doc-generator script.  
+  
  Note: Html tags may result in malformed markdown table rows when there is whitespace between adjacent tags.  
   
 | Member type | Name | Parameter | Returns | Comment |
@@ -196,14 +310,14 @@ Issues:
 
 ## EncodingAnalyzer
 
-Provides various properties to analyze a file's encoding.   
+Provides various properties to analyze a file's encoding.  
   
 FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.  
   
 Usage example  
 ```vb
-With CreateObject("VBScripting.Includer")
-    Execute .read("EncodingAnalyzer")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "EncodingAnalyzer" )
 End With
  
 With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
@@ -211,7 +325,7 @@ With New EncodingAnalyzer.SetFile(WScript.Arguments(0))
 End With
 ```
   
-Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
+Stackoverflow references: <a target="_blank" href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a target="_blank" href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -233,23 +347,34 @@ EscapeMd and EscapeMd2 Functions
 Escape markdown special characters.  
 Usage example  
 ```vb
-    Dim includer : Set includer = CreateObject("VBScripting.Includer")
-    ExecuteGlobal includer.Read("EscapeMD")
+    Dim includer : Set includer = CreateObject( "VBScripting.Includer" )
+    ExecuteGlobal includer.Read( "EscapeMD" )
     MsgBox EscapeMd("```") ' \`\`\`
 ```
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | EscapeMd | unescaped string | escaped string | Returns a string with Markdown special characters escaped. |
-| Property | EscapeMd2 | unescaped string | escaped string | Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>. |
+| Property | EscapeMd2 | unescaped string | escaped string | Returns a string with a minimal amount of Markdown special characters escaped. <a target="_blank" href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>. |
+
+## FolderSender
+
+The FolderSender class supplies methods that copy or move (send) the specified SourceFolder to the specified TargetFolder. Operator action may be  required.   
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Method | Copy | None | N/A | Copies a folder. The SourceFolder and TargetFolder properties must be specified in advance or else an error will occur. A familiar Windows-native graphical interface appears for sizeable operations or when it is necessary to overwrite existing files or to elevate privileges: Operator action may be required.  |
+| Method | Move | None | N/A | Moves a folder. The SourceFolder and TargetFolder properties must be specified in advance or else an error will occur. A familiar Windows-native graphical interface appears for sizeable operations or when it is necessary to overwrite existing files or to elevate privileges: Operator action may be required.  |
+| Property | SourceFolder | a string (folder) | a string (folder) | Required. Sets or gets the source folder for the Copy and Move methods. Relative paths are allowed. Environment variables are allowed. The source folder must exist or an error will occur. |
+| Property | TargetFolder | a string (folder) | a string (folder) | Required. Sets or gets the target folder for the Copy and Move methods. Relative paths are allowed (see the CurrentDirectory property). Environment variables are allowed. The target folder will be created if it does not exist. The User Account Control dialog may appear to request permission to create a folder if it is in a location that has restricted write permissions such as %ProgramFiles%. |
+| Property | CurrentDirectory | a string (folder) | a string (folder) | Gets or sets the current directory or working directory. Relative paths are allowed. Environment variables are allowed. |
 
 ## GUIDGenerator
 
 Generate a unique GUID  
 Usage example  
 ```vb
- With CreateObject("VBScripting.Includer")
-     Execute .read("GUIDGenerator")
+ With CreateObject( "VBScripting.Includer" )
+     Execute .Read( "GUIDGenerator" )
  End With
  InputBox "",, New GUIDGenerator
 ```
@@ -277,13 +402,13 @@ Supports the VBSApp class, providing .hta functionality. *Intended for use only 
   
 The Includer object helps with dependency management, and can be used in a .wsf, .vbs, or .hta script.  
   
-How it works: The Read method returns the contents of a .vbs class file--or any other text file.  
+How it works: The Read property returns the contents of a .vbs class file--or any other text file.  
   
 Usage example  
 ```vb
- With CreateObject("VBScripting.Includer")
-     Execute .read("WMIUtility.vbs") '.vbs may be omitted
-     Execute .read("TextStreamer")
+ With CreateObject( "VBScripting.Includer" )
+     Execute .Read( "WMIUtility.vbs" ) '.vbs may be omitted
+     Execute .Read( "TextStreamer" )
  End With
  Dim wmi : Set wmi = New WMIUtility
  Dim streamer : Set streamer = New TextStreamer 
@@ -299,17 +424,19 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
   
 <code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
   
-<a href="../class/wsc/ReadMe.md#registration">Alternate registration method</a>.  
+<a target="_blank" href="http://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#registration">Alternate registration method</a>.  
+  
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Property | GetObj | className | An object | Returns an object based on the VBScript class with the specified name. Requires a .wsc Windows Script Component file in \class\wsc. See StringFormatter.wsc for an example. |
+| Property | GetObj | class name | An object | Returns an object based on the VBScript class with the specified name. Requires a .wsc Windows Script Component file in \class\wsc. The object does not need to be registered, although the VBScripting.Includer (this) object must be registered. See StringFormatter.wsc for an example. |
+| Property | LoadObject | class name | an object | Experimental. Returns an object based on a class (.vbs) file located in the project's <code> class</code> folder. The parameter is the class name, which is also the base name of the class .vbs file. Classes having an Init method may need to have the WScript object or the Document object passed in, using the Init method, before calling certain procedures. See the Configurer and VBSApp classes for examples of using an Init method in this way. Experimental. Does not work well when used within a Class block. |
 | Property | Read | a file | the file contents | Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the <code> class</code> folder. The file name extension may be omitted for .vbs files. |
 | Property | ReadFrom | file, path | file contents | Returns the contents of the specified file, which may be expressed either as an abolute path, or as a relative path relative to the path specified. The file name extension may be omitted for .vbs files. |
 | Property | LibraryPath | None | a folder path | Returns the resolved, absolute path of the <code> class</code> folder, which is the reference for relative paths passed to the Read method. |
 
 ## KeyDeleter
 
-Provides a method for deleting a registry key and all of its subkeys.  
+The KeyDeleter class provides a method for deleting a registry key and all of its subkeys.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -319,25 +446,34 @@ Provides a method for deleting a registry key and all of its subkeys.
 | Property | HKLM | None | &H80000002 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKU | None | &H80000003 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCC | None | &H80000005 | Provides a value suitable for the first parameter of the DeleteKey method. |
-| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>. |
+| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>. |
 | Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing. |
 
 ## MathConstants
 
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Property | Pi | None | 3.14159265358979 | None |
-| Property | DEGRAD | None | Pi/180 | Used to convert degrees to radians |
-| Property | RADEG | None | 180/Pi | Used to convert radians to degrees |
+| Property | pi | None | 3.14159265358979 | pi can be generated by the expression <code> 4 * Atn(1)</code>. |
+| Property | DegRad | None | pi/180 | To convert degrees to radians, multiply degrees by DegRad. |
+| Property | RaDeg | None | 180/pi | To convert radians to degrees, multiply radians by RaDeg. Same as RadDeg. Included for backwards compatibility. |
+| Property | RadDeg | None | 180/pi | To convert radians to degrees, multiply radians by RadDeg. |
+| Property | e | None | 2.71828182845905 | <em> e</em> can be generated by the expression <code> Exp( 1 )</code>. |
 
 ## MathFunctions
 
-Math functions not provided with VBScript  
-The native math functions are Sin, Cos, Tan, Atn, Log  
-Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/3ca8tfek(v%3dvs.84)"> online docs </a>  
+The MathFunctions class provides math functions not native to VBScript.  
+These functions are derived from functions that are native to VBScript: Sin, Cos, Tan, Atn, and Log.  
+  
+Log is base <em> e</em>. Angles are in radians. Convert from degrees to radians by multiplying by pi/180.  
+Adapted from <a href=https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/derived-math-functions> Derived Math Functions (Visual Basic)</a>. See also the <a target =_blank href=#mathconstants> MathConstants</a> class.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
+| Property | pi | None | 3.14159265358979 | pi can be generated by the expression <code> 4 * Atn(1)</code>. |
+| Property | DegRad | None | pi/180 | To convert degrees to radians, multiply degrees by DegRad. |
+| Property | RaDeg | None | 180/pi | To convert radians to degrees, multiply radians by RaDeg. Same as RadDeg. |
+| Property | RadDeg | None | 180/pi | To convert radians to degrees, multiply radians by RadDeg. |
+| Property | e | None | 2.71828182845905 | <em> e</em> can be generated by the expression <code> Exp( 1 )</code>. |
 | Property | Sec | Angle in radians | Secant | Sec = 1 / Cos(X) |
 | Property | Cosec | Angle in radians | Cosecant | Cosec = 1 / Sin(X) |
 | Property | Cotan | Angle in radians | Cotangent | Cotan = 1 / Tan(X) |
@@ -360,13 +496,30 @@ Adapted from the Script56.chm. See also the <a href="https://docs.microsoft.com/
 | Property | HArccotan | X | Inverse Hyperbolic Cotangent of X | HArccotan = Log((X + 1) / (X - 1)) / 2 |
 | Property | LogN | X, N | Logarithm of X to base N | LogN = Log(X) / Log(N) |
 
+## NameValue
+
+The NameValue class has two properties, Name and Value, which can be used, for example, to describe a startup item in the registry Run key. See the <a href="#startupitems"> StartupItems class</a>.  
+  
+```vb
+ With CreateObject( "VBScripting.Includer" )
+     Execute .Read( "NameValue" )
+ End With
+ Set obj = New NameValue.Init( "age", 70 )
+```
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Name | a variant | a variant | None |
+| Property | Value | a variant | a variant | None |
+| Property | Init | name, value | an object self reference | Initializes the object. The Init property returns an object self reference, so an object may be instantiated and initialized in the same statement. See the example. See the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/class/NameValue.vbs"> code</a>. |
+
 ## PrivilegeChecker
 
-Default property Privileged returns True if the calling script has elevated privileges.  
+The default property of the PrivilegeChecker class, Privileged, returns True if the calling script has elevated privileges.  
 Usage example  
 ```vb
- With CreateObject("VBScripting.Includer") 
-     Execute .read("PrivilegeChecker") 
+ With CreateObject( "VBScripting.Includer" ) 
+     Execute .Read( "PrivilegeChecker" ) 
  End With 
  Dim pc : Set pc = New PrivilegeChecker 
  If pc Then 
@@ -376,7 +529,7 @@ Usage example
  End If 
 ```
   
-Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>  
+Reference: <a target="_blank" href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -388,8 +541,8 @@ Regular Expression functions - a work in progress
   
 Usage example  
 ```vb
-  With CreateObject("VBScripting.Includer")
-      Execute .read("RegExFunctions")
+  With CreateObject( "VBScripting.Includer" )
+      Execute .Read( "RegExFunctions" )
   End With
   
   Dim reg : Set reg = New RegExFunctions
@@ -407,9 +560,9 @@ Usage example
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Property | Pattern | wildcard | a regex expression | Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with &#124; |
-| Property | re | None | an object reference | Returns a reference to the RegExp object instance |
-| Method | SetPattern | a regex pattern | N/A | Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance |
+| Property | Pattern | wildcard | a regex expression | Returns a regular expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with a vertical bar ( &#124; ). See <a href=https://github.com/koswald/VBScript/blob/master/docs/algorithm/ReadMe.md target=_blank> algorithm/ReadMe.md</a> for more comments. |
+| Property | re | None | an object reference | Returns a reference to the RegExp object instance. |
+| Method | SetPattern | a regex pattern | N/A | Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance. |
 | Method | SetTestString | a string | N/A | Required before calling FirstMatch or GetSubMatches. Specifies the string against which the regex pattern will be tested. |
 | Method | SetIgnoreCase | a boolean | N/A | Optional. Specifies whether the regex object will ignore case. Default is False. |
 | Method | SetGlobal | a boolean | N/A | Optional. Specifies whether the pattern should match all occurrences in the search string or just the first one. Default is False. |
@@ -422,17 +575,17 @@ Provides functions relating to the Windows&reg; registry
   
 Usage example  
 ```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("RegistryUtility") 
+  With CreateObject( "VBScripting.Includer" ) 
+      Execute .Read( "RegistryUtility" ) 
   End With 
   Dim reg : Set reg = New RegistryUtility 
   Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" 
-  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") 
+  MsgBox reg.GetStringValue( reg.HKLM, key, "ProductName" ) 
 ```
   
 Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.  
   
-StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
+StdRegProv docs <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -450,7 +603,7 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 | Property | GetPC | None | a string | Returns the name of the current computer. <strong> .</strong> (dot) indicates the local computer. |
 | Property | GetRegValueType | rootKey, subKey, valueName | an integer | Returns a registry key value type integer. |
 | Method | CreateKey | rootKey, subKey | N/A | Creates the specified subKey and all of it's parent keys, if necessary. |
-| Method | EnumValues | rootKey, subKey, aNames, aTypes | N/A | Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, except that with HKCR and HKLM, elevated privileges are required or else aNames and aValues may be null if the default value is the only value. |
+| Method | EnumValues | rootKey, subKey, aNames, aTypes | N/A | Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a target="_blank" href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, except that with HKCR and HKLM, elevated privileges are required or else aNames and aValues may be null if the default value is the only value. |
 | Property | REG_SZ | None | 1 | Returns a registry value type constant. |
 | Property | REG_EXPAND_SZ | None | 2 | Returns a registry value type constant. |
 | Property | REG_BINARY | None | 3 | Returns a registry value type constant. |
@@ -462,8 +615,8 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 ## SetupHelper
 
  Class SetupHelper  
- Supports alternative, experimental, setup scenarios:  
- 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see [SetupPerUser.md](../SetupPerUser.md).  
+ Supported alternative, experimental, setup scenarios:  
+ 1. The original purpose was to provide custom registration of project Windows Script Component (.wsc) files and VBScript extension .dll files using HKey_Current_User instead of HKey_Local_Machine. For a brief explanation of why this approach was abandoned, see <a href=https://github.com/koswald/VBScript/blob/master/SetupPerUser.md> SetupPerUser.md</a>.  
  2. Another alternate use was for experimental registration of .wsc (Windows Script Component) files when the registration failed after the Windows 10 feature edition 20H2 update on Windows 10 Home edition. The same behavior was not observed on Windows 10 Pro edition, or after the second Windows restart.  
  If the calling script is not in the project root folder (recommended), then the ComponentFolder and ConfigFile properties must be set before calling the Setup method, specifying the paths or relative paths to the items. It is suggested that the working directory be set first, so that the other properties can be set with reference to that, without ambiguity. This can be done with the class CurrentDirectory property or by using the WScript.Shell CurrentDirectory property, or by other means.  
   
@@ -472,8 +625,8 @@ StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/wind
 | Method | Init | None | N/A | Initialize certain properties, if they have not been already. |
 | Method | EnsureValidRegData | arr, indexStart, indexStep, indexOffset, pattern | N/A | Ensure that the registration data to be entered into the registry is valid by raising an error when invalid data is found, which will stop the calling script, provided that the error is not supressed with an 'On Error Resume Next' statement. indexOffset: the integer to add to the current index, i, to get the array index of the partial class progid or partial interface progid. |
 | Method | Char2IsUpperCase | None | N/A | If the second char of the partial progid is upper case, then the type is an interface, in which case the validation may be ignored. In this project the interface is compiled into the same .dll as the associated class. |
-| Property | HKCU | None | &H80000001 (2147483649) | Returns a value suitable for use with the root parameter of the KeyExists property. |
-| Property | HKLM | None | &H80000002 (2147483650) | Returns a value suitable for use with the root parameter of the KeyExists property. |
+| Property | HKCU | None | &H80000001 | Returns a value suitable for use with the root parameter of the KeyExists property. |
+| Property | HKLM | None | &H80000002 | Returns a value suitable for use with the root parameter of the KeyExists property. |
 
 ## ShellConstants
 
@@ -493,8 +646,8 @@ Constants for use with WScript.Shell.Run
 An enum and wrapper for WScript.Shell.SpecialFolders  
 Usage example  
 ```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("SpecialFolders") 
+     With CreateObject( "VBScripting.Includer" ) 
+         Execute .Read( "SpecialFolders" ) 
      End With 
    
      Dim sf : Set sf = New SpecialFolders 
@@ -523,26 +676,48 @@ Usage example
 | Property | Startup | None | a string | Returns a special folder alias having the exact same characters as the property name |
 | Property | Templates | None | a string | Returns a special folder alias having the exact same characters as the property name |
 
+## StartupItems
+
+The StartupItems class provides a way to manage the programs that run automatically when Windows is started.  
+  
+Creating, updating, and deleting operations that affect all users must be performed with elevated privileges or else an error will occur. See comments for the Root property.  
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Items | None | a collection | Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collecttions may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch). |
+| Property | Item | name | an object | Returns a startup item object corresponding to the specified name. Return value depends on the values of the Root and Key properties. See comments for those properties and for the Items property. |
+| Method | CreateItem | name, command | N/A | Creates a new startup item in the registry with the specified name and command. For Root = HKLM, an error will occur if privileges are not elevated. The Root and Key properties both affect where in the registry the item will be created. For 32-bit apps on a 64-bit system, use Key = WowBranch. See comments for the Items property.  |
+| Method | UpdateItem | name, command | N/A | Same as the CreateItem method. |
+| Method | RemoveItem | name | N/A | Same as the DeleteItem method. |
+| Method | DeleteItem | name | N/A | Deletes the startup item with the specified name. For Root = HKLM, an error will occur if privileges are not elevated. The Root and Key properties both affect where in the registry the item will be deleted from. For 32-bit apps on a 64-bit system, use Key = WowBranch. See comments for the Items property.  |
+| Property | Root | an integer | an integer | Together with the Key property, gets or sets the location in the registry where items will be read from, deleted from, or written to by the other properties and methods. The Root value can be specified by the property HKCU or HKLM. Root determines whether items apply to all users (HKLM) or to the current user only (HKCU). Creating, updating, and deleting operations that affect all users must be performed with elevated privileges or else an error will occur.  |
+| Property | HKLM | None | an integer | Returns <code> &H80000002</code>, an integer suitable for setting the Root property. HKLM corresponds to HKEY_LOCAL_MACHINE, the system-wide all-users registry hive. |
+| Property | HKCU | None | an integer | Returns <code> &H80000001</code>, an integer suitable for setting the Root property. HKCU corresponds to HKEY_CURRENT_USER, the registry hive that contains information applicable only to the current user. <strong> Note:</strong> If the current user is not a member of the Administrators group, then the current user changes when privileges are elevated. |
+| Property | Key | a string | a string | Together with the Root property, gets or sets the location in the registry where items will be read from, deleted from, or written to by the other properties and methods. The Key value can be specified by the property StandardBranch (the default) or WowBranch. |
+| Property | StandardBranch | None | a string | Returns the string "Software\Microsoft\Windows\CurrentVersion\Run", which partially describes a registry location that contains information about which programs start automatically on computer startup. WoWBranch and StandardBranch are the two strings suitable for setting the Key property. |
+| Property | WoWBranch | None | a string | Returns the string "Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run", which partially describes a registry location that contains information about which programs start automatically on computer startup. WoWBranch is used with 64-bit systems to store paths to 32-bit programs. StandardBranch and WoWBranch are the two strings suitable for setting the Key property. |
+| Method | OpenTaskMgr | None | N/A | Opens the Task Manager at the Startup page. |
+
 ## StringFormatter
 
 Provides string formatting functions  
   
 Three instantiation examples:  
 ```vb
- With CreateObject("VBScripting.Includer") 
-      Execute .read("StringFormatter") 
+ With CreateObject( "VBScripting.Includer" ) 
+      Execute .Read( "StringFormatter" ) 
       Dim fm : Set fm = New StringFormatter 
  End With 
 ```
-or   
+or  
 ```vb
- With CreateObject("VBScripting.Includer") 
-      Dim fm : Set fm = .GetObj("StringFormatter") 
+ With CreateObject( "VBScripting.Includer" ) 
+      Dim fm : Set fm = .GetObj( "StringFormatter" ) 
  End With 
 ```
-or   
+or  
 ```vb
- Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") 
+ Dim fm : Set fm = CreateObject( "VBScripting.StringFormatter" ) 
 ```
 Usage examples:  
 ```vb
@@ -571,38 +746,42 @@ Usage examples:
 A lightweight testing framework  
 Usage example  
  ```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSValidator") 
-         Execute .read("TestingFramework") 
+     With CreateObject( "VBScripting.Includer" ) 
+         Execute .Read( "VBSValidator" ) 
+         Execute .Read( "TestingFramework" ) 
      End With 
-     Dim val : Set val = New VBSValidator 'class under test 
      With New TestingFramework 
-         .describe "VBSValidator class" 
-         .it "should return False when IsBoolean is given a string" 
-             .AssertEqual val.IsBoolean("sdfjke"), False 
-         .it "should raise an error when EnsureBoolean is given a string" 
+         .Describe "VBSValidator class" 
+             Dim val : Set val = New VBSValidator 'class under test 
+         .It "should return False when IsBoolean is given a string" 
+             .AssertEqual val.IsBoolean( "sdfjke" ), False 
+         .It "should raise an error when EnsureBoolean is given a string" 
              Dim nonBool : nonBool = "a string" 
              On Error Resume Next 
                  val.EnsureBoolean(nonBool) 
                  .AssertErrorRaised 
-                 Dim errDescr : errDescr = Err.Description 'capture the error information 
+                 Dim errDescr : errDescr = Err.Description
                  Dim errSrc : errSrc = Err.Source 
              On Error Goto 0 
      End With 
 ```
   
- See also VBSTestRunner  
+ When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior.  
+  
+ See also <a href="#vbstestrunner"> VBSTestRunner</a> and <a href="#vbshoster"> VBSHoster</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Method | describe | unit description | N/A | Sets the description for the unit under test. E.g. .describe "DocGenerator class" |
-| Method | it | an expectation | N/A | Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer" |
+| Method | Describe | unit description | N/A | Sets the description for the unit under test. E.g. .describe "DocGenerator class" |
+| Method | It | an expectation | N/A | Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer" |
 | Property | GetSpec | None | a string | Returns the specification string for the current spec. |
 | Method | ShowPendingResult | None | N/A | Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place. |
 | Method | AssertEqual | actual, expected | N/A | Asserts that the specified two variants, of any subtype, are equal. |
 | Method | AssertErrorRaised | None | N/A | Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block. |
 | Method | DeleteFile | a filespec | N/A | Deletes the specified file. Relative paths and environment variables are allowed. |
 | Method | DeleteFiles | an array | N/A | Deletes the specified files. The parameter is an array of filespecs. Relative paths and environment variables are allowed. |
+| Method | WriteTempMessage | a string | N/A | Writes a temporary message to the test output that can be, and should be, erased later with the EraseTempMessage method, after some behind the scenes work has been done that does not write to the console. Note: The message will not appear when the test(s) are initiated by the TestRunner class. |
+| Method | EraseTempMessage | None | N/A | Erases the message written by the WriteTempMessage method. |
 | Property | MessageAppeared | caption, seconds, keys | a boolean | Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. Note: SendKeys-related features are deprecated. |
 | Method | ShowSendKeysWarning | None | N/A | Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. Note: SendKeys-related features are deprecated. |
 | Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. Note: SendKeys-related features are deprecated. |
@@ -655,8 +834,8 @@ Methods for use with the text stream that is returned by the Open method:
 VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.  
 Usage Example  
 ```vb
-     With CreateObject("VBScripting.Includer") 
-         ExecuteGlobal .Read("ValidFileName") 
+     With CreateObject( "VBScripting.Includer" ) 
+         ExecuteGlobal .Read( "ValidFileName" ) 
      End With 
   
      MsgBox GetValidFileName("test\ing") 'test-ing 
@@ -678,24 +857,24 @@ This can be useful when writing a class that might be used in both types of "app
 Four ways to instantiate  
 For .vbs/.wsf scripts,  
  ```vb
-  Dim app : Set app = CreateObject("VBScripting.VBSApp") 
+  Dim app : Set app = CreateObject( "VBScripting.VBSApp" ) 
   app.Init WScript 
 ```
 For .hta applications,  
  ```vb
-  Dim app : Set app = CreateObject("VBScripting.VBSApp") 
+  Dim app : Set app = CreateObject( "VBScripting.VBSApp" ) 
   app.Init document 
 ```
 If the script may be used in .vbs/.wsf scripts or .hta applications  
  ```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSApp") 
+  With CreateObject( "VBScripting.Includer" ) 
+      Execute .Read( "VBSApp" ) 
   End With 
   Dim app : Set app = New VBSApp 
 ```
 Alternate method for both .hta and .vbs/.wsf,  
  ```vb
-  Set app = CreateObject("VBScripting.VBSApp") 
+  Set app = CreateObject( "VBScripting.VBSApp" ) 
   If "HTMLDocument" = TypeName(document) Then 
       app.Init document 
   Else app.Init WScript 
@@ -704,8 +883,8 @@ Alternate method for both .hta and .vbs/.wsf,
 Examples  
  ```vb
   'test.vbs "arg one" "arg two" 
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSApp") 
+  With CreateObject( "VBScripting.Includer" ) 
+      Execute .Read( "VBSApp" ) 
   End With 
   Dim app : Set app = New VBSApp 
   MsgBox app.GetFileName 'test.vbs 
@@ -718,8 +897,8 @@ Examples
   <!-- test.hta "arg one" "arg two" --> 
   <hta:application icon="msdt.exe"> 
       <script language="VBScript"> 
-          With CreateObject("VBScripting.Includer") 
-              Execute .read("VBSApp") 
+          With CreateObject( "VBScripting.Includer" ) 
+              Execute .Read( "VBSApp" ) 
           End With 
           Dim app : Set app = New VBSApp 
           MsgBox app.GetFileName 'test.hta 
@@ -733,7 +912,7 @@ Examples
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | GetArgs | None | array of strings | Returns an array of command-line arguments. |
-| Property | GetArgsString | None | a string | Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Each argument is wrapped wih double quotes. The return string has a leading space, by design, unless there are no arguments. |
+| Property | GetArgsString | None | a string | Returns the command-line arguments string. Can be used when restarting a script for example, in order to retain the original arguments. Arguments are wrapped with double quotes, if they contain spaces or if WrapAll is set to True. The return string has a leading space, by design, unless there are no arguments. |
 | Property | GetArg | an integer | a string | Returns the command-line argument having the specified zero-based index. |
 | Property | GetArgsCount | None | an integer | Returns the number of arguments. |
 | Property | GetFullName | None | a string | Returns the filespec of the calling script or hta. |
@@ -742,10 +921,15 @@ Examples
 | Property | GetExtensionName | None | a string | Returns the filename extension of the calling script or hta. |
 | Property | GetParentFolderName | None | a string | Returns the folder that contains the calling script or hta. |
 | Property | GetExe | None | a string | Returns "mshta.exe" to hta files, and "wscript.exe" or "cscript.exe" to scripts, depending on the host. |
-| Method | RestartWith | #1: host; #2: switch; #3: elevating | N/A | Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Paramater #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. |
+| Method | RestartWith | #1: host; #2: switch; #3: elevating | N/A | <strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. |
+| Method | RestartUsing | #1: host; #2: exit?; #3: elevate? | N/A | Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", or "mshta.exe", retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script does not have to check whether privileges are elevated or explicitly call the Quit method. |
+| Property | DoExit | None | True | Suitable for use with the RestartUsing method, argument #2 |
+| Property | DoNotExit | None | False | Suitable for use with the RestartUsing method, argument #2 |
+| Property | DoElevate | None | True | Suitable for use with the RestartUsing method, argument #3 |
+| Property | DoNotElevate | None | False | Suitable for use with the RestartUsing method, argument #3 |
 | Method | SetUserInteractive | boolean | N/A | Sets userInteractive value. Setting to True can be useful for debugging. Default is True. |
 | Property | GetUserInteractive | None | boolean | Returns the userInteractive setting. This setting also may affect the visibility of selected console windows. |
-| Method | SetVisibility | 0 (hidden) or 1 (normal) | N/A | Sets the visibility of selected command windows. SetUserInteractive also affects this setting. Default is True. |
+| Method | SetVisibility | 0 (hidden) or 1 (normal) | N/A | Sets the visibility of selected command windows. SetUserInteractive also affects this setting. Default is 1. |
 | Property | GetVisibility | None | 0 (hidden) or 1 (normal) | Returns the current visibility setting. SetUserInteractive also affects this setting. |
 | Method | Quit | None | N/A | Gracefully closes the hta/script. |
 | Method | Sleep | an integer | N/A | Pauses execution of the script or .hta for the specified number of milliseconds. |
@@ -755,7 +939,9 @@ Examples
 
 ## VBSArguments
 
-Functions related to VBScript command-line arguments  
+Functions related to VBScript command-line arguments.  
+  
+Not suitable for use with .hta files. For .hta files, use VBSApp instead.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -804,8 +990,8 @@ To see a log entry, type EventVwr at the command prompt to open the Event Viewer
   
 Usage example:  
  ```vb
-  With CreateObject("VBScripting.Includer") 
-      Execute .read("VBSEventLogger") 
+  With CreateObject( "VBScripting.Includer" ) 
+      Execute .Read( "VBSEventLogger" ) 
   End With 
    
   Dim logger : Set logger = New VBSEventLogger 
@@ -867,23 +1053,29 @@ General utility functions
 
 ## VBSHoster
 
-Manage which script host is hosting the currently running script  
+ Manage which script host is hosting the currently running script: cscript.exe or wscript.exe.  
+  
+ Not suitable for .hta scripts. For .hta scripts, use the VBSApp class.  
+  
+ If Windows Terminal is installed, a suggested setting in %LocalAppData%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json: <code>"windowingBehavior": "useAnyExisting"</code> or <code>"windowingBehavior": "useExisting"</code>. The same setting in the Windows Terminal GUI: Settings &#124; Startup &#124; New instance behavior &#124; Attach to the most recently used window (or Attach to the most recently used window on this desktop). This applies to the RestartWith method's default behavior. The RestartWith method is used by the TestingFramework class when a test file is double-clicked in Windows Explorer.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Method | EnsureCScriptHost | None | N/A | Restart the script hosted with CScript if it isn't already hosted with CScript.exe |
-| Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. |
-| Method | SetDefaultHostWScript | None | N/A | Sets wscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges. |
-| Method | SetDefaultHostCScript | None | N/A | Sets cscript.exe to be the default script host. The User Account Control dialog will open for permission to elevate privileges. |
+| Method | EnsureCScriptHost | None | N/A | Restart the script hosted with cscript.exe if it isn't already hosted with cscript.exe. |
+| Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted. |
+| Method | SetDefaultHostWScript | None | N/A | Sets wscript.exe to be the default script host. If privileges are not already elevated, then the User Account Control dialog will open for permission to elevate privileges. |
+| Method | SetDefaultHostCScript | None | N/A | Sets cscript.exe to be the default script host. If privileges are not already elevated, then the User Account Control dialog will open for permission to elevate privileges. |
 | Property | GetDefaultHost | None | a string | Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default. |
+| Method | RestartWith | a string: the host .exe | N/A | Restarts the .vbs or .wsf script with the specified host, "cscript.exe" or "wscript.exe". By default, Windows Terminal will be used, if available. Also by default, pwsh.exe (PowerShell) will be used if available. A custom or unusual pwsh.exe install path can be specified if necessary in the file <code>.configure</code> in the project root folder. Use <code> class/VBSHoster.configure</code> to specify another shell configuration. <br /> Examples:<br /><code>shell, cmd</code><br /><code>shell, powershell</code><br /><code>shell, pwsh</code><br /><code>shell, wt cmd</code><br /><code>shell, wt pwsh</code><br /><code>shell, wt "%ProgramFilesX86%\PowerShell\7\pwsh.exe"</code><br /><code>shell, %ProgramFilesX86%\PowerShell\7\pwsh.exe</code><br />This setting can be overridden by the Shell property. See also the RestartUsing method of the <a href="#vbsapp"> VBSApp class</a>. |
+| Property | Shell | a string | a string | Gets or sets the shell used when restarting a script (see the RestartWith method). Examples: cmd, powershell, pwsh, wt pwsh. Overrides the shell read from <code>VBSHoster.configure</code>. |
 
 ## VBSLogger
 
 A lightweight VBScript logger  
-Instantiation   
+Instantiation  
 ```vb
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSLogger") 
+     With CreateObject( "VBScripting.Includer" ) 
+         Execute .Read( "VBSLogger" ) 
      End With 
      Dim log : Set log = New VBSLogger 
 ```
@@ -922,7 +1114,7 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 | Property | Shutdown | None | a boolean | Shuts down the computer. Returns True if the operation completes with no errors. |
 | Property | Restart | None | a boolean | Restarts the computer. Returns True if the operation completes with no errors. |
 | Property | Logoff | None | a boolean | Logs off the computer. Returns True if the operation completes with no errors. |
-| Method | Sleep | None | N/A | Puts the computer to sleep. Requires <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power. |
+| Method | Sleep | None | N/A | Puts the computer to sleep. Requires <a target="_blank" href="https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power. |
 | Method | Hibernate | None | N/A | Puts the computer into hibernation. Will not work if hibernate is disabled in the Control Panel, in which case the EnableHibernation method may be used to reenable hibernation. Hibernate is more power-efficient than sleep, but recovery is slower. If the computer wakes after pressing a key or moving the mouse, then it was sleeping, not in hibernation. Recovery from hibernation typically requires pressing the power button. |
 | Method | EnableHibernation | None | N/A | Enables hibernation. The User Account Control dialog will open to request elevated privileges. |
 | Method | DisableHibernation | None | N/A | Disables hibernation. The User Account Control dialog will open to request elevated privileges. |
@@ -948,8 +1140,8 @@ Usage example
     'test-launcher.vbs 
     'run this file from a console window; e.g. cscript //nologo test-launcher.vbs 
    
-     With CreateObject("VBScripting.Includer") 
-         Execute .read("VBSTestRunner") 
+     With CreateObject( "VBScripting.Includer" ) 
+         Execute .Read( "VBSTestRunner" ) 
      End With 
    
      With New VBSTestRunner 
@@ -958,7 +1150,7 @@ Usage example
      End With 
 ```
   
-See also TestingFramework  
+See also <a href=#testingframework> TestingFramework</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -982,13 +1174,13 @@ A working example of how validation can be accomplished.
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Property | GetClassName | None | the class name | Returns                           "VBSValidator". Useful for verifying Err.Source in a unit test. |
+| Property | GetClassName | None | the class name | Returns                           "VBSValidator". Useful for verifying Err.Source in a test. |
 | Property | IsBoolean | a boolean candidate | a boolean | Returns True if the parameter is a boolean subtype; False if not. |
 | Property | EnsureBoolean | a boolean candidate | boolean | Raises an error if the parameter is not a boolean. Unless an error is raised, returns the same value passed to it. |
 | Property | IsInteger | an integer candidate | a boolean | Returns True if the parameter is an integer subtype; False if not. |
 | Property | EnsureInteger | an integer candidate | integer | Raises an error if the parameter is not an integer. Unless an error is raised, returns the same value passed to it. |
-| Property | ErrDescrBool | None | a string | " is not a boolean." Useful for verifying Err.Description in a unit test. |
-| Property | ErrDescrInt | None | a string | " is not an integer." Useful for verifying Err.Description in a unit test. |
+| Property | ErrDescrBool | None | a string | " is not a boolean." Useful for verifying Err.Description in a test. |
+| Property | ErrDescrInt | None | a string | " is not an integer." Useful for verifying Err.Description in a test. |
 
 ## WindowsUpdatesPauser
 
@@ -1003,7 +1195,7 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 | Property | GetAppName | None | a string | Returns the base name of the calling script |
 | Property | GetProfileName | None | a string | Returns the name of the network. The name is set by editing WindowsUpdatesPauser.config |
 | Property | GetServiceType | None | a string | Returns the service type |
-| Method | OpenConfigFile | None | N/A | Opens the .config file |
+| Method | OpenConfigFile | None | N/A | Opens the .config file for editing. |
 
 ## WMIUtility
 
@@ -1016,18 +1208,18 @@ Examples of the Windows Management Instrumentation object
 | Method | TerminateProcessByIdAndNameDelayed | id, name, milliseconds | N/A | Terminates a process with the specified id (integer), name (string, e.g. notepad.exe), and delay (integer: milliseconds), asynchronously. |
 | Property | GetProcessIDsByName | a process name | a boolean | Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>. |
 | Property | GetProcessesWithNamesLike | a string like jav% | an array of process names | None |
-| Property | IsRunning | a process name | a boolean | Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning("notepad.exe") 'True or False</code>. |
+| Property | IsRunning | a process name | a boolean | Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning( "notepad.exe" ) 'True or False</code>. |
 | Property | partitions | None | a collection | Returns a collection of partition objects, each with the following methods: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status |
 | Property | disks | None | a collection | Returns a collection of disk objects, each with these methods: FileSystem, DeviceID |
 | Property | cpu | None | an object | Returns an object with these methods: Architecture, Description |
 | Property | os | None | an object | Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles |
 | Property | pc | None | an object | Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory |
 | Property | Bios | None | an object | Returns a BIOS object with this method: Version |
-| Property | Battery | None | an object | Returns a <a href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object. |
+| Property | Battery | None | an object | Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object. |
 
 ## WoWChecker
 
-Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.  
+Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file. WoW64 stands for Windows 32-bit on Windows 64-bit.  
   
 How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.  
   

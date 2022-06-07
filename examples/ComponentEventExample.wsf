@@ -1,5 +1,5 @@
 <job id=".wsf usage demo for ComponentEventExample.wsc">
-    <object 
+    <object
         progid="VBScripting.EventExample"
         id="vee"
         events="true"/>

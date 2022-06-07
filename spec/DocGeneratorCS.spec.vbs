@@ -1,14 +1,18 @@
-With CreateObject("VBScripting.Includer")
-    Execute .Read("DocGeneratorCS")
-    Execute .Read("TestingFramework")
-End With
-Set sh = CreateObject("WScript.Shell")
+Option Explicit
+Dim dgc 'DocGeneratorCS object; to be tested
+Dim incl 'VBScripting.Includer object
+Dim rawName 'string
+
+Set incl = CreateObject( "VBScripting.Includer" )
+
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
+
     .describe "C# Class Documentation Generator"
-        Dim dgc : Set dgc = New DocGeneratorCS
+        Set dgc = incl.LoadObject( "DocGeneratorCS" )
 
     .it "should parse rawName for the type"
-        Dim rawName : rawName = "M:VBScripting.IProgressBar.PBarSize(System.Int32,System.Int32)"
+        rawName = "M:VBScripting.IProgressBar.PBarSize(System.Int32,System.Int32)"
         .AssertEqual dgc.GetKind(rawName), "Method"
 
     .it "should change rawName to the expected value"
@@ -25,11 +29,11 @@ With New TestingFramework
 
     .it "should change rawName to the expected value"
         .AssertEqual rawName, "PBarSize(System.Int32,System.Int32)"
-    
+
     .it "should parse the new rawName for the member type name for a Type"
         rawName = "ProgressBar"
         .AssertEqual dgc.GetTypeName(rawName), "ProgressBar"
-    
+
     .it "should change rawName to the expected value"
         .AssertEqual rawName, ""
 

@@ -5,7 +5,7 @@ Class VBSValidator
 
     'Property GetClassName
     'Returns the class name
-    'Remark: Returns                           "VBSValidator". Useful for verifying Err.Source in a unit test.
+    'Remark: Returns                           "VBSValidator". Useful for verifying Err.Source in a test.
     Property Get GetClassName : GetClassName = "VBSValidator" : End Property
 
     'Function IsBoolean
@@ -26,7 +26,7 @@ Class VBSValidator
     'Remark: Raises an error if the parameter is not a boolean. Unless an error is raised, returns the same value passed to it.
     Property Get EnsureBoolean(pBool)
         If Not IsBoolean(pBool) Then
-            Err.Raise 1, GetClassName, CStr(pBool) & ErrDescrBool
+            Err.Raise 13, GetClassName, CStr(pBool) & ErrDescrBool
         End If
         EnsureBoolean = pBool
     End Property
@@ -49,19 +49,19 @@ Class VBSValidator
     'Remark: Raises an error if the parameter is not an integer. Unless an error is raised, returns the same value passed to it.
     Property Get EnsureInteger(pInt)
         If Not IsInteger(pInt) Then
-            Err.Raise 2, GetClassName,, CStr(pInt) & ErrDescrInt
+            Err.Raise 13, GetClassName,, CStr(pInt) & ErrDescrInt
         End If
         EnsureInteger = pInt
     End Property
 
     'Property ErrDescrBool
     'Returns a string
-    'Remark:                                   " is not a boolean." Useful for verifying Err.Description in a unit test.
+    'Remark:                                   " is not a boolean." Useful for verifying Err.Description in a test.
     Property Get ErrDescrBool : ErrDescrBool = " is not a boolean." : End Property
 
     'Property ErrDescrInt
     'Returns a string
-    'Remark:                                 " is not an integer." Useful for verifying Err.Description in a unit test.
+    'Remark:                                 " is not an integer." Useful for verifying Err.Description in a test.
     Property Get ErrDescrInt : ErrDescrInt = " is not an integer." : End Property
 
 End Class

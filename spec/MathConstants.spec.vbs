@@ -1,26 +1,30 @@
+'MathConstants class integration test
 
-'test MathConstants.vbs
+Option Explicit
+Dim mc 'MathConstants object: what is being tested
+Dim incl 'VBScripting.Includer object
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("MathConstants")
-    Execute .read("TestingFramework")
-End With
-Set c = New MathConstants
+Set incl = CreateObject( "VBScripting.Includer" )
 
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
-    .describe "MathConstants class"
+    .Describe "MathConstants class"
+        Set mc = incl( "MathConstants" )
 
-    .it "should return pi"
+    .It "should return pi"
+        .AssertEqual Round(mc.pi, 14), 3.14159265358979
 
-        .AssertEqual Round(c.pi, 14), 3.14159265358979
+    .It "should return pi/180, the degrees => radians converter"
+        .AssertEqual Round(mc.DegRad, 14), 0.01745329251994
 
-    .it "should return pi/180, the degrees => radians converter"
-
-        .AssertEqual Round(c.DEGRAD, 14), 0.01745329251994
-
-    .it "should return 180/pi, the radians => degrees converter"
-
-        .AssertEqual Round(c.RADEG, 13), 57.2957795130823
+    .It "should return 180/pi, the radians => degrees converter"
+        .AssertEqual Round(mc.RaDeg, 13), 57.2957795130824
+        
+    .It "should return 180/pi, the radians => degrees converter #2"
+        .AssertEqual Round(mc.RadDeg, 13), 57.2957795130824
+        
+    .It "should return e"
+        .AssertEqual Round(mc.e, 14), 2.71828182845905
 
 End With

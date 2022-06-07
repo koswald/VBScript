@@ -1,7 +1,7 @@
 
 'test FolderChooser.dll
 
-With CreateObject("VBScripting.FolderChooser")
+With CreateObject( "VBScripting.FolderChooser" )
     .Title = "Select a folder - " & WScript.ScriptName
     .InitialDirectory = "%UserProfile%"
     .InitialDirectory = ".."

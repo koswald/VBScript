@@ -1,10 +1,9 @@
-
-'Default property Privileged returns True if the calling script has elevated privileges.
+'The default property of the PrivilegeChecker class, Privileged, returns True if the calling script has elevated privileges.
 
 'Usage example
-'<pre> With CreateObject("VBScripting.Includer") <br />     Execute .read("PrivilegeChecker") <br /> End With <br /> Dim pc : Set pc = New PrivilegeChecker <br /> If pc Then <br />     WScript.Echo "Privileges are elevated" <br /> Else <br />     WScript.Echo "Privileges are not elevated" <br /> End If </pre>
+'<pre> With CreateObject( "VBScripting.Includer" ) <br />     Execute .Read( "PrivilegeChecker" ) <br /> End With <br /> Dim pc : Set pc = New PrivilegeChecker <br /> If pc Then <br />     WScript.Echo "Privileges are elevated" <br /> Else <br />     WScript.Echo "Privileges are not elevated" <br /> End If </pre>
 '
-'Reference: <a href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>
+'Reference: <a target="_blank" href="http://stackoverflow.com/questions/4051883/batch-script-how-to-check-for-admin-rights/21295806"> stackoverflow.com</a>
 '
 '''The fsutil technique works with Windows XP thru 10.
 
@@ -14,18 +13,22 @@ Class PrivilegeChecker
     'Returns a boolean
     'Remark: Returns True if the calling script is running with elevated privileges, False if not. Privileged is the default property.
     Public Default Function Privileged
-
-        Dim sh : Set sh = CreateObject("WScript.Shell")
-        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
-        Dim privileged_, unprivileged_, undefined_
+        Dim sh 'WScript.Shell object
+        Dim fso 'Scripting.FileSystemObject
+        Dim privileged_, unprivileged_ 'literals
+        Dim tempFile 'filespec
+        Dim bf 'text stream object for writing
+        Dim pipe 'Exec method return value: object reference to cmd.exe process, with StdOut channel
+        Dim line 'string read from StdOut.ReadLine
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         privileged_ = "privileged"
         unprivileged_ = "unprivilegd" 'intentionally misspelled for unique search results
-        undefined_ = "undefined"
-        Privileged = undefined_
 
         'create a randomly-named .bat file
-        Dim tempFile : tempFile = sh.ExpandEnvironmentStrings("%temp%\" & fso.GetTempName & ".bat")
-        Dim bf : Set bf = fso.OpenTextFile(tempFile, 2, True) 'create the batch file; open for writing
+        tempFile = sh.ExpandEnvironmentStrings( _ 
+            "%temp%\" & fso.GetTempName & ".bat")
+        Set bf = fso.OpenTextFile( tempFile, 2, True )
         bf.WriteLine "@echo off"
         bf.WriteLine "call :isAdmin"
         bf.WriteLine "if %errorlevel% == 0 ("
@@ -41,8 +44,7 @@ Class PrivilegeChecker
         Set bf = Nothing
 
         'run the batch file and parse the output
-        Dim pipe : Set pipe = sh.Exec("%ComSpec% /c """ & tempFile & """")
-        Dim line
+        Set pipe = sh.Exec("%ComSpec% /c """ & tempFile & """")
         While Not pipe.StdOut.AtEndOfStream
             line = pipe.StdOut.ReadLine
             If InStr(line, privileged_) Then
@@ -54,12 +56,12 @@ Class PrivilegeChecker
 
         'cleanup
         Set pipe = Nothing
-        fso.DeleteFile(tempFile)
+        fso.DeleteFile( tempFile )
         Set sh = Nothing
         Set fso = Nothing
 
         'raise an error if privileges are undefined
-        If Privileged = undefined_ Then Err.Raise 1,, "The PrivilegeChecker could not determine privileges"
+        If IsEmpty( Privileged ) Then Err.Raise 17,, "The PrivilegeChecker could not determine privileges"
     End Function
 
 End Class

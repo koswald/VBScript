@@ -3,7 +3,7 @@
 'Escape markdown special characters.
 
 'Usage example
-'<pre>    Dim includer : Set includer = CreateObject("VBScripting.Includer")<br />    ExecuteGlobal includer.Read("EscapeMD")<br />    MsgBox EscapeMd("```") ' \`\`\`</pre>
+'<pre>    Dim includer : Set includer = CreateObject( "VBScripting.Includer" )<br />    ExecuteGlobal includer.Read( "EscapeMD" )<br />    MsgBox EscapeMd("```") ' \`\`\`</pre>
 '
 ''''
 
@@ -50,7 +50,7 @@ End Function
 'Function EscapeMd2
 'Parameters: unescaped string
 'Returns: escaped string
-'Remarks: Returns a string with a minimal amount of Markdown special characters escaped. <a href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>.
+'Remarks: Returns a string with a minimal amount of Markdown special characters escaped. <a target="_blank" href="http://www.theukwebdesigncompany.com/articles/entity-escape-characters.php"> Escape codes</a>.
 Function EscapeMd2(str)
     Dim s : s = str
     s = Replace(s, "|", "&#124;")

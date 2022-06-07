@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 using System;
-using System.Reflection; 
+using System.Reflection;
 
 namespace VBScripting
 {
@@ -10,7 +10,7 @@ namespace VBScripting
     {
         /// <summary> Invokes a VBScript method. </summary>
         /// <parameters> callbackRef </parameters>
-        /// <remarks> The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. </remarks>
+        /// <remarks> The parameter <code> callbackRef</code> is a reference to a VBScript member returned by the VBScript Function GetRef. </remarks>
         public static void InvokeComCallback(object callbackRef)
         {
             try

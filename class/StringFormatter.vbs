@@ -1,15 +1,27 @@
 'Provides string formatting functions
 '
 'Three instantiation examples:
-'<pre> With CreateObject("VBScripting.Includer") <br />      Execute .read("StringFormatter") <br />      Dim fm : Set fm = New StringFormatter <br /> End With </pre>
-'or 
-'<pre> With CreateObject("VBScripting.Includer") <br />      Dim fm : Set fm = .GetObj("StringFormatter") <br /> End With </pre>
-'or 
-'<pre> Dim fm : Set fm = CreateObject("VBScripting.StringFormatter") </pre>
+'<pre> With CreateObject( "VBScripting.Includer" ) <br />      Execute .Read( "StringFormatter" ) <br />      Dim fm : Set fm = New StringFormatter <br /> End With </pre>
+'or
+'<pre> With CreateObject( "VBScripting.Includer" ) <br />      Dim fm : Set fm = .GetObj( "StringFormatter" ) <br /> End With </pre>
+'or
+'<pre> Dim fm : Set fm = CreateObject( "VBScripting.StringFormatter" ) </pre>
 'Usage examples:
 '<pre> WScript.Echo fm.format(Array("MsgBox ""%s: "" & %s", "Result", -5.1)) 'MsgBox "Result: " & -5.1 <br /> <br /> WScript.Echo fm.pluralize(3, "dog") '3 dogs <br /> WScript.Echo fm.pluralize(1, "dog") '1 dog <br /> WScript.Echo fm.pluralize(0, "dog") '0 dogs <br /> fm.SetZeroSingular <br /> WScript.Echo fm.pluralize(0, "dog") '0 dog <br /> WScript.Echo fm.pluralize(1, Split("person people")) '1 person <br /> WScript.Echo fm.pluralize(2, Split("person people")) '2 people <br /> WScript.Echo fm.pluralize(12, "egg") '12 eggs </pre>
 '
 Class StringFormatter
+
+    Private singular 'literal: "singular"
+    Private plural 'literal: "plural"
+    Private zero 'string: "singular" or "plural"
+    Private surrogate 'the string to be replaced by the specified array item(s).
+
+    Sub Class_Initialize
+        singular = "singular"
+        plural = "plural"
+        SetZeroPlural
+        SetSurrogate "%s"
+    End Sub
 
     'Function Format
     'Parameter: array
@@ -21,21 +33,13 @@ Class StringFormatter
         Dim arr : arr = array_
         Dim i, pattern : pattern = arr(0)
         For i = 1 To UBound(arr)
-            If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 1,, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
+            If Not CBool(InStr(pattern, surrogate)) Then Err.Raise 450,, "There are too few instances of " & surrogate & vbLf & "Pattern: " & arr(0)
             If "Null" = TypeName(arr(i)) Or "Empty" = TypeName(arr(i)) Then arr(i) = ""
             pattern = Replace(pattern, surrogate, arr(i), startPosition, replacementCount)
         Next
-        If InStr(pattern, surrogate) Then Err.Raise 1,, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
+        If InStr(pattern, surrogate) Then Err.Raise 450,, "There are too many instances of " & surrogate & vbLf & "Pattern: " & arr(0)
         Format = pattern
     End Function
-
-    Private Sub TestPause
-        If Flag Then _
-            If vbCancel = MsgBox( _
-                "Debugging", _
-                vbOkCancel + vbExclamation _
-            ) Then WScript.Quit
-    End Sub
 
     'Method SetSurrogate
     'Parameter: a string
@@ -73,19 +77,4 @@ Class StringFormatter
     'Remark: Optional. Restores the default behavior of considering a count of zero to be plural.
     Sub SetZeroPlural : zero = plural : End Sub
 
-    'undocumented propery for troubleshooting
-    Private flag_
-    Property Let Flag(newValue) : flag_ = newValue : End Property
-    Property Get Flag : Flag = flag_ : End Property
-
-    Private zero, singular, plural
-    Private surrogate
-
-    Sub Class_Initialize
-        singular = "singular"
-        plural = "plural"
-        SetZeroPlural
-        SetSurrogate "%s"
-        Flag = False
-    End Sub
 End Class

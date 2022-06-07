@@ -1,9 +1,9 @@
 'generate a documentation file based on code comments
 
-Set includer = CreateObject("VBScripting.Includer")
-Execute includer.Read("DocGenerator")
-Set fso = CreateObject("Scripting.FileSystemObject")
-Set sh = CreateObject("WScript.Shell")
+Set includer = CreateObject( "VBScripting.Includer" )
+Execute includer.Read( "DocGenerator" )
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set sh = CreateObject( "WScript.Shell" )
 sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
 Set fso = Nothing
 

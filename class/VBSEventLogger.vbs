@@ -6,7 +6,7 @@
 'To see a log entry, type EventVwr at the command prompt to open the Event Viewer, expand Windows Logs, and select Application. The log Source will be WSH. Or you can use the CreateCustomView method to create an entry in the Event Viewer's Custom Views section.
 '
 'Usage example:
-' <pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("VBSEventLogger") <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "message 1" <br />  logger logger.INFORMATION, "message 2" <br />  logger 4, "message 3" <br />  logger 1, "error message" <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
+' <pre>  With CreateObject( "VBScripting.Includer" ) <br />      Execute .Read( "VBSEventLogger" ) <br />  End With <br />   <br />  Dim logger : Set logger = New VBSEventLogger <br />  logger.log logger.INFORMATION, "message 1" <br />  logger logger.INFORMATION, "message 2" <br />  logger 4, "message 3" <br />  logger 1, "error message" <br />   <br />  logger.CreateCustomView 'create a custom view in the Event Viewer <br />  logger.OpenViewer 'open EventVwr.msc </pre>
 '
 Class VBSEventLogger
 
@@ -23,20 +23,20 @@ Class VBSEventLogger
         logFile = "Application.evtx" 'event log file with WSH events
         logFolder = "%SystemRoot%\System32\Winevt\Logs" 'event logs location
 
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSFileSystem")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSFileSystem" )
             On Error Resume Next
-                Execute(.read("VBSEventLogger.config"))
+                Execute .Read( "VBSEventLogger.config" )
             On Error Goto 0
             VBScriptLibraryPath = .LibraryPath
         End With
         Set fs = New VBSFileSystem
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        Set sa = CreateObject("Shell.Application")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        Set sa = CreateObject( "Shell.Application" )
 
         customViewFile = fs.ResolveTo(customViewFile, VBScriptLibraryPath) 'get the absolute path
-        viewsFolder = fs.Expand(configFolder & "\Views")
+        viewsFolder = fs.Expand( configFolder & "\Views" )
     End Sub
 
     'Method Log
@@ -49,8 +49,8 @@ Class VBSEventLogger
     'Method CreateCustomView
     'Remark: Creates a Custom View in the Event Viewer, eventvwr.msc, named WSH Logs. The User Account Control dialog will open, in order to confirm elevation of privileges. Based on VBSEventLoggerCustomView.xml.
     Sub CreateCustomView
-        If Not fso.FileExists(customViewFile) Then Err.Raise 1,, "Can't find source file, " & customViewFile
-        If Not fso.FolderExists(viewsFolder) Then Err.Raise 1,, "Can't find target folder, " & viewsFolder
+        If Not fso.FileExists(customViewFile) Then Err.Raise 505,, "Can't find source file, " & customViewFile
+        If Not fso.FolderExists(viewsFolder) Then Err.Raise 505,, "Can't find target folder, " & viewsFolder
         sa.ShellExecute "cmd.exe", "/c copy /y """ & customViewFile & """ """ & viewsFolder & """",, "runas"
     End Sub
 

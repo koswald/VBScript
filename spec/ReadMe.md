@@ -10,7 +10,7 @@ Each integration test consists of one or more *specs*, or specifications.
 - From a powershell or `cmd.exe` console, type
 
 ``` powershell
-   cscript .\GUIDGenerator.spec.vbs
+   cscript /nologo .\GUIDGenerator.spec.vbs
 ```
 
 output:

@@ -21,9 +21,9 @@
 
         Sub Window_OnLoad
             document.body.innerHTML = "Click to fire event."
-            Set document.OnClick = GetRef("FireEvent")
+            Set document.OnClick = GetRef( "FireEvent" )
             Window.ResizeTo 555, 222
-            document.Title = document.getElementsByTagName("application")(0).applicationName
+            document.Title = document.getElementsByTagName( "application" )(0).applicationName
         End Sub
     </script>
 </body>

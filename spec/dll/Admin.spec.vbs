@@ -1,54 +1,57 @@
-
-'test Admin.dll without elevated privileges
+'Test Admin.dll without elevated privileges
 
 Option Explicit : Initialize
 
 With New TestingFramework
 
-    .describe "Admin.dll non-elevated privileges"
-        Set va = CreateObject("VBScripting.Admin")
+    .Describe "VBScripting.Admin object - non-elevated"
+        Set va = CreateObject( "VBScripting.Admin" )
 
-    .it "should indicate that privileges are not elevated"
+    .It "should indicate that privileges are not elevated"
         .AssertEqual va.PrivilegesAreElevated, False
 
-    .it "should verify that an EventLog source is installed"
+    .It "should verify that an EventLog source is installed"
         .AssertEqual va.SourceExists(va.EventSource), True
 
-    .it "should raise an error on new-source SourceExists call" 'because of low privileges
+    .It "should raise an error on new-source SourceExists call" 'because of low privileges
         On Error Resume Next
-            Dim result : result = va.SourceExists(va.EventSource & "2")
+            Dim result : result = va.SourceExists( va.EventSource & "2" )
             .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
-    .it "should raise an error on new-source CreateEventSource call"
+    .It "should raise an error on new-source CreateEventSource call"
         On Error Resume Next
-            Set result = va.CreateEventSource(va.EventSource & "2")
+            Set result = va.CreateEventSource( va.EventSource & "2" )
             .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
-    .it "should indicate a known source on CreateEventSource call"
-        Set result = va.CreateEventSource("WSH")
+    .It "should indicate a known source on CreateEventSource call"
+        Set result = va.CreateEventSource( "WSH" )
         .AssertEqual result.Result, va.Result.SourceAlreadyExists
 
-    .it "should raise an error on deleting non-existent source"
+    .It "should raise an error on deleting non-existent source"
         On Error Resume Next
-            result = va.DeleteEventSource(va.EventSource & "2")
+            result = va.DeleteEventSource( va.EventSource & "2" )
             .AssertEqual Left(Err.Description, 75), "The source was not found, but some or all event logs could not be searched."
         On Error Goto 0
 
-    .it "should fail to delete an existing source without elevated privileges"
+    .It "should fail to delete an existing source without elevated privileges"
         Set result = va.DeleteEventSource(va.EventSource)
         .AssertEqual result.Result, va.Result.SourceDeletionException
 
-    .it "should return a SourceExists boolean in the result"
+    .It "should return a SourceExists boolean in the result"
         .AssertEqual TypeName(result.SourceExists), "Boolean"
         .ShowPendingResult 'help to clarify which spec is causing the delay (reading from the log below)
 
-    .it "should read from the event log"
+    .It "should read from the event log"
         Dim guid : guid = gg.Generate
+        .WriteTempMessage "Writing to the event logs..."
         va.Log "Testing VBScipting.Admin..." & vbLf & _
             "unique search string: " & guid
+        .EraseTempMessage
+        .WriteTempMessage "Reading from the event logs..."
         Dim logs : logs = va.GetLogs(va.EventSource, guid)
+        .EraseTempMessage
         If UBound(logs) = -1 Then ShowLogNotFoundMessage
         .AssertEqual logs(0), "Testing VBScipting.Admin..." & _
             vbLf & "unique search string: " & guid
@@ -75,16 +78,16 @@ End Sub
 Dim va, sh, log, gg
 
 Sub Initialize
-    With CreateObject("VBScripting.Includer")
-        Execute .read("PrivilegeChecker")
-        Execute .read("VBSEventLogger")
-        Execute .read("GuidGenerator")
-        ExecuteGlobal .read("TestingFramework")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "PrivilegeChecker" )
+        Execute .Read( "VBSEventLogger" )
+        Execute .Read( "GuidGenerator" )
+        ExecuteGlobal .Read( "TestingFramework" )
     End With
     Dim pc : Set pc = New PrivilegeChecker
     Set gg = New GuidGenerator
     Set log = New VBSEventLogger
     'log 4, "logger test"
-    If pc Then Err.Raise 1,, WScript.ScriptName & " requires that privileges not be elevated."
-    Set sh = CreateObject("WScript.Shell")
+    If pc Then Err.Raise 17,, WScript.ScriptName & " requires that privileges not be elevated."
+    Set sh = CreateObject( "WScript.Shell" )
 End Sub

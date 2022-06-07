@@ -11,7 +11,7 @@ Class FileCreator
     Private fso, baseName
 
     Sub Class_Initialize
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         baseName = fso.GetBaseName(fso.GetBaseName(WScript.ScriptName)) 'using GetBaseName twice returns EncodingAnalyzer from EncodingAnalyzer.FileGen.vbs, for example, and will also return EncodingAnalyzer from EncodingAnalyzer.vbs
     End Sub
 
@@ -42,7 +42,7 @@ Class FileCreator
 
         Set stream = fso.OpenTextFile(fileName, ForWriting, CreateNew)
         For i = 0 To 3
-            Execute("stream.Write Chr(byte" & i & ")")
+            Execute("stream.Write Chr( byte" & i & ")" )
         Next
         stream.WriteBlankLines(2)
         stream.WriteLine "Fixture for ../EncodingAnalyzer.spec.vbs"

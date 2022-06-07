@@ -1,7 +1,27 @@
-
-'Provides a method for deleting a registry key and all of its subkeys.
+'The KeyDeleter class provides a method for deleting a registry key and all of its subkeys.
 '
 Class KeyDeleter
+
+    Private reg 'StdRegProv object
+    Private validRoots 'array of integers: hive constants
+    Private validRootsString 'partial error message
+
+    Sub Class_Initialize
+        Dim validRootsStrings 'array of strings
+        maxCount_ = -1
+        Delete = True
+        validRoots = Array(HKCR, HKCU, HKLM, HKU, HKCC)
+        validRootsStrings = Array( _
+           "-2147483648 = &H80000000 (HKCR)", _
+           "-2147483647 = &H80000001 (HKCU)", _
+           "-2147483646 = &H80000002 (HKLM)", _
+           "-2147483645 = &H80000003 (HKU)", _
+           "-2147483643 = &H80000005 (HKCC)")
+        validRootsString = vbLf & _
+            Join(validRootsStrings, vbLf) & vbLf
+        Set reg = GetObject( _
+           "winmgmts:\\.\root\default:StdRegProv")
+    End Sub
 
     'Method: DeleteKey
     'Parameters: root, key
@@ -10,7 +30,7 @@ Class KeyDeleter
         ValidateRoot root
         PrivateDeleteKey root, key, Delete
     End Sub
-    
+
     Private Sub PrivateDeleteKey(root, key, deleting)
         Dim subkey, name, names
         ValidateKey key
@@ -28,7 +48,7 @@ Class KeyDeleter
                 PrivateDeleteKey root, subkey, deleting
             Next
         End If
-        
+
         'delete key after deleting subkeys
         If deleting Then
             result_ = reg.DeleteKey(root, key)
@@ -37,16 +57,16 @@ Class KeyDeleter
     End Sub
 
     Sub ValidateRoot(rootCandidate)
-        Dim root : For Each root In validRoots
-            If rootCandidate = root Then Exit Sub
+        Dim validRoot : For Each validRoot In validRoots
+            If rootCandidate = validRoot Then Exit Sub
         Next
-        Err.Raise 1, "KeyDeleter.ValidateRoot", "Expected one of " & validRootsString
+        Err.Raise 5, "KeyDeleter.ValidateRoot", "Expected one of " & validRootsString
     End Sub
 
     Sub ValidateKey(key)
-        If "" = Trim(key) Or key <> Trim(key) Then Err.Raise 1, "KeyDeleter.ValidateKey", "The key value is empty, consists of whitespace, or has leading or trailing whitespace."
+        If "" = Trim(key) Or key <> Trim(key) Then Err.Raise 5, "KeyDeleter.ValidateKey", "The key value is empty, consists of whitespace, or has leading or trailing whitespace."
     End Sub
-    
+
     Sub ValidateSubkey(key, subkey)
         savedKey_ = key
         savedSubkey_ = subkey
@@ -54,7 +74,7 @@ Class KeyDeleter
     End Sub
 
     Sub ValidateBackslashCount(key, subkey)
-        If BackslashCount(subkey) - BackslashCount(key) <> 1 Then Err.Raise 1, "KeyDelete.ValidateBackslashCount", "Expected subkey to have one more backslash than its parent key."
+        If BackslashCount(subkey) - BackslashCount(key) <> 1 Then Err.Raise 5, "KeyDelete.ValidateBackslashCount", "Expected subkey to have one more backslash than its parent key."
     End Sub
 
     Function BackslashCount(str)
@@ -86,48 +106,31 @@ Class KeyDeleter
     'Returns: &H80000005
     'Remark: Provides a value suitable for the first parameter of the DeleteKey method.
     Property Get HKCC : HKCC = &H80000005 : End Property
-    
+
     'for testability, introduce a few Public
-    'Get-ters and a Let-ter
+    'Getters and a Setter
     Private maxCount_
     Public Property Get MaxCount : MaxCount = maxCount_ : End Property
     Private savedKey_
     Public Property Get SavedKey : SavedKey = savedKey_ : End Property
     Private savedSubkey_
     Public Property Get SavedSubkey : SavedSubkey = savedSubkey_ : End Property
-    Private result_
+
     'Property Result
     'Returns: an integer
-    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>.
-
+    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>.
     Public Property Get Result : Result = result_ : End Property
-    Private delete_
+    Private result_
+
     'Property: Delete
     'Parameter: a boolean
     'Returns: a boolean
     'Remark: Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing.
     Public Property Get Delete : Delete = delete_ : End Property
     Public Property Let Delete(newValue)
-        If Not "Boolean" = TypeName(newValue) Then Err.Raise 1, "KeyDeleter.Delete (Let)", "Expected a Boolean."
+        If Not "Boolean" = TypeName(newValue) Then Err.Raise 13, "KeyDeleter.Delete (Let)", "Expected a Boolean."
         delete_ = newValue
     End Property
+    Private delete_
 
-    Private reg
-    Private validRoots, validRootsStrings, validRootsString
-    
-    Sub Class_Initialize
-        maxCount_ = -1
-        Delete = True
-        validRoots = Array(HKCR, HKCU, HKLM, HKU, HKCC)
-        validRootsStrings = Array( _
-           "-2147483648 = &H80000000 (HKCR)", _
-           "-2147483647 = &H80000001 (HKCU)", _
-           "-2147483646 = &H80000002 (HKLM)", _
-           "-2147483645 = &H80000003 (HKU)", _
-           "-2147483643 = &H80000005 (HKCC)")
-        validRootsString = vbLf & _
-            Join(validRootsStrings, vbLf) & vbLf
-        Set reg = GetObject( _
-           "winmgmts:\\.\root\default:StdRegProv")
-    End Sub
 End Class

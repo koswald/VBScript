@@ -1,7 +1,7 @@
-Set includer = CreateObject("VBScripting.Includer")
-Execute includer.Read("DocGeneratorCS")
-Set fso = CreateObject("Scripting.FileSystemObject")
-Set sh = CreateObject("WScript.Shell")
+Set includer = CreateObject( "VBScripting.Includer" )
+Execute includer.Read( "DocGeneratorCS" )
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set sh = CreateObject( "WScript.Shell" )
 sh.CurrentDirectory = fso.GetParentFolderName(WScript.ScriptFullName)
 Set fso = Nothing
 

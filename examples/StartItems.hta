@@ -11,405 +11,299 @@
     </head>
     <body>
         <script language="VBScript">
-            Option Explicit
 
-            Dim enableWowForHKCU : enableWowForHKCU = False
-            Dim si 'StartItems object
-            Dim includer 'VBScripting.Includer object
-            Dim privilegesAreElevated 'boolean
-            Dim hiveSelector, keySelector 'select elements
-            Dim selectDiv, tableDiv 'div elements (containers)
-            Dim nameInput, valueInput 'input elements (text)
-            Dim feedback 'p element for message display
-            Dim application 'application element
-            Dim OsIs64Bit 'boolean
+Option Explicit
+Dim si 'StartItems object
+Dim enableWowForHKCU 'boolean. See StartItems.configure for explanation
+Dim privilegesAreElevated 'boolean
+Dim hiveSelector, keySelector 'select elements
+Dim selectDiv, tableDiv 'div elements (containers)
+Dim nameInput, valueInput 'input elements for creating a new startup item
+Dim feedback 'p element for message display
+Dim application 'application element
+Dim OsIs64Bit 'boolean
+Dim elButton 'Elevate Privileges button
+Dim tmButton 'Open Task Manager button
 
-            Sub Window_OnLoad
-                width = 65 : height = 52 : xPos = 50 : yPos = 50
-                With self.screen
-                    Dim pxWidth, pxHeight
-                    pxWidth = .availWidth * width * .01
-                    pxHeight = .availHeight * height * .01
-                    self.ResizeTo pxWidth, pxHeight
-                    self.MoveTo _
-                        (.availWidth - pxWidth) * xPos * .01005, _
-                        (.availHeight - pxHeight) * yPos * .0102
-                End With
-                Set si = New StartupItems
-                Set vc = CreateObject("VBScripting.Admin")
-                privilegesAreElevated = vc.PrivilegesAreElevated
-                Set vc = Nothing
-                Set application = document.getElementsByTagName("application")(0)
-                document.Title = application.applicationName
-                If privilegesAreElevated Then
-                    document.Title = document.Title & " - elevated privileges"
-                End If
-                Set includer = CreateObject("VBScripting.Includer")
-                Execute includer.Read("WoWChecker")
-                Set wow = New WoWChecker
-                OsIs64Bit = wow.OsIs64Bit
-                Set wow = Nothing
-                DrawSelectDiv
-                Set tableDiv = document.createElement("div")
-                document.body.insertBefore tableDiv
-                DrawTableDiv
-                hiveSelector.selectedIndex = 0
+Sub Window_OnLoad
+    Dim includer 'VBScripting.Includer object
+    Dim width, height, xPos, yPos 'window size and position in % of screen
+    Dim pxWidth, pxHeight 'calculated window dimensions in pixels
 
-                Dim width, height, xPos, yPos 'window size and position in % of screen
-                Dim vc 'VBScripting.Admin object
-                Dim wow 'WowChecker object
-            End Sub
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Execute includer.Read( "StartupItems" )
+    Set si = New StartupItems
 
-            Sub Window_OnUnload
-                Set includer = Nothing
-                Set si = Nothing
-            End Sub
+    Execute includer.Read( "Configurer" )
+    With New Configurer
+        If .Exists( "enableHKCUWow" ) Then
+            enableWowForHKCU = .Item( "enableHKCUWow" )
+        Else enableWowForHKCU = False
+        End If
+        If .Exists( "width" ) Then
+            width = .Item( "width" )
+        Else width = 65
+        End If
+        If .Exists( "height" ) Then
+            height = .Item( "height" )
+        Else height = 52
+        End If
+        If .Exists( "xPos" ) Then
+            xPos = .Item( "xPos" )
+        Else xPos = 50
+        End If
+        If .Exists( "yPos" ) Then
+            yPos = .Item( "yPos" )
+        Else yPos = 50
+        End If
+    End With
 
-            Sub DrawSelectDiv
-                Set selectDiv = document.createElement("div")
-                document.body.insertBefore selectDiv
-                selectDiv.style.marginBottom = "15px"
-                Set hiveSelector = document.createElement("select")
-                Set keySelector = document.createElement("select")
-                selectDiv.insertBefore hiveSelector
-                selectDiv.insertBefore document.createTextNode(" \ ")
-                selectDiv.insertBefore keySelector
-                Set hkcuOption = document.createElement("option")
-                Set hklmOption = document.createElement("option")
-                hkcuOption.value = si.HKCU
-                hklmOption.value = si.HKLM
-                hkcuOption.innerHTML = "HKEY_CURRENT_USER"
-                hklmOption.innerHTML = "HKEY_LOCAL_MACHINE"
-                hiveSelector.insertBefore hkcuOption
-                hiveSelector.insertBefore hklmOption
-                hiveSelector.OnChange = GetRef("RootChanged")
-                DrawKeySelector
+    With self.Screen
+        pxWidth = .AvailWidth * width * .01
+        pxHeight = .AvailHeight * height * .01
+        self.ResizeTo pxWidth, pxHeight
+        self.MoveTo _
+            (.AvailWidth - pxWidth) * xPos * .01005, _
+            (.AvailHeight - pxHeight) * yPos * .0102
+    End With
 
-                Dim hkcuOption, hklmOption 'select element options
-            End Sub
+    With CreateObject( "VBScripting.Admin" )
+        privilegesAreElevated = .PrivilegesAreElevated
+    End With
 
-            Sub DrawKeySelector
-                keySelector.innerHTML = ""
-                Set nonWowOption = document.createElement("option")
-                Set wowOption = document.createElement("option")
-                nonWowOption.value = si.StandardBranch
-                wowOption.value = si.WoWBranch
-                nonWowOption.innerHTML = si.StandardBranch
-                wowOption.innerHTML = si.WoWBranch
-                keySelector.insertBefore nonWowOption
-                If OsIs64Bit _
-                And (enableWowForHKCU Or si.HKLM = si.Root) Then
-                    keySelector.insertBefore wowOption
-                End If
-                keySelector.OnChange = GetRef("KeyChanged")
+    Set application = document.getElementsByTagName( "application" )(0)
+    document.Title = application.applicationName
+    If privilegesAreElevated Then
+        document.Title = document.Title & " - Administrator"
+    End If
 
-                Dim wowOption, nonWowOption 'select element options
-            End Sub
+    Execute includer.Read( "WoWChecker" )
+    With New WoWChecker
+        OsIs64Bit = .OsIs64Bit
+    End With
 
-            Sub RootChanged
-                si.Root = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
-                keySelector.selectedIndex = 0
-                si.Key = si.StandardBranch
-                DrawKeySelector
-                DrawTableDiv
-            End Sub
+    DrawSelectDiv
+    Set tableDiv = document.createElement( "div" )
+    document.body.insertBefore tableDiv
+    DrawTableDiv
+    hiveSelector.selectedIndex = 0
+    Set includer = Nothing
+End Sub
 
-            Sub KeyChanged
-                si.Key = keySelector.options(keySelector.selectedIndex).value
-                DrawTableDiv
-            End Sub
+Sub Window_OnUnload
+    Set si = Nothing
+End Sub
 
-            Sub DrawTableDiv
-                tableDiv.innerHTML = ""
-                Dim items : items = si.ReadItems
-                Dim tbl : Set tbl = document.createElement("table")
-                tableDiv.insertBefore tbl
-                Dim rowIndex, row
-                Dim nameCell, valueCell, buttonCell, button
-                For rowIndex = -1 To UBound(items) + 1
-                    Set row = tbl.insertRow(-1)
-                    Set nameCell = row.insertCell(-1)
-                    Set valueCell = row.insertCell(-1)
-                    Set buttonCell = row.insertCell(-1)
-                    Set button = document.createElement("input")
-                    button.type = "button"
-                    If -1 = rowIndex Then
+Sub DrawSelectDiv
+    Dim hkcuOption, hklmOption 'select element options
 
-                        'create header row
-                        nameCell.innerHTML = "Name"
-                        valueCell.innerHTML = "Value"
-                        row.style.fontWeight = "bold"
-                    ElseIf Not UBound(items) + 1 = rowIndex Then
+    Set selectDiv = document.createElement( "div" )
+    document.body.insertBefore selectDiv
+    selectDiv.style.marginBottom = "15px"
+    Set hiveSelector = document.createElement( "select" )
+    Set keySelector = document.createElement( "select" )
+    selectDiv.insertBefore hiveSelector
+    selectDiv.insertBefore document.createTextNode(" \ ")
+    selectDiv.insertBefore keySelector
+    Set hkcuOption = document.createElement( "option" )
+    Set hklmOption = document.createElement( "option" )
+    hkcuOption.value = si.HKCU
+    hklmOption.value = si.HKLM
+    hkcuOption.innerHTML = "HKEY_CURRENT_USER"
+    hklmOption.innerHTML = "HKEY_LOCAL_MACHINE"
+    hiveSelector.insertBefore hkcuOption
+    hiveSelector.insertBefore hklmOption
+    hiveSelector.OnChange = GetRef( "RootChanged" )
+    DrawKeySelector
+End Sub
 
-                        'show existing registry data
-                        nameCell.innerHTML = items(rowIndex).Name
-                        valueCell.innerHTML = items(rowIndex).Value
-                        buttonCell.insertBefore button
-                        button.value = "   Remove   "
-                        Set button.OnClick = GetRef("RemoveItem")
-                        If Not CBool(rowIndex mod 2) Then
+Sub DrawKeySelector
+    Dim wowOption, nonWowOption 'select element options
 
-                            'even-numbered row: darken background--two cells only
-                            nameCell.style.backgroundColor = "#eee"
-                            valueCell.style.backgroundColor = "#eee"
-                        End If
-                    Else
+    keySelector.innerHTML = ""
+    Set nonWowOption = document.createElement( "option" )
+    Set wowOption = document.createElement( "option" )
+    nonWowOption.value = si.StandardBranch
+    wowOption.value = si.WoWBranch
+    nonWowOption.innerHTML = si.StandardBranch
+    wowOption.innerHTML = si.WoWBranch
+    keySelector.insertBefore nonWowOption
+    If OsIs64Bit _
+    And (enableWowForHKCU Or si.HKLM = si.Root) Then
+        keySelector.insertBefore wowOption
+    End If
+    keySelector.OnChange = GetRef( "KeyChanged" )
+End Sub
 
-                        'create input fields for creating a new entry
-                        Set nameInput = document.createElement("input")
-                        Set valueInput = document.createElement("input")
-                        nameInput.style.width = "100%"
-                        valueInput.style.width = "99%"
-                        nameCell.insertBefore nameInput
-                        valueCell.insertBefore valueInput
-                        buttonCell.insertBefore button
-                        button.value = "  Add  "
-                        Set button.OnClick = GetRef("SaveItem")
-                    End If
-                    valueCell.style.paddingLeft = "20px"
-                    buttonCell.style.paddingLeft = "20px"
-                    button.style.width = "100%"
-                Next
+Sub RootChanged
+    si.Root = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
+    keySelector.selectedIndex = 0
+    si.Key = si.StandardBranch
+    DrawKeySelector
+    DrawTableDiv
+End Sub
 
-                With document.body.style
-                    .cursor = "default"
-                    .fontFamily = "sans-serif"
-                    .fontSize = "13"
-                End With
-                With tbl.style
-                    .borderCollapse = "collapse"
-                    .marginTop = "15px"
-                    .marginRight = "15px"
-                End With
-                Set feedback = document.createElement("p")
-                tableDiv.insertBefore feedback
-                Set elButton = document.createElement("input")
-                elButton.type = "button"
-                elButton.value = "Elevate privileges"
-                Set elButton.onclick = GetRef("Elevate")
-                tableDiv.insertBefore elButton
-                tableDiv.insertBefore document.createTextNode("  ")
-                Set tmButton = document.createElement("input")
-                tmButton.type = "button"
-                tmButton.value = "Open Task Manager"
-                Set tmButton.onclick = GetRef("OpenTaskMgr")
-                tableDiv.insertBefore tmButton
-                CheckPrivileges
-            End Sub
-            Dim elButton, tmButton
+Sub KeyChanged
+    si.Key = keySelector.options(keySelector.selectedIndex).value
+    DrawTableDiv
+End Sub
 
-            Sub OpenTaskMgr : si.OpenTaskMgr : End Sub
+Sub DrawTableDiv
+    Dim items 'collection of NameValue objects: each object contains the name and value of a startup item from the registry for the selected hive and key.
+    Dim tbl 'html element: table
+    Dim rowIndex 'integer: loop iterator
+    Dim row 'html element: table row
+    Dim nameCell 'html element: row cell
+    Dim valueCell 'html element: row cell
+    Dim buttonCell 'html element: row cell
+    Dim button 'html element: button
 
-            Sub Elevate
-                With CreateObject("Shell.Application")
-                    .ShellExecute "mshta", application.CommandLine,, "runas"
-                End With
-                self.close
-            End Sub
+    tableDiv.innerHTML = ""
+    items = si.Items
+    Set tbl = document.createElement( "table" )
+    tableDiv.insertBefore tbl
+    For rowIndex = -1 To UBound(items) + 1
+        Set row = tbl.insertRow(-1)
+        Set nameCell = row.insertCell(-1)
+        Set valueCell = row.insertCell(-1)
+        Set buttonCell = row.insertCell(-1)
+        Set button = document.createElement( "input" )
+        button.type = "button"
 
-            Sub SaveItem
-                si.CreateItem nameInput.value, valueInput.value
-                DrawTableDiv
-            End Sub
+        'create the header row
+        If -1 = rowIndex Then
+            nameCell.innerHTML = "Name"
+            valueCell.innerHTML = "Value"
+            row.style.fontWeight = "bold"
 
-            Sub RemoveItem
-                items = si.ReadItems
+        'show registry data for the selected hive (root) and key
+        ElseIf Not UBound(items) + 1 = rowIndex Then
+            nameCell.innerHTML = items(rowIndex).Name
+            valueCell.innerHTML = items(rowIndex).Value
+            buttonCell.insertBefore button
+            button.value = "   Remove   "
+            Set button.OnClick = GetRef( "RemoveItem" )
 
-                'get the index of the items array
-                Set inputs = document.getElementsByTagName("input")
-                For inputIndex = 0 To inputs.length - 1
-                    If window.event.srcElement Is inputs(inputIndex) Then 
-                        itemIndex = inputIndex
-                        Exit For
-                    End If
-                Next
+            'even-numbered row: darken background--two cells only
+            If Not CBool(rowIndex mod 2) Then
+                nameCell.style.backgroundColor = "#eee"
+                valueCell.style.backgroundColor = "#eee"
+            End If
 
-                'optout
-                msg1 = "Do you want to remove this item?" & vbLf & vbLf
-                msg2 = items(itemIndex).Name & vbLf & items(itemIndex).Value
-                settings = vbOKCancel + vbExclamation + vbDefaultButton2
-                caption = application.applicationName
-                If vbCancel = MsgBox(msg1 & msg2, settings, caption) Then
-                    Exit Sub
-                End If
+        'for the last row, create the input fields for creating a new entry
+        Else Set nameInput = document.createElement( "input" )
+            Set valueInput = document.createElement( "input" )
+            nameInput.style.width = "100%"
+            valueInput.style.width = "99%"
+            nameCell.insertBefore nameInput
+            valueCell.insertBefore valueInput
+            buttonCell.insertBefore button
+            button.value = "  Add  "
+            Set button.OnClick = GetRef( "SaveItem" )
+        End If
 
-                'remove the item
-                si.DeleteItem items(itemIndex).Name
-                DrawTableDiv
+        valueCell.style.paddingLeft = "20px"
+        buttonCell.style.paddingLeft = "20px"
+        button.style.width = "100%"
+    Next
 
-                Dim items, inputs, itemIndex, inputIndex
-                Dim msg1, msg2, settings, caption
-            End Sub
+    With document.body.style
+        .cursor = "default"
+        .fontFamily = "sans-serif"
+        .fontSize = "13"
+    End With
+    With tbl.style
+        .borderCollapse = "collapse"
+        .marginTop = "15px"
+        .marginRight = "15px"
+    End With
+    Set feedback = document.createElement( "p" )
+    tableDiv.insertBefore feedback
+    Set elButton = document.createElement( "input" )
+    elButton.type = "button"
+    elButton.value = "Elevate privileges"
+    Set elButton.onclick = GetRef( "Elevate" )
+    tableDiv.insertBefore elButton
+    tableDiv.insertBefore document.createTextNode("  ")
+    Set tmButton = document.createElement( "input" )
+    tmButton.type = "button"
+    tmButton.value = "Open Task Manager"
+    Set tmButton.onclick = GetRef( "OpenTaskMgr" )
+    tableDiv.insertBefore tmButton
+    CheckPrivileges
+End Sub
 
-            Sub CheckPrivileges
-                currentHive = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
-                If Not privilegesAreElevated And si.HKLM = currentHive Then
-                    InputsEnabled False
-                    feedback.innerHTML = msg
-                Else
-                    InputsEnabled True
-                    feedback.innerHTML = ""
-                End If
-                If privilegesAreElevated Then
-                    elButton.disabled = True
-                Else elButton.disabled = False
-                End If
-                tmButton.disabled = False
+Sub OpenTaskMgr
+    si.OpenTaskMgr
+End Sub
 
-                Dim currentHive
-                Const msg = "Elevated privileges are required to edit HKEY_LOCAL_MACHINE."
-            End Sub
+Sub Elevate
+    With CreateObject( "Shell.Application" )
+        .ShellExecute "mshta", application.CommandLine,, "runas"
+    End With
+    self.close
+End Sub
 
-            Sub InputsEnabled(enabling)
-                Dim inputs : Set inputs = document.getElementsByTagName("input")
-                Dim inputIndex
-                For inputIndex = 0 To inputs.length - 1
-                    inputs(inputIndex).disabled = Not enabling
-                Next
-            End Sub
+Sub SaveItem
+    si.CreateItem nameInput.value, valueInput.value
+    DrawTableDiv
+End Sub
 
-            Class StartupItems
+Sub RemoveItem
+    Dim items 'collection of NameValue objects
+    Dim inputs 'collection all of the input elements in the document
+    Dim itemIndex 'index of the item to remove in the items collection
+    Dim inputIndex 'index of the item to remove in the inputs collection
+    Dim msg, settings, caption 'MsgBox arguments
 
-                Sub CreateItem(name, command)
-                    Dim erred : erred = False
-                    Dim errDescr : errDescr = ""
-                    If "" = name Then Err.Raise 1,, "The name cannot be empty."
-                    On Error Resume Next
-                        sh.RegWrite WSHRoot & "\" & key & "\" & name, command
-                        If Err Then erred = True
-                        errDescr = Err.Description
-                    On Error Goto 0
-                    If erred Then Err.Raise 2,, errDescr & vbLf & vbLf & msg1 & msg2
+    items = si.Items
 
-                    Const msg1 = "Elevated privileges are required to create/update certain "
-                    Const msg2 = "registry values, most notably values in HKEY_LOCAL_MACHINE."
-                End Sub
+    'get the index of the items array
+    Set inputs = document.getElementsByTagName( "input" )
+    For inputIndex = 0 To inputs.length - 1
+        If window.event.srcElement Is inputs(inputIndex) Then
+            itemIndex = inputIndex
+            Exit For
+        End If
+    Next
 
-                Property Get ReadItem(name)
-                    Dim item : Set item = New RegItem
-                    item.Name = name
-                    item.Value = sh.RegRead(WSHRoot & "\" & key & "\" & name)
-                    Set ReadItem = item
-                End Property
+    'optout
+    msg = "Do you want to remove this item?" & vbLf & vbLf & _
+        items(itemIndex).Name & vbLf & items(itemIndex).Value
+    settings = vbOKCancel + vbExclamation + vbDefaultButton2
+    caption = application.applicationName
+    If vbCancel = MsgBox(msg, settings, caption) Then
+        Exit Sub
+    End If
 
-                Property Get ReadItems
-                    Dim i, names, item, aoo, types
-                    Set aoo = New ArrayOfObjects
-                    reg.EnumValues root_, key, names, types
-                    If Not IsArray(names) Then
-                        ReadItems = aoo
-                        Exit Property
-                    End If
-                    For i = 0 To UBound(names)
-                        Set item = New RegItem
-                        item.Name = names(i)
-                        item.Value = ReadItem(names(i)).Value
-                        aoo.Add item
-                    Next
-                    ReadItems = aoo
-                End Property
+    'remove the item
+    si.DeleteItem items(itemIndex).Name
+    DrawTableDiv
+End Sub
 
-                Sub UpdateItem(name, command)
-                    CreateItem name, command
-                End Sub
+Sub CheckPrivileges
+    Dim currentHive
+    currentHive = CLng(hiveSelector.options(hiveSelector.selectedIndex).value)
+    If Not privilegesAreElevated And si.HKLM = currentHive Then
+        InputsEnabled False
+        feedback.innerHTML = "Elevated privileges are required to edit HKEY_LOCAL_MACHINE."
+    Else InputsEnabled True
+        feedback.innerHTML = ""
+    End If
+    If privilegesAreElevated Then
+        elButton.disabled = True
+    Else elButton.disabled = False
+    End If
+    tmButton.disabled = False
+End Sub
 
-                Sub DeleteItem(name)
-                    Dim erred : erred = False
-                    On Error Resume Next
-                        sh.RegDelete WSHRoot & "\" & key & "\" & name
-                        If Err Then erred = True
-                    On Error Goto 0
-                    If erred Then Err.Raise 3,, msg1 & msg2
-
-                    Const msg1 = "Elevated privileges are required to create/update certain "
-                    Const msg2 = "registry values, most notably values in HKEY_LOCAL_MACHINE."
-                End Sub
-
-                Public Property Get Root : Root = root_ : End Property
-                Public Property Let Root(newRoot)
-                    If HKLM = newRoot Then
-                        WSHRoot = "HKLM"
-                        root_ = newRoot
-                    ElseIf HKCU = newRoot Then
-                        WSHRoot = "HKCU"
-                        root_ = newRoot
-                    Else
-                        Err.Raise 4,, "Expected root to be &H80000002 or &H80000001."
-                    End If
-                End Property
-
-                Property Get HKLM : HKLM = &H80000002 : End Property
-                Property Get HKCU : HKCU = &H80000001 : End Property
-
-                Public Property Get Key : Key = key_ : End Property
-                Public Property Let Key(newKey)
-                    If LCase(StandardBranch) <> LCase(newKey) _
-                    And LCase(WoWBranch) <> LCase(newKey) Then
-                        Err.Raise 5,, msg1 & msg2 & msg3
-                    End If
-                    key_ = newKey
-
-                    Const msg1 = "StartupItems class requires Key property to be equivilent to "
-                    Const msg2 = "either Software\Microsoft\Windows\CurrentVersion\Run "
-                    Const msg3 = "or Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
-                End Property
-
-                Property Get StandardBranch
-                    StandardBranch = "Software\Microsoft\Windows\CurrentVersion\Run"
-                End Property
-                Property Get WoWBranch
-                    WoWBranch = "Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
-                End Property
-
-                Public Property Get WSHRoot : WSHRoot = WSHroot_ : End Property
-                Private Property Let WSHRoot(newWSHRoot) : WSHRoot_ = newWSHRoot : End Property
-
-                Sub OpenTaskMgr : sh.Run "taskmgr /7 /startup" : End Sub
-
-                Private root_, key_, WSHRoot_
-                Private reg, sh
-
-                Sub Class_Initialize
-                    Set reg = GetObject("winmgmts:\\.\root\default:StdRegProv")
-                    Set sh = CreateObject("WScript.Shell")
-                    Root = HKCU
-                    Key = StandardBranch
-                End Sub
-
-                Sub Class_Terminate
-                    Set reg = Nothing
-                    Set sh = Nothing
-                End Sub
-            End Class
-
-            Class RegItem
-                Public Name
-                Public Value
-            End Class
-
-            Class ArrayOfObjects
-                Sub Add(item)
-                    ReDim Preserve items(Count)
-                    Set items(Count) = item
-                    Count = Count + 1
-                End Sub
-
-                Public Default Property Get GetArrayOfObjects
-                    GetArrayOfObjects = items
-                End Property
-
-                Private count_
-                Public Property Get Count : Count = count_ : End Property
-                Private Property Let Count(newCount)
-                    count_ = newCount
-                End Property
-
-                Private items() 'dynamic array
-                Sub Class_Initialize
-                    Count = 0
-                    ReDim items(-1)
-                End Sub
-            End Class
+Sub InputsEnabled(enabling)
+    Dim inputs : Set inputs = document.getElementsByTagName( "input" )
+    Dim inputIndex
+    For inputIndex = 0 To inputs.length - 1
+        inputs(inputIndex).disabled = Not enabling
+    Next
+End Sub
 
         </script>
      </body>

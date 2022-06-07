@@ -1,4 +1,3 @@
-
 # csc.exe compiler switches for Watcher.cs
 
 /target:library
@@ -7,4 +6,3 @@
 
 # Create an XML doc
 /doc:..\lib\Watcher.xml
-

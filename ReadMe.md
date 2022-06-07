@@ -11,10 +11,11 @@
 
 - [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
-- [Integration tests](spec/ReadMe.md) use an ultralight [testing framework] written in VBScript.
+- [Integration tests](spec/ReadMe.md) use an ultralight TestingFramework class ( [code](class/TestingFramework.vbs) | [doc](docs/VBScriptClasses.md#testingframework) ) written in VBScript.
 - A VBScript statement [interpreter]/console.  
-- A [dependency manager].  
-- A [logger].  
+- A dependency manager ( [code](class/Includer.vbs) | [doc](docs/VBScriptClasses.md#includer) ).  
+- A Configurer class ( [code](class/Configurer.vbs) | [doc](docs/VBScriptClasses.md#configurer) )
+- A logger class ( [code](class/VBSLogger.vbs) | [doc](docs/VBScriptClasses.md#vbslogger) ).  
 - A [registry classes] manager UI.  
 - An [icon extractor] UI.  
 - A [startup items] editor UI.  
@@ -23,7 +24,7 @@
 - A [progress bar] proof of concept.
 - A script for keeping the computer awake while
   giving a [presentation], with a system tray icon.  
-- A [doc generator for the C# classes] and a [doc generator for the VBScript classes], both based on code comments.  
+- A doc generator for the C# classes ( [example code](examples/Generate-the-CSharp-docs.vbs) | [class code](class/DocGeneratorCS.vbs) | [doc](docs/VBScriptClasses.md#docgeneratorcs) ) and a doc generator for the VBScript classes ( [example code](examples/Generate-the-VBScript-docs.vbs) | [class code](class/DocGenerator.vbs) | [doc](docs/VBScriptClasses.md#docgenerator) ), both based on code comments.  
 - More [examples] of .vbs and .hta scripts.
 - [Windows Script Component files].
 
@@ -33,25 +34,25 @@ Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
-- Clone or download the repo. If desired, put it in a location visible to all users, or run [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs).  
+- Clone or download the repo. [CopyToProgramFiles.wsf](./CopyToProgramFiles.wsf) can be used, if desired, to make the project available to all users before running [Setup.vbs].
 
-- Double-click [Setup.vbs] or from a console window type
+- Double-click [Setup.vbs] or from a console window type the following command from an elevated process. (If not from an elevated process, then the User Account Control dialog will appear to request permission to elevate.)  
 
 ``` cmd
 Setup.vbs
 ```
 
-or for a non-interactive install type
+or for a non-interactive install, use  
 
 ``` cmd
 Setup.vbs /s
 ```
 
-This will register the [Windows Script Component files], and compile and register the [VBScript extensions].  
+This will register the [Windows Script Component files], compile and register the [VBScript extensions], and create the VBScripting event log source.  
 
 ## Uninstall
 
-To unregister the project .dll files and .wsc files, and remove the VBScripting event log source,
+Uninstalling unregisters the project .dll files and .wsc files and removes the VBScripting event log source, without removing files.  
 
 From a console window, type
 
@@ -71,6 +72,12 @@ Or type
 start ms-settings:appsfeatures
 ```
 
+or
+
+``` cmd
+control /name Microsoft.ProgramsAndFeatures
+```
+
 and then select VBScripting Utility Classes and Extensions and click Uninstall.  
 
 Or for a silent uninstall from a console window, type
@@ -85,21 +92,28 @@ or
 Setup.vbs /u /s
 ```
 
-> Note: Files are not removed.
+> Note: Uninstalling does not remove files.
 
 ## Issues
 
-After a Windows 10 version update, rerunning [Setup.vbs] is usually required in order to reregister project classes. A restart may be required before rerunning [Setup.vbs] after updating to Windows 10 version 20H2.  
+After a major Windows 10 version update, rerunning [Setup.vbs] may be required in order to reregister the project classes. A restart may be required before rerunning [Setup.vbs] after updating to Windows 10 version 20H2.  
 
 ## References  
 
-[Scripting documentation online]  
-[Scripting links]
+[Scripting documentation online](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84))  
+[FileSystemObject](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6kxy1a51(v=vs.84))  
+[WshShell object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/aew9yb99(v=vs.84))  
+[WshScriptExec object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/2f38xsxe(v=vs.84))  
+[Dictionary object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84))  
+[Regular expressions](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6wzad2b2(v=vs.84))  
+[WScript object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/at5ydy31(v=vs.84))  
+[WScript.Arguments object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/ss1ysb2a(v=vs.84))  
+[WshEnvironment object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
+[WScript.Arguments.Named](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
+[WScript.Network object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/s6wt333f(v=vs.84))  
 
 [VBScript utility classes]: class
 [C# classes]: .Net
-[doc generator for the C# classes]: examples/Generate-the-CSharp-docs.vbs
-[doc generator for the VBScript classes]: examples/Generate-the-VBScript-docs.vbs
 [testing framework]: docs/VBScriptClasses.md#testingframework
 [dependency manager]: docs/VBScriptClasses.md#includer
 [logger]: docs/VBScriptClasses.md#vbslogger
@@ -116,5 +130,4 @@ After a Windows 10 version update, rerunning [Setup.vbs] is usually required in 
 [interpreter]: examples/VBSInterpreter.hta
 [system tray icon]: .Net/test/NotifyIcon-test.vbs
 [progress bar]: .Net/test/ProgressBar-test.vbs
-[Scripting documentation online]: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84) "docs.microsoft.com"
-[Scripting links]: https://technet.microsoft.com/en-us/library/cc498722.aspx "technet.microsoft.com"
+[Scripting links]: https://docs.microsoft.com/en-us/previous-versions/cc498722(v=msdn.10)

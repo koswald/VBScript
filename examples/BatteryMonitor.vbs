@@ -5,7 +5,7 @@ Setup
 Main
 
 Sub Main
-    notifier.AddMenuItem "Exit Battery Monitor", GetRef("Quit")
+    notifier.AddMenuItem "Exit Battery Monitor", GetRef( "Quit" )
     notifier.Visible = True
     WaitForCallbacks
 End Sub
@@ -81,14 +81,14 @@ Dim neverBeenWarned
 Dim notifier, wmi, format, stopwatch
 Dim sh
 Sub Setup
-    Set notifier = CreateObject("VBScripting.NotifyIcon")
-    Set includer = CreateObject("VBScripting.Includer")
-    Set format = CreateObject("VBScripting.StringFormatter")
-    Set sh = CreateObject("WScript.Shell")
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Execute includer.Read("WMIUtility")
+    Set notifier = CreateObject( "VBScripting.NotifyIcon" )
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Set format = CreateObject( "VBScripting.StringFormatter" )
+    Set sh = CreateObject( "WScript.Shell" )
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    Execute includer.Read( "WMIUtility" )
     Set wmi = New WMIUtility
-    Execute includer.Read("VBSStopwatch")
+    Execute includer.Read( "VBSStopwatch" )
     Set stopwatch = New VBSStopwatch
     neverBeenWarned = True
     previousIndex = -1

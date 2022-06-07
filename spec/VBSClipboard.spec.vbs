@@ -1,22 +1,21 @@
+'Test VBSClipboard.vbs
 
-'test VBSClipboard.vbs
+Option Explicit
+Dim cb 'VBSClipboard object, under test
+Dim fso 'Scripting.FileSystemObject object
+Dim incl 'VBScripting.Includer object
+Dim expected, actual 'assertion arguments
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("VBSClipboard")
-    Execute .read("TestingFramework")
-End With
-
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set incl = CreateObject( "VBScripting.Includer" )
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
     .describe "VBSClipboard class"
-        Dim cb : Set cb = New VBSClipboard
+        Execute incl.Read( "VBSClipboard" )
+        Set cb = New VBSClipboard
 
     'setup
-        Const hidden = 0, synchronous = True 'WScript.Shell Run method constants
-        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
-        Dim sh : Set sh = CreateObject("WScript.Shell")
-        Dim HtmlFile : Set HtmlFile = CreateObject("htmlfile")
-        Dim expected, actual
 
     .it "should copy & get text to & from the clipboard, with spaces"
         expected = "  " & fso.GetTempName & " . "
@@ -38,8 +37,4 @@ With New TestingFramework
 
 End With
 
-'teardown
-
 Set fso = Nothing
-Set sh = Nothing
-Set HtmlFile = Nothing

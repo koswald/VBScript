@@ -1,4 +1,4 @@
-# The `.NET` folder
+# The `.Net` folder
 
 [Overview]  
 [Compiling and registering]  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-The `.NET` folder contains C# examples for creating `.dll` libraries that can be called from VBScript, extending the power of VBScript using .NET Framework.
+The `.Net` folder contains C# examples for creating `.dll` libraries that can be called from VBScript, extending the power of VBScript using the .NET Framework.
 
 ## Compiling and registering
 
@@ -53,8 +53,7 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 
 ### Compiler-supported code comments
 
-[Documenting your code with XML comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc "docs.microsoft.com")  
-[XML Documentation Comments (C# Programming Guide)](https://github.com/dotnet/docs/blob/master/docs/csharp/programming-guide/xmldoc/xml-documentation-comments.md "github.com/dotnet/docs")  
+[XML Documentation Comments (C# Programming Guide)](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/)  
 
 [Overview]: #overview
 [Compiling and registering]: #compiling-and-registering

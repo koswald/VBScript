@@ -62,7 +62,7 @@ End Sub
 
 'event handler
 Sub Document_OnKeyUp
-    If EscKey = window.event.keyCode Then 
+    If EscKey = window.event.keyCode Then
         Cancel
     ElseIf MKey = window.event.keyCode Then
         Move
@@ -97,7 +97,7 @@ End Sub
 
 'initialize the window
 Sub InitializeWindow
-    Set hta = document.getElementsByTagName("application")(0)
+    Set hta = document.getElementsByTagName( "application" )(0)
     self.ResizeTo width, height
     With document.parentWindow.screen
         self.MoveTo _
@@ -110,14 +110,14 @@ End Sub
 
 'instantiate objects
 Sub InstantiateObjects
-    Set sh = CreateObject("WScript.Shell")
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Set sa = CreateObject("Shell.Application")
-    With CreateObject("VBScripting.Includer")
-        Execute .read("VBSApp")
+    Set sh = CreateObject( "WScript.Shell" )
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    Set sa = CreateObject( "Shell.Application" )
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "VBSApp" )
         Set app = New VBSApp
     End With
-    Set choose = CreateObject("VBScripting.FolderChooser")
+    Set choose = CreateObject( "VBScripting.FolderChooser" )
     choose.Title = hta.applicationName & ":" & vbLf & " Browse to the target folder"
     choose.InitialDirectory = "%UserProfile%\z.{679F85CB-0220-4080-B29B-5540CC05AAB6}" 'see settings\+\Quick access folder.txt
 End Sub
@@ -127,10 +127,10 @@ Dim divText
 Sub CreateHtmlElements
 
     'create the Copy button
-    Set btnCopy = document.createElement("input")
+    Set btnCopy = document.createElement( "input" )
     With btnCopy
         .type = "button"
-        Set .onClick = GetRef("Copy")
+        Set .onClick = GetRef( "Copy" )
         .value = "    Copy    "
         .style.margin = "1em"
         .style.marginLeft = "3em"
@@ -138,10 +138,10 @@ Sub CreateHtmlElements
     document.body.insertBefore btnCopy
 
     'create the Move button
-    Set btnMove = document.createElement("input")
+    Set btnMove = document.createElement( "input" )
     With btnMove
         .type = "button"
-        Set .onClick = GetRef("Move")
+        Set .onClick = GetRef( "Move" )
         .value = "    Move    "
         .style.margin = "1em"
         .focus
@@ -149,7 +149,7 @@ Sub CreateHtmlElements
     document.body.insertBefore btnMove
 
     'create a div for text
-    Set divText = document.createElement("div")
+    Set divText = document.createElement( "div" )
     With divText
         .style.fontFamily = "sans-serif"
         .style.fontSize = "75%"
@@ -157,7 +157,7 @@ Sub CreateHtmlElements
     document.body.insertBefore divText
 
 End Sub
-        
+
 'validate the command-line arguments
 Sub ValidateArgs
     items = app.GetArgs
@@ -167,7 +167,7 @@ Sub ValidateArgs
         MsgBox "Argument(s) required.", vbExclamation, hta.applicationName
         Cancel
     End If
-    
+
     'require all arguments to be an existing file or folder
     Dim i, s : s = ""
     For i = 0 To UBound(items)
@@ -177,7 +177,7 @@ Sub ValidateArgs
             s = s & "<br />" & "Folder: "
         Else
             MsgBox """" & items(i) & """ is not an existing file or folder.", vbExclamation, hta.applicationName
-            Cancel    
+            Cancel
         End If
         s = s & items(i)
     Next

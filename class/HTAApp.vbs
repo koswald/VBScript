@@ -1,10 +1,37 @@
-
 'HTAApp class
 
 'Supports the VBSApp class, providing .hta functionality. *Intended for use only within the VBSApp class*.
 '
 Class HTAApp
-    
+
+    Private sh 'WScript.Shell object
+    Private re 'RegExp object
+    Private format 'VBScripting.StringFormatter object
+    Private application 'html element: hta:application
+    Private args 'array of command-line args
+    Private filespec
+    Private visible, hidden 'integers for the Run method 
+    Private synchronous 'boolean for the Run method
+    Private libraryPath
+    Private stopwatch, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
+
+    Sub Class_Initialize
+        Set sh = CreateObject( "WScript.Shell" )
+        Set re = New RegExp
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "HTAApp.config" )
+            Execute .Read( "StringFormatter" )
+        End With
+        Set format = New StringFormatter
+        hidden = 0
+        visible = 1
+        synchronous = True
+        Set application = document.getElementsByTagName( "application" )(0)
+        args = ParseArgs(application.CommandLine)
+        filespec = args(0)
+        If AlwaysPrepareToSleep Then PrepareToSleep
+    End Sub
+
     'Method Sleep
     'Parameter: an integer
     'Remark: Pauses execution of the script or .hta for the specified number of milliseconds.
@@ -16,7 +43,7 @@ Class HTAApp
             TimerSleep milliseconds
         End If
     End Sub
-    
+
     'Private method ScriptSleep
     'Parameter: an integer
     'Remark: Private synchronous sleep method. Sleeps the specified number of milliseconds. Intended for sleeps longer than one second or so.
@@ -31,7 +58,7 @@ Class HTAApp
         'finish out with the more precise TimerSleep
         TimerSleep(milliseconds - stopwatch.Split * 1000)
     End Sub
-    
+
     'Private method TimerSleep
     'Parameter: an integer
     'Remark: Private synchronous sleep method. Intended for short sleeps. Sleeps the specified number of milliseconds.
@@ -66,8 +93,8 @@ Class HTAApp
 
                 'quote count is odd...
                 'validate
-                If q = char And Not space = prevChar Then Err.Raise 1,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
-                If pos = Len(cl) Then Err.Raise 2,, "There is an odd number of double quotes in the command line arguments, " & cl
+                If q = char And Not space = prevChar Then Err.Raise 5,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
+                If pos = Len(cl) Then Err.Raise 5,, "There is an odd number of double quotes in the command line arguments, " & cl
                 If space = char _
                 And q = prevChar Then
                     'do nothing: effectively removes space from immediately after odd-numbered quote
@@ -81,7 +108,7 @@ Class HTAApp
                 'remove multiple spaces between arguments and
                 'add quotes, temporarily
                 'validate
-                If q = prevChar And Not space = char Then Err.Raise 3,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
+                If q = prevChar And Not space = char Then Err.Raise 5,, "Invalid command-line argument syntax at position " & pos & " of: " & cl
 
                 'rebuild arguments
                 'add a leading quote to a quoteless argument
@@ -108,40 +135,14 @@ Class HTAApp
         args = Trim(args)
         If q = Right(args, 1) Then args = Left(args, Len(args) - 1)
         If q = Left(args, 1) Then args = Right(args, Len(args) - 1)
-        ParseArgs = Split(args, """ """)
+        ParseArgs = Split( args, """ """ )
     End Function
-   
-    Private sh, re, format
-    Private application
-    Private args
-    Private filespec
-    Private visible, hidden
-    Private synchronous
-    Private libraryPath
-    Private stopwatch, EffectiveScriptSleepOverhead, AlwaysPrepareToSleep
-
-    Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
-        Set re = New RegExp
-        With CreateObject("VBScripting.Includer")
-            Execute .read("HTAApp.config")
-            Execute .read("StringFormatter")
-        End With
-        Set format = New StringFormatter
-        hidden = 0
-        visible = 1
-        synchronous = True
-        Set application = document.getElementsByTagName("application")(0)
-        args = ParseArgs(application.CommandLine)
-        filespec = args(0)
-        If AlwaysPrepareToSleep Then PrepareToSleep
-    End Sub
 
     'Method PrepareToSleep
     'Remark: Required before calling the Sleep method when AlwaysPrepareToSleep is False in HTAApp.config.
     Sub PrepareToSleep
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSStopwatch")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSStopwatch" )
             libraryPath = .LibraryPath
         End With
         Set stopwatch = New VBSStopwatch

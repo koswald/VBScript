@@ -2,9 +2,9 @@
 'test WoWChecker.vbs
 'intended to be run with 32-bit cscript.exe
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("TestingFramework")
-    Execute .read("WoWChecker")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "TestingFramework" )
+    Execute .Read( "WoWChecker" )
 End With
 
 With New TestingFramework
@@ -13,7 +13,7 @@ With New TestingFramework
         Dim chkr : Set chkr = New WoWChecker
 
     'setup
-        Dim sh : Set sh = CreateObject("WScript.Shell")
+        Dim sh : Set sh = CreateObject( "WScript.Shell" )
         If Not chkr.isWoW Then WScript.StdOut.WriteLine "This test must be launched with the 32-bit cscript.exe:" : WScript.StdOut.WriteLine "%SystemRoot%\SysWow64\cscript.exe " & WScript.ScriptName : WScript.Quit
 
     .it "should return an obj self reference on ByCheckSum call"

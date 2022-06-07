@@ -1,0 +1,62 @@
+<job>
+    <script language="VBScript"
+        src="..\class\TestingFramework.vbs">
+    </script>
+    <script language="VBScript"
+        src="..\class\StringFormatter.vbs">
+    </script>
+    <script language="VBScript">
+
+Option Explicit
+Dim inc 'VBScripting.Includer object: what is being tested.
+Dim fso 'Scripting.FileSystemObject
+Dim format 'VBScripting.StringFormatter object
+DIm parent 'string: parent folder of this script
+Dim baseName 'string: base name of this script
+Dim actual, expected 'variants
+Dim c 'Configurer object
+Dim s 'a string
+
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set format = New StringFormatter
+parent = fso.GetParentFolderName( WScript.ScriptFullName )
+baseName = fso.GetBaseName( WScript.ScriptName )
+
+With New TestingFramework
+
+    .Describe "VBScripting.Includer Windows Script Component"
+        Set inc = CreateObject( "VBScripting.Includer" )
+
+    .It "should create an object given a class name (GUIDGenerator)"
+        actual = TypeName( inc.LoadObject( "GUIDGenerator" ))
+        expected = "GUIDGenerator"
+        .AssertEqual actual, expected
+
+    .It "should create an object given a class name (VBSApp)"
+        actual = TypeName( inc.LoadObject( "VBSApp" ))
+        expected = "VBSApp"
+        .AssertEqual actual, expected
+
+    .It "should create an object given a class name (Configurer)"
+        Set c = inc.LoadObject( "Configurer" )
+        actual = TypeName( c )
+        expected = "Configurer"
+        .AssertEqual actual, expected
+
+    .It "should fail to get config file spec before init call"
+        actual = c.ScriptConfigFile
+        expected = "\.configure"
+        .AssertEqual actual, expected
+
+    .It "should get config file spec after init call"
+        c.Init WScript
+        actual = c.ScriptConfigFile
+        expected = format( Array( _
+            "%s\%s.configure", _
+            parent, baseName _
+        ))
+        .AssertEqual actual, expected
+End With
+
+    </script>
+</job>

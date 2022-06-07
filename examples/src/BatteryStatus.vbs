@@ -43,12 +43,12 @@ Class VBSBatteryMonitor
             If Err Then sh.PopUp "Error setting image format to PNG.", 3, app.GetFileName, vbInformation + vbSystemModal
         On Error Goto 0
         extractor.Save resFile, IconIndex, imageFile, largeIcon
-        Set image = document.createElement("img")
+        Set image = document.createElement( "img" )
         image.src = imageFile
         image.alt = "Battery image"
         imageContainer.insertBefore image
 
-        Set messageDiv = document.createElement("div")
+        Set messageDiv = document.createElement( "div" )
         textContainer.insertBefore messageDiv
         messageDiv.innerHTML = format(Array( _
             "Battery charge %s% <br /> %s", _
@@ -88,7 +88,7 @@ Class VBSBatteryMonitor
     End Property
 
     Private largeIcon
-    Private resFile 
+    Private resFile
     Private includer, extractor, wmi, format, app 'project objects
     Private image, messageDiv 'html objects
     Private imageFile 'string
@@ -97,19 +97,26 @@ Class VBSBatteryMonitor
     Sub Class_Initialize
         largeIcon = True
         resFile = "%SystemRoot%\System32\wpdshext.dll"
-        Set includer = CreateObject("VBScripting.Includer")
-        Set extractor = CreateObject("VBScripting.IconExtractor")
-        Execute includer.Read("WMIUtility")
+        Set includer = CreateObject( "VBScripting.Includer" )
+        Set extractor = CreateObject( "VBScripting.IconExtractor" )
+        Execute includer.Read( "WMIUtility" )
         Set wmi = New WMIUtility
-        Set sh = CreateObject("WScript.Shell")
-        Set app = CreateObject("VBScripting.VBSApp")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set app = CreateObject( "VBScripting.VBSApp" )
         If IsEmpty(document) Then
             app.Init WScript
         Else app.Init document
         End If
-        Set format = CreateObject("VBScripting.StringFormatter")
-        imageFile = format(Array( Expand("%AppData%\VBScripting\%s.png"), app.GetBaseName ))
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set format = CreateObject( "VBScripting.StringFormatter" )
+        imageFile = format( Array( _
+            "%s\VBScripting\%s.png", _
+            Expand( "%AppData%" ), _
+            app.GetBaseName _
+        ))
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        If Not fso.FolderExists( Expand("%AppData%\VBScripting" )) Then
+            fso.CreateFolder Expand( "%AppData%\VBScripting" )
+        End If
     End Sub
 
     Sub Class_Terminate
@@ -123,6 +130,6 @@ Class VBSBatteryMonitor
         Set app = Nothing
         Set includer = Nothing
         Set extractor = Nothing
-    End Sub 
+    End Sub
 
 End Class

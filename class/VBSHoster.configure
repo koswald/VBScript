@@ -1,0 +1,7 @@
+# The 'shell' setting may be used to override the default behaviour of the RestartWith method, which is to open a PowerShell (pwsh.exe if available) within Windows Terminal (if available). Examples:
+# shell, powershell
+# shell, wt pwsh # requires Windows Terminal
+# shell, wt cmd
+# shell, %ComSpec%
+# shell, wt "%ProgramFiles(X86)%\PowerShell\7\pwsh.exe"
+# shell, %ProgramFiles(X86)%\PowerShell\7\pwsh.exe

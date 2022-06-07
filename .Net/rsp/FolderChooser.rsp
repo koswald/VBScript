@@ -1,4 +1,3 @@
-
 # csc.exe compiler switches for FolderChooser.cs
 
 /target:library
@@ -6,4 +5,3 @@
 
 # Create an XML doc
 /doc:..\lib\FolderChooser.xml
-

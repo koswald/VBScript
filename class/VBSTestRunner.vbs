@@ -2,9 +2,9 @@
 'Run a test or group of tests
 
 'Usage example
-' <pre>    'test-launcher.vbs <br />    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs <br />   <br />     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSTestRunner") <br />     End With <br />   <br />     With New VBSTestRunner <br />         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs <br />         .Run <br />     End With </pre>
+' <pre>    'test-launcher.vbs <br />    'run this file from a console window; e.g. cscript //nologo test-launcher.vbs <br />   <br />     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSTestRunner" ) <br />     End With <br />   <br />     With New VBSTestRunner <br />         .SetSpecFolder "../spec" 'location of test files relative to test-launcher.vbs <br />         .Run <br />     End With </pre>
 '
-'See also TestingFramework
+'See also <a href=#testingframework> TestingFramework</a>.
 '
 Class VBSTestRunner
 
@@ -27,16 +27,16 @@ Class VBSTestRunner
 
         'write the result summary
         If GetErring Then
-            Write_ formatter.pluralize(GetErring, "erring file") & ", "
+            Write_ formatter.pluralize( GetErring, "erring file" ) & ", "
         End If
         If GetFailing Then
-            Write_ formatter.pluralize(GetFailing, "failing spec") & ", "
+            Write_ formatter.pluralize( GetFailing, "failing spec" ) & ", "
         End If
         If GetPassing Then
-            Write_ formatter.pluralize(GetPassing, "passing spec") & "; "
+            Write_ formatter.pluralize( GetPassing, "passing spec" ) & "; "
         End If
-        Write_ formatter.pluralize(GetSpecFiles, "test file") & "; "
-        WriteLine "test duration: " & formatter.pluralize(stopwatch, "second") & " "
+        Write_ formatter.pluralize( GetSpecFiles, "test file" ) & "; "
+        WriteLine "test duration: " & formatter.pluralize( stopwatch, "second" ) & " "
     End Sub
 
     'run all the test files whose names match the regex pattern
@@ -120,18 +120,18 @@ Class VBSTestRunner
     'Remark: Optional. Sets the number of times to run the test(s). Default is 1.
     Sub SetRunCount(newRunCount) : runCount = newRunCount : End Sub
 
-    'Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0. Termination may not be immediate. Optional. 
+    'Sets the time in seconds to wait for each test file to finish all of its specs. After this time the test file will be terminated and the other tests, if any, will be run. 0 waits indefinitely. Default is 0. Termination may not be immediate. Optional.
     Sub SetTimeout(newTimeout) : timeout = newTimeout : End Sub
 
     Private Sub ValidateSettings
         Dim msg
         msg = "The folder specified using SetSpecFolder must exist. A relative path is fine, relative to the calling script's folder, " & fs.SFolderName
-        If Not fso.FolderExists(specFolder) Then Err.Raise 1, fs.SName, msg
+        If Not fso.FolderExists(specFolder) Then Err.Raise 505, fs.SName, msg
         sh.CurrentDirectory = specFolder
 
         msg = "Wnen SetSpecFile is used to specify a single spec file, the file specified (" & specFile & ") must exist. A relative path is fine, relative to the spec folder, " & specFolder
         If Len(specFile) Then
-            If Not fso.FileExists(fs.ResolveTo(specFile, specFolder)) Then Err.Raise 1, fs.SName, msg
+            If Not fso.FileExists(fs.ResolveTo(specFile, specFolder)) Then Err.Raise 505, fs.SName, msg
         End If
     End Sub
 
@@ -194,20 +194,20 @@ Class VBSTestRunner
         foundTestFiles = 0
         TestIsRunning = 0
         TestIsFinished = 1
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSFileSystem")
-            Execute .read("StringFormatter")
-            Execute .read("VBSStopwatch")
-            Execute .read("VBSlogger")
-            Execute .read("RegExFunctions")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSFileSystem" )
+            Execute .Read( "StringFormatter" )
+            Execute .Read( "VBSStopwatch" )
+            Execute .Read( "VBSlogger" )
+            Execute .Read( "RegExFunctions" )
         End With
         Set fs = New VBSFileSystem
         Set formatter = New StringFormatter
         Set stopwatch = New VBSStopwatch
         Set log = New VBSLogger
         Set rf = New RegExFunctions
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         specFolder = ""
         SetSpecFile ""
         SetSpecPattern "*.spec.vbs"

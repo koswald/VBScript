@@ -1,81 +1,108 @@
-
 'Regular Expression functions - a work in progress
 '
 'Usage example
-'<pre>  With CreateObject("VBScripting.Includer")<br />      Execute .read("RegExFunctions")<br />  End With<br />  <br />  Dim reg : Set reg = New RegExFunctions<br />  reg.SetTestString "'Method SetSomething"<br />  reg.SetPattern "(M).*(od).*(tS)"<br />  <br />  Dim s, submatch, subs : s = ""<br />  Set subs = reg.GetSubMatches<br />  <br />  For Each submatch In subs<br />      s = s & " " & submatch<br />  Next<br />  MsgBox s 'M od tS </pre>
+'<pre>  With CreateObject( "VBScripting.Includer" )<br />      Execute .Read( "RegExFunctions" )<br />  End With<br />  <br />  Dim reg : Set reg = New RegExFunctions<br />  reg.SetTestString "'Method SetSomething"<br />  reg.SetPattern "(M).*(od).*(tS)"<br />  <br />  Dim s, submatch, subs : s = ""<br />  Set subs = reg.GetSubMatches<br />  <br />  For Each submatch In subs<br />      s = s & " " & submatch<br />  Next<br />  MsgBox s 'M od tS </pre>
 '
 Class RegExFunctions
 
-    Private oRE, Match, Matches, testString, class_, v, reader
+    Private rex 'RegExp object
+    Private Match
+    Private Matches
+    Private testString 'string against which the regex pattern will be tested
+    Private v 'VBSValidator object
 
     Sub Class_Initialize
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSValidator")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSValidator" )
         End With
-        Set oRE = New RegExp
+        Set rex = New RegExp
         Set v = New VBSValidator
-        class_ = "RegExFunctions"
         SetPattern ""
         SetTestString ""
         SetIgnoreCase False
     End Sub
-    
+
     'Function Pattern
     'Parameter: wildcard
     'Returns: a regex expression
-    'Remark: Returns a regex expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with &#124;
-    Function Pattern(wildcard)
-        'See docs\algorithm\ReadMe.md for more comments
-        Dim i, arrwp, wp : wp = wildcard '=> wildcard-to-pattern
+    'Remark: Returns a regular expression equivalent to the specified wildcard expression(s). Delimit multiple wildcards with a vertical bar ( &#124; ). See <a href=https://github.com/koswald/VBScript/blob/master/docs/algorithm/ReadMe.md target=_blank> algorithm/ReadMe.md</a> for more comments.
+    Function Pattern( wildcard )
+        Dim arr 'array
+        Dim i 'integer
+        Dim str 'string
+        Dim raise 'array: raise an error on finding these characters
+        Dim escape 'array: escape these characters
+
         'remove whitespace from ends of delimited strings
-        wp = Split(wp, "|")
-        For i = 0 To UBound(wp)
-            wp(i) = Trim(wp(i))
+        arr = Split( wildcard, "|" )
+        For i = 0 To UBound( arr )
+            arr( i ) = Trim( arr( i ))
         Next
-        wp = Join(wp, "|")
-        'raise errors on bad characters
-        Dim raise : raise = Array("\", "/", ":", """", "<", ">")
-        For i = 0 To UBound(raise)
-            If InStr(wp, raise(i)) Then Err.Raise 1,, "A wildcard expression can't contain these: " & Join(raise, " ") & " (In this case " & raise(i) & ")"
+        str = Join( arr, "|" )
+
+        'raise an error on finding certain characters
+        raise = Array( "\", "/", ":", """", "<", ">" )
+        For i = 0 To UBound( raise )
+            If InStr( str, raise( i )) Then
+                Err.Raise 5,, "A wildcard expression can't contain these: " & Join( raise ) & " ( In this case " & raise( i ) & " )."
+            End If
         Next
-        wp = Replace(wp, ".", "\.")
-        wp = Replace(wp, "*", ".*")
-        Dim escape : escape = Array("(", ")", "$", "+", "[", "^", "{")
-        For i = 0 To UBound(escape)
-            wp = Replace(wp, escape(i), "\" & escape(i))
+        
+        'replace . and * with regex equivalents
+        str = Replace( str, ".", "\." )
+        str = Replace( str, "*", ".*" )
+        
+        'escape certain characters
+        escape = Array( "(", ")", "$", "+", "[", "^", "{" )
+        For i = 0 To UBound( escape )
+            str = Replace( str, escape( i ), "\" & escape( i ))
         Next
-        wp = Replace(wp, "?", ".{1}")
-        arrwp = Split(wp, "|")
-        For i = 0 To UBound(arrwp)
-            arrwp(i) = "^" & arrwp(i) & "$"
+        
+        'replace ? with regex equivalent
+        str = Replace( str, "?", ".{1}" )
+        
+       'return value
+        arr = Split( str, "|" )
+        For i = 0 To UBound( arr )
+            arr( i ) = "^" & arr( i ) & "$"
         Next
-        Pattern = Join(arrwp, "|")
+        Pattern = Join( arr, "|" )
     End Function
 
     'Property re
     'Returns an object reference
-    'Remark: Returns a reference to the RegExp object instance
-    Property Get re : Set re = oRE : End Property
+    'Remark: Returns a reference to the RegExp object instance.
+    Property Get re
+        Set re = rex
+    End Property
 
     'Method SetPattern
     'Parameter: a regex pattern
-    'Remark: Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance
-    Sub SetPattern(pPattern) : oRE.pattern = pPattern : End Sub
+    'Remark: Required before calling FirstMatch or GetSubMatches. Sets the pattern of the RegExp object instance.
+    Sub SetPattern( newPattern )
+        rex.pattern = newPattern
+    End Sub
 
     'Method SetTestString
     'Parameter: a string
     'Remark: Required before calling FirstMatch or GetSubMatches. Specifies the string against which the regex pattern will be tested.
-    Sub SetTestString(pString) : testString = pString : End Sub
+    Sub SetTestString( newValue )
+        testString = newValue
+    End Sub
 
     'Method SetIgnoreCase
     'Parameter: a boolean
     'Remark: Optional. Specifies whether the regex object will ignore case. Default is False.
-    Sub SetIgnoreCase(pBool) : oRE.IgnoreCase = v.EnsureBoolean(pBool) : End Sub
+    Sub SetIgnoreCase( newValue )
+        rex.IgnoreCase = v.EnsureBoolean( newValue )
+    End Sub
 
     'Method SetGlobal
     'Parameter: a boolean
     'Remark: Optional. Specifies whether the pattern should match all occurrences in the search string or just the first one. Default is False.
-    Sub SetGlobal(pBool) : oRE.Global = v.EnsureBoolean(pBool) : End Sub
+    Sub SetGlobal( newValue )
+        rex.Global = v.EnsureBoolean( newValue )
+    End Sub
 
     'Property GetSubMatches
     'Returns an object
@@ -87,13 +114,14 @@ Class RegExFunctions
         Set oMatches = re.Execute(testString)
         Set oMatch = oMatches(0)
         Set GetSubMatches = oMatch.SubMatches
-        If Err Then GetSubMatches = Nothing
+        If Err Then
+            Set GetSubMatches = Nothing
+        End If
     End Property
 
     Private Sub EnsureInitialized
-        Dim funct : funct = class_ & ".EnsureInitialized"
-        If "" = oRE.pattern Then Err.Raise 2, funct, "RegEx pattern was not set: use SetPattern()"
-        If "" = testString Then Err.Raise 3, funct, "RegEx test string was not set: use SetTestString()"
+        If "" = rex.pattern Then Err.Raise 449,, "RegEx pattern was not set: use SetPattern()"
+        If "" = testString Then Err.Raise 449,, "RegEx test string was not set: use SetTestString()"
     End Sub
 
     'Function FirstMatch
@@ -102,7 +130,7 @@ Class RegExFunctions
     Function FirstMatch
         EnsureInitialized
         FirstMatch = ""
-        Set Matches = oRE.Execute(testString)
+        Set Matches = rex.Execute( testString )
         For Each Match in Matches
             FirstMatch = Match.Value
             Exit For

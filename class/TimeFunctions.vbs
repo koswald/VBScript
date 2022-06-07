@@ -4,8 +4,8 @@ Class TimeFunctions
     Private FirstDayOfWeek, isDOWAbbreviated, oVBSValidator, class_
 
     Sub Class_Initialize
-        With CreateObject("VBScripting.Includer")'
-            Execute .read("VBSValidator") 'get class dependencies
+        With CreateObject( "VBScripting.Includer" )'
+            Execute .Read( "VBSValidator" ) 'get class dependencies
         End With
         Set oVBSValidator = New VBSValidator
 
@@ -32,7 +32,7 @@ Class TimeFunctions
 
     Property Let LetDOWBeAbbreviated(pBool)
         If Not v.IsBoolean(pBool) Then
-            Err.Raise 1, class_, pBool & " is not a boolean"
+            Err.Raise 13, class_, pBool & " is not a boolean"
             isDOWAbbreviated = False
         Else
             isDOWAbbreviated = pBool
@@ -46,11 +46,11 @@ Class TimeFunctions
 
     Function TwoDigit(num)
         If IsNumeric(num) Then
-            If Len(num) = 0 Then Err.Raise 1
-            If Len(num) > 2 Then Err.Raise 2
-            If num < 0 Then Err.Raise 3
+            If Len(num) = 0 Then Err.Raise 5
+            If Len(num) > 2 Then Err.Raise 5
+            If num < 0 Then Err.Raise 5
             If Len(num) = 1 Then TwoDigit = "0" & num Else TwoDigit = num
-        Else Err.Raise 4
+        Else Err.Raise 13
         End If
     End Function
 

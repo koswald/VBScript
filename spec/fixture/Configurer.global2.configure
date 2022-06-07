@@ -1,0 +1,2 @@
+pwsh candidates, %NonProgramFiles%\PowerShell\7\pwsh.exe | %Non2ProgramFiles%\PowerShell\7\pwsh.exe
+wt candidates, %NonAppData%\Microsoft\WindowsApps\wt.exe | %Non2LocalAppData%\Microsoft\WindowsApps\wt.exe

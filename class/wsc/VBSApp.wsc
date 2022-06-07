@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <?component error="true"?>
 <component>
-    
+
     <registration
         description="Windows Script Component utilities standardized for .hta, .vbs, and .wsf"
         progid="VBScripting.VBSApp"
         classid="{ADCEC089-30E0-11D7-86BF-00606744568C}">
     </registration>
-    
+
     <public>
         <property name="GetArgs">
             <get internalName="GetArgs" />
@@ -27,7 +27,7 @@
         <property name="GetFileName">
             <get internalName="GetFileName" />
         </property>
-        <property name="GetBaseName"> 
+        <property name="GetBaseName">
             <get internalName="GetBaseName" />
         </property>
         <property name="GetExtensionName">
@@ -63,13 +63,12 @@
             <get internalName="GetWrapAll" />
             <put internalName="PutWrapAll" />
         </property>
-        <method name="Close" />
         <method name="Init" />
     </public>
-    
+
     <!-- import the class -->
     <script language="VBScript" src="../VBSApp.vbs"></script>
-    
+
     <!-- wrap/expose the class members -->
     <script language="VBScript" src="src/VBSAppWrapper.vbs"></script>
 

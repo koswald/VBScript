@@ -1,7 +1,7 @@
 'Generate html and markdown documentation for VBScript code based on well-formed code comments.
 
 'Usage Example
-'<pre> With CreateObject("VBScripting.Includer")<br />     Execute .read("DocGenerator")<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "VBScriptClasses"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder = "..\class"<br />     .SetDocFolder = "..\docs"<br />     .Generate<br />     .ViewMarkdown<br /> End With</pre>
+'<pre> With CreateObject( "VBScripting.Includer" )<br />     Execute .Read( "DocGenerator" )<br /> End With<br /> With New DocGenerator<br />     .SetTitle "VBScript Utility Classes Documentation"<br />     .SetDocName "VBScriptClasses"<br />     .SetFilesToDocument "*.vbs | *.wsf | *.wsc"<br />     .SetScriptFolder "..\class"<br />     .SetDocFolder "..\docs"<br />     .Generate<br />     .ViewMarkdown<br /> End With</pre>
 '
 'Example of well-formed comments before a Sub statement
 ' Note: A remark is required for Methods (Subs).
@@ -24,24 +24,31 @@
 '
 'Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
 '
-'Include a vertical bar ( &#124; ) in comments with &amp;#124;
+'For some characters to render correctly, they may need to be replaced by escape codes, even when used within &#60;code&#62; or &#60;pre&#62; tags:
+' for &#124; use &#38;#124; (vertical bar)
+' for &#60; use &#38;#60; (less than)
+' for &#62; use &#38;#62; (greater than)
+' for &#92; use &#38;#92; (backslash)
+' for &#38; use &#38;#38; (ampersand)
+'For other characters,  <code>examples\HTML Escape Codes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.
 '
 'Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.
 '
 'Issues:
-'- Introductory comments at the beginning of a file should be followed by a line containing a single quote character, or else the markdown table may not render correctly .
+'- Introductory comments at the beginning of a class file should be followed by a line containing a single quote character, or else the markdown table may not render correctly.
 '
 
 Class DocGenerator
 
-    Private outputStreamer, inputStreamer 'streamer objects
+    Private fs 'VBSFileSystem project object
+    Private rf 'RegExFunctions project object
+    Private outputStreamer, inputStreamer 'TextStreamer project objects
+    Private sh 'WScript.Shell COM object
+    Private fso 'Scripting.FileSystemObject COM object
     Private script, doc 'input and output text streams
     Private md 'output text stream
     Private File 'fso File object
-    Private fs 'VBSFileSystem object
-    Private rf 'RegExFunctions object
     Private re 'RegExp object
-    Private sh, fso
 
     Private indentUnit
     Private indent_ 'current indentation
@@ -61,11 +68,11 @@ Class DocGenerator
     Private scriptFolder, docFolder, docName, docTitle 'required to be set by the calling script before calling the Generate method
 
     Sub Class_Initialize
-        With CreateObject("VBScripting.Includer")
-            Execute .read("TextStreamer")
-            Execute .read("VBSFileSystem")
-            Execute .read("RegExFunctions")
-            ExecuteGlobal .Read("EscapeMd")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "TextStreamer" )
+            Execute .Read( "VBSFileSystem" )
+            Execute .Read( "RegExFunctions" )
+            ExecuteGlobal .Read( "EscapeMd" )
         End With
 
         'prepare output streamer
@@ -81,8 +88,8 @@ Class DocGenerator
         Set rf = New RegExFunctions
         Set re = New RegExp
         re.IgnoreCase = True
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         InitializeLiterals
         indentUnit = "   "
         indent_ = ""
@@ -174,16 +181,16 @@ Class DocGenerator
     Private Sub ValidateConfiguration
         Dim msg
         msg = "A title for the document must be set using SetTitle."
-        If "" = docTitle Then Err.Raise 41, fs.SName, msg
+        If "" = docTitle Then Err.Raise 449, fs.SName, msg
 
         msg = "An existing folder containing the scripts to document must be specified with SetScriptFolder."
-        If Not fso.FolderExists(scriptFolder) Then Err.Raise 42, fs.SName, msg
+        If Not fso.FolderExists(scriptFolder) Then Err.Raise 449, fs.SName, msg
 
         msg = "An existing folder to contain the document must be specified with SetDocFolder."
-        If Not fso.FolderExists(docFolder) Then Err.Raise 43, fs.SName, msg
+        If Not fso.FolderExists(docFolder) Then Err.Raise 449, fs.SName, msg
 
         msg = "The name of the doc file must be specified with SetDocName."
-        If "" = docName Then Err.Raise 44, fs.SName, msg
+        If "" = docName Then Err.Raise 449, fs.SName, msg
         InitializeDocFiles
     End Sub
 
@@ -242,9 +249,7 @@ Class DocGenerator
     End Sub
 
     'Look for "help content"
-    'That is, look for comments intended to be included in the
-    'documnetation: Method or Property, Parameters, Returns, Remarks;
-    'also look for routines: Sub, Property, Function
+    'That is, look for comments intended to be included in the documentation: Method or Property, Parameters, Returns, Remarks; also look for routines: Sub, Property, Function
     Private Sub ProcessLine(line)
         If LineStartsAClass(line) Then
             status = postClassStatement
@@ -260,13 +265,16 @@ Class DocGenerator
 
     'Write the initial html for the current script, not including the general comments nor the table header
     Private Sub WriteScriptHeader
+        Dim baseName
+        baseName = fso.GetBaseName(File.Name) 
         doc.WriteLine ""
         WriteLine "<div>"
         IndentIncrease
-        WriteLine "<h2 class=""heading"" id=" & id & ">" & fso.GetBaseName(File.Name) & "</h2>"
+        WriteLine "<a id=""" & LCase(baseName) & """></a>"
+        WriteLine "<h2 class=""heading"" id=" & id & ">" & baseName & "</h2>"
         WriteLine "<div class=""detail"">"
         md.WriteLine ""
-        md.WriteLine "## "& fso.GetBaseName(File.Name)
+        md.WriteLine "## "& baseName
         md.WriteLine
         ScriptHeaderWritten = True
     End Sub
@@ -319,7 +327,7 @@ Class DocGenerator
         IndentDecrease
         md.WriteLine GetColorizedOrGetNowrap(generalContent)
     End Sub
-    
+
     Function GetColorizedOrGetNowrap(markup)
         If Not CBool(InStr(markup, "<pre>")) Then
             GetColorizedOrGetNowrap = markup & "  "
@@ -351,7 +359,7 @@ Class DocGenerator
     'Property Colorize
     'Parameters: boolean
     'Returns: boolean
-    'Remarks: Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with GFM), the code lines should not wrap. Default is True.
+    'Remarks: Gets or sets whether &lt;pre&gt; code blocks (assumed to be VBScript) in the markdown document are colorized. If False (experimental, with Git Flavored Markdown), the code lines should not wrap. Default is True.
     Property Get Colorize : Colorize = colorize_ : End Property
     Property Let Colorize(value) : colorize_ = value : End Property
     Private colorize_
@@ -427,9 +435,17 @@ Class DocGenerator
         If method = routineType Then
 
             msg = "Methods may have parameters; may not have Returns; must have Remarks."
-            If "" = remarksContent Then RaiseContentError msg
-            If Len(returnsContent) Then RaiseContentError msg Else returnsContent = "N/A"
-            If "" = parametersContent Then parametersContent = "None"
+            If "" = remarksContent Then
+                RaiseContentError msg & " (Remarks content is empty.)"
+            End If
+            If Len(returnsContent) Then
+                RaiseContentError msg & " (Returns content is not empty.)"
+            Else returnsContent = "N/A"
+            End If
+            If "" = parametersContent Then
+                parametersContent = "None"
+            End If
+
         ElseIf property_ =  routineType Then
 
             msg = "Properties may have parameters; may have Remarks; must have Returns. NOTE: Property Set and Property Let do not require a return value but still must have a 'Return or 'Returns comment."
@@ -539,7 +555,7 @@ Class DocGenerator
     End Sub
 
     Private Sub WriteBottomSection
-        WriteLine "<p> <em> See also the <a href=""https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)""> VBScript docs </a> </em> </p>"
+        WriteLine "<p> <em> See also the <a target=""_blank"" href=""https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)""> VBScript docs </a> </em> </p>"
         WriteLine "<span class=""debugOutput""></span>"
         WriteLine "<script type=""text/javascript"" src=""lib/docScript.js""></script>"
         IndentDecrease

@@ -2,14 +2,14 @@
 'An enum and wrapper for WScript.Shell.SpecialFolders
 
 'Usage example
-'<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("SpecialFolders") <br />     End With <br />   <br />     Dim sf : Set sf = New SpecialFolders <br />     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop </pre>
+'<pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "SpecialFolders" ) <br />     End With <br />   <br />     Dim sf : Set sf = New SpecialFolders <br />     MsgBox sf.GetPath(sf.AllUsersDesktop) 'C:\Users\Public\Desktop </pre>
 '
 Class SpecialFolders 'use as a kind of enum with WScript.Shell.SpecialFolders
 
     Private sh
 
     Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
+        Set sh = CreateObject( "WScript.Shell" )
     End Sub
 
     'Property GetPath
@@ -37,7 +37,7 @@ Class SpecialFolders 'use as a kind of enum with WScript.Shell.SpecialFolders
     'Remark: Returns an array of the aliases of all the special folders.
 
     Property Get GetAliasArray
-        Dim arr : arr = Split(GetAliasList, ",")
+        Dim arr : arr = Split( GetAliasList, "," )
         Dim i : For i = 0 To UBound(arr)
             arr(i) = Trim(arr(i)) 'trim off spaces
         Next

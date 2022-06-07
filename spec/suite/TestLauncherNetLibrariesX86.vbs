@@ -1,38 +1,47 @@
 'Launch the test runner for .dll libraries
 Option Explicit
+Dim testRunner
+
 Initialize
 Main
+
+Sub Initialize
+    Dim wow
+    Dim incl
+    Dim cscriptX86
+    cscriptX86 = "%SystemRoot%\SysWoW64\cscript.exe"
+    Set incl = CreateObject( "VBScripting.Includer" )
+    Execute incl.Read( "VBSTestRunner" )
+    Set testRunner = New VBSTestRunner
+    Execute incl.Read( "WoWChecker" )
+    Set wow = New WoWChecker
+    Execute incl.Read( "VBSApp" )
+    With New VBSApp
+        If "cscript.exe" = .GetExe _
+        And wow.IsWoW Then
+            WScript.StdOut.WriteLine "Using the 32-bit cscript.exe..."
+            Exit Sub
+        End If
+        .RestartUsing cscriptX86, .DoNotExit, .DoNotElevate
+    End With
+End Sub
+
 Sub Main
     testRunner.SetSpecPattern "*.spec.vbs"
     testRunner.SetSpecFolder "..\dll"
+
+    'if it is desired to run just a single test file, pass it in on the command line, using a relative path, relative to the spec folder. Also get the runCount from the command-line, arg #2, if specified
+
     With WScript.Arguments
-        If .Count Then
-            'if it is desired to run just a single test file, pass it in on the
-            'command line, using a relative path, relative to the spec folder
+        If .Count > 0 Then
             testRunner.SetSpecFile .item(0)
-            'get the runCount from the command-line, arg #2, if specified
-            If .Count > 1 Then testRunner.SetRunCount .item(1)
-       End If
+        End If
+        If .Count > 1 Then
+            testRunner.SetRunCount .item(1)
+        End If
     End With
+
+    'Run the test suite
+
     testRunner.Run
-End Sub
-
-Const privilegesElevated = True
-Const privilegesNotElevated = False
-Dim testRunner
-Sub Initialize
-    With CreateObject("VBScripting.Includer")
-        Execute .read("VBSTestRunner")
-        Execute .read("VBSApp")
-        Execute .read("WoWChecker")
-    End With
-    Set testRunner = New VBSTestRunner
-    Set app = New VBSApp
-    Set wow = New WoWChecker
-    If Not "cscript.exe" = app.GetHost Or Not wow.IsWoW Then
-        app.SetUserInteractive False
-        app.RestartWith "%SystemRoot%\SysWoW64\cscript.exe", "/k", privilegesNotElevated
-    End If
-
-    Dim app, wow
 End Sub

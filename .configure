@@ -1,0 +1,13 @@
+# Global project configuration
+
+# Expected and/or custom install locations of pwsh.exe, the cross-platform PowerShell.
+
+pwsh candidates, %ProgramFiles%\PowerShell\7\pwsh.exe | %ProgramFiles(x86)%\PowerShell\7\pwsh.exe | %ProgramFiles%\PowerShell\6\pwsh.exe | %ProgramFiles(x86)%\PowerShell\6\pwsh.exe
+
+# Expected and/or custom install locations of wt.exe, Windows Terminal.
+
+wt candidates, %LocalAppData%\Microsoft\WindowsApps\wt.exe
+
+# Regarding the "pwsh candidates" setting: This setting is leveraged by the Configurer class and used indirectly by PushPrep.hta and in the TestLaunchers in the spec\suite folder. See comments for the VBSApp class' RestartUsing method in docs\VBScriptClasses.md#vbsapp.
+
+# A similar but separate setting may be used with the VBSHoster class' RestartWith method, which is called by the the TestingFramework class: when a test file such as spec\Configurer.spec.wsf is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may changed by adding a "shell" key/value pair to class\VBSHoster.configure. 

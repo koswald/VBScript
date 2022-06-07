@@ -1,0 +1,269 @@
+<job>  <!-- test the Configurer object/class -->
+
+    <script language=VBScript
+        src=..\class\Configurer.vbs />
+    <script language=VBScript
+        src=..\class\TestingFramework.vbs />
+    <script language=VBScript
+        src=..\class\StringFormatter.vbs />
+    <script language=VBScript>
+
+Option Explicit
+Dim c 'Configurer object: the object that is being tested
+Dim actual, expected 'assertion arguments
+Dim s 'string
+Dim scr 'string: script filespec
+Dim parent, baseName 'string: partial filespecs
+Dim errDescr 'string
+Dim fso 'Scripting.FileSystemObject object
+Dim format 'VBScripting.StringFormatter object
+Dim includer 'VBScripting.Includer object
+Dim sh 'WScript.Shell object
+Dim inStream 'text stream object for reading from a file
+Dim inFile 'filespec of the file to be read, which is the filespec of the .hta fixture's output file
+Dim htaFile1 'filespec of an .hta file
+Dim arr1, arr2 'arrays
+Dim path 'string: a file or folder path
+Dim mockProgramFiles
+Dim mockLocalAppData
+Const synchronous = True 'for sh.Run
+Const Force = True 'for fso.DeleteFile
+
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set sh = CreateObject( "WScript.Shell" )
+Set format = New StringFormatter
+Set includer = CreateObject( "VBScripting.Includer" )
+scr = WScript.ScriptFullName
+parent = fso.GetParentFolderName( scr )
+baseName = fso.GetBaseName( scr )
+inFile = Expand( _
+    "%AppData%\VBScripting\Configurer.spec.txt" _
+)
+htaFile1 = format( Array( _
+    "%s\fixture\h t a\Configurer.hta", _
+    parent _
+))
+If fso.FileExists( Expand( inFile )) Then
+    fso.DeleteFile Expand( inFile ), Force
+End If
+If fso.FileExists( Expand( inFile )) Then
+    Err.Raise 51,, WScript.ScriptName & " can't continue, because the presence of the file """ & inFile & """ would invalidate part of the test, and the file could not be deleted."
+End If
+
+'Tests
+
+With New TestingFramework
+
+    .Describe "Configurer class"
+        Set c = includer( "Configurer").Init( WScript )
+
+    .It "should load a script's configuration file"
+        actual = c.Item( "shell" )
+        expected = "wt.exe pwsh"
+        .AssertEqual actual, expected
+
+    .It "should get the dictionary count"
+        .AssertEqual c.Count, 3
+
+    .It "should get a reference to the dictionary object"
+        .AssertEqual TypeName( c.Dictionary ), "Dictionary"
+
+    .It "should show whether a key/value pair exists in the dictionary"
+        .AssertEqual c.Exists( "shell" ), True
+
+    .It "should remove an inline comment"
+        s = "shell, pwsh # Cross-platform PowerShell"
+        actual = Join( c.ParseLine( s ))
+        expected = "shell pwsh"
+        .AssertEqual actual, expected
+
+    .It "should ignore a line beginning with #"
+        actual = c.ParseLine( "  # shell, pwsh" )
+        expected = Empty
+        .AssertEqual actual, expected
+
+    .It "should ignore a blank line"
+        actual = c.ParseLine( "    " )
+        expected = Empty
+        .AssertEqual actual, expected
+
+    .It "should err on attempt to load a missing file"
+        On Error Resume Next
+            c.LoadFile "C:\None such file.txt"
+            actual = Err.Description
+        On Error Goto 0
+        expected = "Couldn't find the configuration file C:\None such file.txt"
+        .AssertEqual actual, expected
+
+    .It "should give precedence to a more recently loaded configuration file"
+        c.LoadFile format( Array( _
+            "%s\fixture\%s.config2",_
+            parent, baseName _
+        ))
+        actual = c.Item( "shell" ) & c.Count
+        expected = "%ComSpec%3"
+        .AssertEqual actual, expected
+
+    .It "should err on missing comma"
+        On Error Resume Next
+            c.LoadFile format( Array( _
+                "%s\fixture\%s.config_Bad", _
+                parent, baseName _
+            ))
+            actual = Err.Description
+        On Error Goto 0
+        expected = "The configuration file is missing a required comma. File: " & c.ConfigFile
+        .AssertEqual actual, expected
+
+    .It "should load a class's configuration file"
+        Dim cl : Set cl = New ConfigLoader.Init( parent & "\fixture" )
+        actual = cl.Item( "TestItem1" )
+        expected = "a particular string"
+        .AssertEqual actual, expected
+
+    .It "should get a class configuration file's filespec by object reference"
+        actual = c.ClassConfigFile( cl )
+        expected = format( Array( _
+            "%s\ConfigLoader.configure", _
+            includer.LibraryPath _
+        ))
+        .AssertEqual actual, expected
+
+    .It "should get a class configuration file's filespec by name"
+        actual = c.ClassConfigFile( "ConfigLoader" )
+        expected = format( Array( _
+            "%s\ConfigLoader.configure", _
+            includer.LibraryPath _
+        ))
+        .AssertEqual actual, expected
+
+    .It "should build a configuration file's filespec for an .hta file"
+        sh.Run """" & htaFile1 & """",, synchronous
+        Set inStream = fso.OpenTextFile( Expand( inFile ))
+        actual = inStream.ReadLine
+        expected = format( Array( _
+            "%s\fixture\h t a\Configurer.configure", _
+            parent _
+        ))
+        inStream.Close
+        .AssertEqual actual, expected
+
+    .It "should convert a delimited string to an array"
+        actual = TypeName( c.ToArray( "zero | one" ))
+        expected = "Variant()"
+        .AssertEqual actual, expected
+
+    .It "should strip off excess spaces"
+        actual = c.ToArray( "one | two" )(1)
+        expected = "two"
+        .AssertEqual actual, expected
+
+    .It "should get the global config file's filespec"
+        'check the default, actual global config file before mocking it
+        actual = c.GlobalConfigFile
+        expected = format( Array( _
+            "%s\.configure", _
+            fso.GetAbsolutePathName( ".." ) _
+        ))
+        .AssertEqual actual, expected  
+  
+    .It "should load ""pwsh candidates"""
+        'set the mock/fixture global config file
+        Set c.Dictionary = Nothing
+        Set c.Dictionary = CreateObject( "Scripting.Dictionary" )
+        c.GlobalConfigFile = fso.GetAbsolutePathName( _
+            "fixture\Configurer.global.configure" )
+        c.LoadGlobalConfig
+        actual = c.Item("pwsh candidates")
+        expected = "%NonProgramFiles%\PowerShell\7\pwsh.exe | %MockProgramFiles%\PowerShell\7\pwsh.exe"
+        .AssertEqual actual, expected
+
+    .It "should load ""wt candidates"""
+        actual = c.Item("wt candidates")
+        expected = "%NonAppData%\Microsoft\WindowsApps\wt.exe | %MockLocalAppData%\Microsoft\WindowsApps\wt.exe"
+        .AssertEqual actual, expected
+
+    .It "should convert pwsh string to an array"
+        arr1 = c.ToArray( c.Item( "pwsh candidates" ))
+        actual = TypeName( arr1 )
+        expected = "Variant()"
+        .AssertEqual actual, expected
+
+    .It "should convert wt string to an array"
+        arr2 = c.ToArray( c.Item( "wt candidates" ))
+        actual = TypeName( arr2 )
+        expected = "Variant()"
+        .AssertEqual actual, expected
+
+    .It "should return the filespec of the first pwsh.exe found"
+        mockProgramFiles = fso.GetAbsolutePathName(".\fixture\Mock Program Files")
+        c.MockVar( "MockProgramFiles" ) = mockProgramFiles
+        actual = c.PowerShell
+        expected = c.Expand("%MockProgramFiles%\PowerShell\7\pwsh.exe")
+        .AssertEqual actual, expected
+
+    .It "should return the filespec of the first wt.exe found"
+        mockLocalAppData = fso.GetAbsolutePathName(".\fixture\Mock LocalAppData")
+        c.MockVar( "MockLocalAppData" ) = mockLocalAppData
+        actual = c.WT
+        expected = c.Expand("%MockLocalAppData%\Microsoft\WindowsApps\wt.exe")
+        .AssertEqual actual, expected
+
+    .It "should fallback to ""powershell"""
+        c.PowerShell = Empty
+        Set c.Dictionary = Nothing
+        Set c.Dictionary = CreateObject( "Scripting.Dictionary" )
+        c.GlobalConfigFile = fso.GetAbsolutePathName( _
+            "fixture\Configurer.global2.configure")
+        actual = c.PowerShell
+        expected = c.PsFallback
+        .AssertEqual actual, expected
+
+    .It "should fallback to Empty"
+        c.WT = Empty
+        Set c.Dictionary = Nothing
+        Set c.Dictionary = CreateObject( "Scripting.Dictionary" )
+        actual = c.WT
+        expected = Empty
+        .AssertEqual actual, expected
+
+    .DeleteFile inFile
+End With
+
+Function Write( str )
+    WScript.StdOut.WriteLine str
+End Function
+
+Function Expand( str )
+    Expand = sh.ExpandEnvironmentStrings( str )
+End Function
+
+'Sub ShowDictContents
+'Remarks: For troubleshooting.
+Sub ShowDictContents
+    Dim key
+    For Each key In c.Dictionary.Keys
+        Write key & ": " & c.Dictionary.Item( key )
+    Next
+End Sub
+
+'Class ConfigLoader
+'Remarks: Intended for testing the LoadClassConfig method and related aspects of the Configurer object.
+Class ConfigLoader
+    Private c 'Configurer object
+    Function Init( path )
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "Configurer" )
+        End With
+        Set c = New Configurer
+        c.LibraryPath = path
+        c.LoadClassConfig( me )
+        Set Init = me
+    End Function
+    Property Get Item( key )
+        Item = c.Item ( key )
+    End Property
+End Class
+
+    </script>
+</job>

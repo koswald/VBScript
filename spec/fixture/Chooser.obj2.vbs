@@ -6,12 +6,12 @@
 'requires the calling script to simulate user action
 
 'specifically,
-'when the user cancels out of the dialog, 
+'when the user cancels out of the dialog,
 'then the following statement is True
 'TypeName(obj) = "Nothing"
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("Chooser")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "Chooser" )
 End With
 Dim ch : Set ch = New Chooser
 

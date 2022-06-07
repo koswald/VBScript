@@ -20,12 +20,12 @@ Set stl = Nothing
 Set fso = Nothing
 
 Sub AddURL(wscPath)
-    If Not fso.FileExists(wscPath) Then Err.Raise 1,, "Couldn't find .wsc file" & vbLf & wscPath
+    If Not fso.FileExists(wscPath) Then Err.Raise 505,, "Couldn't find .wsc file" & vbLf & wscPath
     stl.AddURL wscPath
 End Sub
 
 Sub SetPath(tlbPath)
-    If Not fso.FolderExists(fso.GetParentFolderName(tlbPath)) Then Err.Raise 2,, "Couldn't find parent folder of .tlb file" & vbLf & tlbPath
+    If Not fso.FolderExists(fso.GetParentFolderName(tlbPath)) Then Err.Raise 505,, "Couldn't find parent folder of .tlb file" & vbLf & tlbPath
     stl.Path = tlbPath
 End Sub
 
@@ -43,8 +43,8 @@ Sub Initialize
             , 1 _
             , 0 _
     )
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    classPath = fso.GetAbsolutePathName("..")
-    Set stl = CreateObject("Scriptlet.TypeLib")
-    Set format = CreateObject("VBScripting.StringFormatter")
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    classPath = fso.GetAbsolutePathName( ".." )
+    Set stl = CreateObject( "Scriptlet.TypeLib" )
+    Set format = CreateObject( "VBScripting.StringFormatter" )
 End Sub

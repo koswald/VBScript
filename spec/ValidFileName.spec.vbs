@@ -1,24 +1,28 @@
 
-'test ValidFileName.vbs
+'Test ValidFileName.vbs
 
-Initialize
+Option Explicit
+Dim includer
+
+Set includer = CreateObject( "VBScripting.Includer" )
+
 Main
-Set includer = Nothing
 
 Sub Main
+    Execute includer.Read( "TestingFramework" )
     With New TestingFramework
 
         .describe "ValidFileName.vbs"
 
         .it "should raise an error when Execute is used with non-global scope."
-            Execute includer.read("ValidFileName")
+            Execute includer.Read( "ValidFileName" )
             On Error Resume Next
-                Dim x : x = GetValidFileName("xx")
+                Dim x : x = GetValidFileName( "xx" )
                 .AssertEqual Err.Description, "Use ExecuteGlobal, not Execute, with Function-based scripts like ValidFileName.vbs, when scope is not global."
             On Error Goto 0
 
         .it "should return a string suitable for a filename"
-            ExecuteGlobal includer.read("ValidFileName")
+            ExecuteGlobal includer.Read( "ValidFileName" )
             .AssertEqual GetValidFileName("\/:*?""<>|%20#"), "-----------"
 
         .it "should return characters invalid in a Windows filename"
@@ -28,10 +32,4 @@ Sub Main
             .AssertEqual Join(InvalidChromeFilenameStrings), "%20 #"
 
     End With
-End Sub
-
-Dim includer
-Sub Initialize
-    Set includer = CreateObject("VBScripting.Includer")
-    ExecuteGlobal includer.read("TestingFramework")
 End Sub

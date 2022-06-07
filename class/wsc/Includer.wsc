@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<?component error="true"?> 
-<component> 
+<?component error="true"?>
+<component>
 
     <registration
         description="Windows Script Component dependency manager"
@@ -9,22 +9,38 @@
     </registration>
 
     <public>
-        <property name="GetObj"> <!-- return an object based on one of the project classes -->
+
+        <!-- Return an object based on one of the project classes, given the base name of the .wsc file in the "wsc" folder. -->
+        <property name="GetObj">
             <get internalName="GetObj" />
         </property>
-        <property name="Read"> <!-- return the contents of a text file (.vbs is assumed if not specified); relative path allowed (relative to the "class" folder). -->
+
+        <!-- Return an object based on one of the project classes, given the base name of the .vbs file in the "class" folder. Default property. Experimental. Doesn't work well within a Class block. -->
+        <property name="LoadObject" dispid="0">
+            <get internalName="LoadObject" />
+        </property>
+
+        <!-- Return the contents of a given text file (.vbs is assumed if not specified); relative path allowed (relative to the "class" folder). -->
+        <property name="Read">
             <get internalName="Read" />
         </property>
-        <property name="ReadFrom"> <!-- return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2) -->
+
+        <!-- Return the contents of a text file of the specified name (arg #1) located in the specified folder (arg#2). -->
+        <property name="ReadFrom">
             <get internalName="ReadFrom" />
         </property>
-        <property name="LibraryPath"> <!-- get the absolute path of the "class" folder -->
+
+        <!-- Get the absolute path of the "class" folder -->
+        <property name="LibraryPath">
             <get internalName="LibraryPath" />
         </property>
-        <method name="SetLibraryPath" />
+        <method name="SetLibraryPath">
+        </method>
+
     </public>
 
     <script language="VBScript" src="../EncodingAnalyzer.vbs" />
     <script language="VBScript" src="../Includer.vbs" />
+    <script language="VBScript" src="./src/IncluderWrapper.vbs"/>
 
 </component>

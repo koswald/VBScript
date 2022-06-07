@@ -183,11 +183,11 @@ Class VBSEnvironment
         defaults = GetDefaults
         filtered = "filtered"
         nonFiltered = "nonFiltered"
-        Set sh = CreateObject("WScript.Shell")
-        Set userEnv = sh.Environment("user")
-        Set sysEnv = sh.Environment("system")
-        Set proEnv = sh.Environment("process")
-        Set volEnv = sh.Environment("volatile")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set userEnv = sh.Environment( "user" )
+        Set sysEnv = sh.Environment( "system" )
+        Set proEnv = sh.Environment( "process" )
+        Set volEnv = sh.Environment( "volatile" )
     End Sub
 
     Sub Class_Terminate

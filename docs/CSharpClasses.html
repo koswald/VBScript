@@ -18,7 +18,7 @@
   </tr>
   <tr>
     <td> Admin </td>
-    <td> Provide miscellaneous system admin. features.  </td>
+    <td> Provide miscellaneous system admin. features. Requires an assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll" or the equivalent. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -135,7 +135,7 @@
   </tr>
   <tr>
     <td> EventLogResultT </td>
-    <td> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. Not directly available to VBScript. See <tt>Admin.Result</tt>. </td>
+    <td> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. Available to VBScript via <code>Admin.Result</code>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -257,7 +257,7 @@
   </tr>
   <tr>
     <td> InvokeComCallback </td>
-    <td> Invokes a VBScript method. The parameter <tt>callbackRef</tt> is a reference to a VBScript member returned by the VBScript Function GetRef. </td>
+    <td> Invokes a VBScript method. The parameter <code> callbackRef</code> is a reference to a VBScript member returned by the VBScript Function GetRef. </td>
     <td>  </td>
     <td> callbackRef </td>
     <td> Method </td>
@@ -278,8 +278,8 @@
     <th> Namespace </th>
   </tr>
   <tr>
-    <td> IEventLogger </td>
-    <td> A COM Interface for VBScripting.EventLogger  </td>
+    <td> EventLogger </td>
+    <td> Provides system logging for VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -287,8 +287,8 @@
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> EventLogger </td>
-    <td> Provides system logging for VBScript.  </td>
+    <td> IEventLogger </td>
+    <td> A COM Interface for VBScripting.EventLogger  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -333,15 +333,6 @@
     <td>  </td>
     <td> Type </td>
     <td> </td>
-    <td> VBScripting </td>
-  </tr>
-  <tr>
-    <td> (Constructor) </td>
-    <td> Constructor  </td>
-    <td>  </td>
-    <td>  </td>
-    <td> Method </td>
-    <td> FileChooser </td>
     <td> VBScripting </td>
   </tr>
   <tr>
@@ -475,8 +466,8 @@
     <th> Namespace </th>
   </tr>
   <tr>
-    <td> IFolderChooser </td>
-    <td> COM interface for VBScripting.FolderChooser  </td>
+    <td> FolderChooser </td>
+    <td> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -484,8 +475,8 @@
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> FolderChooser </td>
-    <td> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. </td>
+    <td> IFolderChooser </td>
+    <td> COM interface for VBScripting.FolderChooser  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -533,8 +524,8 @@
     <th> Namespace </th>
   </tr>
   <tr>
-    <td> IFolderChooser2 </td>
-    <td> COM interface for VBScripting.FolderChooser2  </td>
+    <td> FolderChooser2 </td>
+    <td> Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -542,8 +533,8 @@
     <td> VBScripting </td>
   </tr>
   <tr>
-    <td> FolderChooser2 </td>
-    <td> Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. </td>
+    <td> IFolderChooser2 </td>
+    <td> COM interface for VBScripting.FolderChooser2  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -646,7 +637,7 @@
   </tr>
   <tr>
     <td> Extract </td>
-    <td> Extracts an icon from the specified .dll or .exe file. <strong> This method is static and so it is not directly available to VBScript. </strong> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. </td>
+    <td> Extracts an icon from the specified .dll or .exe file. <strong> This method is not available to VBScript. In VBScript, use the Save method. </strong> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. </td>
     <td> an icon </td>
     <td> file, index, largeIcon </td>
     <td> Method </td>
@@ -704,7 +695,7 @@
   </tr>
   <tr>
     <td> NotifyIcon </td>
-    <td> Provides a system tray icon for VBScript, for illustration purposes.  </td>
+    <td> Provides a notification area (system tray) icon for VBScript, for illustration purposes.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -740,7 +731,7 @@
   </tr>
   <tr>
     <td> SetIconByIcoFile </td>
-    <td> Sets the system tray icon given an .ico file. The parameter <tt>fileName</tt> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </td>
+    <td> Sets the system tray icon given an .ico file. The parameter <code>fileName</code> specifies the filespec of the .ico file. Environment variables and relative paths are allowed. </td>
     <td>  </td>
     <td> fileName </td>
     <td> Method </td>
@@ -749,7 +740,7 @@
   </tr>
   <tr>
     <td> SetIconByDllFile </td>
-    <td> Sets the system tray icon from a .dll or .exe file. Parameters: <tt>fileName</tt> is the path and name of a .dll or .exe file that contains icons. <tt>index</tt> is an integer that specifies which icon to use. <tt>largeIcon</tt> is a boolean that specifies whether to use a large or small icon. </td>
+    <td> Sets the system tray icon from a .dll or .exe file. Parameters: <code>fileName</code> is the path and name of a .dll or .exe file that contains icons. <code>index</code> is an integer that specifies which icon to use. <code>largeIcon</code> is a boolean that specifies whether to use a large or small icon. </td>
     <td>  </td>
     <td> fileName, index, largeIcon </td>
     <td> Method </td>
@@ -758,7 +749,7 @@
   </tr>
   <tr>
     <td> SetBalloonTipIcon </td>
-    <td> Sets the icon of the "balloon tip" or notification. The parameter <tt>type</tt> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </td>
+    <td> Sets the icon of the "balloon tip" or notification. The parameter <code>type</code> is an integer that specifies which icon to use: Return values of ToolTipIcon properties can be used: Error = 1, Info = 2, None = 3, Warning = 4. </td>
     <td>  </td>
     <td> type </td>
     <td> Method </td>
@@ -776,7 +767,7 @@
   </tr>
   <tr>
     <td> AddMenuItem </td>
-    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <tt>menuText</tt> is a string that specifies the text that appears in the menu. The parameter <tt>callbackRef</tt> is a VBScript object reference returned by the VBScript GetRef Function. </td>
+    <td> Add a menu item to the system tray icon's context menu. This method can be called only from VBScript. The parameter <code>menuText</code> is a string that specifies the text that appears in the menu. The parameter <code>callbackRef</code> is a VBScript object reference returned by the VBScript GetRef Function. </td>
     <td>  </td>
     <td> menuText, callbackRef </td>
     <td> Method </td>
@@ -803,7 +794,7 @@
   </tr>
   <tr>
     <td> SetBalloonTipCallback </td>
-    <td> Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef("ProcedureName") </pre> </td>
+    <td> Sets the VBScript callback Sub or Function reference invoked when the notification "balloon" is clicked. VBScript example: <pre>    obj.SetBalloonTipCallback GetRef( "ProcedureName" ) </pre> </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
@@ -812,18 +803,18 @@
   </tr>
   <tr>
     <td> DisableMenuItem </td>
-    <td> Disable a menu item  </td>
+    <td> Disables a menu item. Parameter <em> index </em> values are integers assigned automatically as each item is added to the menu, beginning with 0. </td>
     <td>  </td>
-    <td>  </td>
+    <td> index </td>
     <td> Method </td>
     <td> NotifyIcon </td>
     <td> VBScripting </td>
   </tr>
   <tr>
     <td> EnableMenuItem </td>
-    <td> Enable a menu item  </td>
+    <td> Enables a menu item. Parameter <em> index </em> values are integers assigned automatically as each item is added to the menu, beginning with 0. </td>
     <td>  </td>
-    <td>  </td>
+    <td> index </td>
     <td> Method </td>
     <td> NotifyIcon </td>
     <td> VBScripting </td>
@@ -866,7 +857,7 @@
   </tr>
   <tr>
     <td> BalloonTipLifetime </td>
-    <td> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista, the value is overridden by accessibility settings.  </td>
+    <td> Gets or sets the lifetime of the "balloon tip" or notification. An integer (milliseconds). Deprecated as of Windows Vista. The value is overridden by accessibility settings.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -884,7 +875,7 @@
   </tr>
   <tr>
     <td> ToolTipIconT </td>
-    <td> Supplies the type required by NotifyIcon.ToolTipIcon <strong> This class is not directly accessible from VBScript, however, it is accessible via the <tt>NotifyIcon.ToolTipIcon</tt> property. </strong> </td>
+    <td> Supplies the type required by NotifyIcon.ToolTipIcon <strong> This class is accessible from VBScript via the <code>NotifyIcon.ToolTipIcon</code> property. </strong> </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -965,7 +956,7 @@
   </tr>
   <tr>
     <td> CallbackReference </td>
-    <td> An orderly way to save the index and callback reference for a single menu item. <strong> This class is not accessible to VBScript. </strong> In VBScript, callback references are instantiated using the AddMenuItem and SetBalloonTipCallback methods. </td>
+    <td> An orderly way to save the index and callback reference for a single menu item. <strong> This class is accessible to VBScript indirectly via the AddMenuItem and SetBalloonTipCallback methods. </strong> </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -983,7 +974,7 @@
   </tr>
   <tr>
     <td> Index </td>
-    <td> This Index corresponds to the Index of a menuItem in the context menu.  </td>
+    <td> The Index property corresponds to the index of a menu item in the notification area (system tray) context menu.  </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -1297,7 +1288,7 @@
   </tr>
   <tr>
     <td> SpeechSynthesis </td>
-    <td> Provide a wrapper for the .NET speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. </td>
+    <td> Provide a wrapper for the .NET speech synthesizer for VBScript, for demonstration purposes. Requires an assembly reference to <code>C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</code> or the equivalent. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -1306,7 +1297,7 @@
   </tr>
   <tr>
     <td> ISpeechSynthesis </td>
-    <td> The COM interface for <tt>VBScripting.SpeechSynthesis</tt>
+    <td> The COM interface for <code>VBScripting.SpeechSynthesis</code>
   </td>
     <td>  </td>
     <td>  </td>
@@ -1361,7 +1352,7 @@
   </tr>
   <tr>
     <td> Voices </td>
-    <td> Gets an array of the names of the installed, enabled voices. Each element of the array can be used to set <tt>Voice</tt>. </td>
+    <td> Gets an array of the names of the installed, enabled voices. Each element of the array can be used to set <code>Voice</code>. </td>
     <td>  </td>
     <td>  </td>
     <td> Method </td>
@@ -1379,7 +1370,7 @@
   </tr>
   <tr>
     <td> Voice </td>
-    <td> Gets or sets the current voice by name. A string. One of the names from the <tt>Voices</tt> array. </td>
+    <td> Gets or sets the current voice by name. A string. One of the names from the <code>Voices</code> array. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -1388,7 +1379,7 @@
   </tr>
   <tr>
     <td> SynthesizerState </td>
-    <td> Gets the state of the SpeechSynthesizer. Read only. Returns an integer equal to one of the <tt>State</tt> method return values. </td>
+    <td> Gets the state of the SpeechSynthesizer. Read only. Returns an integer equal to one of the <code>State</code> method return values. </td>
     <td>  </td>
     <td>  </td>
     <td> Property </td>
@@ -1406,7 +1397,7 @@
   </tr>
   <tr>
     <td> State </td>
-    <td> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <tt>SynthesizerState</tt>.  </td>
+    <td> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <code>SynthesizerState</code>.  </td>
     <td> a SynthersizerStateT </td>
     <td>  </td>
     <td> Property </td>
@@ -1415,7 +1406,7 @@
   </tr>
   <tr>
     <td> SynthesizerStateT </td>
-    <td> Enumerates the synthesizer states. Not intended for use in VBScript. See <tt>SpeechSynthesis.State</tt>. </td>
+    <td> Enumerates the synthesizer states. Not intended for use in VBScript. See <code>SpeechSynthesis.State</code>. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -1482,7 +1473,7 @@
   </tr>
   <tr>
     <td> Timer </td>
-    <td> Wraps the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  </td>
+    <td> Wraps the <a target="_blank" href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>
@@ -1585,7 +1576,7 @@
   </tr>
   <tr>
     <td> Watcher </td>
-    <td> Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </td>
+    <td> Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a target="_blank" href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a target="_blank" href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. </td>
     <td>  </td>
     <td>  </td>
     <td> Type </td>

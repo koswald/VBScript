@@ -1,0 +1,133 @@
+<job>
+    <!-- Integration test for the VBSHoster class -->
+    <script language="VBScript"
+        src="../class/VBSHoster.vbs" />
+    <script language="VBScript"
+        src="../class/TestingFramework.vbs" />
+    <script language="VBScript"
+        src="../class/StringFormatter.vbs" />
+    <script language="VBScript">
+
+Option Explicit
+Dim hoster 'VBSHoster object under test
+Dim format 'StringFormatter object
+Dim actual, expected
+Dim scr 'WScript.ScriptFullName
+
+Set format = New StringFormatter
+scr = WScript.ScriptFullName
+
+With New TestingFramework
+
+    .Describe "VBSHoster class"
+        Set hoster = New VBSHoster
+
+    .It "should have a RestartWith method"
+        actual = TypeName( hoster.RestartWith( Empty ))
+        expected = "Empty"
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (cmd, /c)"
+        hoster.Shell = "cmd"
+        hoster.Switch = "/c"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "cmd /c cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (cmd, /k)"
+        hoster.Shell = "cmd"
+        hoster.Switch = "/k"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "cmd /k cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (powershell, /c)"
+        hoster.Shell = "powershell"
+        hoster.Switch = "/c"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "powershell -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (powershell, /k)"
+        hoster.Shell = "powershell"
+        hoster.Switch = "/k"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "powershell -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (pwsh, /c)"
+        hoster.Shell = "pwsh"
+        hoster.Switch = "/c"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "pwsh -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (pwsh, /k)"
+        hoster.Shell = "pwsh"
+        hoster.Switch = "/k"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "pwsh -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (wt pwsh, /c)"
+        hoster.Shell = "wt pwsh"
+        hoster.Switch = "/c"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "wt pwsh -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should get the restart command (wt pwsh, /k)"
+        hoster.Shell = "wt pwsh"
+        hoster.Switch = "/k"
+        actual = hoster.RestartCommand( "cscript.exe" )
+        expected = format( Array( _
+            "wt pwsh -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+        ))
+    .AssertEqual actual, expected
+
+    .It "should have an EnsureCScriptHost method"
+        hoster.MethodExistsTest = True
+        actual = TypeName( hoster.EnsureCScriptHost )
+        expected = "Empty"
+    .AssertEqual actual, expected
+
+    .It "should reset the MethodExistsTest property after each test"
+        actual = hoster.MethodExistsTest
+        expected = False
+    .AssertEqual actual, expected
+
+    .It "should have a SetSwitch method"
+        actual = TypeName( hoster.SetSwitch( Empty ))
+        expected = "Empty"
+    .AssertEqual actual, expected
+
+    .It "should have a SetDefaultHostCScript method"
+        hoster.MethodExistsTest = True
+        actual = TypeName( hoster.SetDefaultHostCScript )
+        expected = "Empty"
+    .AssertEqual actual, expected
+
+    .It "should have a SetDefaultHostWScript method"
+        hoster.MethodExistsTest = True
+        actual = TypeName( hoster.SetDefaultHostWScript )
+        expected = "Empty"
+    .AssertEqual actual, expected
+
+End With
+
+    </script>
+</job>

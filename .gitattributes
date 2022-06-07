@@ -1,4 +1,4 @@
-# Since this is a Windows project, and not cross-platform, 
+# Since this is a Windows project, and not cross-platform,
 # it is desirable to have crlf line endings in the working tree,
 # particularly when the project is downloaded in .zip format.
 *       text eol=crlf

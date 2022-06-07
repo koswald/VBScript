@@ -4,7 +4,7 @@
 Option Explicit : Initialize
 
 'Create the object
-Set ni = CreateObject("VBScripting.NotifyIcon")
+Set ni = CreateObject( "VBScripting.NotifyIcon" )
 
 'test three ways to set the icon
 ni.SetIconByIcoFile "fixture\star.ico"
@@ -20,14 +20,14 @@ ni.BalloonTipText = "Notification message, AKA balloon tip text."
 ni.SetBalloonTipIcon ni.ToolTipIcon.Info 'Error, Info, None, Warning
 
 'add menu items / callbacks
-ni.AddMenuItem "Show balloon tip", GetRef("ShowBalloonTip")
-ni.AddMenuItem "Open test file in Notepad", GetRef("OpenNotepad")
-ni.AddMenuItem "Change the icon", GetRef("ChangeTheIcon")
-ni.AddMenuItem "E&xit", GetRef("CloseAndExit")
+ni.AddMenuItem "Show balloon tip", GetRef( "ShowBalloonTip" )
+ni.AddMenuItem "Open test file in Notepad", GetRef( "OpenNotepad" )
+ni.AddMenuItem "Change the icon", GetRef( "ChangeTheIcon" )
+ni.AddMenuItem "E&xit", GetRef( "CloseAndExit" )
 ni.Visible = True
 
 'set callback for the balloon tip (notification) click
-ni.SetBalloonTipCallback GetRef("BalloonTipClicked")
+ni.SetBalloonTipCallback GetRef( "BalloonTipClicked" )
 
 ListenForCallbacks
 
@@ -80,11 +80,11 @@ Const largeIcon = True, smallIcon = False
 Dim icons, iconIndex, shell32_dll
 
 Sub Initialize
-    Set sh = CreateObject("WScript.Shell")
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set sh = CreateObject( "WScript.Shell" )
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
     shell32_dll = "%SystemRoot%\System32\shell32.dll"
-    With CreateObject("VBScripting.Includer")
-        Execute .read("StringFormatter")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "StringFormatter" )
     End With
     Set format = New StringFormatter
     'show the test-case message

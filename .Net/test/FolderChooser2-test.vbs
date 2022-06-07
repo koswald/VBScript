@@ -1,4 +1,4 @@
-With CreateObject("VBScripting.FolderChooser2")
+With CreateObject( "VBScripting.FolderChooser2" )
     .Title = "Some title"
     .InitialDirectory = ".."
     .InitialDirectory = "%UserProfile%"

@@ -1,0 +1,30 @@
+<hta:application
+    purpose="Show the event.keyCode value for any key"
+    scroll="No"
+    innerBorder="No"
+    icon="ActionCenterCPL.dll">
+    <script language="VBScript">
+        document.Title = "... " & Right( document.location.href, 23 )
+        Self.ResizeTo 350, 200
+        Self.MoveTo 350, 200
+    </script>
+    <body>
+        Press a key to see its key code.
+        <script language="VBScript">
+            Sub Document_OnKeyDown
+                ShowKeyCode
+            End Sub
+            Sub Document_OnKeyUp
+                ShowKeyCode
+            End Sub
+            Sub ShowKeyCode
+                output.innerHTML = _
+                    "window.event.keyCode: " & window.event.keyCode &  "<br>" & _
+                    "window.event.shiftKey: "& window.event.shiftKey & "<br>" & _
+                    "window.event.ctrlKey: " & window.event.ctrlKey &  "<br>" & _
+                    "window.event.altKey: "  & window.event.altKey
+            End Sub
+        </script>
+        <p id="output"> </p>
+    </body>
+</hta:application>

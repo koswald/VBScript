@@ -1,5 +1,5 @@
-// admin utility for VBScript
-// requires assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll"
+// Admin utility for VBScript
+// Requires an assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll" or the equivalent.
 
 using System.Diagnostics;
 using System.Security.Principal;
@@ -12,7 +12,8 @@ using System.DirectoryServices.AccountManagement;
 namespace VBScripting
 {
     /// <summary> Provide miscellaneous system admin. features. </summary>
-    [ProgId("VBScripting.Admin"),
+    /// <remarks> Requires an assembly reference to "C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll" or the equivalent.</remarks>
+    [ProgId( "VBScripting.Admin" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-8AF8-495F-AB4D-6C61BD463EA4")]
     public class Admin : IAdmin
@@ -40,8 +41,8 @@ namespace VBScripting
         }
 
         /// <summary> Gets whether the current user is in the Administrator group (on the current machine). Slow. May take five seconds or longer. Does not necessarily mean that privileges are elevated. Adapted from a <a href="https://stackoverflow.com/questions/44507149/how-to-check-if-current-user-is-in-admin-group-c-sharp#answer-47564106" title="stackoverflow.com" target="_blank"> stackoverflow.com post</a>.</summary>
-        // requires using statement: System.DirectoryServices.AccountManagement
-        // requires assembly reference: C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll
+        // Requires using statement: System.DirectoryServices.AccountManagement
+        // Requires an assembly reference: C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.DirectoryServices.AccountManagement.dll or the equivalent.
         public static bool IsAdministrator()
         {
             using (var pc = new PrincipalContext(ContextType.Machine, Environment.UserDomainName))
@@ -53,7 +54,7 @@ namespace VBScripting
             }
         }
         /// <summary> </summary>
-        // VBScript/COM wrapper for the static IsAdministrator
+        // VBScript wrapper for the static IsAdministrator
         public bool isAdministrator()
         {
             return IsAdministrator();
@@ -229,7 +230,7 @@ namespace VBScripting
             {
                 msg = string.Format(
                     "Failed to delete source \"{0}\".\n" +
-                    "Privileges {1} elevated.\n" + 
+                    "Privileges {1} elevated.\n" +
                     "Elevated privileges are required.\n\n{2}",
                     source,
                     PrivilegesAreElevated? "are" : "are not",
@@ -270,12 +271,13 @@ namespace VBScripting
             SendMessage(HWND, WM_SYSCOMMAND, SC_MONITORPOWER, MONITOR_OFF);
         }
 
-        [DllImport("user32.dll")]
+        [DllImport( "user32.dll" )]
         private static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);
     }
+
     /// <summary> Provides a set of terse behavior/result descriptions suitable for VBScript comparisons and MsgBox captions. </summary>
-    /// <remarks> Not directly available to VBScript. See <tt>Admin.Result</tt>. </remarks>
-    [ProgId("VBScripting.EventLogResultT"),
+    /// <remarks> Available to VBScript via <code>Admin.Result</code>. </remarks>
+    [ProgId( "VBScripting.EventLogResultT" ),
         Guid("2650C2AB-8CF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogResultT
     {
@@ -299,7 +301,7 @@ namespace VBScripting
             get { return "Source deletion error"; } }
     }
     /// <summary> Type returned by CreateEventSource and DeleteEventSource. </summary>
-    [ProgId("VBScripting.EventLogSourceResult"),
+    [ProgId( "VBScripting.EventLogSourceResult" ),
         Guid("2650C2AB-8DF8-495F-AB4D-6C61BD463EA4")]
     public class EventLogSourceResult
     {

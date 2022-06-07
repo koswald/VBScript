@@ -16,8 +16,8 @@ This behavior is seen with other classes in the 'class' folder, not just VBSLogg
 
 - Create a new .vbs file with the following code.
     ```vb
-    With CreateObject("VBScripting.Includer")
-        Execute .Read("VBSLogger")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "VBSLogger" )
         Set log = New VBSLogger
     End With
     ```
@@ -28,15 +28,15 @@ This behavior is seen with other classes in the 'class' folder, not just VBSLogg
 
 - Use a Dim statement:
     ```vb
-    With CreateObject("VBScripting.Includer")
-        Execute .Read("VBSLogger")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "VBSLogger" )
         Dim log : Set log = New VBSLogger
     End With
     ```
 - Rename the variable.
     ```vb
-    With CreateObject("VBScripting.Includer")
-        Execute .Read("VBSLogger")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "VBSLogger" )
         Set logger = New VBSLogger
     End With
     ```

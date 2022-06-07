@@ -1,38 +1,54 @@
 <!-- Launch the test runner for 32-bit (x86) tests -->
 <job>
-    <script language="VBScript" src="../../class/WoWChecker.vbs"></script>
-    <script language="VBScript" src="../../class/VBSTestRunner.vbs"></script>
-    <script language="VBScript" src="../../class/VBSApp.vbs"></script>
+    <script language="VBScript"
+        src="../../class/WoWChecker.vbs"></script>
+    <script language="VBScript"
+        src="../../class/VBSTestRunner.vbs"></script>
+    <script language="VBScript"
+        src="../../class/VBSApp.vbs"></script>
     <script language="VBScript">
-        Option Explicit
-        Initialize
-        Main
-        Sub Main
-            testRunner.SetSpecPattern "*.spec.wow.vbs"
-            testRunner.SetSpecFolder "..\wow"
-            With WScript.Arguments
-                If .Count Then
-                    'if it is desired to run just a single test file, pass it in on the
-                    'command line, using a relative path, relative to the spec folder
-                    testRunner.SetSpecFile .item(0)
-                    'get the runCount from the command-line, arg #2, if specified
-                    If .Count > 1 Then testRunner.SetRunCount .item(1)
-               End If
-            End With
-            testRunner.Run
-        End Sub
 
-        Const privilegesElevated = True
-        Const privilegesNotElevated = False
-        Dim testRunner
-        Sub Initialize
-            Set testRunner = New VBSTestRunner
-            Dim wow : Set wow = New WoWChecker
-            Dim app : Set app = New VBSApp
-            If Not wow.isWoW Or Not "cscript.exe" = app.GetExe Then
-                app.SetUserInteractive False
-                app.RestartWith "%SystemRoot%\SysWoW64\cscript.exe", "/k", privilegesNotElevated
-            End If
-        End Sub
+Option Explicit
+Dim testRunner
+
+Initialize
+Main
+
+Sub Initialize
+    Dim cscriptX86 'string: filespec
+    Dim wow 'WowChecker object
+    cscriptX86 = "%SystemRoot%\SysWoW64\cscript.exe"
+    Set testRunner = New VBSTestRunner
+    Set wow = New WoWChecker
+    With New VBSApp
+        If "cscript.exe" = .GetExe _
+        And wow.IsWoW Then
+            WScript.StdOut.WriteLine "Using the 32-bit cscript.exe..."
+            Exit Sub
+        End If
+        .RestartUsing cscriptX86, .DoNotExit, .DoNotElevate
+    End With
+End Sub
+
+Sub Main
+    testRunner.SetSpecPattern "*.spec.wow.vbs"
+    testRunner.SetSpecFolder "..\wow"
+
+    'If it is desired to run just a single test file, pass it in on the command line, using a relative path, relative to the spec folder. Also, get the runCount from the command-line, arg #2, if specified
+
+    With WScript.Arguments
+        If .Count > 0 Then
+            testRunner.SetSpecFile .item(0)
+        End If
+        If .Count > 1 Then
+            testRunner.SetRunCount .item(1)
+        End If
+    End With
+
+    'Run the test(s)
+
+    testRunner.Run
+End Sub
+
     </script>
 </job>

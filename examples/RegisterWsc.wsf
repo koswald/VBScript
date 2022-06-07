@@ -14,7 +14,7 @@
 Option Explicit : Setup
 With WScript.Arguments
     If 0 = .Count Then
-        Err.Raise 1,, "Argument expected: the .wsc file to register."
+        Err.Raise 449,, "Argument expected: the .wsc file to register."
     End If
     Dim i, item, file
     For i = 0 To .Count - 1
@@ -26,7 +26,7 @@ With WScript.Arguments
             If fso.FileExists(item) Then file = item
         End If
     Next
-    If IsEmpty(file) Then Err.Raise 2,, "None of the command line arguments specify an existing file."
+    If IsEmpty(file) Then Err.Raise 450,, "None of the command line arguments specify an existing file."
 End With
 
 Dim args : args = format(Array("/c " & _
@@ -35,7 +35,7 @@ Dim args : args = format(Array("/c " & _
     flags, file, flags, file _
   ))
 
-With CreateObject("Shell.Application")
+With CreateObject( "Shell.Application" )
     .ShellExecute "cmd", args,, "runas"
 End With
 
@@ -47,9 +47,9 @@ End Function
 Function Resolve(relativePath)
     Resolve = fso.GetAbsolutePathName(relativePath)
     If Not fso.FileExists(Resolve) Then
-        Err.Raise 3,, "File doesn't exist: " & Resolve
+        Err.Raise 505,, "File doesn't exist: " & Resolve
     ElseIf Not "wsc" = LCase(fso.GetExtensionName(Resolve)) Then
-        Err.Raise 4,, "Expected .wsc file. Actual file: " & Resolve
+        Err.Raise 5,, "Expected .wsc file. Actual file: " & Resolve
     End If
 End Function
 
@@ -57,8 +57,8 @@ Dim sh, fso, format
 Dim flags
 Dim uninstalling
 Sub Setup
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Set sh = CreateObject("WScript.Shell")
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    Set sh = CreateObject( "WScript.Shell" )
     Set format = New StringFormatter
     flags = ""
     uninstalling = False

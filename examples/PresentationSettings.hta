@@ -60,7 +60,7 @@
             End If
         End Sub
         Function GetTimeoutAttributes
-            GetTimeoutAttributes = regUtil.GetDWordValue(regUtil.HKLM, timeoutKey, "Attributes")
+            GetTimeoutAttributes = regUtil.GetDWordValue( regUtil.HKLM, timeoutKey, "Attributes" )
         End Function
         Sub OptionChanged
                 SetTimeoutAttributes enabler.options(enabler.SelectedIndex).value
@@ -86,20 +86,20 @@
         Sub Window_OnLoad
             self.resizeTo 450, 630
             self.moveTo 830, 0
-            Set watcher = CreateObject("VBScripting.Watcher")
-            Set app = CreateObject("VBScripting.VBSApp")
+            Set watcher = CreateObject( "VBScripting.Watcher" )
+            Set app = CreateObject( "VBScripting.VBSApp" )
             app.Init document
-            Dim includer : Set includer = CreateObject("VBScripting.Includer")
-            Execute includer.Read("RegistryUtility")
+            Dim includer : Set includer = CreateObject( "VBScripting.Includer" )
+            Execute includer.Read( "RegistryUtility" )
             Set includer = Nothing
             Set regUtil = New RegistryUtility
-            Set sh = CreateObject("WScript.Shell")
+            Set sh = CreateObject( "WScript.Shell" )
             sh.CurrentDirectory = app.GetParentFolderName
-            Set fso = CreateObject("Scripting.FileSystemObject")
+            Set fso = CreateObject( "Scripting.FileSystemObject" )
 
-            Set enabler.OnChange = GetRef("OptionChanged")
+            Set enabler.OnChange = GetRef( "OptionChanged" )
             enabler.style.marginTop = "10px"
-            Set errMsg = document.getElementsByTagName("div")(0)
+            Set errMsg = document.getElementsByTagName( "div" )(0)
             If Not watcher.Privileged Then
                 enabler.disabled = True
                 acSeconds.disabled = True
@@ -111,8 +111,8 @@
                 acSeconds.Title = msg
                 dcSeconds.Title = msg
             End If
-            Set optionDisabled = document.createElement("option")
-            Set optionEnabled = document.createElement("option")
+            Set optionDisabled = document.createElement( "option" )
+            Set optionEnabled = document.createElement( "option" )
             optionDisabled.innerHTML = "Disabled"
             optionEnabled.innerHTML = "Enabled"
             optionDisabled.value = disableTimeout
@@ -136,10 +136,10 @@
             Set fso = Nothing
         End Sub
     </script>
-        
-    Presentation.vbs may require changes to Windows settings in 
-    order to work properly. Specifically, values may need to be 
-    increased that control when the following components go to 
+
+    Presentation.vbs may require changes to Windows settings in
+    order to work properly. Specifically, values may need to be
+    increased that control when the following components go to
     sleep or turn off for both AC (plugged in) and DC (battery).
     <fieldset>
         <legend> Mode</legend>

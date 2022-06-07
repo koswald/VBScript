@@ -1,10 +1,13 @@
 # PopUp bug
 
+[Overview](#overview)  
 [Description](#description)  
 [Steps to reproduce](#steps-to-reproduce)  
 [Workaround](#workaround)
 
----
+## Overview
+
+**The bug described below is no longer present** as of project [version 1.4.0](../../ChangeLog.md#version-140). This can be verified by running [PopUp.spec.sk.vbs](./PopUp.spec.sk.vbs): The specs that begin with `exhibits` fail when the bug is not present.
 
 ## Description
 
@@ -14,11 +17,11 @@ Using the `With <object> ... End With` syntax in a script that also uses the Wsh
 
 - Create a new .vbs file with the following code.
     ```vb
-    With CreateObject("VBScripting.Includer")
-        Execute .Read("VBSLogger")
+    With CreateObject( "VBScripting.Includer" )
+        Execute .Read( "VBSLogger" )
         Set logger = New VBSLogger
     End With
-    Set sh = CreateObject("WScript.Shell")
+    Set sh = CreateObject( "WScript.Shell" )
     response = sh.PopUp("message", 60, "caption", vbOKCancel) '1st dialog
     MsgBox response '2nd dialog
     Set sh = Nothing
@@ -33,10 +36,10 @@ Using the `With <object> ... End With` syntax in a script that also uses the Wsh
 
 - Use syntax syntax similar to the following. That is, don't use the `With <object> ... End With` syntax for project classes.
     ```vb
-    Set includer = CreateObject("VBScripting.Includer")
-    Execute includer.Read("VBSLogger")
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Execute includer.Read( "VBSLogger" )
     Set logger = New VBSLogger
-    Set sh = CreateObject("WScript.Shell")
+    Set sh = CreateObject( "WScript.Shell" )
     response = sh.PopUp("message", 60, "caption", vbOKCancel) '1st dialog
     MsgBox response '2nd dialog
     Set sh = Nothing

@@ -1,11 +1,11 @@
-'Provides various properties to analyze a file's encoding. 
+'Provides various properties to analyze a file's encoding.
 '
 'FOR ILLUSTRATION PURPOSES ONLY. The algorithm used assumes that there is a Byte Order Mark, which in many cases is a wrong assumption.
 '
 'Usage example
-'<pre>With CreateObject("VBScripting.Includer")<br />    Execute .read("EncodingAnalyzer")<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>
+'<pre>With CreateObject( "VBScripting.Includer" )<br />    Execute .Read( "EncodingAnalyzer" )<br />End With<br /> <br />With New EncodingAnalyzer.SetFile(WScript.Arguments(0))<br />    MsgBox "isUTF16LE: " & .isUTF16LE<br />End With</pre>
 '
-'Stackoverflow references: <a href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.
+'Stackoverflow references: <a target="_blank" href="http://stackoverflow.com/questions/3825390/effective-way-to-find-any-files-encoding"> 1</a>, <a target="_blank" href="http://stackoverflow.com/questions/1410334/filesystemobject-reading-unicode-files"> 2</a>.
 '
 Class EncodingAnalyzer
     Private fso
@@ -15,8 +15,8 @@ Class EncodingAnalyzer
     Private scriptName
 
     Sub Class_Initialize
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        Set sh = CreateObject("WScript.Shell")
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        Set sh = CreateObject( "WScript.Shell" )
         fileHasBeenValidated = False
     End Sub
 
@@ -40,7 +40,7 @@ Class EncodingAnalyzer
         If fileHasBeenValidated Then Exit Sub
         If Not fso.FileExists(file) Then
             file = file & ".vbs"
-            If Not fso.FileExists(file) Then Err.Raise 1,, "The EncodingAnalyzer couldn't find file " & file
+            If Not fso.FileExists(file) Then Err.Raise 505,, "The EncodingAnalyzer couldn't find file " & file
         End If
         fileHasBeenValidated = True
     End Sub

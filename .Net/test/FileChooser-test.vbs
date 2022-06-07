@@ -2,7 +2,7 @@
 'test that FileChooser.cs compiled correctly and
 'that FileChooser.dll registered correctly
 
-'expected outcome: 
+'expected outcome:
 '  see fixture\FileChooser-test-case.vbs
 
 Option Explicit : Initialize
@@ -57,8 +57,8 @@ Dim caption
 Dim msg, s, i
 
 Sub Initialize
-    Set fc = CreateObject("VBScripting.FileChooser")
-    Set sh = CreateObject("WScript.Shell")
+    Set fc = CreateObject( "VBScripting.FileChooser" )
+    Set sh = CreateObject( "WScript.Shell" )
     Set testCaseMessage = _
             sh.Exec("wscript fixture\FileChooser-test-case.vbs")
     mode = vbInformation + vbSystemModal + vbOKCancel

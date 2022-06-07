@@ -12,12 +12,12 @@ Class TextStreamer
     Private StreamMode, AllowToCreateNew, StreamFormat, viewer, viewerProcess
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("VBScripting.Includer") 'get class dependencies
-            Execute .read("VBSFileSystem")
+        With CreateObject( "VBScripting.Includer" ) 'get class dependencies
+            Execute .Read( "VBSFileSystem" )
         End With
         Set fs = New VBSFileSystem
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
 
         SetForAppending 'set defaults for Private members
         SetCreateNew

@@ -7,15 +7,15 @@ Class VBSExtracter
     Private ref, streamer, fs, fso
 
     Sub Class_Initialize 'event fires on object instantiation
-        With CreateObject("VBScripting.Includer") 'get dependencies
-            Execute .read("RegExFunctions")
-            Execute .read("TextStreamer")
-            Execute .read("VBSFileSystem")
+        With CreateObject( "VBScripting.Includer" ) 'get dependencies
+            Execute .Read( "RegExFunctions" )
+            Execute .Read( "TextStreamer" )
+            Execute .Read( "VBSFileSystem" )
         End With
         Set ref = New RegExFunctions
         Set fs = New VBSFileSystem
         Set streamer = New TextStreamer
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         SetFile ""
         SetPattern ""
         SetTestString ""
@@ -41,15 +41,15 @@ Class VBSExtracter
     ''Method SetMultiline
     ''Parameter: a boolean
     ''Remark: Set whether the RegExp object multiline property is set.
-    'Sub SetMultiline(pBool) : ref.Multiline = True : End Sub    
+    'Sub SetMultiline(pBool) : ref.Multiline = True : End Sub
 
     'Sub SetGlobal(pBool) : ref.Global(pBool) : End Sub
 
     Private Sub EnsureInitialized
         Dim funct : funct = "VBSExtracter.EnsureInitialized"
-        If "" = file Then Err.Raise 1, funct, "File to extract text from was not specified. Use SetFile()."
-        If "" = ref.re.Pattern Then Err.Raise 2, funct, "RegEx test pattern was never set."
-        If Not fso.FileExists(file) Then Err.Raise 3, funct, "Couldn't find the file to extract text from, " & vbLf & vbTab & file
+        If "" = file Then Err.Raise 449, funct, "File to extract text from was not specified. Use SetFile()."
+        If "" = ref.re.Pattern Then Err.Raise 449, funct, "RegEx test pattern was never set."
+        If Not fso.FileExists(file) Then Err.Raise 505, funct, "Couldn't find the file to extract text from, " & vbLf & vbTab & file
     End Sub
 
     'Property Extract

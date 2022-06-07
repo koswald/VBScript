@@ -1,8 +1,6 @@
-
 // .NET speech synthesis library for VBScript
 
-// requires an assembly reference to
-// %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll
+// Requires an assembly reference to C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll or the equivalent.
 
 using System.Speech.Synthesis;
 using System.Runtime.InteropServices;
@@ -13,10 +11,10 @@ using System.Windows.Forms; // for MessageBox
 namespace VBScripting
 {
     /// <summary> Provide a wrapper for the .NET speech synthesizer for VBScript, for demonstration purposes. </summary>
-    /// <remarks> Requires an assembly reference to <tt>%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</tt>. </remarks>
+    /// <remarks> Requires an assembly reference to <code>C:\Windows\Microsoft.NET\Framework\v4.0.30319\WPF\System.Speech.dll</code> or the equivalent. </remarks>
     [Guid("2650C2AB-2AF8-495F-AB4D-6C61BD463EA4")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("VBScripting.SpeechSynthesis")]
+    [ProgId( "VBScripting.SpeechSynthesis" )]
     public class SpeechSynthesis : ISpeechSynthesis
     {
         private SpeechSynthesizer ss;
@@ -30,7 +28,7 @@ namespace VBScripting
             this.voices = new List<string>(); // installed, enabled voices
             this.installedVoices = new List<string>(); // installed voices
             string name;
-            
+
             foreach (InstalledVoice voice in ss.GetInstalledVoices())
             {
                 name = voice.VoiceInfo.Name;
@@ -43,7 +41,7 @@ namespace VBScripting
         }
 
         /// <summary> Convert text to speech. </summary>
-        /// <remarks> This method is synchronous. </remarks> 
+        /// <remarks> This method is synchronous. </remarks>
         public void Speak(string text)
         {
             if (!string.IsNullOrWhiteSpace(text))
@@ -81,14 +79,14 @@ namespace VBScripting
         }
 
         /// <summary> Gets an array of the names of the installed, enabled voices. </summary>
-        /// <remarks> Each element of the array can be used to set <tt>Voice</tt>.</remarks>
+        /// <remarks> Each element of the array can be used to set <code>Voice</code>.</remarks>
         public object Voices()
         {
             return this.voices.Cast<object>().ToArray(); // convert to VBScript array
         }
 
         /// <summary> Gets or sets the current voice by name. </summary>
-        /// <remarks> A string. One of the names from the <tt>Voices</tt> array. </remarks>
+        /// <remarks> A string. One of the names from the <code>Voices</code> array. </remarks>
         public string Voice
         {
             set
@@ -119,9 +117,9 @@ namespace VBScripting
         // Shows a message box with the specified string
         private void ShowInfoMessage(string msg)
         {
-            MessageBox.Show(msg, 
+            MessageBox.Show(msg,
                    "SpeechSynthesis class",
-                   MessageBoxButtons.OK, 
+                   MessageBoxButtons.OK,
                    MessageBoxIcon.Information);
         }
 
@@ -135,7 +133,7 @@ namespace VBScripting
         }
 
         /// <summary> Gets the state of the SpeechSynthesizer. </summary>
-        /// <remarks> Read only. Returns an integer equal to one of the <tt>State</tt> method return values. </remarks>
+        /// <remarks> Read only. Returns an integer equal to one of the <code>State</code> method return values. </remarks>
         public int SynthesizerState
         {
             get
@@ -159,7 +157,7 @@ namespace VBScripting
             }
             private set { }
         }
-        
+
         /// <summary> Gets or sets the volume. </summary>
         /// <remarks> An integer from 0 to 100. </remarks>
         public int Volume
@@ -174,7 +172,7 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <tt>SynthesizerState</tt>. </summary>
+        /// <summary> Gets an object whose properties (Ready, Paused, and Speaking) provide values useful for comparing to <code>SynthesizerState</code>. </summary>
         /// <returns> a SynthersizerStateT </returns>
         public SynthesizerStateT State
         {
@@ -184,7 +182,7 @@ namespace VBScripting
     }
 
     /// <summary> Enumerates the synthesizer states. </summary>
-    /// <remarks> Not intended for use in VBScript. See <tt>SpeechSynthesis.State</tt>. </remarks>
+    /// <remarks> Not intended for use in VBScript. See <code>SpeechSynthesis.State</code>. </remarks>
     [Guid("2650C2AB-2DF8-495F-AB4D-6C61BD463EA4")]
     public class SynthesizerStateT
     {
@@ -200,7 +198,7 @@ namespace VBScripting
         public int Unexpected { get { return 4; } private set { } }
     }
 
-    /// <summary> The COM interface for <tt>VBScripting.SpeechSynthesis</tt> </summary>
+    /// <summary> The COM interface for <code>VBScripting.SpeechSynthesis</code> </summary>
     [Guid("2650C2AB-2BF8-495F-AB4D-6C61BD463EA4")]
     [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
     public interface ISpeechSynthesis

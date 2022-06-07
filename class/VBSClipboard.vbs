@@ -9,10 +9,10 @@ Class VBSClipboard
 
     Sub Class_Initialize
         hidden = 0 : synchronous = True 'WScript.Shell Run method constants
-        Set sh = CreateObject("WScript.Shell")
-        Set HtmlFile = CreateObject("htmlfile")
-        With CreateObject("VBScripting.Includer")
-            Execute .read("StringFormatter")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set HtmlFile = CreateObject( "htmlfile" )
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "StringFormatter" )
         End With
         Set formatter = New StringFormatter
         ClipExe = "%SystemRoot%\System32\clip.exe"
@@ -37,8 +37,8 @@ Class VBSClipboard
     Private Sub SetClipboardTextAlt(newText)
         'create a temp file with contents equal to newText,
         'then send the contents to clip.exe
-        With CreateObject("VBScripting.Includer")
-            Execute .read("TextStreamer")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "TextStreamer" )
         End With
         Dim ts : Set ts = New TextStreamer
         Dim stream : Set stream = ts.Open
@@ -58,9 +58,9 @@ Class VBSClipboard
         On Error Resume Next
             While Err.Number <> 0 Or GetClipboardText = TextToCut Or TypeName(GetClipboardText) = "Null" Or tries = 0
                 Err.Clear
-                GetClipboardText = TrimHtmlFileData(HtmlFile.parentWindow.ClipboardData.GetData("text"))
+                GetClipboardText = TrimHtmlFileData(HtmlFile.parentWindow.ClipboardData.GetData( "text" ))
                 tries = tries + 1
-                If tries > MaxTries Then Err.Raise 1,, "VBSClipboard.GetClipboardText failed to get the clipboard text after " & MaxTries & " tries."
+                If tries > MaxTries Then Err.Raise 17,, "VBSClipboard.GetClipboardText failed to get the clipboard text after " & MaxTries & " tries."
             Wend
         On Error Goto 0
     End Property

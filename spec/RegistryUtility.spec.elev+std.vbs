@@ -1,41 +1,49 @@
-
-'test RegistryUtility.vbs
+'Test the RegistryUtility object
 'intended to be run with standard or elevated privileges
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("RegistryUtility")
-    Execute .read("TestingFramework")
-    Execute .read("PrivilegeChecker")
-End With
+Option Explicit
+Dim r 'the RegistryUtility object under test
+Dim incl 'VBScripting.Includer object
+Dim sh 'WScript.Shell object
+Dim fso 'Scripting.FileSystemObject
+Dim valueName, valueName2, value, value2 'strings
+Dim key 'string
+Dim rootKey 'integer
+Dim rootKeyName 'string
+Dim subKey 'string
 
+Set incl = CreateObject( "VBScripting.Includer" )
+Execute incl.Read( "PrivilegeChecker" )
+
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
-    .describe "RegistryUtility class"
-
-        Dim r : Set r = New RegistryUtility
+    .Describe "RegistryUtility class"
+        Set r = incl.LoadObject( "RegistryUtility" )
 
     'setup
 
         'build the test key strings, value names, and values,
         'one for REG_SZ and one for REG_EXPAND_SZ
 
-        Dim rootKey, rootKeyName, subKey
         If New PrivilegeChecker Then
-            rootKey = r.HKCR 'privileges are elevated
+            'privileges are elevated
+            rootKey = r.HKCR
             rootKeyName = "HKCR"
             subKey = "AA_RegistryUtility.spec.vbs_Test_Delete_Me"
         Else
-            rootKey = r.HKCU 'privileges are not elevated
+            'privileges are not elevated
+            rootKey = r.HKCU
             rootKeyName = "HKCU"
             subKey = "Software\VBScripting\AA_RegistryUtility.spec.vbs_Test_Delete_Me"
         End If
-        Dim sh : Set sh = CreateObject("WScript.Shell")
-        Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
-        Dim valueName : valueName = "" 'an empty string specifies the key's "default value"
-        Dim valueName2 : valueName2 = fso.GetTempName
-        Dim value : value = fso.GetTempName
-        Dim value2 : value2 = fso.GetTempName
-        Dim key : key = rootKeyName & "\" & subKey & "\" 'registry key format used by WScript.Shell RegRead, RegWrite, & RegDelete; this format is not used by the class under test
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        valueName = "" 'an empty string specifies the key's "default value"
+        valueName2 = fso.GetTempName
+        value = fso.GetTempName
+        value2 = fso.GetTempName
+        key = rootKeyName & "\" & subKey & "\" 'registry key format used by WScript.Shell RegRead, RegWrite, & RegDelete; this format is not used by the class under test
 
         'delete the test key, in case a previous erring test prevented its deletion
 
@@ -76,7 +84,7 @@ With New TestingFramework
 
     .it "should access a registry by computer name"
 
-        With CreateObject("WScript.Network")
+        With CreateObject( "WScript.Network" )
             r.SetPC .ComputerName
         End With
 

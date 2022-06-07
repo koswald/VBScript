@@ -2,11 +2,11 @@
 'Provides functions relating to the Windows&reg; registry
 '
 'Usage example
-'<pre>  With CreateObject("VBScripting.Includer") <br />      Execute .read("RegistryUtility") <br />  End With <br />  Dim reg : Set reg = New RegistryUtility <br />  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" <br />  MsgBox reg.GetStringValue(reg.HKLM, key, "ProductName") </pre>
+'<pre>  With CreateObject( "VBScripting.Includer" ) <br />      Execute .Read( "RegistryUtility" ) <br />  End With <br />  Dim reg : Set reg = New RegistryUtility <br />  Dim key : key = "SOFTWARE\Microsoft\Windows NT\CurrentVersion" <br />  MsgBox reg.GetStringValue( reg.HKLM, key, "ProductName" ) </pre>
 '
 'Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.
 '
-'StdRegProv docs <a href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.
+'StdRegProv docs <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.
 '
 Class RegistryUtility
 
@@ -119,11 +119,11 @@ Class RegistryUtility
     'Remark: Creates the specified subKey and all of it's parent keys, if necessary.
     Sub CreateKey(rootKey, subKey)
         reg.CreateKey rootKey, subKey
-    End Sub    
+    End Sub
 
     'Method EnumValues
     'Parameters: rootKey, subKey, aNames, aTypes
-    'Remark: Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, except that with HKCR and HKLM, elevated privileges are required or else aNames and aValues may be null if the default value is the only value.
+    'Remark: Enumerates the value names and their types for the specified key. The aNames and aTypes parameters are populated with arrays of key value name strings and type integers, respectively. Wraps the StdRegProv EnumValues method, effectively fixing its <a target="_blank" href="https://groups.google.com/forum/#!topic/microsoft.public.win32.programmer.wmi/10wMqGWIfms"> lonely Default Value bug</a>, except that with HKCR and HKLM, elevated privileges are required or else aNames and aValues may be null if the default value is the only value.
     Sub EnumValues(rootKey, subKey, aNames, aTypes)
         reg.EnumValues rootKey, subKey, aNames, aTypes
 
@@ -187,7 +187,7 @@ Class RegistryUtility
     Private pc, prov
 
     Sub Class_Initialize
-        SetPC(".")
+        SetPC( "." )
     End Sub
 
     Sub Class_Terminate

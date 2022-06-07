@@ -9,27 +9,58 @@ With New VBSAppClassTester
 End With
 
 Class VBSAppClassTester
+    Private tester 'TestingFramework object
+    Private format 'StringFormatter object
+    Private sh 'WScript.Shell object
+    Private fso 'Scripting.FileSystemObject
+    Private outputFiles 'array of file names
+    Private minusSpec, plusSpec 'defined in .config file
+    Private base 'partial filespec of a fixture file
 
-    Sub RunTests
-        tester.describe "VBSApp class"
-        RunTest "wsf", 1, "wscript.exe", 100
-        RunTest "wsf", 1, "wscript.exe", 1000
-        'Debug1
-        RunTest "hta", 0, "mshta.exe", 100
-        RunTest "hta", 0, "mshta.exe", 1000
-        'Debug1
+    Sub Class_Initialize
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "TestingFramework" )
+            Set tester = New TestingFramework
+            Execute .Read( "StringFormatter" )
+            Set format = New StringFormatter
+            Execute .Read("..\spec\VBSApp.spec.config")
+            base = "fixture\VBSApp.fixture."
+        End With
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        outputFiles = Array( _
+            "%AppData%\VBScripting\VBSApp.htaOut.txt", _
+            "%AppData%\VBScripting\VBSApp.wsfOut.txt")
+        Delete(outputFiles)
     End Sub
 
-    ' Run the specified fixture file (as specified by file extension), output file (index), exe, and sleep time (milliseconds). 
-    Private Sub RunTest(ext, index, exe, milliseconds)
+    Sub RunTests
+        tester.Describe "VBSApp class"
+        RunTest "wsf", 1, "wscript.exe", 100
+        RunTest "wsf", 1, "wscript.exe", 1000
+        RunTest "hta", 0, "mshta.exe", 100
+        RunTest "hta", 0, "mshta.exe", 1000
+    End Sub
 
-        ' Flush out result from previous test, if any.
-        tester.ShowPendingResult
+    ' Run the specified fixture file (as specified by file extension, ext), output file (index), exe, and sleep time (milliseconds), and make assertions that the outputs, as read from a file, are as expected.
+    Sub RunTest(ext, index, exe, milliseconds)
 
-        ' Label the test result with the fixture file's extension name
-        WScript.StdOut.WriteLine "          " & ext
+        Dim stream 'text stream to read from a file
+        Dim minTime, maxTime 'expected millisec
+        Dim actualSleep 'actual milliseconds
+        Dim j 'loop increment for timeout
+        Dim instantiationMethod 'integer: loop increment
+        Dim command 'string: Windows command
+        Dim process 'object: sh.Exec return value
+        Dim s 'string
+        Dim actual, expected 'assertion arguments
+        Dim iniStrings 'array: strings describing instantiation methods
+        Const running = 0, finished = 1 'Exec Status
+        Const COMObject = 0, NewClassName = 1 'instantiation methods
 
-        ' Run the .wsf or .hta test file. 
+        iniStrings = Array( "COM object", "New object" )
+
+        ' Run the .wsf or .hta test file.
         command = format(Array( _
             "%s ""%s.%s"" ""ar g ze ro"" ""arg one"" %s %s", _
             exe, fso.GetAbsolutePathName(base), ext, milliseconds, ext _
@@ -42,108 +73,124 @@ Class VBSAppClassTester
             WScript.Sleep 50
             j = j + 1
             If j = 200 Then
-                WScript.StdOut.WriteLine vbLf & WScript.ScriptName & ":"
-                WScript.StdOut.WriteLine vbLf & "Excessive wait for the process"
-                WScript.StdOut.WriteLine vbLf & command
-                WScript.StdOut.WriteLine vbLf & "to finish. Please try again."
-                WScript.Quit 
+                s = WScript.ScriptName & ": "
+                s = s & "Excessive wait for the process"
+                s = s & " '" & command & "' "
+                s = s & "to finish."
+                WScript.StdOut.WriteLine s
+                process.Terminate
+                WScript.Quit
             End If
         Loop
 
         ' Open the output file for reading
-        Set inStream = fso.OpenTextFile(outputFiles(index))
+        Set stream = fso.OpenTextFile(Expand(outputFiles(index)))
 
-        ' The .wsf and .hta fixture files write values to .txt output files in the 'fixture' folder. This script reads those values from the .txt files, and the values become the first argument in the AssertEqual statements.
+        ' Specs and assertions
 
-        ' Specifications/assertions
+        ' The .wsf and .hta fixture files write values to .txt output files. This script reads those values from the .txt files, and the values are used in the first argument in the AssertEqual statements.
         With tester
-            .it "should get command-line args"
-                .AssertEqual inStream.ReadLine, "arg one" 'selected arg with space
-            .it "should not wrap spaceless args by default"
-                .AssertEqual inStream.ReadLine, format(Array( _
-                    " ""ar g ze ro"" ""arg one"" %s %s", _
-                    milliseconds, ext _
-                ))
-            .it "should get the argument count"
-                .AssertEqual inStream.ReadLine, "4"
-            .it "should get app filespec"
-                .AssertEqual inStream.ReadLine, fso.GetAbsolutePathName(base & ext)
-            .it "should get app name"
-                .AssertEqual inStream.ReadLine, fso.GetFileName(base & ext)
-            .it "should get the base app name"
-                .AssertEqual inStream.ReadLine, fso.GetBaseName(base & ext)
-            .it "should get the app's filename extension"
-                .AssertEqual inStream.ReadLine, fso.GetExtensionName(base & ext)
-            .it "should get the app's parent folder"
-                .AssertEqual inStream.ReadLine, fso.GetParentFolderName(fso.GetAbsolutePathName(base & ext))
-            .it "should get the app's host .exe"
-                .AssertEqual inStream.ReadLine, exe
-            .it "should have a sleep method"
-                .AssertEqual inStream.ReadLine, "0"
+            For instantiationMethod = ComObject To NewClassName
+
+                'Label the test group
+                s = "          ." & ext & " | " '.hta or .wsf
+                s = s & iniStrings( instantiationMethod )
+                s = s & " | " & milliseconds & "ms sleep"
+                .ShowPendingResult
+                WScript.StdOut.WriteLine s
+
+                .It "should get a command-line argument"
+                    actual = stream.ReadLine
+                    expected = "arg one"
+                    .AssertEqual actual, expected
+
+                .It "should not wrap spaceless args by default"
+                    actual = stream.ReadLine
+                    expected = format(Array( _
+                        " ""ar g ze ro"" ""arg one"" %s %s", _
+                        milliseconds, ext _
+                    ))
+                    .AssertEqual actual, expected
+
+                .It "should get the argument count"
+                    actual = stream.ReadLine
+                    expected = "4"
+                    .AssertEqual actual, expected
+
+                .It "should get the app filespec"
+                    actual = stream.ReadLine
+                    expected = fso.GetAbsolutePathName(base & ext)
+                    .AssertEqual actual, expected
+
+                .It "should get the app name"
+                    actual = stream.ReadLine
+                    expected = fso.GetFileName(base & ext)
+                    .AssertEqual actual, expected
+
+                .It "should get the base app name"
+                    actual = stream.ReadLine
+                    expected = fso.GetBaseName(base & ext)
+                    .AssertEqual actual, expected
+
+                .It "should get the app's filename extension"
+                    actual = stream.ReadLine
+                    expected = fso.GetExtensionName(base & ext)
+                    .AssertEqual actual, expected
+
+                .It "should get the app's parent folder"
+                    actual = stream.ReadLine
+                    expected = fso.GetParentFolderName(fso.GetAbsolutePathName(base & ext))
+                    .AssertEqual actual, expected
+
+                .It "should get the app's host .exe"
+                    actual = stream.ReadLine
+                    expected = exe
+                    .AssertEqual actual, expected
+
+                .It "should have a sleep method"
+                    actual = stream.ReadLine
+                    expected = "0"
+                    .AssertEqual actual, expected
 
                 minTime = milliseconds - minusSpec
                 maxTime = milliseconds + plusSpec
-                
-            .it "should sleep for at least the min. time (" & minTime & " ms)"
-                actualSleep = inStream.ReadLine * 1000
-                .AssertEqual actualSleep >= minTime, True
-            .it "should sleep for at most the max. time (" & maxTime & " ms)"
-                .AssertEqual actualSleep <= maxTime, True
 
-            Dim minTime, maxTime
+                .It "should sleep for at least the min. time (" & minTime & " ms)"
+                    actualSleep = stream.ReadLine * 1000
+                    actual = actualSleep >= minTime
+                    expected = True
+                    .AssertEqual actual, expected
+
+                .It "should sleep for at most the max. time (" & maxTime & " ms)"
+                    actual = actualSleep <= maxTime
+                    expected = True
+                    .AssertEqual actual, expected
+
+            Next
         End With
-
-        inStream.Close
-        Dim j, process, command
-        Const running = 0, finished = 1
+        stream.Close
     End Sub
 
-    Private tester, format
-    Private sh, fso, inStream
-    Private ForReading, Synchronous, hidden
-    Private outputFiles
-    Private actualSleep
-    Private base, minusSpec, plusSpec 'defined in .config file
-
-    Sub Class_Initialize
-        With CreateObject("VBScripting.Includer")
-            Execute .read("TestingFramework")
-            Execute .read("StringFormatter")
-            Execute .read("..\spec\VBSApp.spec.config")
-        End With
-        Set tester = New TestingFramework
-        Set format = New StringFormatter
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
-        ForReading = 1
-        Synchronous = True
-        hidden = 0
-        outputFiles = Array( _
-            base & "htaOut.txt", _
-            base & "wsfOut.txt")
-        Delete(outputFiles)
-    End Sub
+    Function Expand( str )
+        Expand = sh.ExpandEnvironmentStrings( str )
+    End Function
 
     Private Sub Delete(files)
+        Const Force = True
         Dim file
         For Each file In files
-            If fso.FileExists(file) Then fso.DeleteFile(file)
+            file = sh.ExpandEnvironmentStrings(file)
+            If fso.FileExists(file) Then
+                fso.DeleteFile(file), Force
+            End If
+            If fso.FileExists(file) Then
+                Err.Raise 51,, "Couldn't delete " & file
+            End If
         Next
     End Sub
 
-    Sub Debug1
-        tester.ShowPendingResult
-        WScript.StdOut.WriteLine "actualSleep: " & actualSleep
-        WScript.StdOut.WriteLine "plusSpec: " & plusSpec
-        WScript.StdOut.WriteLine "minusSpec: " & minusSpec
-    End Sub
-
     Sub Class_Terminate
-        'close the text stream
-        inStream.Close
-        'delete the output files
         Delete(outputFiles)
-        'release object memory
         Set fso = Nothing
         Set sh = Nothing
     End Sub

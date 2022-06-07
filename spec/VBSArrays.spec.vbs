@@ -1,18 +1,19 @@
-
 'Test the VBSArrays class
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("VBSArrays")
-    Execute .read("TestingFramework")
-End With
+Option Explicit
+Dim va
+Dim incl
 
-Dim va : Set va = New VBSArrays
+Set incl = CreateObject( "VBScripting.Includer" )
 
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
     .describe "VBSArrays class"
+        Execute incl.Read( "VBSArrays" )
+        Set va = New VBSArrays
 
-        .it "should return an array without duplicate values"
-        
-            .AssertEqual Join(va.Uniques(Split("str str"))), "str"
+    .it "should return an array without duplicate values"
+        .AssertEqual Join( va.Uniques(Split("str str" ))), "str"
+
 End With

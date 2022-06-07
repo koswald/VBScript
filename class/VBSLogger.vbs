@@ -1,8 +1,8 @@
 
 'A lightweight VBScript logger
 
-'Instantiation 
-'<pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSLogger") <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>
+'Instantiation
+'<pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSLogger" ) <br />     End With <br />     Dim log : Set log = New VBSLogger </pre>
 '
 'Usage method one. This method has the advantage that the log doesn't remain open, allowing other scripts to write to the log.
 ' <pre>     log "test one" </pre>
@@ -19,17 +19,17 @@ Class VBSLogger
     Private scriptName, scriptFullName
 
     Sub Class_Initialize
-        With CreateObject("VBScripting.Includer") 'get class dependencies
-            Execute .read("TimeFunctions")
-            Execute .read("TextStreamer")
-            Execute .read("VBSFileSystem")
+        With CreateObject( "VBScripting.Includer" ) 'get class dependencies
+            Execute .Read( "TimeFunctions" )
+            Execute .Read( "TextStreamer" )
+            Execute .Read( "VBSFileSystem" )
         End With
         Set dt = New TimeFunctions
         Set streamer = New TextStreamer
         Set fs = New VBSFileSystem
 
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
 
         On Error Resume Next
             scriptFullName = WScript.ScriptFullName
@@ -58,7 +58,7 @@ Class VBSLogger
     'Remark: Optional. Customize the log folder. The folder will be created if it does not exist. Environment variables are allowed. See GetDefaultLogFolder.
     Sub SetLogFolder(newLogFolder) 'set the log folder; create it if necesssary
         logFolder = fs.Expand(newLogFolder)
-        If Not fs.MakeFolder(logFolder) Then Err.Raise 1, "VBSLogger.SetLogFolder", "Failed to create log folder " & logFolder
+        If Not fs.MakeFolder(logFolder) Then Err.Raise 17, "VBSLogger.SetLogFolder", "Failed to create log folder " & logFolder
     End Sub
 
     Property Get GetLogFolder : GetLogFolder = logFolder : End Property

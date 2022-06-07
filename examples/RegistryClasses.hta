@@ -25,7 +25,7 @@
             DeriveVerbs
             RefreshHtmlElements
         End Sub
-        
+
         Dim root, pid, verbKey, typeKey, pidKey, pidIsFromRegistry
 
         Sub DeriveKeys
@@ -36,8 +36,8 @@
                 typeKey = ""
             Else typeKey = format(Array("Software\Classes\.%s", fileType.value))
             End If
-            
-            Dim pidString : Set pidString = GetRegString(root, typeKey, "")
+
+            Dim pidString : Set pidString = GetRegString( root, typeKey, "" )
             If "*" = fileType.value Then
                 pid = "*"
                 typeKey = ""
@@ -60,7 +60,7 @@
             verbKey = format(Array("%s\shell", pidKey))
             newVerbLegend.innerHTML = format(Array("New verb at %s\%s", GetRootString(root), verbKey))
         End Sub
-        
+
         Dim verbs
 
         Sub DeriveVerbs
@@ -68,14 +68,14 @@
             If Not IsArray(verbs) Then verbs = Array()
             verbSelector.innerHTML = ""
             If noVerbsFound = UBound(verbs) Then
-                Dim nullOption : Set nullOption = document.createElement("option")
+                Dim nullOption : Set nullOption = document.createElement( "option" )
                 nullOption.innerHTML = "No verbs available"
                 verbSelector.insertBefore nullOption
                 Exit Sub
             End If
             Dim i, verb
             For i = 0 To UBound(verbs)
-                Set verb = document.createElement("option")
+                Set verb = document.createElement( "option" )
                 verb.innerHTML = verbs(i)
                 verb.value = verbs(i)
                 verbSelector.insertBefore verb
@@ -115,18 +115,18 @@
                 "%s\%s\Command", _
                 verbKey, verbs(verbSelector.selectedIndex) _
             ))
-            Set commandString = GetRegString(root, commandKey, "")
+            Set commandString = GetRegString( root, commandKey, "" )
             command.value = commandString.Value
             commandType = commandString.StringType
             Unhide commandFields
             EnableDisable
             FocusOnPreselectedElement
         End Sub
-        
+
         Const Expanded = 0 'REG_EXPAND_SZ
         Const NotExpanded = 1 'REG_SZ
         Const NotFound = 2
-        
+
         Function GetRegString(root, key, valueName)
             Dim value, strType, exists
             value = reg.GetStringValue(root, key, valueName)
@@ -137,14 +137,14 @@
                strType = Expanded
                exists = True
             End If
-            If "Null" = TypeName(value) Then 
+            If "Null" = TypeName(value) Then
                 value = ""
                 strType = NotFound
                 exists = False
             End If
             Set GetRegString = New RegString.Init(value, strType, exists)
         End Function
-        
+
         Sub TryDeletingKey(root, key)
             Const success = 0
             Dim response : response = MsgBox(format(Array( _
@@ -198,7 +198,7 @@
             Enable cancelClassButton
             Enable browse4IconButton
             Enable browse4TemplateButton
-            
+
             If Not VerbIsDeletable Then
                 Disable deleteVerb
                 Disable extended
@@ -230,7 +230,7 @@
                 elevateButton.title = ""
                 Disable elevateButton
             End If
-            If InStr(verbKey, "\\") _
+            If InStr( verbKey, "\\" ) _
             Or "\" = Left(verbKey, 1) Then
                 Disable newVerbButton
                 Disable configureClassButton
@@ -315,7 +315,7 @@
 
         Sub command_OnKeyUp
             regProv.CreateKey root, commandKey
-            Dim cmd : Set cmd = GetRegString(root, commandKey, "")
+            Dim cmd : Set cmd = GetRegString( root, commandKey, "" )
             If Expanded = cmd.StringType Then
                 regProv.SetExpandedStringValue root, commandKey, "", command.value
             Else regProv.SetStringValue root, commandKey, "", command.value
@@ -358,7 +358,7 @@
                 RefreshFields
             End If
         End Sub
-        
+
         Sub verbSelector_OnChange
             initialVerb = verbs(verbSelector.selectedIndex)
             Set focusOnThis = verbSelector
@@ -372,7 +372,7 @@
             Else regProv.DeleteValue root, key, "Extended"
             End If
         End Sub
-        
+
         Sub newVerbButton_OnClick
             If newVerbSubfields.style.display = "none" Then
                 Hide classSubfields
@@ -388,7 +388,7 @@
             Else Disable saveNewVerbButton
             End If
         End Sub
-        
+
         Sub saveNewVerbButton_OnClick
             If Not NewVerbIsValid Then
                 MsgBox "Verb is invalid.", vbInformation, document.Title
@@ -466,15 +466,15 @@
                 Unhide classSubfields
                 shellNewLegend.innerHTML = format(Array("%s\%s\%s\ShellNew", GetRootString(root), typeKey, pid))
                 progIdLegend.innerHTML = format(Array("%s\%s", getRootString(root), pidKey))
-                Set descr = GetRegString(root, pidKey, "")
+                Set descr = GetRegString( root, pidKey, "" )
                 classDescription.value = descr.value
                 iconKey = format(Array("%s\DefaultIcon", pidKey))
-                Set icon = GetRegString(root, iconKey, "")
+                Set icon = GetRegString( root, iconKey, "" )
                 iconFile.value = icon.value
                 templateKey = format(Array("%s\%s\ShellNew", typeKey, pid))
-                Set template = GetRegString(root, templateKey, "FileName")
+                Set template = GetRegString( root, templateKey, "FileName" )
                 templateFile.value = template.value
-                Dim nfString : Set nfString = GetRegString(root, templateKey, "NullFile")
+                Dim nfString : Set nfString = GetRegString( root, templateKey, "NullFile" )
                 If nfString.Exists Then
                     templateFile.disabled = True
                     nullFileCheckbox.checked = True
@@ -487,17 +487,17 @@
             regProv.CreateKey root, iconKey
             regProv.CreateKey root, templateKey
             reg.SetStringValue root, typeKey, "", pid
-            Set descr = GetRegString(root, pidKey, "")
+            Set descr = GetRegString( root, pidKey, "" )
             If NotExpanded = descr.StringType Then
                 reg.SetStringValue root, pidKey, "", classDescription.value
             Else reg.SetExpandedStringValue root, pidKey, "", classDescription.value
             End If
-            Set icon = GetRegString(root, iconKey, "")
+            Set icon = GetRegString( root, iconKey, "" )
             If NotExpanded = icon.StringType Then
                 reg.SetStringValue root, iconKey, "", iconFile.value
             Else reg.SetExpandedStringValue root, iconKey, "", iconFile.value
             End If
-            Set template = GetRegString(root, templateKey, "FileName")
+            Set template = GetRegString( root, templateKey, "FileName" )
             If NotExpanded = template.StringType Then
                 reg.SetStringValue root, templateKey, "FileName", templateFile.value
             Else reg.SetExpandedStringValue root, templateKey, "FileName", templateFile.value
@@ -539,7 +539,7 @@
             Else NewVerbIsValid = False
             End If
         End Function
-        
+
         Sub FocusOnPreselectedElement
             focusOnThis.focus
             If "input" = focusOnThis.tagName _
@@ -573,7 +573,7 @@
                If InStr(name, invalidChrs(i)) Then FileNameIsValid = False : Exit Function
             Next
             FileNameIsValid = True
-        End Function        
+        End Function
 
         Function FileTypeIsDeletable
             Const dontDelete = "* exe com"
@@ -631,12 +631,12 @@
         Const HKCU = -2147483647
         Const HKLM = -2147483646
         Dim application
-        
+
         Sub InitializeHtmlElements
-            Set application = document.getElementsByTagName("application")(0)
+            Set application = document.getElementsByTagName( "application" )(0)
             document.Title = application.applicationName
-            Dim optionHKCU : Set optionHKCU = document.createElement("option")
-            Dim optionHKLM : Set optionHKLM = document.createElement("option")
+            Dim optionHKCU : Set optionHKCU = document.createElement( "option" )
+            Dim optionHKLM : Set optionHKLM = document.createElement( "option" )
             optionHKCU.value = HKCU
             optionHKLM.value = HKLM
             optionHKCU.innerHTML = "HKEY_CURRENT_USER"
@@ -647,38 +647,38 @@
 
         Dim reg, regProv, keyZapper
         Dim invalidChrs
-        
+
         Sub ReadObjects
-            Execute includer.Read("RegistryUtility")
+            Execute includer.Read( "RegistryUtility" )
             Set reg = New RegistryUtility
             Set regProv = reg.Reg
-            ExecuteGlobal includer.Read("ValidFileName")
+            ExecuteGlobal includer.Read( "ValidFileName" )
             invalidChrs = InvalidWindowsFilenameChars
-            Execute includer.Read("KeyDeleter")
+            Execute includer.Read( "KeyDeleter" )
             Set keyZapper = New KeyDeleter
         End Sub
 
         Dim fso, sh, sa, includer, format, admin, browser
-        
+
         Sub CreateObjects
-            Set sh = CreateObject("WScript.Shell")
-            Set fso = CreateObject("Scripting.FileSystemObject")
-            Set sa = CreateObject("Shell.Application")
-            Set includer = CreateObject("VBScripting.Includer")
-            Set format = CreateObject("VBScripting.StringFormatter")
-            Set admin = CreateObject("VBScripting.Admin")
-            Set browser = CreateObject("VBscripting.FileChooser")
+            Set sh = CreateObject( "WScript.Shell" )
+            Set fso = CreateObject( "Scripting.FileSystemObject" )
+            Set sa = CreateObject( "Shell.Application" )
+            Set includer = CreateObject( "VBScripting.Includer" )
+            Set format = CreateObject( "VBScripting.StringFormatter" )
+            Set admin = CreateObject( "VBScripting.Admin" )
+            Set browser = CreateObject( "VBscripting.FileChooser" )
         End Sub
 
         Dim initialVerb
         Dim focusOnThis
-        
+
         Sub Window_OnLoad
             CreateObjects
             ReadObjects
             InitializeHtmlElements
             Feedback "WARNING: Backup the registry before modifying it!"
-            
+
             fileType.value = ""
             progId.value = ""
             hiveSelector.selectedIndex = 0
@@ -697,7 +697,7 @@
             Set admin = Nothing
             Set browser = Nothing
         End Sub
-        
+
         Class RegString
             Public Value
             Public StringType

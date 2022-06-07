@@ -1,41 +1,48 @@
 <?xml version="1.0" ?>
-<?component error="true"?> 
+<?component error="true"?>
 <component>
 
-  <registration
-    description="Windows Script Component string formatter"
-    progid="VBScripting.StringFormatter"
-    classid="{ADCEC089-30DF-11D7-86BF-00606744568C}"> 
-    <script language="VBScript">
-        Sub Register
-            'MsgBox "registering"
-        End Sub
-        Sub Unregister
-            'MsgBox "unregistering"
-        End Sub
-    </script>
-  </registration>
+    <registration
+        description="Windows Script Component string formatter"
+        progid="VBScripting.StringFormatter"
+        classid="{ADCEC089-30DF-11D7-86BF-00606744568C}">
 
-  <public>
-    <property name="Format" dispid="0"> <!-- default member -->
-        <get internalName="Format" />
-    </property>
-    <method name="SetSurrogate" />
-    <property name="Pluralize">
-        <get internalName="Pluralize" />
-    </property>
-    <method name="SetZeroSingular" />
-    <method name="SetZeroPlural" />
-    <property name ="Flag">
-      <put internalName="putFlag" />
-      <get internalName="getFlag" />
-    </property>
-  </public>
-  
-  <!-- import the class -->
-  <script language="VBScript" src="../StringFormatter.vbs" />
-  
-  <!-- wrap/expose the class members -->
-  <script language="VBScript" src="src/StringFormatterWrapper.vbs" />
+        <script language="VBScript">
+          <![CDATA[
+            Sub Register
+                sh.PopUp "Registering " + wsc, t, wsc, i
+            End Sub
+            Sub Unregister
+                sh.PopUp "Unregistering " + wsc, t, wsc, i
+            End Sub
+            Set sh = CreateObject( "WScript.Shell" )
+            t = 2 'time to show PopUp (seconds)
+            wsc = "StringFormatter.wsc"
+            i = vbSystemModal
+          ]]>
+        </script>
+    </registration>
+
+    <public>
+        <property name="Format" dispid="0"> <!-- default member -->
+            <get internalName="Format" />
+        </property>
+        <method name="SetSurrogate" />
+        <property name="Pluralize">
+            <get internalName="Pluralize" />
+        </property>
+        <method name="SetZeroSingular" />
+        <method name="SetZeroPlural" />
+        <property name ="Flag">
+            <put internalName="putFlag" />
+            <get internalName="getFlag" />
+        </property>
+    </public>
+
+    <!-- import the class -->
+    <script language="VBScript" src="../StringFormatter.vbs" />
+
+    <!-- wrap/expose the class members -->
+    <script language="VBScript" src="src/StringFormatterWrapper.vbs" />
 
 </component>

@@ -3,19 +3,19 @@
 'and creates a shortcut to the .hta with that info
 
 With WScript.Arguments
-    If .Count = 0 Then Err.Raise 1,, "Argument required: an .hta filespec"
+    If .Count = 0 Then Err.Raise 449,, "Argument required: an .hta filespec"
     hta = .item(0)
 End With
-Set fso = CreateObject("Scripting.FileSystemObject")
+Set fso = CreateObject( "Scripting.FileSystemObject" )
 hta = fso.GetAbsolutePathName(hta) 'support relative path
 If Not fso.FileExists(hta) Then
-    Err.Raise 1,, "Couldn't find the file { " & hta & " }"
+    Err.Raise 505,, "Couldn't find the file { " & hta & " }"
 End If
 parent = fso.GetParentFolderName(hta)
 base = fso.GetBaseName(hta)
-With CreateObject("VBScripting.Includer")
-    Execute .Read("VBSExtracter")
-    Execute .Read("VBSEnvironment")
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "VBSExtracter" )
+    Execute .Read( "VBSEnvironment" )
 End With
 With New VBSExtracter
     .SetIgnoreCase True
@@ -27,7 +27,7 @@ With New VBSExtracter
     .SetFile hta
     icon = .extract
 
-    'applicationName is similar to above, but in addition to word characters, 
+    'applicationName is similar to above, but in addition to word characters,
     'there may be multiple instances of . or - or
     '... others will have to be added later as they are encountered
     .SetPattern "applicationName\s*=\s*""?[\w-\.\s]+""?\s*?"
@@ -37,12 +37,12 @@ With New RegExp
     .IgnoreCase = True
     'setup to capture the match: word.word
     .Pattern = "icon\s*=\s*""?(\w+\.{1}\w+)""?"
-    icon = .Replace(icon, "$1")
+    icon = .Replace( icon, "$1" )
     .Pattern = "applicationName\s*=\s*""?([\w-\.\s]+)""?"
-    name = .Replace(name, "$1")
+    name = .Replace( name, "$1" )
 End With
-Set sh = CreateObject("WScript.Shell")
-Set link = sh.CreateShortcut(Expand("%UserProfile%\Desktop\") & base & ".hta.lnk")
+Set sh = CreateObject( "WScript.Shell" )
+Set link = sh.CreateShortcut( Expand("%UserProfile%\Desktop\") & base & ".hta.lnk" )
 link.IconLocation = FindIcon(icon)
 link.Arguments = ""
 link.Description = name
@@ -70,5 +70,5 @@ Function FindIcon(icon)
             Exit Function
         End If
     Next
-    Err.Raise 1,, "Couldn't find icon { " & icon & " }"
+    Err.Raise 505,, "Couldn't find icon { " & icon & " }"
 End Function

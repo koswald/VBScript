@@ -1,0 +1,6 @@
+# examples
+shell powershell
+ shell, pwsh
+ shell , wt.exe pwsh
+shell, "%ProgramFiles%\PowerShell\7\pwsh.exe"
+shell, wt.exe pwsh

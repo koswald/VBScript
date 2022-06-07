@@ -10,7 +10,7 @@ namespace VBScripting
 {
     /// <summary> Extracts an icon from a .dll or .exe file. </summary>
     /// <remarks><strong> Not all members of this class are accessible to VBScript. </strong></remarks>
-    [ProgId("VBScripting.IconExtractor"),
+    [ProgId( "VBScripting.IconExtractor" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-6AF8-495F-AB4D-6C61BD463EA4")]
     public class IconExtractor : IIconExtractor
@@ -41,7 +41,7 @@ namespace VBScripting
             catch (Exception e)
             {
                 throw new ApplicationException(string.Format(
-                        "VBScripting.IconExtractor.Save failed to save. \n e.Message: {0} \n\n resFile: {1} \n index: {2} \n icoFile: {3} \n largeIcon: {4} \n inFile: {5} \n outFile: {6} \n\n e.ToString(): {7}", 
+                        "VBScripting.IconExtractor.Save failed to save. \n e.Message: {0} \n\n resFile: {1} \n index: {2} \n icoFile: {3} \n largeIcon: {4} \n inFile: {5} \n outFile: {6} \n\n e.ToString(): {7}",
                         e.Message, resFile, index, icoFile, largeIcon, inFile, outFile, e.ToString()
                     ), e);
             }
@@ -81,9 +81,9 @@ namespace VBScripting
         [DllImport("user32.dll", EntryPoint = "DestroyIcon", SetLastError=true)]
         private static extern int DestroyIcon(IntPtr pointer);
 
-        /// <summary> Extracts an icon from the specified .dll or .exe file. <strong> This method is static and so it is not directly available to VBScript. </strong></summary>
+        /// <summary> Extracts an icon from the specified .dll or .exe file. <strong> This method is not available to VBScript. In VBScript, use the Save method. </strong></summary>
         /// <parameters> file, index, largeIcon </parameters>
-        /// <remarks> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory.</remarks>
+        /// <remarks> Other parameters: <code>index</code> is an integer that specifies the icon's index within the resource. <code>largeIcon</code> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory.</remarks>
         /// <returns> an icon </returns>
         public static Icon Extract(string file, int index, bool largeIcon)
         {

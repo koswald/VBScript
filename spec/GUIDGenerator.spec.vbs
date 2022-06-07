@@ -1,29 +1,22 @@
+Option Explicit
+Dim gg 'GUIDGenerator object; to be tested
+Dim re 'RegExp object
+Dim incl 'VBScripting.Includer object
 
-'test GUIDGenerator.vbs
+Set incl = CreateObject( "VBScripting.Includer" )
+Set re = New RegExp
+re.Pattern = "\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}}"
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("GUIDGenerator")
-    Execute .read("TestingFramework")
-End With
-
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
     .describe "GUIDGenerator class"
-
-        Dim gg : Set gg = New GUIDGenerator
-
-    'before
-
-        Dim re : Set re = New RegExp
-        re.Pattern = "\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}}"
+        Set gg = incl.LoadObject( "GUIDGenerator" )
 
     .it "should return a valid GUID on Generate call"
-
         .AssertEqual re.Test(gg.Generate), True
 
     .it "should return a valid GUID on default property call"
-
         .AssertEqual re.Test(gg), True
 
 End With
-

@@ -1,7 +1,7 @@
-Set sh = CreateObject("WScript.Shell")
-Set fso = CreateObject("Scripting.FileSystemObject")
-With CreateObject("VBScripting.Includer")
-    Execute .Read("VBSLogger")
+Set sh = CreateObject( "WScript.Shell" )
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+With CreateObject( "VBScripting.Includer" )
+    Execute .Read( "VBSLogger" )
 End With
 Set logger = New VBSLogger
 response = sh.PopUp("test", 2, "PopUp bug", vbOKCancel)

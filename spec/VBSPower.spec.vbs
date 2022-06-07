@@ -1,20 +1,22 @@
+'Test the VBScripting.VBSPower Windows Script Component
 
-'test the VBSPower class
+Option Explicit
+Dim pwr 'VBScripting.VBSPower object
+Dim incl 'VBScripting.Includer object
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("TestingFramework")
-End With
+Set incl = CreateObject( "VBScripting.Includer" )
 
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
     .describe "VBSPower class"
-        Dim pwr : Set pwr = CreateObject("VBScripting.VBSPower")
+        Set pwr = CreateObject( "VBScripting.VBSPower" )
 
     'setup
         pwr.SetDebug True 'True => don't actually power down, restart, etc
 
-    ' Calling the following methods without producing an error shows that a method with thaat name exists.
-        
+    ' Calling the following methods without producing an error shows that a method with that name exists.
+
     .it "should power down the computer"
         .AssertEqual TypeName(pwr.Shutdown), "Empty"
 

@@ -1,34 +1,37 @@
 'Launch the test runner for standard tests
 Option Explicit
+Dim testRunner
+
 Initialize
 Main
-Sub Main
-    testRunner.SetSpecPattern "*.spec.vbs | *.spec.elev+std.vbs"
-    testRunner.SetSpecFolder ".."
-    With WScript.Arguments
-        If .Count Then
-            'if it is desired to run just a single test file, pass it in on the
-            'command line, using a relative path, relative to the spec folder
-            testRunner.SetSpecFile .item(0)
-            'get the runCount from the command-line, arg #2, if specified
-            If .Count > 1 Then testRunner.SetRunCount .item(1)
-       End If
+
+Sub Initialize
+    Dim incl
+    Set incl = CreateObject( "VBScripting.Includer" )
+    Execute incl.Read( "VBSTestRunner" )
+    Set testRunner = New VBSTestRunner
+    Execute incl.Read( "VBSApp" )
+    With New VBSApp
+        .RestartUsing "cscript.exe", .DoNotExit, .DoNotElevate
     End With
-    testRunner.Run
 End Sub
 
-Const privilegesElevated = True
-Const privilegesNotElevated = False
-Dim testRunner
-Sub Initialize
-    With CreateObject("VBScripting.Includer")
-        Execute .read("VBSTestRunner")
-        Execute .read("VBSApp")
+Sub Main
+    testRunner.SetSpecPattern "*.spec.vbs | *.spec.elev+std.vbs | *.spec.wsf"
+    testRunner.SetSpecFolder ".."
+
+    'If it is desired to run just a single test file, pass it in on the command line, using a relative path, relative to the spec folder. Also, get the runCount from the command-line, arg #2, if specified
+
+    With WScript.Arguments
+        If .Count > 0 Then
+            testRunner.SetSpecFile .item(0)
+        End If
+        If .Count > 1 Then
+            testRunner.SetRunCount .item(1)
+        End If
     End With
-    Set testRunner = New VBSTestRunner
-    Dim app : Set app = New VBSApp
-    If Not "cscript.exe" = app.GetHost Then
-        app.SetUserInteractive False
-        app.RestartWith "cscript.exe", "/k", privilegesNotElevated
-    End If
+
+    'Run the test suite
+
+    testRunner.Run
 End Sub

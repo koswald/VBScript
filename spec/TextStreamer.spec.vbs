@@ -1,22 +1,19 @@
-
 'test TextStreamer.vbs
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("TextStreamer")
-    Execute .read("TestingFramework")
-End With
-Dim ts : Set ts = New TextStreamer
-Dim sh : Set sh = CreateObject("WScript.Shell")
-Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+Dim incl : Set incl = CreateObject( "VBScripting.Includer" )
+Dim sh : Set sh = CreateObject( "WScript.Shell" )
+Dim fso : Set fso = CreateObject( "Scripting.FileSystemObject" )
 Const Ascii = 0
 Const Unicode = -1
 Const SystemDefault = -2
 Const ForAppending = 8
 Const CreateNew = True
 
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
     .describe "TextStreamer class"
+        Dim ts : Set ts = incl.LoadObject( "TextStreamer" )
 
     .it "should default to Ascii format"
 

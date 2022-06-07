@@ -1,5 +1,5 @@
 
-'Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file.
+'Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file. WoW64 stands for Windows 32-bit on Windows 64-bit.
 '
 'How it works: .exe files in %SystemRoot%\System32 and %SystemRoot%\SysWoW64 are compared by size or checksum. If the files are the same, then the calling script is assumed to be running in a 32-bit process.
 '
@@ -13,8 +13,8 @@ Class WoWChecker
     Private method, ByCheckSum_, BySize_, NotSet_
 
     Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
         ByCheckSum_ = "ByCheckSum"
         BySize_ = "BySize"
         NotSet_ = "NotSet"
@@ -22,20 +22,22 @@ Class WoWChecker
         File = "cmd.exe"
         ByCheckSum
     End Sub
-    
+
     'Property OSIs64Bit
     'Returns a boolean
     'Remark: Returns a boolean that indicates whether the Windows OS is 64-bit.
     Property Get OSIs64Bit
+        Dim cmd 'Windows command
+        Dim phrase 'string to search for in the output
         If "Empty" = TypeName(parser) Then
-            With CreateObject("VBScripting.Includer")
-                Execute .read("CommandParser")
+            With CreateObject( "VBScripting.Includer" )
+                Execute .Read( "CommandParser" )
                 Set parser = New CommandParser
             End With
         End If
-        parser.SetCommand "cmd /c if defined ProgramFiles(x86) (echo x64) else (echo x86)"
-        parser.SetSearchPhrase "x64"
-        OSIs64Bit = parser.GetResult
+        cmd = "cmd /c if defined ProgramFiles(x86) (echo x64) else (echo x86)"
+        phrase = "x64"
+        OSIs64Bit = parser.Result( cmd, phrase )
     End Property
 
     'Property isWoW
@@ -89,8 +91,8 @@ Class WoWChecker
     'Returns a string
     'Remark: Optional. Sets or gets the name of the file used in comparisons. A file by this name must be found in both %SystemRoot%\System32 and %SystemRoot%\SysWoW64. The default is <code> cmd.exe</code>.
     Public Property Get File : File = file_ : End Property
-    Public Property Let File(newValue) 
-        If Not fso.FileExists(Expand("%SystemRoot%\System32\" & newValue)) Or Not fso.FileExists(Expand("%SystemRoot%\SysWoW64\" & newValue)) Then Err.Raise 1,, "Can't find comparison file candidate " & newValue
+    Public Property Let File(newValue)
+        If Not fso.FileExists(Expand("%SystemRoot%\System32\" & newValue)) Or Not fso.FileExists(Expand("%SystemRoot%\SysWoW64\" & newValue)) Then Err.Raise 505,, "Can't find comparison file candidate " & newValue
         file_ = newValue
     End Property
 

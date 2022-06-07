@@ -1,7 +1,7 @@
 
 // Progress bar for VBScript
 
-using System.Windows.Forms; 
+using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System;
 namespace VBScripting
 {
     /// <summary> Supplies a progress bar to VBScript, for illustration purposes. </summary>
-    [ProgId("VBScripting.ProgressBar"),
+    [ProgId( "VBScripting.ProgressBar" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-4AF8-495F-AB4D-6C61BD463EA4")]
     public class ProgressBar : IProgressBar
@@ -56,7 +56,7 @@ namespace VBScripting
         }
 
         /// <summary> Sets the size of the window. </summary>
-        /// <parameters> width, height </parameters> 
+        /// <parameters> width, height </parameters>
         public void FormSize(int width, int height)
         {
             this.form.ClientSize = new Size(width, height);
@@ -69,7 +69,7 @@ namespace VBScripting
         }
 
         /// <summary> Sets the size of the progress bar. </summary>
-        /// <parameters> width, height </parameters> 
+        /// <parameters> width, height </parameters>
         public void PBarSize(int width, int height)
         {
             this.pbar.Size = new Size(width, height);
@@ -96,7 +96,7 @@ namespace VBScripting
         public int Value
         {
             get { return this.pbar.Value; }
-            set 
+            set
             {
                 if (value > pbar.Maximum)
                 {
@@ -106,9 +106,9 @@ namespace VBScripting
                 {
                     this.pbar.Value = pbar.Minimum;
                 }
-                else 
+                else
                 {
-                    this.pbar.Value = value; 
+                    this.pbar.Value = value;
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace VBScripting
         /// <parameters> x, y </parameters>
         public void FormLocationByPercentage(int x, int y)
         {
-            // save percentages; if the form is resized later, 
+            // save percentages; if the form is resized later,
             // this method will be run again to readjust the location.
             this.pctX = x; this.pctY = y;
             // enable manual positioning
@@ -290,30 +290,30 @@ namespace VBScripting
     }
 
     /// <summary> Enumeration of border styles. </summary>
-    /// <remarks> This class is available to VBScript via the <tt>ProgressBar.BorderStyle</tt> property. </remarks>
+    /// <remarks> This class is available to VBScript via the <code>ProgressBar.BorderStyle</code> property. </remarks>
     [Guid("2650C2AB-4DF8-495F-AB4D-6C61BD463EA4")]
     public class FormBorderStyleT
     {
         /// <returns> 1 </returns>
-        public int Fixed3D 
+        public int Fixed3D
         {
             get { return 1; }
             private set { }
         }
         /// <returns> 2 </returns>
-        public int FixedDialog 
+        public int FixedDialog
         {
             get { return 2; }
             private set { }
         }
         /// <returns> 3 </returns>
-        public int FixedSingle 
+        public int FixedSingle
         {
             get { return 3; }
             private set { }
         }
         /// <returns> 4 </returns>
-        public int FixedToolWindow 
+        public int FixedToolWindow
         {
             get { return 4; }
             private set { }
@@ -331,7 +331,7 @@ namespace VBScripting
             private set { }
         }
         /// <returns> 7 </returns>
-        public int SizableToolWindow 
+        public int SizableToolWindow
         {
             get { return 7; }
             private set { }

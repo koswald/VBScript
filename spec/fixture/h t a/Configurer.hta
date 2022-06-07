@@ -1,0 +1,38 @@
+<hta:application
+    purpose="Fixture file for the test script Configurer.spec.wsf. Uses the Configurer object to get the filespec of the configuration file that would be associated with this .hta file if it existed, and write it to a file so that it can be read by the test script."
+    WindowState=minimize
+    icon=filemgmt.dll>
+
+    <script language="VBScript"
+        src="../../../class/Configurer.vbs">
+    </script>
+    <script language="VBScript"
+        src="../../../class/StringFormatter.vbs">
+    </script>
+
+    <script language="VBScript">
+        Dim c 'object under test: an instance of the Configurer class
+        Dim fso, format, application, outStream, sh 'objects
+        Dim cl, clx, sHta, parent, outFile 'strings
+        Const ForWriting = 2, CreateNew = True 'for fso.OpenTextFile
+
+        Set c = New Configurer
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        Set sh = CreateObject( "WScript.Shell" )
+        Set format = New StringFormatter
+
+        outFile = format( Array( _
+            "%s\Configurer.spec.txt", Expand( "%AppData%\VBScripting") _
+        ))
+        Set outStream = fso.OpenTextFile( _
+            outFile, ForWriting, CreateNew _
+        )
+        outStream.WriteLine c.ScriptConfigFile
+        outStream.Close
+        Self.Close
+
+        Function Expand( str )
+            Expand = sh.ExpandEnvironmentStrings( str )
+        End Function
+    </script>
+</hta:application>

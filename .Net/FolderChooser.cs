@@ -1,5 +1,5 @@
 
-// Provides a user-friendly folder chooser for VBSxript
+// Provides a user-friendly folder chooser for VBScript.
 
 // adapted from https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043
 // by EricE https://stackoverflow.com/users/57611/erike
@@ -12,21 +12,9 @@ using System.IO;
 
 namespace VBScripting
 {
-    /// <summary> COM interface for VBScripting.FolderChooser </summary>
-    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-        Guid("2650C2AB-B1F8-495F-AB4D-6C61BD463EA4")]
-    public interface IFolderChooser
-    {
-        /// <summary> </summary>
-        string InitialDirectory { get; set; }
-        /// <summary> </summary>
-        string Title { get; set; }
-        /// <summary> </summary>
-        string FolderName { get; }
-    }
     /// <summary> Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. </summary>
-    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. </remarks>
-    [ProgId("VBScripting.FolderChooser"),
+    /// <remarks> Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <code> System.Reflection</code>. </remarks>
+    [ProgId( "VBScripting.FolderChooser" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-B0F8-495F-AB4D-6C61BD463EA4")]
     public class FolderChooser : IFolderChooser
@@ -104,14 +92,14 @@ namespace VBScripting
             private readonly static MethodInfo s_setOptionsMethodInfo = s_iFileDialogType.GetMethod("SetOptions", c_flags);
             private readonly static uint s_fosPickFoldersBitFlag = (uint)s_windowsFormsAssembly
                 .GetType("System.Windows.Forms.FileDialogNative+FOS")
-                .GetField("FOS_PICKFOLDERS")
+                .GetField( "FOS_PICKFOLDERS" )
                 .GetValue(null);
             private readonly static ConstructorInfo s_vistaDialogEventsConstructorInfo = s_windowsFormsAssembly
                 .GetType("System.Windows.Forms.FileDialog+VistaDialogEvents")
                 .GetConstructor(c_flags, null, new[] { typeof(FileDialog) }, null);
-            private readonly static MethodInfo s_adviseMethodInfo = s_iFileDialogType.GetMethod("Advise");
-            private readonly static MethodInfo s_unAdviseMethodInfo = s_iFileDialogType.GetMethod("Unadvise");
-            private readonly static MethodInfo s_showMethodInfo = s_iFileDialogType.GetMethod("Show");
+            private readonly static MethodInfo s_adviseMethodInfo = s_iFileDialogType.GetMethod( "Advise" );
+            private readonly static MethodInfo s_unAdviseMethodInfo = s_iFileDialogType.GetMethod( "Unadvise" );
+            private readonly static MethodInfo s_showMethodInfo = s_iFileDialogType.GetMethod( "Show" );
 
             public static ShowDialogResult Show(IntPtr ownerHandle, string initialDirectory, string title)
             {
@@ -154,5 +142,18 @@ namespace VBScripting
             public WindowWrapper(IntPtr handle) { _handle = handle; }
             public IntPtr Handle { get { return _handle; } }
         }
+    }
+    
+    /// <summary> COM interface for VBScripting.FolderChooser </summary>
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
+        Guid("2650C2AB-B1F8-495F-AB4D-6C61BD463EA4")]
+    public interface IFolderChooser
+    {
+        /// <summary> </summary>
+        string InitialDirectory { get; set; }
+        /// <summary> </summary>
+        string Title { get; set; }
+        /// <summary> </summary>
+        string FolderName { get; }
     }
 }

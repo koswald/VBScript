@@ -32,7 +32,7 @@ Dim voices, voiceIndex, nVoices
 
 'initialize html elements and the synthesizer object
 Sub Window_OnLoad
-    Dim application : Set application = document.getElementsByTagName("application")(0)
+    Dim application : Set application = document.getElementsByTagName( "application" )(0)
     document.title = application.ApplicationName
 
     'set window size and position
@@ -47,7 +47,7 @@ Sub Window_OnLoad
     End With
 
     'create a container for the button
-    Dim ctnr1 : Set ctnr1 = document.createElement("div")
+    Dim ctnr1 : Set ctnr1 = document.createElement( "div" )
     With ctnr1.style
         .width = "100%" 'keep the button above the text area
         .height = "20%"
@@ -55,11 +55,11 @@ Sub Window_OnLoad
     document.body.insertBefore ctnr1
 
     'create the Speak button
-    Dim button : Set button = document.createElement("input")
+    Dim button : Set button = document.createElement( "input" )
     With button
         .type = "button"
         .value = "Speak"
-        Set .onClick = GetRef("Speak")
+        Set .onClick = GetRef( "Speak" )
         With .style
             .marginBottom = ".5em"
             .height = "80%"
@@ -69,11 +69,11 @@ Sub Window_OnLoad
     ctnr1.insertBefore button
 
     'create the change voice button
-    Set voiceButton = document.createElement("input")
+    Set voiceButton = document.createElement( "input" )
     With voiceButton
         .type = "button"
         .value = "Change voice"
-        Set .onClick = GetRef("ChangeVoice")
+        Set .onClick = GetRef( "ChangeVoice" )
         With .style
             .marginBottom = ".5em"
             .height = "80%"
@@ -84,7 +84,7 @@ Sub Window_OnLoad
     ctnr1.insertBefore voiceButton
 
     'create a container for the text area
-    Dim ctnr2 : Set ctnr2 = document.createElement("div")
+    Dim ctnr2 : Set ctnr2 = document.createElement( "div" )
     With ctnr2.style
         .marginBottom = 0
         .height = "80%"
@@ -92,8 +92,8 @@ Sub Window_OnLoad
     document.body.insertBefore ctnr2
 
     'create the text area
-    Set words = document.createElement("textarea")
-    Set words.onKeyUp = GetRef("KeyUp")
+    Set words = document.createElement( "textarea" )
+    Set words.onKeyUp = GetRef( "KeyUp" )
     With words.style
         .width = "100%"
         .height = "100%"
@@ -106,7 +106,7 @@ Sub Window_OnLoad
 
     'get the speech synthesizer
     On Error Resume Next
-        Set synthesizer = CreateObject("VBScripting.SpeechSynthesis")
+        Set synthesizer = CreateObject( "VBScripting.SpeechSynthesis" )
         If Err Then
             MsgBox "Failed to find or initiailize the SpeechSynthesis library.", vbCritical, "Initialization failure"
             Self.close

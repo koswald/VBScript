@@ -66,7 +66,7 @@ Class WindowsUpdatesPauser
     Function GetServiceType : GetServiceType = srvcType : End Function
 
     'Method OpenConfigFile
-    'Remark: Opens the .config file
+    'Remark: Opens the .config file for editing.
     Sub OpenConfigFile : sh.Run "notepad """ & configFile & """" : End Sub
 
     'Private method ReadConfigFile
@@ -116,8 +116,8 @@ Class WindowsUpdatesPauser
     Private L, L2
 
     Sub Class_Initialize
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
 
         'defaults
         userInteractive = True
@@ -132,10 +132,10 @@ Class WindowsUpdatesPauser
         L = vbLf 'other
         L2 = L & L
 
-        With CreateObject("VBScripting.Includer")
-            Execute .read("StringFormatter")
-            Execute .read("VBSLogger")
-            Execute .read("VBSApp")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "StringFormatter" )
+            Execute .Read( "VBSLogger" )
+            Execute .Read( "VBSApp" )
         End With
         Set format = New StringFormatter
         Set log = New VBSLogger

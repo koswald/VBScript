@@ -1,29 +1,59 @@
 'A lightweight testing framework
 
 'Usage example
-' <pre>     With CreateObject("VBScripting.Includer") <br />         Execute .read("VBSValidator") <br />         Execute .read("TestingFramework") <br />     End With <br />     Dim val : Set val = New VBSValidator 'class under test <br />     With New TestingFramework <br />         .describe "VBSValidator class" <br />         .it "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean("sdfjke"), False <br />         .it "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description 'capture the error information <br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
+' <pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSValidator" ) <br />         Execute .Read( "TestingFramework" ) <br />     End With <br />     With New TestingFramework <br />         .Describe "VBSValidator class" <br />             Dim val : Set val = New VBSValidator 'class under test <br />         .It "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean( "sdfjke" ), False <br />         .It "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description<br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
 '
-' See also VBSTestRunner
+' When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior.
+'
+' See also <a href="#vbstestrunner"> VBSTestRunner</a> and <a href="#vbshoster"> VBSHoster</a>.
 '
 Class TestingFramework
+
+    Private unit 'string: description of the unit under test
+    Private spec 'string: description of a specification or test or expectation
+    Private T 'a string of spaces (tab)
+    Private explanation 'reason for test failure
+    Private pass 'literal: Pass
+    Private fail 'literal: Fail
+    Private result 'Pass or Fail
+    Private resultPending 'boolean
+    Private sh 'WScript.Shell object
+    Private fso 'Scripting.FileSystemObject object
+    Private sendKeysWarning 'process returned by the Exec method: a WScript MsgBox
+
+    Private Sub Class_Initialize
+        Dim hoster 'VBSHoster object
+        Set sh = CreateObject( "WScript.Shell" )
+        Set fso = CreateObject( "Scripting.FileSystemObject" )
+        sh.CurrentDirectory = fso.GetParentFolderName( WScript.ScriptFullName)
+        SetResultPending False
+        pass = "Pass"
+        fail = "Fail"
+        T = "      "
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSHoster" )
+            Set hoster = New VBSHoster
+            hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
+        End With
+    End Sub
 
     Private Sub WriteLine(str)
         If Len(str) Then WScript.StdOut.WriteLine str
     End Sub
 
-    'Method describe
+    'Method Describe
     'Parameter: unit description
     'Remark: Sets the description for the unit under test. E.g. .describe "DocGenerator class"
-    Sub describe(newUnit)
+    Sub Describe(newUnit)
         ShowPendingResult
         unit = newUnit
-        If Len(unit) Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 79)
+        If Len(newUnit) Then WriteLine Left("--------- " & newUnit & " ---------------------------------------------------------", 79)
     End Sub
 
-    'Method it
+    'Method It
     'Parameter: an expectation
     'Remark: Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer"
-    Sub it(newSpec)
+    Sub It(newSpec)
         ShowPendingResult
         spec = newSpec
     End Sub
@@ -51,9 +81,11 @@ Class TestingFramework
         ShowPendingResult
         If var1 = var2 Then
             SetResult pass
-        Else
-            SetResult fail
-            explanation = "Expected: " & var2 & "; Actual: " & var1
+        Else SetResult fail
+            explanation = _
+                "Expected: " & var2 & vbCrLf & _
+                "========> " & _
+                "Actual:   " & var1
         End If
         SetResultPending True
     End Sub
@@ -88,6 +120,27 @@ Class TestingFramework
         Next
     End Sub
 
+    'Method WriteTempMessage
+    'Parameter: a string
+    'Remark: Writes a temporary message to the test output that can be, and should be, erased later with the EraseTempMessage method, after some behind the scenes work has been done that does not write to the console. Note: The message will not appear when the test(s) are initiated by the TestRunner class.
+    Sub WriteTempMessage( str )
+        tempMessage_ = str
+        ShowPendingResult
+        WScript.StdOut.Write str
+    End Sub
+    Private tempMessage_
+
+    'Method EraseTempMessage
+    'Remarks: Erases the message written by the WriteTempMessage method.
+    Sub EraseTempMessage
+        Dim i
+        For i = 1 To Len(tempMessage_)
+            WScript.StdOut.Write Chr(8) & " " & Chr(8) 'backspace space backspace
+            WScript.Sleep 1
+        Next
+    End Sub
+
+
     'Function MessageAppeared
     'Parameter: caption, seconds, keys
     'Returns: a boolean
@@ -119,8 +172,8 @@ Class TestingFramework
     'Method ShowSendKeysWarning
     'Remark: Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. Note: SendKeys-related features are deprecated.
     Sub ShowSendKeysWarning
-        With CreateObject("VBScripting.Includer")
-            Execute .read("StringFormatter")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "StringFormatter" )
             Set sendKeysWarning = sh.Exec((New StringFormatter)(Array( _
                 "wscript ""%s\TestingFramework.fixture.vbs"" ""%s""", _
                 .LibraryPath, WScript.ScriptName _
@@ -132,23 +185,6 @@ Class TestingFramework
     'Remark: Closes the SendKeys warning. Note: SendKeys-related features are deprecated.
     Sub CloseSendKeysWarning
         sendKeysWarning.Terminate
-    End Sub
-
-    Private unit, spec, T, explanation
-    Private pass, fail, result, resultPending
-    Private sh, fso
-    Private sendKeysWarning
-
-    Private Sub Class_Initialize 'event fires on object instantiation
-        SetResultPending False
-        pass = "Pass" : fail = "Fail" : T = "      "
-        With CreateObject("VBScripting.Includer")
-            Execute .Read("VBSHoster")
-            Dim hoster : Set hoster = New VBSHoster
-            hoster.EnsureCScriptHost 'allow file double-click in explorer to run a test
-        End With
-        Set sh = CreateObject("WScript.Shell")
-        Set fso = CreateObject("Scripting.FileSystemObject")
     End Sub
 
     Sub Class_Terminate

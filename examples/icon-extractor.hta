@@ -12,6 +12,105 @@
 <body>
     <script language="VBScript">
         Option Explicit
+        'project objects
+        Dim extractor 'VBScripting.IconExtractor object
+        Dim format 'VBScripting.StringFormatter object
+        Dim rf 'RegExFunctions object
+        Dim includer 'VBScripting.Includer object
+        Dim browser 'VBScripting.FolderChooser object
+        Dim log 'VBSLogger object
+        Dim admin 'VBScripting.Admin object
+        'Windows native objects
+        Dim sh 'WScript.Shell object
+        Dim fso 'Scripting.FileSystemObject
+        Dim regex 'RegExp object
+        Dim fileDict 'Scripting.Dictionary object for storing filespecs
+        Dim application 'HTML application element (HTA application)
+        'other
+        Dim timeoutId 'saved integer for stopping a setTimeout method
+        Dim fileKeys 'array of filespecs
+        Dim iconIndex 'index of an icon within a .dll or .exe file
+        Dim fileIndex 'array index for fileKeys
+        Dim targetFolder 'string
+        Dim ms 'integer: milliseconds; for setTimeout 
+        Dim iconsExtracted 'integer: number of icons extracted
+        Dim CheckingMsg 'string: partial progress message
+        Dim eStop 'boolean: flag for stopping the extration
+        Dim iconCount 'integer: the supposed number of icons in a file
+        Dim configFile 'string: filespec of configuration file
+        Const F1 = 112 'window.event.KeyCode
+        Const F6 = 117
+        Const F7 = 118
+        Const F8 = 119
+        Const F9 = 120
+        Const Esc = 27
+        Const Enter = 13
+        Const ForWriting = 2, CreateNew = True 'for OpenTextFile
+        Const ListingFiles = "Listing filles"
+        Const ExtractingFiles = "Extracting files"
+        Const ShowingResults = "Showing results"
+        Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
+
+        Sub Window_OnLoad
+            InitializeObjects
+
+            'populate fields from the config file,
+            'and/or create the config file
+            Dim sourceFileValue
+            Dim sourceDirValue
+            Dim targetDirValue
+            configFile = format(Array( _
+                "%s\VBScripting\%s.configure", _
+                Expand("%AppData%"), _
+                fso.GetBaseName(document.location.href)))
+            On Error Resume Next
+                Execute fso.OpenTextFile(configFile).ReadAll
+                If Err Then
+                    Dim configStream : Set configStream = fso.OpenTextFile(configFile, ForWriting, CreateNew)
+                    configStream.WriteLine "sourceDirValue = ""%SystemRoot%\System32"""
+                    configStream.WriteLine "sourceFileValue = ""*.dll | *.exe"""
+                    configStream.WriteLine "targetDirValue = format(Array(""%UserProfile%\Desktop\extracted-icons\%s-%s-%s-%s-%s"", Month(Now), Day(Now), Hour(Now), Minute(Now), Second(Now)))"
+                    configStream.Close
+                End If
+            Err.Clear
+                Execute fso.OpenTextFile(configFile).ReadAll
+                If Err Then
+                    Feedback format(Array( _
+                        "Error reading the config file. <br />" & _
+                        "File: %s <br />" & _
+                        "Error description: %s", _
+                        configFile, Err.Description))
+                End If
+            On Error Goto 0
+
+            If admin.PrivilegesAreElevated Then Disable elevateBtn
+            sourceDirTxtBox.value = sourceDirValue
+            sourceFileTxtBox.value = sourceFileValue
+            targetDirTxtBox.value = targetDirValue
+            CheckIconChoices
+            CheckingMsg = "Checking for icons in<br />"
+            Disable stopBtn
+            ms = 0 'milliseconds; for setTimeout
+        End Sub
+
+        Sub InitializeObjects
+            Set sh = CreateObject( "WScript.Shell" )
+            Set fso = CreateObject( "Scripting.FileSystemObject" )
+            Set format = CreateObject( "VBScripting.StringFormatter" )
+            Set extractor = CreateObject( "VBScripting.IconExtractor" )
+            Set application = document.getElementsByTagName( "application" )(0)
+            document.Title = application.applicationName
+            Set regex = New RegExp
+            regex.IgnoreCase = True
+            Set includer = CreateObject( "VBScripting.Includer" )
+            Execute includer.Read( "RegExFunctions" )
+            Set rf = New RegExFunctions
+            Execute includer.Read( "VBSLogger" )
+            Set log = New VBSLogger
+            Set browser = CreateObject( "VBScripting.FolderChooser" )
+            Set admin = CreateObject( "VBScripting.Admin" )
+            Set fileDict = CreateObject( "Scripting.Dictionary" )
+        End Sub
 
         Sub extractIconsBtn_OnClick
             InProgressMsg "Getting the file list..."
@@ -79,7 +178,8 @@
         End Function
         Sub Disable(element) : element.disabled = True : End Sub
         Sub Enable(element) : element.disabled = False : End Sub
-        
+
+        'Compile a list of the files to extract; then start extracting
         Sub ListFiles
             Dim dir : dir = Expand(targetDirTxtBox.value)
             If largeIconsChkBox.checked Then
@@ -90,9 +190,9 @@
             End If
             If subfoldersChkBox.checked Then
                 ListFilesBySubfolder sourceDirTxtBox.value
-            ElseIf InStr(sourceFileTxtBox.value, "*") _
-            Or InStr(sourceFileTxtBox.value, "?") _
-            Or InStr(sourceFileTxtBox.value, "|") Then
+            ElseIf InStr( sourceFileTxtBox.value, "*" ) _
+            Or InStr( sourceFileTxtBox.value, "?" ) _
+            Or InStr( sourceFileTxtBox.value, "|" ) Then
                 ListFilesByWildcard sourceDirTxtBox.value
             Else
                 ListFile sourceDirTxtBox.value, sourceFileTxtBox.value
@@ -100,9 +200,9 @@
             If Not PrepStatesFor(ExtractingFiles) Then
                 Exit Sub
             End If
-            window.setTimeout "ExtractNextIcon", ms, "VBScript"
+            window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
         End Sub
-        
+
         Sub ShowResults
             PrepStatesFor ShowingResults
             Feedback "Icons extracted: " & iconsExtracted
@@ -128,13 +228,24 @@
             Next
         End Sub
 
+        'Add a file to the dictionary object. Just the key is used, not the value.
         Sub ListFile(sourceDir, sourceFile)
             fileDict.Add format(Array("%s\%s", sourceDir, sourceFile)), ""
         End Sub
 
-        Sub ExtractNextIcon
-            If eStop Or fileIndex > UBound(fileKeys) Then ShowResults : Exit Sub
-            Dim file : file = fileKeys(fileIndex)
+        Sub ExtractTheNextIcon
+            Dim file 'filespec of the current file
+            Dim base 'base name of the current file
+            Dim ext 'extension name of the current file
+            Dim largeTarget 'generated filespec for saving a large icon
+            Dim smallTarget 'generated filespec for saving a small icon
+            Dim suspect 'flespec of potentially-zero-size icon file
+            Dim msg 'string: partial progress message
+            If eStop Or fileIndex > UBound(fileKeys) Then
+                ShowResults
+                Exit Sub
+            End If
+            file = fileKeys(fileIndex)
             If iconIndex = 0 Then
                 iconCount = extractor.IconCount(file)
             End If
@@ -142,15 +253,15 @@
             Or iconIndex >= iconCount Then
                 iconIndex = 0
                 fileIndex = fileIndex + 1
-                window.setTimeout "ExtractNextIcon", ms, "VBScript"
+                window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
                 Exit Sub
             End If
-            Dim base : base = fso.GetBaseName(file)
-            Dim ext : ext = fso.GetExtensionName(file)
-            Dim largeTarget : largeTarget = format(Array( _
+            base = fso.GetBaseName(file)
+            ext = fso.GetExtensionName(file)
+            largeTarget = format(Array( _
                 "%s\lg\%s_%s_%s_Lg.ico", _
                 targetFolder, base, ext, iconIndex))
-            Dim smallTarget : smallTarget = format(Array( _
+            smallTarget = format(Array( _
                 "%s\sm\%s_%s_%s_Sm.ico", _
                 targetFolder, base, ext, iconIndex))
             If largeIconsChkBox.checked Then
@@ -163,17 +274,17 @@
                     extractor.Save file, iconIndex, smallTarget, False
                 On Error Goto 0
             End If
-            Dim suspect : For Each suspect In Array(largeTarget, smallTarget)
+            For Each suspect In Array(largeTarget, smallTarget)
                 RemoveIfZeroSize suspect
             Next
-            Dim msg : If iconIndex = 0 Then msg = CheckingMsg Else msg = format(Array("Extracting icon %s from<br />", iconIndex))
+            If iconIndex = 0 Then msg = CheckingMsg Else msg = format(Array("Extracting icon %s from<br />", iconIndex))
             InProgressMsg msg & fileKeys(fileIndex)
             If fileIndex > UBound(fileKeys) Then
                 ShowResults
                 Exit Sub
             Else iconIndex = iconIndex + 1
             End If
-            window.setTimeout "ExtractNextIcon", ms, "VBScript"
+            window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
         End Sub
 
         Sub RemoveIfZeroSize(filespec)
@@ -195,7 +306,7 @@
         End Sub
 
         Sub targetBrowserBtn_OnClick
-            browser.Title = "Create or choose a destination folder for the icons that will be extracted"
+            browser.Title = "Create and/or choose a destination folder for the icons that will be extracted"
             browser.InitialDirectory = "%UserProfile%\Desktop"
             Dim folder : folder = browser.FolderName
             If Not "" = folder Then targetDirTxtBox.value = folder
@@ -205,9 +316,9 @@
             eStop = True
             Disable stopBtn
         End Sub
-        
+
         Sub elevateBtn_OnClick
-            With CreateObject("Shell.Application")
+            With CreateObject( "Shell.Application" )
                 .ShellExecute "mshta", application.CommandLine,, "runas"
             End With
             Self.Close
@@ -254,25 +365,7 @@
         End Sub
 
         Sub ClearFeedback : feedbackDiv.innerHTML = "" : End Sub
-        
-        Sub InitializeObjects
-            Set sh = CreateObject("WScript.Shell")
-            Set fso = CreateObject("Scripting.FileSystemObject")
-            Set format = CreateObject("VBScripting.StringFormatter")
-            Set extractor = CreateObject("VBScripting.IconExtractor")
-            Set application = document.getElementsByTagName("application")(0)
-            document.Title = application.applicationName
-            Set regex = New RegExp
-            regex.IgnoreCase = True
-            Set includer = CreateObject("VBScripting.Includer")
-            Execute includer.Read("RegExFunctions")
-            Set rf = New RegExFunctions
-            Execute includer.Read("VBSLogger")
-            Set log = New VBSLogger
-            Set browser = CreateObject("VBScripting.FolderChooser")
-            Set admin = CreateObject("VBScripting.Admin")
-            Set fileDict = CreateObject("Scripting.Dictionary")
-        End Sub
+
         Sub ReleaseObjects
             Set sh = Nothing
             Set fso = Nothing
@@ -286,76 +379,6 @@
             Set browser = Nothing
             Set admin = Nothing
             Set fileDict = Nothing
-        End Sub
-
-        Const ListingFiles = "Listing filles"
-        Const ExtractingFiles = "Extracting files"
-        Const ShowingResults = "Showing results"
-        Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
-        Const F1 = 112 'window.event.KeyCode
-        Const F6 = 117
-        Const F7 = 118
-        Const F8 = 119
-        Const F9 = 120
-        Const Esc = 27
-        Const Enter = 13
-        Const ForWriting = 2
-        Const CreateNew = True
-        Dim sh, fso, format, extractor, application
-        Dim regex, rf, includer, browser, log
-        Dim admin
-        Dim timeoutId
-        Dim fileDict
-        Dim fileKeys
-        Dim iconIndex
-        Dim fileIndex
-        Dim targetFolder
-        Dim ms
-        Dim iconsExtracted
-        Dim CheckingMsg
-        Dim eStop
-        Dim iconCount
-        Dim configFile
-
-        Sub Window_OnLoad
-            InitializeObjects
-
-            'populate fields from the config file,
-            'and/or create the config file
-            Dim sourceFileValue
-            Dim sourceDirValue
-            Dim targetDirValue
-            configFile = format(Array( _
-                "%s\VBScripting\%s.configure", _
-                Expand("%AppData%"), _
-                fso.GetBaseName(document.location.href)))
-            On Error Resume Next
-                Execute fso.OpenTextFile(configFile).ReadAll
-                If Err Then
-                    Dim configStream : Set configStream = fso.OpenTextFile(configFile, ForWriting, CreateNew)
-                    configStream.WriteLine "sourceDirValue = ""%SystemRoot%\System32"""
-                    configStream.WriteLine "sourceFileValue = ""*.dll | *.exe"""
-                    configStream.WriteLine "targetDirValue = format(Array(""%UserProfile%\Desktop\extracted-icons\%s-%s-%s-%s-%s"", Month(Now), Day(Now), Hour(Now), Minute(Now), Second(Now)))"
-                    configStream.Close
-                End If
-            Err.Clear
-                Execute fso.OpenTextFile(configFile).ReadAll
-                If Err Then
-                    Feedback format(Array( _
-                        "Error reading the config file. <br />" & _
-                        "File: %s <br />" & _
-                        "Error description: %s", _
-                        configFile, Err.Description))
-                End If
-            On Error Goto 0
-            
-            If admin.PrivilegesAreElevated Then Disable elevateBtn
-            sourceDirTxtBox.value = sourceDirValue
-            sourceFileTxtBox.value = sourceFileValue
-            targetDirTxtBox.value = targetDirValue
-            CheckIconChoices
-            CheckingMsg = "Checking for icons in<br />"
-            Disable stopBtn
         End Sub
 
         Sub Window_OnUnload
@@ -372,7 +395,7 @@
     <input
         type="text"
         class="textInput"
-        id="sourceDirTxtBox" /> 
+        id="sourceDirTxtBox" />
     <input
         type="button"
         id="sourceBrowserBtn"
@@ -402,7 +425,7 @@
         checked /> <span class="label"> Large icons</span><br />
     <input
         type="checkbox"
-        id="smallIconsChkBox" 
+        id="smallIconsChkBox"
                 /> <span class="label"> Small icons</span><br />
     <input
         type="checkbox"

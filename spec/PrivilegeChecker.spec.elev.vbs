@@ -1,33 +1,28 @@
+'PrivilegeChecker class/object integration test.
+'This test is valid only when privileges are elevated. 
 
-'test PrivilegeChecker with elevated privileges
+Option Explicit
+Dim pc 'PrivilegeChecker object being tested
+Dim incl 'VBScripting.Includer object
 
-Option Explicit : Initialize
+Set incl = CreateObject( "VBScripting.Includer" )
+Set pc = incl.LoadObject( "PrivilegeChecker" )
 
-With CreateObject("VBScripting.Includer")
-    Execute .read("TestingFramework")
-    Execute .read("PrivilegeChecker")
+Execute incl.Read( "VBSApp" )
+With New VBSApp
+    If Not pc Then
+        'Restart the script with elevated privileges
+        .SetUserInteractive False
+        .RestartUsing "cscript.exe", .DoNotExit, .DoElevate
+    End If
 End With
 
+Execute incl.Read( "TestingFramework" )
 With New TestingFramework
 
-    .describe "PrivilegeChecker class"
+    .Describe "PrivilegeChecker class"
 
-    .it "should indicate that privileges are elevated"
+    .It "should indicate that privileges are elevated"
         .AssertEqual pc, True
 
 End With
-
-Dim pc
-
-Sub Initialize
-    With CreateObject("VBScripting.Includer")
-        Execute .read("PrivilegeChecker")
-        Execute .read("VBSApp")
-    End With
-    Set pc = New PrivilegeChecker
-    Dim app : Set app = New VBSApp
-    If Not pc Then
-        app.SetUserInteractive False
-        app.RestartWith "cscript.exe", "/k", True
-    End If
-End Sub

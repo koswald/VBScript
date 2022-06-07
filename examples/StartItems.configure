@@ -1,0 +1,13 @@
+# Configuration file for StartItems.hta
+
+# window dimensions, in percent of available screen, roughly.
+width, 75
+height, 50
+xPos, 50
+yPos, 50
+
+# The Wow node in the registry,
+# Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run,
+# is commonly used in HKLM, but not much if at all in HKCU,
+# so this setting (enableHKCUWow) probably won't make any difference.
+enableHKCUWow, False

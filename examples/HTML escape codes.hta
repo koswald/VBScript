@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+    <head>
+        <hta:application
+            applicationName="HTML escape codes"
+            synopsis="Builds the html escape code for a specified character."
+            example="When the character \ is keyed into the input box, and the Enter key is pressed or the button is clicked, the html escape code &#92; is shown in the output."
+            icon="ActionCenterCPL.dll"
+            scroll="No"
+            innerBorder="No"/>
+        <title> HTML escape codes </title>
+
+        <!-- The placeholder attribute for the input tag requires Internet Explorer version 10 -->
+        <meta
+            http-equiv="x-ua-compatible"
+            content="ie=10">
+
+        <script language="VBScript">
+            Self.ResizeTo 350, 200
+            Self.MoveTo 400, 300
+        </script>
+    </head>
+
+    <body
+        onload="BodyOnLoad()"
+        onkeyup="BodyOnKeyUp()">
+
+        <script language="VBScript">
+            Option Explicit
+            Dim format 'VBScripting.StringFormatter object
+
+            Sub ShowResult
+                errors.innerHTML = ""
+                If 1 < Len( input.Value ) Then
+                    input.Select
+                    output.innerHTML = ""
+                    errors.innerHTML = "Just enter a single character, and then click the button or press Enter."
+                    Exit Sub
+                ElseIf 0 = Len( input.Value ) Then
+                    input.blur
+                    output.innerHTML = ""
+                    Exit Sub
+                End If
+                output.innerHTML = format( Array( _
+                    "Asc( ""%s"" ) = %s <br>" & _
+                    "HTML escape code = &#38;#%s;", _
+                    input.Value, Asc( input.Value ), _
+                    Asc( input.Value ) _
+                ))
+                input.Value = ""
+                input.focus
+                errors.innerHTML = ""
+            End Sub
+
+            Sub BodyOnKeyUp
+                Dim prompt
+                Dim link
+                Const Enter = 13
+                Const Esc = 27
+                Const F1 = 112
+                If Enter = window.event.KeyCode Then
+                    ShowResult()
+                ElseIf Esc = window.event.KeyCode Then
+                    Self.Close
+                ElseIf F1 = window.event.KeyCode Then
+                    prompt = "Do you want to open the online docs for the VBScript function Asc?"
+                    link = "https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/xfw01fx4(v=vs.84)"
+                    If vbCancel = MsgBox( prompt, vbOKCancel, document.Title ) Then
+                        Exit Sub
+                    End If
+                    With CreateObject( "WScript.Shell" )
+                        .Run link
+                    End With
+                End If
+            End Sub
+
+            Sub BodyOnLoad
+                Set format = CreateObject( "VBScripting.StringFormatter" )
+                errors.innerHTML = ""
+            End Sub
+        </script>
+
+        <input
+            id=input
+            type=text
+            placeholder="Enter a character"
+            onchange="resultButton.focus" />
+        <input
+            id=resultButton
+            type=button
+            onclick="ShowResult()"
+            value="Show the html" />
+
+        <p id=output></p>
+        <p id=errors></p>
+
+        <style>
+            body, input {
+                background-color: #334;
+                color: #eee;
+            }
+            p {
+                font-family: sans-serif;
+                /* font-weight: bold; */
+            }
+            #errors {
+                color: #f00;
+            }
+        </style>
+    </body>
+</html>

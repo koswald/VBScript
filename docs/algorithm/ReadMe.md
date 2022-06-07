@@ -12,7 +12,7 @@ Algorithm development details.
 The [HTAApp class] `ParseArgs` propery parses the mshta.exe command-line arguments. This is unnecessary for .vbs and .wsf files, because the WScript.Arguments object provides the arguments already separated, with any wapping quotes stripped off. The mshta.exe command line is returned by
 
 ``` vbs
-document.getElementsByTagName("application")(0).CommandLine
+document.getElementsByTagName( "application" )(0).CommandLine
 ```
 
 or

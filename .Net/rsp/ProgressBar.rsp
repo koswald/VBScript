@@ -1,4 +1,3 @@
-
 # csc.exe compiler switches for ProgressBar.cs
 
 /target:library

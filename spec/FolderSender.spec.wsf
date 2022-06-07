@@ -1,0 +1,124 @@
+<job>
+    <script language=VBScript
+        src=../class/FolderSender.vbs />
+    <script language=VBScript
+        src=../class/StringFormatter.vbs />
+    <script language=VBScript
+        src=../class/TestingFramework.vbs />
+    <script language=VBScript>
+
+Option Explicit
+Dim fs 'FolderSender object: what is to be tested
+Dim format 'StringFormatter object
+Dim fso 'Scripting.FileSystemObject object
+Dim actual, expected 'variants
+Dim source1 'string: source folder #1
+Dim target1 'string: target folder #1
+Dim source2, target2 'for testing the Move method
+Const Force = True 'for DeleteFile
+
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set format = New StringFormatter
+With CreateObject( "WScript.Shell" )
+    .CurrentDirectory = _
+        fso.GetParentFolderName( _
+            WScript.ScriptFullName _
+        )
+End With
+source1 = fso.GetAbsolutePathName( _
+    ".\fixture\FolderSender\Source" _
+)
+target1 = fso.GetAbsolutePathName( _
+    ".\fixture\FolderSender\Target" _
+)
+If fso.FolderExists( target1 ) Then
+    fso.DeleteFolder target1, Force
+End If
+If fso.FolderExists( target1 ) Then
+    Err.Raise 51,, "Couldn't delete the target folder, " & target1
+End If
+
+With New TestingFramework
+
+    .Describe "FolderSender class"
+        Set fs = New FolderSender
+        
+    .It "should err on Empty source"
+        fs.TargetFolder = "./fixture/FolderSender/Target"
+        fs.MockSourceFolder = Empty
+        On Error Resume Next
+            fs.Copy
+            actual  = Left( Err.Description, 63 )
+            expected = "The SourceFolder and TargetFolder properties must be specified."
+       On Error Goto 0
+       .AssertEqual actual,  expected
+      
+    .It "should err on Empty target"
+        fs.MockTargetFolder = Empty
+        fs.SourceFolder = "./fixture/FolderSender/Source"
+        On Error Resume Next
+            fs.Copy
+            actual  = Left( Err.Description, 63 )
+            expected = "The SourceFolder and TargetFolder properties must be specified."
+        On Error Goto 0
+        .AssertEqual actual, expected
+    
+    .It "should err on non-existent source folder"
+        On Error Resume Next
+            fs.SourceFolder = "./fixture/FolderSennder"
+            actual = Left( Err.Description, 30 )
+            expected = "Cannot find the source folder "
+        On Error Goto 0
+        .AssertEqual actual, expected
+
+    .It "should convert a relative path to an absolute path"
+        fs.SourceFolder = "./fixture/FolderSender"
+        actual = fs.SourceFolder
+        expected = fso.GetAbsolutePathName("./fixture/FolderSender")
+        .AssertEqual actual, expected
+
+    .It "should create a folder"
+        If fso.FolderExists( target1 ) Then
+            fso.DeleteFolder target1, Force
+        End If
+        If fso.FolderExists( target1 ) Then
+            Err.Raise 51,, "Couldn't delete the target folder, " & target1
+        End If
+        fs.MakeFolder target1
+        actual = fso.FolderExists( target1 )
+        expected = True
+        .AssertEqual actual,  expected 
+
+    .It "should copy a folder"
+        fs.SourceFolder = source1
+        fs.TargetFolder = target1
+        fs.Copy
+        actual = fso.FileExists( format( Array( _
+            "%s\Source\file1.txt", target1 _
+        )))
+        expected = True
+        .AssertEqual actual, expected
+
+    .It "should move a folder"
+        source2 = target1 & "\Source"
+        target2 = target1 & "\Source2"
+        fs.SourceFolder = source2
+        fs.TargetFolder = target2
+        fs.Move
+        actual = fso.FileExists( format( Array( _
+            "%s\Source\file1.txt", target2 _
+        ))) & fso.FolderExists( source2 )
+        expected = "TrueFalse"
+        .AssertEqual actual,  expected
+
+End With
+
+If fso.FolderExists( target1 ) Then
+    fso.DeleteFolder target1, Force
+End If
+If fso.FolderExists( target1 ) Then
+    Err.Raise 51,, "Couldn't delete the target folder, " & target1
+End If
+
+    </script>
+</job>

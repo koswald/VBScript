@@ -11,13 +11,13 @@ Class VBSTroubleshooter
             log format(Array("char: %s, Ascii: %s", c, Asc(c) ))
         Next
     End Sub
-    
+
     Private log, format
-    
+
     Sub Class_Initialize
-        With CreateObject("VBScripting.Includer")
-            Execute .read("VBSLogger")
-            Execute .read("StringFormatter")
+        With CreateObject( "VBScripting.Includer" )
+            Execute .Read( "VBSLogger" )
+            Execute .Read( "StringFormatter" )
         End With
         Set log = New VBSLogger
         Set format = New StringFormatter

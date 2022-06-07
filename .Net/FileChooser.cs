@@ -19,7 +19,8 @@ namespace VBScripting
         private string _initialDirectory;
         private string _expandedResolvedInitialDirectory;
 
-        /// <summary> Constructor </summary>
+        // Constructor
+        /// <summary> </summary>
         public FileChooser()
         {
             this.chooser = new OpenFileDialog();
@@ -32,7 +33,7 @@ namespace VBScripting
         }
 
         /// <summary> Opens a dialog enabling the user to browse for and choose a file. </summary>
-        /// <remarks> Returns the filespec of the chosen file. Returns an empty string if the user cancels.  </remarks> 
+        /// <remarks> Returns the filespec of the chosen file. Returns an empty string if the user cancels.  </remarks>
         public string FileName
         {
             get
@@ -125,7 +126,7 @@ namespace VBScripting
             }
         }
         /// <summary> Gets or sets the selectable file types.  </summary>
-        /// <remarks> Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br /> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br /> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre></remarks> 
+        /// <remarks> Examples: <pre> fc.Filter = "All files (*.*)|*.*" // the default <br /> fc.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*" <br /> fc.Filter = "Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*" </pre></remarks>
         public string Filter
         {
             get
@@ -166,7 +167,7 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets whether multiple files can be selected. </summary> 
+        /// <summary> Gets or sets whether multiple files can be selected. </summary>
         /// <remarks> The default is False. </remarks>
         public bool Multiselect
         {
