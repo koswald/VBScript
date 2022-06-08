@@ -34,7 +34,7 @@ Windows 10, 8, 7, Vista, ... 98.
 
 ## Installation
 
-- Clone or download the repo. [CopyToProgramFiles.wsf](./CopyToProgramFiles.wsf) can be used, if desired, to make the project available to all users before running [Setup.vbs].
+- Clone or download the repo. [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs) can be used, if desired, to make the project available to all users before running [Setup.vbs].
 
 - Double-click [Setup.vbs] or from a console window type the following command from an elevated process. (If not from an elevated process, then the User Account Control dialog will appear to request permission to elevate.)  
 
@@ -100,17 +100,23 @@ After a major Windows 10 version update, rerunning [Setup.vbs] may be required i
 
 ## References  
 
-[Scripting documentation online](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1et7k7c(v%3dvs.84))  
-[FileSystemObject](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6kxy1a51(v=vs.84))  
-[WshShell object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/aew9yb99(v=vs.84))  
-[WshScriptExec object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/2f38xsxe(v=vs.84))  
-[Dictionary object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84))  
-[Regular expressions](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6wzad2b2(v=vs.84))  
-[WScript object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/at5ydy31(v=vs.84))  
-[WScript.Arguments object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/ss1ysb2a(v=vs.84))  
-[WshEnvironment object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
-[WScript.Arguments.Named](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
-[WScript.Network object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/s6wt333f(v=vs.84))  
+- [VBScript Fundamentals](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/0ad0dkea(v=vs.84))  
+- [VBScript Language Reference](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1wf56tt(v=vs.84))  
+- [FileSystemObject](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6kxy1a51(v=vs.84))  
+- [WshShell object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/aew9yb99(v=vs.84))  
+- [WshScriptExec object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/2f38xsxe(v=vs.84))  
+- [Dictionary object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84))  
+- [Regular expressions](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6wzad2b2(v=vs.84))  
+- [WScript object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/at5ydy31(v=vs.84))  
+- [WshArguments object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/ss1ysb2a(v=vs.84))  
+- [WshEnvironment object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
+- [WshNamed object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d6y04sbb(v=vs.84))  
+- [WshNetwork object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/s6wt333f(v=vs.84))  
+- [StdRegProv object](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov)  
+- [WMI Tasks for Scripts and Applications](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-tasks-for-scripts-and-applications)  
+- [WQL (SQL for WMI)](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wql-sql-for-wmi)  
+
+
 
 [VBScript utility classes]: class
 [C# classes]: .Net

@@ -3554,7 +3554,9 @@
          <a id="wmiutility"></a>
          <h2 class="heading" id=44>WMIUtility</h2>
          <div class="detail">
-            <p>Examples of the Windows Management Instrumentation object</p>
+            <p>Examples of the Windows Management Instrumentation object.</p>
+            <p></p>
+             See <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.
             <p></p>
             <table>
                <tr>
@@ -3590,7 +3592,7 @@
                   <td>GetProcessIDsByName</td>
                   <td>a process name</td>
                   <td>a boolean</td>
-                  <td>Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>.</td>
+                  <td>Returns an array of the process ids of all processes that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -3611,49 +3613,56 @@
                   <td>partitions</td>
                   <td>None</td>
                   <td>a collection</td>
-                  <td>Returns a collection of partition objects, each with the following methods: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status</td>
+                  <td>Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>disks</td>
                   <td>None</td>
                   <td>a collection</td>
-                  <td>Returns a collection of disk objects, each with these methods: FileSystem, DeviceID</td>
+                  <td>Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>cpu</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Returns an object with these methods: Architecture, Description</td>
+                  <td>Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>CPUs</td>
+                  <td>None</td>
+                  <td>a collection</td>
+                  <td>Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>os</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles</td>
+                  <td>Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>pc</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory</td>
+                  <td>Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>Bios</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Returns a BIOS object with this method: Version</td>
+                  <td>Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others.</td>
                </tr>
                <tr>
                   <td>Property</td>
                   <td>Battery</td>
                   <td>None</td>
                   <td>an object</td>
-                  <td>Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object.</td>
+                  <td>Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining.</td>
                </tr>
             </table>
          </div>

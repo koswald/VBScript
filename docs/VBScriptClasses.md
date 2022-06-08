@@ -1199,23 +1199,26 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 
 ## WMIUtility
 
-Examples of the Windows Management Instrumentation object  
+Examples of the Windows Management Instrumentation object.  
+  
+ See <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Property | TerminateProcessById | process id | a boolean | Terminates any Windows&reg; process with the specified id. Returns True if the process was found, False if not. |
 | Property | TerminateProcessByIdAndName | id, name | a boolean | Terminates a process with the specified id and name. Returns True if the process was found, False if not. |
 | Method | TerminateProcessByIdAndNameDelayed | id, name, milliseconds | N/A | Terminates a process with the specified id (integer), name (string, e.g. notepad.exe), and delay (integer: milliseconds), asynchronously. |
-| Property | GetProcessIDsByName | a process name | a boolean | Returns an array of process ids that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>. |
+| Property | GetProcessIDsByName | a process name | a boolean | Returns an array of the process ids of all processes that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>. |
 | Property | GetProcessesWithNamesLike | a string like jav% | an array of process names | None |
 | Property | IsRunning | a process name | a boolean | Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning( "notepad.exe" ) 'True or False</code>. |
-| Property | partitions | None | a collection | Returns a collection of partition objects, each with the following methods: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status |
-| Property | disks | None | a collection | Returns a collection of disk objects, each with these methods: FileSystem, DeviceID |
-| Property | cpu | None | an object | Returns an object with these methods: Architecture, Description |
-| Property | os | None | an object | Return an OS object with these methods: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles |
-| Property | pc | None | an object | Returns a PC object with these methods: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory |
-| Property | Bios | None | an object | Returns a BIOS object with this method: Version |
-| Property | Battery | None | an object | Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object. |
+| Property | partitions | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status. |
+| Property | disks | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID. |
+| Property | cpu | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description. |
+| Property | CPUs | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description |
+| Property | os | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles. |
+| Property | pc | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory. |
+| Property | Bios | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others. |
+| Property | Battery | None | an object | Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining. |
 
 ## WoWChecker
 

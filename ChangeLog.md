@@ -1,4 +1,23 @@
-- [Version 1.4.0 (the latest version)](#version-140)  
+- [Version 1.4.1 (the latest version)](#version-141)  
+- [Version 1.4.0](#version-140)  
+
+# Version 1.4.1
+
+- [WMIUtility class](#wmiutility-class)  
+- [ReadMe](#readme)  
+- [RegisterWsc.wsf](#registerwscwsf)  
+
+## WMIUtility class
+
+Improved the [code comments](class/WMIUtility.vbs) and (therefore) the [docs](docs/VBScriptClasses.md#wmiutility) for the WMIUtiltiy class: added links to specific [Computer System Hardware Classes](https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes).  
+
+## ReadMe
+
+Added reference links to [ReadMe.md](./ReadMe.md#references). Corrected [link](./ReadMe.md#installation) to [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs) (formerly CopyToProgramFiles.wsf).
+
+## RegisterWsc.wsf
+
+Corrected comment syntax in [RegisterWsc.wsf](examples/RegisterWsc.wsf), which had no runtime effect.
 
 # Version 1.4.0
 
