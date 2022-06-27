@@ -55,6 +55,21 @@ End Function
 Sub RestartWith(host, switch, elevating)
     app_X.RestartWith host, switch, elevating
 End Sub
+Sub RestartUsing(host, exiting, elevating)
+    app_X.RestartUsing host, exiting, elevating
+End Sub
+Function GetDoExit
+    GetDoExit = app_X.DoExit
+End Function
+Function GetDoNotExit
+    GetDoNotExit = app_X.DoNotExit
+End Function
+Function GetDoElevate
+    GetDoElevate = app_X.DoElevate
+End Function
+Function GetDoNotElevate
+    GetDoNotElevate = app_X.DoNotElevate
+End Function
 Sub SetUserInteractive(newUserInteractive)
     app_X.SetUserInteractive newUserInteractive
 End Sub
@@ -87,6 +102,12 @@ Function GetWrapAll
 End Function
 Sub PutWrapAll(newWrapAll)
     app_X.WrapAll = newWrapAll
+End Sub
+Function RUArgs
+    RUArgs = app_X.RUArgs
+End Function
+Sub PutRUArgsTest(newBoolean)
+    app_X.RUArgsTest = newBoolean
 End Sub
 
 

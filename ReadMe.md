@@ -109,12 +109,21 @@ After a major Windows 10 version update, rerunning [Setup.vbs] may be required i
 - [Regular expressions](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6wzad2b2(v=vs.84))  
 - [WScript object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/at5ydy31(v=vs.84))  
 - [WshArguments object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/ss1ysb2a(v=vs.84))  
-- [WshEnvironment object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
 - [WshNamed object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d6y04sbb(v=vs.84))  
+- [WshEnvironment object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6s7w15a0(v=vs.84))  
 - [WshNetwork object](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/s6wt333f(v=vs.84))  
+- [Script Components](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/asxw6z3c(v=vs.84))  
+- [Windows Script Host](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/9bbdkx3k(v=vs.84))  
 - [StdRegProv object](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov)  
 - [WMI Tasks for Scripts and Applications](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-tasks-for-scripts-and-applications)  
 - [WQL (SQL for WMI)](https://docs.microsoft.com/en-us/windows/win32/wmisdk/wql-sql-for-wmi)  
+- [Shell object (Shell.Appliction)](https://docs.microsoft.com/en-us/windows/win32/shell/shell)  
+  - [ShellExecute](https://docs.microsoft.com/en-us/windows/win32/shell/shell-shellexecute),,, "[runas](https://docs.microsoft.com/en-us/windows/win32/shell/launch#object-verbs)"  
+  - [MoveHere](https://docs.microsoft.com/en-us/windows/win32/shell/folder-movehere)  
+  - [CopyHere](https://docs.microsoft.com/en-us/windows/win32/shell/folder-copyhere)  
+  - [MinimizeAll](https://docs.microsoft.com/en-us/windows/win32/shell/shell-minimizeall)  
+  - [UndoMinimizeAll](https://docs.microsoft.com/en-us/windows/win32/shell/shell-undominimizeall)  
+  - [ShellSpecialFolderConstants enumeration (shldisp.h)](https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants)  
 
 
 

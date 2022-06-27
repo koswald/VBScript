@@ -16,6 +16,7 @@ Class VBSAppClassTester
     Private outputFiles 'array of file names
     Private minusSpec, plusSpec 'defined in .config file
     Private base 'partial filespec of a fixture file
+    Private powershell
 
     Sub Class_Initialize
         With CreateObject( "VBScripting.Includer" )
@@ -25,6 +26,10 @@ Class VBSAppClassTester
             Set format = New StringFormatter
             Execute .Read("..\spec\VBSApp.spec.config")
             base = "fixture\VBSApp.fixture."
+            Execute .Read("Configurer")
+        End With
+        With New Configurer
+            powershell = .PowerShell
         End With
         Set sh = CreateObject( "WScript.Shell" )
         Set fso = CreateObject( "Scripting.FileSystemObject" )
@@ -55,6 +60,7 @@ Class VBSAppClassTester
         Dim s 'string
         Dim actual, expected 'assertion arguments
         Dim iniStrings 'array: strings describing instantiation methods
+        Dim parent
         Const running = 0, finished = 1 'Exec Status
         Const COMObject = 0, NewClassName = 1 'instantiation methods
 
@@ -139,12 +145,22 @@ Class VBSAppClassTester
 
                 .It "should get the app's parent folder"
                     actual = stream.ReadLine
-                    expected = fso.GetParentFolderName(fso.GetAbsolutePathName(base & ext))
-                    .AssertEqual actual, expected
+                    parent = fso.GetParentFolderName(fso.GetAbsolutePathName(base & ext))
+                    .AssertEqual actual, parent
 
                 .It "should get the app's host .exe"
                     actual = stream.ReadLine
                     expected = exe
+                    .AssertEqual actual, expected
+
+                .It "should get the RestartUsing args"
+                    actual = stream.ReadLine
+                    expected = format( Array( _
+                        "-ExecutionPolicy Bypass -Command Set-Location '%s' ; %s ""'%s'""  ""ar g ze ro"" ""arg one"" %s %s", _
+                        parent, "wscript.exe", _
+                        fso.GetAbsolutePathName(base & ext), _
+                       milliseconds, ext _
+                    ))
                     .AssertEqual actual, expected
 
                 .It "should have a sleep method"

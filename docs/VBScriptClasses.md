@@ -23,6 +23,7 @@
 [RegistryUtility](#registryutility)  
 [SetupHelper](#setuphelper)  
 [ShellConstants](#shellconstants)  
+[ShellSpecialFolders](#shellspecialfolders)  
 [SpecialFolders](#specialfolders)  
 [StartupItems](#startupitems)  
 [StringFormatter](#stringformatter)  
@@ -641,6 +642,56 @@ Constants for use with WScript.Shell.Run
 | Property | Synchronous | None | True | Script execution halts and waits for the called process to exit. <br /> For use with Run method parameter #3 |
 | Property | Asynchronous | None | False | Script execution proceeds without waiting for the called process to exit. <br /> For use with Run method parameter #3 |
 
+## ShellSpecialFolders
+
+ ShellSpecialFolders class  
+  
+ Adapted from <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.  
+  
+| Member type | Name | Parameter | Returns | Comment |
+| :---------- | :--- | :-------- | :------ | :------ |
+| Property | Path | an integer | a path | Returns the path to a special folder. The parameter is one of the ssf constants. This path is suitable for navigating in Windows Explorer. For ssfCONTROLS, ssfPRINTERS, ssfBITBUCKET, ssfDRIVES, and ssfNETWORK, the return value looks different than a typical path: for ssfDrives it is ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}. |
+| Property | AllConstants | None | an array | Returns an array with all of the ssf constants (integers). |
+| Property | AllPaths | None | an array | Returns an array with all of the ssf paths. |
+| Property | ssfDESKTOP | None | 0 | None |
+| Property | ssfPROGRAMS | None | &h2 | None |
+| Property | ssfCONTROLS | None | &h3 | Virtual folder that contains icons for the Control Panel applications. |
+| Property | ssfPRINTERS | None | &h4 | Virtual folder that contains installed printers. |
+| Property | ssfPERSONAL | None | &h5 | File system directory that serves as a common repository for a user's documents. A typical path is C:\Users&#92;<em>username</em>\Documents. |
+| Property | ssfFAVORITES | None | &h6 | None |
+| Property | ssfSTARTUP | None | &h7 | None |
+| Property | ssfRECENT | None | &h8 | None |
+| Property | ssfSENDTO | None | &h9 | None |
+| Property | ssfBITBUCKET | None | &ha | According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin." |
+| Property | ssfSTARTMENU | None | &hb | None |
+| Property | ssfDESKTOPDIRECTORY | None | &h10 | According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop. |
+| Property | ssfDRIVES | None | &h11 | My Computer—the virtual folder that contains everything on the local computer: storage devices, printers, and Control Panel. This folder can also contain mapped network drives. |
+| Property | ssfNETWORK | None | &h12 | Network Neighborhood—the virtual folder that represents the root of the network namespace hierarchy. |
+| Property | ssfNETHOOD | None | &h13 | A file system folder that contains any link objects in the My Network Places virtual folder. It is not the same as ssfNETWORK, which represents the network namespace root. A typical path is C:\Users&#92;<em>username</em>\AppData\Roaming\Microsoft\Windows\Network Shortcuts. |
+| Property | ssfFONTS | None | &h14 | None |
+| Property | ssfTEMPLATES | None | &h15 | None |
+| Property | ssfCOMMONSTARTMENU | None | &h16 | None |
+| Property | ssfCOMMONPROGRAMS | None | &h17 | None |
+| Property | ssfCOMMONSTARTUP | None | &h18 | None |
+| Property | ssfCOMMONDESKTOPDIR | None | &h19 | None |
+| Property | ssfAPPDATA | None | &h1a | None |
+| Property | ssfPRINTHOOD | None | &h1b | None |
+| Property | ssfLOCALAPPDATA | None | &h1c | None |
+| Property | ssfALTSTARTUP | None | &h1d | None |
+| Property | ssfCOMMONALTSTARTUP | None | &h1e | None |
+| Property | ssfCOMMONFAVORITES | None | &h1f | None |
+| Property | ssfINTERNETCACHE | None | &h20 | None |
+| Property | ssfCOOKIES | None | &h21 | None |
+| Property | ssfHISTORY | None | &h22 | File system directory that serves as a common repository for Internet history items. |
+| Property | ssfCOMMONAPPDATA | None | &h23 | None |
+| Property | ssfWINDOWS | None | &h24 | None |
+| Property | ssfSYSTEM | None | &h25 | None |
+| Property | ssfPROGRAMFILES | None | &h26 | None |
+| Property | ssfMYPICTURES | None | &h27 | None |
+| Property | ssfPROFILE | None | &h28 | None |
+| Property | ssfSYSTEMx86 | None | &h29 | None |
+| Property | ssfPROGRAMFILESx86 | None | &h30 | None |
+
 ## SpecialFolders
 
 An enum and wrapper for WScript.Shell.SpecialFolders  
@@ -921,8 +972,8 @@ Examples
 | Property | GetExtensionName | None | a string | Returns the filename extension of the calling script or hta. |
 | Property | GetParentFolderName | None | a string | Returns the folder that contains the calling script or hta. |
 | Property | GetExe | None | a string | Returns "mshta.exe" to hta files, and "wscript.exe" or "cscript.exe" to scripts, depending on the host. |
-| Method | RestartWith | #1: host; #2: switch; #3: elevating | N/A | <strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. |
-| Method | RestartUsing | #1: host; #2: exit?; #3: elevate? | N/A | Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", or "mshta.exe", retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script does not have to check whether privileges are elevated or explicitly call the Quit method. |
+| Method | RestartWith | #1: host; #2: switch; #3: elevating | N/A | <strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe"), retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. |
+| Method | RestartUsing | #1: host; #2: exit?; #3: elevate? | N/A | Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", "mshta.exe", or a full path to one of these, retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script or hta does not have to check whether privileges are elevated or explicitly call the Quit method. |
 | Property | DoExit | None | True | Suitable for use with the RestartUsing method, argument #2 |
 | Property | DoNotExit | None | False | Suitable for use with the RestartUsing method, argument #2 |
 | Property | DoElevate | None | True | Suitable for use with the RestartUsing method, argument #3 |
@@ -1062,7 +1113,7 @@ General utility functions
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
 | Method | EnsureCScriptHost | None | N/A | Restart the script hosted with cscript.exe if it isn't already hosted with cscript.exe. |
-| Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted. |
+| Method | SetSwitch | /k or /c | N/A | Optional. Specifies a switch (command-line argument) for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted. |
 | Method | SetDefaultHostWScript | None | N/A | Sets wscript.exe to be the default script host. If privileges are not already elevated, then the User Account Control dialog will open for permission to elevate privileges. |
 | Method | SetDefaultHostCScript | None | N/A | Sets cscript.exe to be the default script host. If privileges are not already elevated, then the User Account Control dialog will open for permission to elevate privileges. |
 | Property | GetDefaultHost | None | a string | Returns "wscript.exe" or "cscript.exe", according to which .exe opens .vbs files by default. |

@@ -40,6 +40,19 @@
             <get internalName="GetExe" />
         </property>
         <method name="RestartWith" />
+        <method name="RestartUsing" />
+        <property name="DoExit">
+            <get internalName="GetDoExit" />
+        </property>
+        <property name="DoNotExit">
+            <get internalName="GetDoNotExit" />
+        </property>
+        <property name="DoElevate">
+            <get internalName="GetDoElevate" />
+        </property>
+        <property name="DoNotElevate">
+            <get internalName="GetDoNotElevate" />
+        </property>
         <method name="SetUserInteractive" />
         <property name="GetUserInteractive">
             <get internalName="GetUserInteractive" />
@@ -64,6 +77,13 @@
             <put internalName="PutWrapAll" />
         </property>
         <method name="Init" />
+        <!-- for testability -->
+        <property name="RUArgs" >
+            <get internalName="RUArgs" />
+        </property>
+        <property name="RUArgsTest">
+            <put internalName="PutRUArgsTest" />
+        </property>
     </public>
 
     <!-- import the class -->

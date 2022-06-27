@@ -85,7 +85,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| FolderChooser | Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <tt> System.Reflection</tt>. |  |  | Type | | VBScripting |
+| FolderChooser | Present the Windows Vista-style open file dialog to select a folder. Fall back for older Windows Versions. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/57611/erike"> EricE</a>. Uses <code> System.Reflection</code>. |  |  | Type | | VBScripting |
 | IFolderChooser | COM interface for VBScripting.FolderChooser  |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory.  |  |  | Property | FolderChooser | VBScripting |
 | Title | Gets or sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser | VBScripting |
@@ -95,7 +95,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| FolderChooser2 | Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <tt> System.Runtime.InteropServices</tt>. |  |  | Type | | VBScripting |
+| FolderChooser2 | Present the Windows Vista-style open file dialog to select a folder. Adapted from <a title="stackoverflow.com" href="https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992"> a stackoverflow post</a> by <a title="stackoverflow.com" href="https://stackoverflow.com/users/403671/simon-mourier"> Simon Mourier</a>. Uses <code> System.Runtime.InteropServices</code>. |  |  | Type | | VBScripting |
 | IFolderChooser2 | COM interface for VBScripting.FolderChooser2  |  |  | Type | | VBScripting |
 | InitialDirectory | Gets or sets the initial directory that the folder select dialog opens to. Environment variables are allowed. Relative paths are allowed. Optional. The default value is the current directory. |  |  | Property | FolderChooser2 | VBScripting |
 | Title | Sets the title/caption of the folder select dialog. Optional. The default value is "Select a folder".  |  |  | Property | FolderChooser2 | VBScripting |
@@ -111,7 +111,7 @@
 | Save | Extracts an icon from a .dll or .exe and saves it to a file. Parameters: resFile is the .dll or .exe file; index selects the icon within the resource file; icoFile is the output file; largeIcon is a boolean: True if a large icon is to be extracted, False for a small icon. Environment variables and relative paths are allowed. |  | resFile, index, icoFile, largeIcon | Method | IconExtractor | VBScripting |
 | SetImageFormatBmp | Change the image format to BMP. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
 | SetImageFormatPng | Change the image format to PNG. Default is BMP.  |  |  | Method | IconExtractor | VBScripting |
-| Extract | Extracts an icon from the specified .dll or .exe file. <strong> This method is not available to VBScript. In VBScript, use the Save method. </strong> Other parameters: <tt>index</tt> is an integer that specifies the icon's index within the resource. <tt>largeIcon</tt> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
+| Extract | Extracts an icon from the specified .dll or .exe file. <strong> This method is not available to VBScript. In VBScript, use the Save method. </strong> Other parameters: <code>index</code> is an integer that specifies the icon's index within the resource. <code>largeIcon</code> is a boolean that specifies whether the icon should be a large icon; if False, a small icon is extracted, if available. The icon must be disposed in order to free memory. | an icon | file, index, largeIcon | Method | IconExtractor | VBScripting |
 | IconCount | Returns the number of icons in a .dll or .exe file. A relative path or environmental variable is allowed. | an int | filespec (.dll or .exe) | Method | IconExtractor | VBScripting |
 | GetPointer | Gets a pointer to an icon. Must be disposed with DisposeIcon(pointer) or Icon.Dispose(), in order to release memory. A relative path or environmental variable is allowed. <strong> This method is not available to VBScript.</strong> | integer | file, index, largeIcon | Method | IconExtractor | VBScripting |
 | ExtractIcon | Gets an icon. <strong> This method is not available to VBScript. </strong> Must be disposed with DisposeIcon(pointer) or Icon.Dispose(). | Icon | integer | Method | IconExtractor | VBScripting |
@@ -181,7 +181,7 @@
 | Debug | Gets or sets whether the type is under development. Affects the behavior of two methods, SetIconByIcoFile and SetIconByDllFile, if exceptions are thrown: when debugging, a message box is shown. Default is False. |  |  | Property | ProgressBar | VBScripting |
 | BorderStyle | Provides an object useful in VBScript for setting FormBorderStyle.  | a FormBorderStyleT |  | Property | ProgressBar | VBScripting |
 | FormBorderStyle | Sets the style of the window border. An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre> |  |  | Property | ProgressBar | VBScripting |
-| FormBorderStyleT | Enumeration of border styles. This class is available to VBScript via the <tt>ProgressBar.BorderStyle</tt> property. |  |  | Type | | VBScripting |
+| FormBorderStyleT | Enumeration of border styles. This class is available to VBScript via the <code>ProgressBar.BorderStyle</code> property. |  |  | Type | | VBScripting |
 | Fixed3D |   | 1 |  | Property | FormBorderStyleT | VBScripting |
 | FixedDialog |   | 2 |  | Property | FormBorderStyleT | VBScripting |
 | FixedSingle |   | 3 |  | Property | FormBorderStyleT | VBScripting |

@@ -173,11 +173,11 @@ Class VBSApp
 
     'Method RestartWith
     'Parameters: #1: host; #2: switch; #3: elevating
-    'Remark: <strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
+    'Remark: <strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe"), retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.
     Sub RestartWith( host, switch, elevating )
         Dim format 'VBScripting.StringFormatter obj
         Dim start 'string
-        Dim m, j, s 'MsgBox arguments
+        Dim msg, settings, title 'MsgBox arguments
         Dim cmd 'string: ShellExecute arg #1
         Dim args 'string: ShellExecute arg #2
         Dim pwd 'string: ShellExecute arg #3
@@ -190,12 +190,12 @@ Class VBSApp
         'Opt out
 
         If elevating And userInteractive Then
-            m = format(Array( _
+            msg = format(Array( _
                 UACMsg, GetFileName, vbLf _
             ))
-            j = vbOKCancel + vbQuestion
-            s = GetBaseName
-            If vbCancel = MsgBox( m, j, s ) Then
+            settings = vbOKCancel + vbQuestion
+            title = GetFileName
+            If vbCancel = MsgBox( msg, settings, title ) Then
                 Quit
             End If
         End If
@@ -222,20 +222,20 @@ Class VBSApp
             .ShellExecute cmd, args, pwd, privileges
         End With
 
-        'close the current instance of the script
+        'close the current instance of the script/hta
         Quit
     End Sub
 
     'Method RestartUsing
     'Parameters: #1: host; #2: exit?; #3: elevate?
-    'Remark: Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", or "mshta.exe", retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script does not have to check whether privileges are elevated or explicitly call the Quit method.
+    'Remark: Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", "mshta.exe", or a full path to one of these, retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script or hta does not have to check whether privileges are elevated or explicitly call the Quit method.
     Sub RestartUsing( host, exiting, elevating )
         Dim pc 'PrivilegeChecker object
         Dim format 'VBScripting.StringFormatter object
-        Dim m, j, s 'MsgBox arguments
+        Dim msg, settings, title 'MsgBox arguments
         Dim params 'powershell parameters
         Dim cmd 'string: ShellExecute arg #1
-        Dim args 'string: ShellExecute arg #2
+        'Class scope: args_ 'string: ShellExecute arg #2
         Dim pwd 'string: ShellExecute arg #3
         Dim privileges 'string: ShellExecute arg #4
         Dim hostFileName 'string: partial filespec: e.g. cscript.exe
@@ -244,23 +244,27 @@ Class VBSApp
         hostFileName = LCase(fso.GetFileName(host))
         Execute incl.Read( "PrivilegeChecker" )
         Set pc = New PrivilegeChecker
-        If elevating And pc And GetExe = hostFileName Then
+        If elevating And pc _
+        And GetExe = hostFileName _
+        And Not RUArgsTest Then
             'privileges are already elevated,
             'desired host is already hosting
             Exit Sub
-        ElseIf Not elevating And GetExe = hostFileName Then
+        ElseIf Not elevating _
+        And GetExe = hostFileName _
+        And Not RUArgsTest Then
             Exit Sub
         End If
 
         'Opt out
 
         If elevating And userInteractive Then
-            m = format( Array( _
+            msg = format( Array( _
                 UACMsg, GetFileName, vbLf _
             ))
-            j = vbOKCancel + vbQuestion
-            s = GetFileName
-            If vbCancel = MsgBox(m, j, s) Then
+            settings = vbOKCancel + vbQuestion
+            title = GetFileName
+            If vbCancel = MsgBox(msg, settings, title) Then
                 Quit
             End If
         End If
@@ -273,8 +277,8 @@ Class VBSApp
             params = params & " -NoExit"
         End If
         params = params & " -Command"
-        args = format(Array( _
-            "%s Set-Location '%s' ; %s ""%s"" %s", _
+        args_ = format(Array( _
+            "%s Set-Location '%s' ; %s ""'%s'"" %s", _
              params, GetParentFolderName, _
              Expand( host ), me.GetFullName, GetArgsString _
         ))
@@ -283,13 +287,32 @@ Class VBSApp
             privileges = "runas"
         Else privileges = ""
         End If
+        If RUArgsTest Then
+            Exit Sub
+        End If
         With CreateObject( "Shell.Application" )
-            .ShellExecute cmd, args, pwd, privileges
+            .ShellExecute cmd, args_, pwd, privileges
         End With
 
         'close the current instance of the script
         Quit
     End Sub
+
+    'For testability for the RestartUsing (RU) method: 
+    Private args_
+    Property Get RUArgs
+        RUArgs = args_
+    End Property
+    Property Let RUArgsTest( newBoolean )
+        ruArgsTest_ = newBoolean
+    End Property
+    Property Get RUArgsTest
+        If IsEmpty( ruArgsTest_ ) Then
+            ruArgsTest_ = False
+        End If
+        RUArgsTest = ruArgsTest_
+    End Property
+    Private ruArgsTest_
 
     'Property DoExit
     'Returns True

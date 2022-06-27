@@ -12,10 +12,11 @@ Class VBSHoster
     Private sa 'Shell.Application object
     Private fso 'Scripting.FileSystemObject object
     Private parent 'string: parent folder of the calling script
-    Private switch_ 'string: /c or /k or the powershell equivalent; contains the value of the Switch property.
+    Private switch_ 'string: cmd.exe argument /c or /k or the powershell equivalent; contains the value of the Switch property.
     Private shell_
     Private methodExistsTest_
     Private powershell 'pwsh.exe filespec, if available,  or "powershell"
+    Private sq 'single quote ( ' ) if using PowerShell, or an empty string
 
     Private Sub Class_Initialize
         Dim incl 'VBScripting.Includer object
@@ -30,6 +31,7 @@ Class VBSHoster
         parent = fso.GetParentFolderName( WScript.ScriptFullName )
         SetSwitch "/c"
         MethodExistsTest = False
+        sq = ""
 
         Execute incl.Read( "Configurer" )
         With New Configurer
@@ -66,7 +68,7 @@ Class VBSHoster
 
     'Method SetSwitch
     'Parameter: /k or /c
-    'Remark: Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted.
+    'Remark: Optional. Specifies a switch (command-line argument) for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted.
     Sub SetSwitch( newSwitch )
         If IsEmpty( newSwitch ) Then Exit Sub
         Switch = newSwitch
@@ -88,6 +90,8 @@ Class VBSHoster
             ElseIf "/c" = Switch Then
                 switch_ = "-Command"
             End If
+            sq = "'"
+        Else sq = ""
         End If
     End Sub
 
@@ -131,8 +135,8 @@ Class VBSHoster
 
     Property Get RestartCommand(host)
         RestartCommand = format (Array( _
-            "%s %s %s //nologo ""%s"" %s", _
-            Shell, Switch, host, WScript.ScriptFullName, GetArgsString _
+            "%s %s %s //nologo ""%s%s%s"" %s", _
+            Shell, Switch, host, sq, WScript.ScriptFullName, sq, GetArgsString _
         ))
     End Property
 

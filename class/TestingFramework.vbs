@@ -85,7 +85,7 @@ Class TestingFramework
             explanation = _
                 "Expected: " & var2 & vbCrLf & _
                 "========> " & _
-                "Actual:   " & var1
+                "Actual  : " & var1
         End If
         SetResultPending True
     End Sub

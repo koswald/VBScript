@@ -9,7 +9,7 @@
     <script language="VBScript">
 
 Option Explicit
-Dim hoster 'VBSHoster object under test
+Dim hoster 'the VBSHoster object under test
 Dim format 'StringFormatter object
 Dim actual, expected
 Dim scr 'WScript.ScriptFullName
@@ -50,7 +50,7 @@ With New TestingFramework
         hoster.Switch = "/c"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "powershell -Command cscript.exe //nologo ""%s"" ", scr _
+            "powershell -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 
@@ -59,7 +59,7 @@ With New TestingFramework
         hoster.Switch = "/k"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "powershell -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+            "powershell -NoExit -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 
@@ -68,7 +68,7 @@ With New TestingFramework
         hoster.Switch = "/c"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "pwsh -Command cscript.exe //nologo ""%s"" ", scr _
+            "pwsh -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 
@@ -77,7 +77,7 @@ With New TestingFramework
         hoster.Switch = "/k"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "pwsh -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+            "pwsh -NoExit -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 
@@ -86,7 +86,7 @@ With New TestingFramework
         hoster.Switch = "/c"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "wt pwsh -Command cscript.exe //nologo ""%s"" ", scr _
+            "wt pwsh -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 
@@ -95,7 +95,7 @@ With New TestingFramework
         hoster.Switch = "/k"
         actual = hoster.RestartCommand( "cscript.exe" )
         expected = format( Array( _
-            "wt pwsh -NoExit -Command cscript.exe //nologo ""%s"" ", scr _
+            "wt pwsh -NoExit -Command cscript.exe //nologo ""'%s'"" ", scr _
         ))
     .AssertEqual actual, expected
 

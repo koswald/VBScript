@@ -1631,8 +1631,315 @@
       </div>
 
       <div>
+         <a id="shellspecialfolders"></a>
+         <h2 class="heading" id=21>ShellSpecialFolders</h2>
+         <div class="detail">
+            <p> ShellSpecialFolders class</p>
+            <p></p>
+             Adapted from <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.
+            <p></p>
+            <table>
+               <tr>
+                  <th>Member type</th>
+                  <th>Name</th>
+                  <th>Parameter(s)</th>
+                  <th>Return value</th>
+                  <th>Comment</th>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>Path</td>
+                  <td>an integer</td>
+                  <td>a path</td>
+                  <td>Returns the path to a special folder. The parameter is one of the ssf constants. This path is suitable for navigating in Windows Explorer. For ssfCONTROLS, ssfPRINTERS, ssfBITBUCKET, ssfDRIVES, and ssfNETWORK, the return value looks different than a typical path: for ssfDrives it is ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>AllConstants</td>
+                  <td>None</td>
+                  <td>an array</td>
+                  <td>Returns an array with all of the ssf constants (integers).</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>AllPaths</td>
+                  <td>None</td>
+                  <td>an array</td>
+                  <td>Returns an array with all of the ssf paths.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfDESKTOP</td>
+                  <td>None</td>
+                  <td>0</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPROGRAMS</td>
+                  <td>None</td>
+                  <td>&h2</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCONTROLS</td>
+                  <td>None</td>
+                  <td>&h3</td>
+                  <td>Virtual folder that contains icons for the Control Panel applications.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPRINTERS</td>
+                  <td>None</td>
+                  <td>&h4</td>
+                  <td>Virtual folder that contains installed printers.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPERSONAL</td>
+                  <td>None</td>
+                  <td>&h5</td>
+                  <td>File system directory that serves as a common repository for a user's documents. A typical path is C:\Users&#92;<em>username</em>\Documents.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfFAVORITES</td>
+                  <td>None</td>
+                  <td>&h6</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfSTARTUP</td>
+                  <td>None</td>
+                  <td>&h7</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfRECENT</td>
+                  <td>None</td>
+                  <td>&h8</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfSENDTO</td>
+                  <td>None</td>
+                  <td>&h9</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfBITBUCKET</td>
+                  <td>None</td>
+                  <td>&ha</td>
+                  <td>According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin."</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfSTARTMENU</td>
+                  <td>None</td>
+                  <td>&hb</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfDESKTOPDIRECTORY</td>
+                  <td>None</td>
+                  <td>&h10</td>
+                  <td>According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfDRIVES</td>
+                  <td>None</td>
+                  <td>&h11</td>
+                  <td>My Computer—the virtual folder that contains everything on the local computer: storage devices, printers, and Control Panel. This folder can also contain mapped network drives.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfNETWORK</td>
+                  <td>None</td>
+                  <td>&h12</td>
+                  <td>Network Neighborhood—the virtual folder that represents the root of the network namespace hierarchy.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfNETHOOD</td>
+                  <td>None</td>
+                  <td>&h13</td>
+                  <td>A file system folder that contains any link objects in the My Network Places virtual folder. It is not the same as ssfNETWORK, which represents the network namespace root. A typical path is C:\Users&#92;<em>username</em>\AppData\Roaming\Microsoft\Windows\Network Shortcuts.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfFONTS</td>
+                  <td>None</td>
+                  <td>&h14</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfTEMPLATES</td>
+                  <td>None</td>
+                  <td>&h15</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONSTARTMENU</td>
+                  <td>None</td>
+                  <td>&h16</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONPROGRAMS</td>
+                  <td>None</td>
+                  <td>&h17</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONSTARTUP</td>
+                  <td>None</td>
+                  <td>&h18</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONDESKTOPDIR</td>
+                  <td>None</td>
+                  <td>&h19</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfAPPDATA</td>
+                  <td>None</td>
+                  <td>&h1a</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPRINTHOOD</td>
+                  <td>None</td>
+                  <td>&h1b</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfLOCALAPPDATA</td>
+                  <td>None</td>
+                  <td>&h1c</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfALTSTARTUP</td>
+                  <td>None</td>
+                  <td>&h1d</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONALTSTARTUP</td>
+                  <td>None</td>
+                  <td>&h1e</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONFAVORITES</td>
+                  <td>None</td>
+                  <td>&h1f</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfINTERNETCACHE</td>
+                  <td>None</td>
+                  <td>&h20</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOOKIES</td>
+                  <td>None</td>
+                  <td>&h21</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfHISTORY</td>
+                  <td>None</td>
+                  <td>&h22</td>
+                  <td>File system directory that serves as a common repository for Internet history items.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfCOMMONAPPDATA</td>
+                  <td>None</td>
+                  <td>&h23</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfWINDOWS</td>
+                  <td>None</td>
+                  <td>&h24</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfSYSTEM</td>
+                  <td>None</td>
+                  <td>&h25</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPROGRAMFILES</td>
+                  <td>None</td>
+                  <td>&h26</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfMYPICTURES</td>
+                  <td>None</td>
+                  <td>&h27</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPROFILE</td>
+                  <td>None</td>
+                  <td>&h28</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfSYSTEMx86</td>
+                  <td>None</td>
+                  <td>&h29</td>
+                  <td>None</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>ssfPROGRAMFILESx86</td>
+                  <td>None</td>
+                  <td>&h30</td>
+                  <td>None</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+
+      <div>
          <a id="specialfolders"></a>
-         <h2 class="heading" id=21>SpecialFolders</h2>
+         <h2 class="heading" id=22>SpecialFolders</h2>
          <div class="detail">
             <p>An enum and wrapper for WScript.Shell.SpecialFolders</p>
             <p>Usage example</p>
@@ -1785,7 +2092,7 @@
 
       <div>
          <a id="startupitems"></a>
-         <h2 class="heading" id=22>StartupItems</h2>
+         <h2 class="heading" id=23>StartupItems</h2>
          <div class="detail">
             <p>The StartupItems class provides a way to manage the programs that run automatically when Windows is started.</p>
             <p></p>
@@ -1896,7 +2203,7 @@
 
       <div>
          <a id="stringformatter"></a>
-         <h2 class="heading" id=23>StringFormatter</h2>
+         <h2 class="heading" id=24>StringFormatter</h2>
          <div class="detail">
             <p>Provides string formatting functions</p>
             <p></p>
@@ -1958,7 +2265,7 @@
 
       <div>
          <a id="testingframework"></a>
-         <h2 class="heading" id=24>TestingFramework</h2>
+         <h2 class="heading" id=25>TestingFramework</h2>
          <div class="detail">
             <p>A lightweight testing framework</p>
             <p>Usage example</p>
@@ -2073,7 +2380,7 @@
 
       <div>
          <a id="textstreamer"></a>
-         <h2 class="heading" id=25>TextStreamer</h2>
+         <h2 class="heading" id=26>TextStreamer</h2>
          <div class="detail">
             <p>Open a file as a text stream for reading, writing, or appending.</p>
             <p>Methods for use with the text stream that is returned by the Open method:</p>
@@ -2254,7 +2561,7 @@
 
       <div>
          <a id="timefunctions"></a>
-         <h2 class="heading" id=26>TimeFunctions</h2>
+         <h2 class="heading" id=27>TimeFunctions</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2312,7 +2619,7 @@
 
       <div>
          <a id="validfilename"></a>
-         <h2 class="heading" id=27>ValidFileName</h2>
+         <h2 class="heading" id=28>ValidFileName</h2>
          <div class="detail">
             <p>VBS function GetValidFileName and associated functions provide for modifying a string to remove characters that are not suitable for use in a Windows&reg; file name.</p>
             <p>Usage Example</p>
@@ -2355,7 +2662,7 @@
 
       <div>
          <a id="vbsapp"></a>
-         <h2 class="heading" id=28>VBSApp</h2>
+         <h2 class="heading" id=29>VBSApp</h2>
          <div class="detail">
             <p>VBSApp class</p>
             <p>Intended to support identical handling of class procedures by .vbs/.wsf files and .hta files.</p>
@@ -2457,14 +2764,14 @@
                   <td>RestartWith</td>
                   <td>#1: host; #2: switch; #3: elevating</td>
                   <td>N/A</td>
-                  <td><strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe") and retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.</td>
+                  <td><strong> Deprecated</strong> in favor of the RestartUsing method. Restarts the script/app with the specified host (typically "wscript.exe", "cscript.exe", or "mshta.exe"), retaining the command-line arguments. Uses cmd.exe for the shell. Parameter #2 is a cmd.exe switch, "/k" or "/c". Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open.</td>
                </tr>
                <tr>
                   <td>Method</td>
                   <td>RestartUsing</td>
                   <td>#1: host; #2: exit?; #3: elevate?</td>
                   <td>N/A</td>
-                  <td>Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", or "mshta.exe", retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script does not have to check whether privileges are elevated or explicitly call the Quit method.</td>
+                  <td>Restarts the script/hta with the specified host, "wscript.exe", "cscript.exe", "mshta.exe", or a full path to one of these, retaining the command-line arguments. Uses pwsh.exe for the shell, if available, or falls back to powershell.exe. Unusual or custom paths for pwsh.exe can be specified in the file <code>.configure</code> in the project root folder. Parameter #2 is a boolean specifying whether the powershell window should exit after completion. Parameter #3 is a boolean, True if restarting with elevated privileges. If userInteractive, first warns user that the User Account Control dialog will open. If it is desired to elevate privileges, and privileges are already elevated, and the desired host is already hosting, then the script does not restart: The calling script or hta does not have to check whether privileges are elevated or explicitly call the Quit method.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -2563,7 +2870,7 @@
 
       <div>
          <a id="vbsarguments"></a>
-         <h2 class="heading" id=29>VBSArguments</h2>
+         <h2 class="heading" id=30>VBSArguments</h2>
          <div class="detail">
             <p>Functions related to VBScript command-line arguments.</p>
             <p></p>
@@ -2590,7 +2897,7 @@
 
       <div>
          <a id="vbsarrays"></a>
-         <h2 class="heading" id=30>VBSArrays</h2>
+         <h2 class="heading" id=31>VBSArrays</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2627,7 +2934,7 @@
 
       <div>
          <a id="vbsclipboard"></a>
-         <h2 class="heading" id=31>VBSClipboard</h2>
+         <h2 class="heading" id=32>VBSClipboard</h2>
          <div class="detail">
             <p>Clipboard procedures</p>
             <p></p>
@@ -2659,7 +2966,7 @@
 
       <div>
          <a id="vbsenvironment"></a>
-         <h2 class="heading" id=32>VBSEnvironment</h2>
+         <h2 class="heading" id=33>VBSEnvironment</h2>
          <div class="detail">
             <table>
                <tr>
@@ -2752,7 +3059,7 @@
 
       <div>
          <a id="vbseventlogger"></a>
-         <h2 class="heading" id=33>VBSEventLogger</h2>
+         <h2 class="heading" id=34>VBSEventLogger</h2>
          <div class="detail">
             <p>Logs messages to the Application event log.</p>
             <p></p>
@@ -2854,7 +3161,7 @@
 
       <div>
          <a id="vbsextracter"></a>
-         <h2 class="heading" id=34>VBSExtracter</h2>
+         <h2 class="heading" id=35>VBSExtracter</h2>
          <div class="detail">
             <p>For extracting a string from a text file, given a regular expression</p>
             <p></p>
@@ -2907,7 +3214,7 @@
 
       <div>
          <a id="vbsfilesystem"></a>
-         <h2 class="heading" id=35>VBSFileSystem</h2>
+         <h2 class="heading" id=36>VBSFileSystem</h2>
          <div class="detail">
             <p>General utility functions</p>
             <p></p>
@@ -3023,7 +3330,7 @@
 
       <div>
          <a id="vbshoster"></a>
-         <h2 class="heading" id=36>VBSHoster</h2>
+         <h2 class="heading" id=37>VBSHoster</h2>
          <div class="detail">
             <p> Manage which script host is hosting the currently running script: cscript.exe or wscript.exe.</p>
             <p></p>
@@ -3051,7 +3358,7 @@
                   <td>SetSwitch</td>
                   <td>/k or /c</td>
                   <td>N/A</td>
-                  <td>Optional. Specifies a switch for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted.</td>
+                  <td>Optional. Specifies a switch (command-line argument) for %ComSpec% for use with the EnsureCScriptHost method: controls whether the command window, if newly created, remains open (/k). Useful for troubleshooting, in order to be able to read error messages. Unnecessary if starting the script from a console window, because /c is the default. If pwsh or powershell (or wt pwsh, etc.) is the Shell, then the equivalent string is substituted.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -3094,7 +3401,7 @@
 
       <div>
          <a id="vbslogger"></a>
-         <h2 class="heading" id=37>VBSLogger</h2>
+         <h2 class="heading" id=38>VBSLogger</h2>
          <div class="detail">
             <p>A lightweight VBScript logger</p>
             <p>Instantiation</p>
@@ -3196,7 +3503,7 @@
 
       <div>
          <a id="vbspower"></a>
-         <h2 class="heading" id=38>VBSPower</h2>
+         <h2 class="heading" id=39>VBSPower</h2>
          <div class="detail">
             <p>Power functions: shutdown, restart, logoff, sleep, and hibernate.</p>
             <p></p>
@@ -3277,7 +3584,7 @@
 
       <div>
          <a id="vbsstopwatch"></a>
-         <h2 class="heading" id=39>VBSStopwatch</h2>
+         <h2 class="heading" id=40>VBSStopwatch</h2>
          <div class="detail">
             <p>A timer</p>
             <p></p>
@@ -3323,7 +3630,7 @@
 
       <div>
          <a id="vbstestrunner"></a>
-         <h2 class="heading" id=40>VBSTestRunner</h2>
+         <h2 class="heading" id=41>VBSTestRunner</h2>
          <div class="detail">
             <p>Run a test or group of tests</p>
             <p>Usage example</p>
@@ -3394,7 +3701,7 @@
 
       <div>
          <a id="vbstroubleshooter"></a>
-         <h2 class="heading" id=41>VBSTroubleshooter</h2>
+         <h2 class="heading" id=42>VBSTroubleshooter</h2>
          <div class="detail">
             <table>
                <tr>
@@ -3417,7 +3724,7 @@
 
       <div>
          <a id="vbsvalidator"></a>
-         <h2 class="heading" id=42>VBSValidator</h2>
+         <h2 class="heading" id=43>VBSValidator</h2>
          <div class="detail">
             <p>A working example of how validation can be accomplished.</p>
             <p></p>
@@ -3484,7 +3791,7 @@
 
       <div>
          <a id="windowsupdatespauser"></a>
-         <h2 class="heading" id=43>WindowsUpdatesPauser</h2>
+         <h2 class="heading" id=44>WindowsUpdatesPauser</h2>
          <div class="detail">
             <p>Pause Windows Updates to get more bandwidth. Don't forget to resume.</p>
             <p>For configuration settings, see the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.</p>
@@ -3552,7 +3859,7 @@
 
       <div>
          <a id="wmiutility"></a>
-         <h2 class="heading" id=44>WMIUtility</h2>
+         <h2 class="heading" id=45>WMIUtility</h2>
          <div class="detail">
             <p>Examples of the Windows Management Instrumentation object.</p>
             <p></p>
@@ -3670,7 +3977,7 @@
 
       <div>
          <a id="wowchecker"></a>
-         <h2 class="heading" id=45>WoWChecker</h2>
+         <h2 class="heading" id=46>WoWChecker</h2>
          <div class="detail">
             <p>Provides an object whose default property, isWoW, returns a boolean indicating whether the calling script was itself called by a SysWoW64 (32-bit) .exe file. WoW64 stands for Windows 32-bit on Windows 64-bit.</p>
             <p></p>

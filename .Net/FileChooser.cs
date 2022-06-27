@@ -1,4 +1,3 @@
-
 // wrap the OpenFileDialog class for VBScript
 
 using System.Windows.Forms; // for OpenFileDialog

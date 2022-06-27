@@ -66,8 +66,8 @@ Class Chooser
     'Undocumented Method AddWindowOptions
     'Parameter: a hex value
     'Remark: Adds a behavior or behaviors to the Browse For Folder window. The parameter is one or more of the BIF_ constants:  e.g. obj.BIF_EDITBOX + obj.BIF_NONEWFOLDER.
-    Sub AddWindowOptions(newOptions)
-        WindowOptions = WindowOptions + newOptions
+    Sub AddWindowOptions(newOption)
+        WindowOptions = WindowOptions Or newOption
     End Sub
 
     'Undocumented Property BIF_RETURNONLYFSDIRS

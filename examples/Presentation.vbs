@@ -12,6 +12,66 @@ icon = Split( icon3, "|" )
 NormalMode
 ListenForCallbacks
 
+Dim sh, fso, sa 'native WScript objects
+Dim watcher, notifyIcon, csTimer, stopwatch, includer, format 'objects from github.com/koswald/vbscript
+Dim normalModeMenuIndex, presentationModeMenuIndex 'integer: notification icon menu index
+Dim purpose, helpUrl, helpMessage 'strings
+Dim statusFile 'filespec of the file to which status is published
+Dim status 'string: '"Presentation" or "Normal"
+Dim icon 'array: filespec, index, and icon type (large/True or small/False) for Presentation and Normal modes
+Dim requires 'string: used for internal documentation
+
+'icon options
+Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False" 'green & yellow shields
+Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True" 'monitor with moon & monitor without
+Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False" 'dark LED & green LED
+Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False" 'dark flat screen & bright flat screen / small icons
+Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True" 'dark flat screen & bright flat screen / large icons
+Const icon7 = "%SystemRoot%\System32\comres.dll|8|False|%SystemRoot%\System32\comres.dll|12|False" 'checkmark on green shield & checkmark on gold shield
+Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5 'icon array indexes
+
+Const synchronous = True 'sh.Run constant, arg #3
+Const hidden = 0 'sh.Run constant, arg #2
+Const ForWriting = 2, CreateNew = True 'OpenTextFile args #2 and #3
+
+Sub Setup
+    Set sh = CreateObject( "WScript.Shell" )
+    dataFolder = sh.ExpandEnvironmentStrings("%AppData%\VBScripting")
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    If Not fso.FolderExists(dataFolder) Then fso.CreateFolder dataFolder
+    Set format = CreateObject( "VBScripting.StringFormatter" )
+    statusFile = format(Array("%s\%s.status", dataFolder, fso.GetBaseName(WScript.ScriptName)))
+
+    Set notifyIcon = CreateObject( "VBScripting.NotifyIcon" ) 'Err.Number &H80131040
+    notifyIcon.AddMenuItem "Normal mode", GetRef( "NormalMode" )
+        normalModeMenuIndex = 0
+    notifyIcon.AddMenuItem "Presentation mode", GetRef( "PresentationMode" )
+        presentationModeMenuIndex = 1
+    notifyIcon.AddMenuItem "Phone charger mode", GetRef( "ChargerMode" )
+    notifyIcon.AddMenuItem "Set duration", GetRef( "SetDurationUI" )
+    notifyIcon.AddMenuItem "Start screensaver", GetRef( "StartScreenSaver" )
+    notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef( "LockWorkStation" )
+    notifyIcon.AddMenuItem "Sleep", GetRef( "Sleep" )
+    notifyIcon.AddMenuItem "Turn off monitor", GetRef( "MonitorOff" )
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef( "EditScript" )
+    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName & " elevated", GetRef( "EditScriptElevated" )
+    notifyIcon.AddMenuItem "Help", GetRef( "Help" )
+    notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef( "CloseAndExit" )
+    notifyIcon.Visible = True
+
+    Set csTimer = CreateObject( "VBScripting.Timer" )
+    csTimer.AutoReset = False
+    Set csTimer.Callback = GetRef( "NormalMode" )
+
+    Set watcher = CreateObject( "VBScripting.Watcher" )
+    Set sa = CreateObject( "Shell.Application" )
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Execute includer.Read( "VBSStopwatch" )
+    Set stopwatch = New VBSStopwatch
+
+    Dim datafolder
+End Sub
+
 Sub NormalMode
     watcher.Watch = False
     notifyIcon.DisableMenuItem normalModeMenuIndex
@@ -120,65 +180,6 @@ Sub ListenForCallbacks
 
     Dim elapsedMinutes 'how long Presentation mode has been activated
     Dim intervalInMinutes 'C# timer's current setting for the max. time that Presentation mode will last before reverting to normal mode
-End Sub
-
-'icon options
-Const icon2 = "%SystemRoot%\System32\imageres.dll|101|False|%SystemRoot%\System32\imageres.dll|102|False" 'green & yellow shields
-Const icon3 = "%SystemRoot%\System32\imageres.dll|96|True|%SystemRoot%\System32\deskmon.dll|0|True" 'monitor with moon & monitor without
-Const icon4 = "%SystemRoot%\System32\hgcpl.dll|1|False|%SystemRoot%\System32\hgcpl.dll|0|False" 'dark LED & green LED
-Const icon5 = "%SystemRoot%\System32\DDORes.dll|19|False|%SystemRoot%\System32\DDORes.dll|15|False" 'dark flat screen & bright flat screen / small icons
-Const icon6 = "%SystemRoot%\System32\DDORes.dll|19|True|%SystemRoot%\System32\DDORes.dll|15|True" 'dark flat screen & bright flat screen / large icons
-Const icon7 = "%SystemRoot%\System32\comres.dll|8|False|%SystemRoot%\System32\comres.dll|12|False" 'checkmark on green shield & checkmark on gold shield
-Const ico_normFile = 0, ico_normIndex = 1, ico_normType = 2, ico_presentFile = 3, ico_presentIndex = 4, ico_presentType = 5 'icon array indexes
-
-Const synchronous = True 'sh.Run constant, arg #3
-Const hidden = 0 'sh.Run constant, arg #2
-Const ForWriting = 2, CreateNew = True 'fso.OpenTextFile constants, args #2 and #3
-Dim sh, fso, sa 'native WScript objects
-Dim watcher, notifyIcon, csTimer, stopwatch, includer, format 'objects from github.com/koswald/vbscript
-Dim normalModeMenuIndex, presentationModeMenuIndex 'integer: notification icon menu index
-Dim purpose, helpUrl, helpMessage 'strings
-Dim statusFile 'filespec of the file to which status is published
-Dim status 'string: '"Presentation" or "Normal"
-Dim icon 'array: filespec, index, and icon type (large/True or small/False) for Presentation and Normal modes
-Dim requires 'string: used for internal documentation only
-
-Sub Setup
-    Set sh = CreateObject( "WScript.Shell" )
-    dataFolder = sh.ExpandEnvironmentStrings("%AppData%\VBScripting")
-    Set fso = CreateObject( "Scripting.FileSystemObject" )
-    If Not fso.FolderExists(dataFolder) Then fso.CreateFolder dataFolder
-    Set format = CreateObject( "VBScripting.StringFormatter" )
-    statusFile = format(Array("%s\%s.status", dataFolder, fso.GetBaseName(WScript.ScriptName)))
-
-    Set notifyIcon = CreateObject( "VBScripting.NotifyIcon" ) 'Err.Number &H80131040
-    notifyIcon.AddMenuItem "Normal mode", GetRef( "NormalMode" )
-        normalModeMenuIndex = 0
-    notifyIcon.AddMenuItem "Presentation mode", GetRef( "PresentationMode" )
-        presentationModeMenuIndex = 1
-    notifyIcon.AddMenuItem "Phone charger mode", GetRef( "ChargerMode" )
-    notifyIcon.AddMenuItem "Set duration", GetRef( "SetDurationUI" )
-    notifyIcon.AddMenuItem "Start screensaver", GetRef( "StartScreenSaver" )
-    notifyIcon.AddMenuItem "Lock workstation   (Windows key + L)", GetRef( "LockWorkStation" )
-    notifyIcon.AddMenuItem "Sleep", GetRef( "Sleep" )
-    notifyIcon.AddMenuItem "Turn off monitor", GetRef( "MonitorOff" )
-    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName, GetRef( "EditScript" )
-    notifyIcon.AddMenuItem "Edit " & WScript.ScriptName & " elevated", GetRef( "EditScriptElevated" )
-    notifyIcon.AddMenuItem "Help", GetRef( "Help" )
-    notifyIcon.AddMenuItem "Exit " & WScript.ScriptName, GetRef( "CloseAndExit" )
-    notifyIcon.Visible = True
-
-    Set csTimer = CreateObject( "VBScripting.Timer" )
-    csTimer.AutoReset = False
-    Set csTimer.Callback = GetRef( "NormalMode" )
-
-    Set watcher = CreateObject( "VBScripting.Watcher" )
-    Set sa = CreateObject( "Shell.Application" )
-    Set includer = CreateObject( "VBScripting.Includer" )
-    Execute includer.Read( "VBSStopwatch" )
-    Set stopwatch = New VBSStopwatch
-
-    Dim datafolder
 End Sub
 
 Sub CloseAndExit

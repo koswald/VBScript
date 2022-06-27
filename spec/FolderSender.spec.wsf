@@ -11,26 +11,54 @@ Option Explicit
 Dim fs 'FolderSender object: what is to be tested
 Dim format 'StringFormatter object
 Dim fso 'Scripting.FileSystemObject object
+Dim sh 'WScript.Shell object
 Dim actual, expected 'variants
+Dim fixture 'fixture folder path
 Dim source1 'string: source folder #1
 Dim target1 'string: target folder #1
 Dim source2, target2 'for testing the Move method
+Dim content 'string: fixture file contents
+Dim file1, file2 'filespecs
+Dim scr 'WScript.ScriptFullName
+Dim savedCurrentDirectory 'string: a folder path
 Const Force = True 'for DeleteFile
+Const CreateNew = True, ForWriting = 2 'for OpenTextFile method
 
 Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set sh = CreateObject( "WScript.Shell" )
 Set format = New StringFormatter
-With CreateObject( "WScript.Shell" )
-    .CurrentDirectory = _
-        fso.GetParentFolderName( _
-            WScript.ScriptFullName _
-        )
+scr = WScript.ScriptFullName
+sh.CurrentDirectory = _
+    fso.GetParentFolderName( scr )
+
+'Create the fixture folder and files
+
+fixture = Expand( "%AppData%\VBScripting\fixture" )
+source1 = format( Array( _
+    "%s\FolderSender\Source", fixture _
+))
+CreateFolder source1
+file1 = format( Array( _
+    "%s\file1.txt", source1 _
+))
+file2 = format( Array( _
+    "%s\file2.txt", source1 _
+))
+content = "This file was created by " & scr
+With fso.OpenTextFile( file1, ForWriting, CreateNew )
+    .WriteLine content
+    .Close
 End With
-source1 = fso.GetAbsolutePathName( _
-    ".\fixture\FolderSender\Source" _
-)
-target1 = fso.GetAbsolutePathName( _
-    ".\fixture\FolderSender\Target" _
-)
+With fso.OpenTextFile( file2, ForWriting, CreateNew )
+    .WriteLine content
+    .Close
+End With
+target1 = format( Array( _
+    "%s\FolderSender\Target", fixture _
+))
+
+'Ensure that the target folder doesn't exist
+
 If fso.FolderExists( target1 ) Then
     fso.DeleteFolder target1, Force
 End If
@@ -44,7 +72,7 @@ With New TestingFramework
         Set fs = New FolderSender
         
     .It "should err on Empty source"
-        fs.TargetFolder = "./fixture/FolderSender/Target"
+        fs.TargetFolder = fixture & "/FolderSender/Target"
         fs.MockSourceFolder = Empty
         On Error Resume Next
             fs.Copy
@@ -55,7 +83,7 @@ With New TestingFramework
       
     .It "should err on Empty target"
         fs.MockTargetFolder = Empty
-        fs.SourceFolder = "./fixture/FolderSender/Source"
+        fs.SourceFolder = fixture & "/FolderSender/Source"
         On Error Resume Next
             fs.Copy
             actual  = Left( Err.Description, 63 )
@@ -65,16 +93,19 @@ With New TestingFramework
     
     .It "should err on non-existent source folder"
         On Error Resume Next
-            fs.SourceFolder = "./fixture/FolderSennder"
+            fs.SourceFolder = fixture & "/FolderSennder"
             actual = Left( Err.Description, 30 )
             expected = "Cannot find the source folder "
         On Error Goto 0
         .AssertEqual actual, expected
 
     .It "should convert a relative path to an absolute path"
-        fs.SourceFolder = "./fixture/FolderSender"
+        sh.CurrentDirectory = fixture
+        fs.SourceFolder = ".\FolderSender"
         actual = fs.SourceFolder
-        expected = fso.GetAbsolutePathName("./fixture/FolderSender")
+        savedCurrentDirectory = sh.CurrentDirectory
+        expected = fso.GetAbsolutePathName(fixture & "\FolderSender")
+        sh.CurrentDirectory = savedCurrentDirectory
         .AssertEqual actual, expected
 
     .It "should create a folder"
@@ -87,7 +118,7 @@ With New TestingFramework
         fs.MakeFolder target1
         actual = fso.FolderExists( target1 )
         expected = True
-        .AssertEqual actual,  expected 
+        .AssertEqual actual, expected 
 
     .It "should copy a folder"
         fs.SourceFolder = source1
@@ -119,6 +150,20 @@ End If
 If fso.FolderExists( target1 ) Then
     Err.Raise 51,, "Couldn't delete the target folder, " & target1
 End If
+
+Function CreateFolder( folder )
+    Dim parent
+    parent = fso.GetParentFolderName( folder )
+    If Not fso.FolderExists( parent ) Then
+        CreateFolder parent
+    End If
+    If Not fso.FolderExists( folder ) Then
+        fso.CreateFolder folder
+    End If
+End Function
+Function Expand( s )
+    Expand = sh.ExpandEnvironmentStrings( s )
+End Function
 
     </script>
 </job>

@@ -58,6 +58,9 @@ Class VBSAppTester
         stream.WriteLine app.GetExtensionName
         stream.WriteLine app.GetParentFolderName
         stream.WriteLine app.GetExe
+        app.RUArgsTest = True
+        app.RestartUsing "wscript.exe", app.DoExit, app.DoNotElevate
+        stream.WriteLine app.RUArgs
 
         'attempt to invoke the Sleep method
         On Error Resume Next
