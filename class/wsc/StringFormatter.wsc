@@ -8,18 +8,18 @@
         classid="{ADCEC089-30DF-11D7-86BF-00606744568C}">
 
         <script language="VBScript">
-          <![CDATA[
-            Sub Register
-                sh.PopUp "Registering " + wsc, t, wsc, i
-            End Sub
-            Sub Unregister
-                sh.PopUp "Unregistering " + wsc, t, wsc, i
-            End Sub
-            Set sh = CreateObject( "WScript.Shell" )
-            t = 2 'time to show PopUp (seconds)
-            wsc = "StringFormatter.wsc"
-            i = vbSystemModal
-          ]]>
+            <![CDATA[
+                Sub Register
+                    ' sh.PopUp "Registering " + wsc, t, wsc, i
+                End Sub
+                Sub Unregister
+                    ' sh.PopUp "Unregistering " + wsc, t, wsc, i
+                End Sub
+                Set sh = CreateObject( "WScript.Shell" )
+                t = 2 'time to show PopUp (seconds)
+                wsc = "StringFormatter.wsc"
+                i = vbSystemModal
+            ]]>
         </script>
     </registration>
 

@@ -54,6 +54,9 @@ With New TestingFramework
     .It "should return a formatted string"
         .AssertEqual f.format( Array("Test ""%s"" %s", "str1", "str2" )), "Test ""str1"" str2"
 
+    .It "should have a default member, the Format property"
+        .AssertEqual f( Array("Test ""%s"" %s", "str1", "str2" )), "Test ""str1"" str2"
+
     .It "should return a formatted string with positive integers"
         .AssertEqual f.format(Array("Test ""%s"" %s", 1, 5)), "Test ""1"" 5"
 

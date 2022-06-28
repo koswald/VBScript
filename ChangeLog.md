@@ -1,8 +1,14 @@
 # Version information
 
-- [Version 1.4.2 (the latest version)](#version-142)  
+- [Version 1.4.3 (the latest version)](#version-143)  
+- [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
+
+# Version 1.4.3
+
+- Fixed typo in ChangeLog.md (this file).  
+- Disabled PopUp messages in [StringFormatter.wsc](class/wsc/StringFormatter.wsc).  
 
 # Version 1.4.2
 
@@ -57,7 +63,7 @@ Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | 
 # Version 1.4.1
 
 - [WMIUtility class links added](#wmiutility-class-links-added)  
-- [ReadMe links added, corrected)](#readme-links-added-corrected)  
+- [ReadMe links added, corrected](#readme-links-added-corrected)  
 - [RegisterWsc.wsf updated](#registerwscwsf-updated)  
 
 ## WMIUtility class links added
