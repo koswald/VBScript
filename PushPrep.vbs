@@ -11,6 +11,19 @@ If IsEmpty( document ) Then
     WScript.Quit
 End If
 
+s = "Run Setup.vbs before launching PushPrep.hta."
+On Error Resume Next
+    Set incl = CreateObject("VBScripting.Includer")
+    If Err Then
+        MsgBox _
+            "Err.Description: " & vbTab & Err.Description & vbLf & _
+            "Hex(Err.Number): " & vbTab & Err.Number & _
+            vbLf & vbLf & s, _
+            vbInformation, "PushPrep.hta"
+        Self.Close
+    End If
+On Error Goto 0
+
 Dim sh 'WScript.Shell object
 Dim fso 'Scripting.FileSystemObject
 Dim format 'StringFormatter object
@@ -44,7 +57,6 @@ Sub Window_OnLoad
     Dim defaultSuiteFolder, defaultSuiteFilter, defaultDocGens, defaultGits, defaultDocs, defaultEditor 'strings
     Dim candidate 'a pwsh.exe filespec
 
-    Self.ResizeTo 400, 450
     Set sh = CreateObject( "WScript.Shell" )
     Set fso = CreateObject( "Scripting.FileSystemObject" )
     Set app = document.getElementsByTagName( "application" )(0)

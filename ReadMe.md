@@ -2,7 +2,7 @@
 
 - [Features](#features)  
 - [Requirements](#requirements)  
-- [Installation](#installation)  
+- [Install](#install)  
 - [Uninstall](#uninstall)  
 - [Issues](#issues)  
 - [References](#references)  
@@ -30,19 +30,19 @@
 
 ## Requirements
 
-Windows 10, 8, 7, Vista, ... 98.
+Windows 11, 10, 8.1, 8, 7, Vista, ... 98.
 
-## Installation
+## Install
 
 - Clone or download the repo. [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs) can be used, if desired, to make the project available to all users before running [Setup.vbs].
 
-- Double-click [Setup.vbs] or from a console window type the following command from an elevated process. (If not from an elevated process, then the User Account Control dialog will appear to request permission to elevate.)  
+- Double-click [Setup.vbs] or type the following command in a console window. If the console does not have elevated privileges, then the User Account Control dialog will open, in order to request permission to elevate.  
 
 ``` cmd
 Setup.vbs
 ```
 
-or for a non-interactive install, use  
+or for a non-interactive install, type the following command in an elevated console window:  
 
 ``` cmd
 Setup.vbs /s
@@ -80,7 +80,7 @@ control /name Microsoft.ProgramsAndFeatures
 
 and then select VBScripting Utility Classes and Extensions and click Uninstall.  
 
-Or for a silent uninstall from a console window, type
+Or for a silent uninstall  type the following command from an elevated console window:
 
 ``` cmd
 Uninstall.vbs /s

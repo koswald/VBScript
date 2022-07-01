@@ -1,14 +1,23 @@
 # Version information
 
-- [Version 1.4.3 (the latest version)](#version-143)  
+- [Version 1.4.4 (the latest version)](#version-144)  
+- [Version 1.4.3](#version-143)  
 - [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
+
+# Version 1.4.4
+
+- Modified [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) and [FolderSender.vbs](class/FolderSender.vbs) so that they work properly together even before Setup.vbs is run, which was supposed to have been a feature of CopyToProgramFiles.vbs as stated in the [ReadMe](./ReadMe.md#install).  
+
+- See [Issues with v1.4.2](#issues-with-v142).  
 
 # Version 1.4.3
 
 - Fixed typo in ChangeLog.md (this file).  
 - Disabled PopUp messages in [StringFormatter.wsc](class/wsc/StringFormatter.wsc).  
+
+- See [Issues with v1.4.2](#issues-with-v142).  
 
 # Version 1.4.2
 
@@ -109,7 +118,7 @@ A FolderSender class ( [code](class/FolderSender.vbs) | [doc](docs/VBScriptClass
 
 ## CopyToProgramFiles.vbs updated
 
-The target folder in [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) was changed from %ProgramFiles%&#92;KOswald to %ProgramFiles%&#92;VBScripting and the FolderCopier class was renamed to FolderSender and removed to the `class` folder. See [FolderSender class](#foldersender-class).
+The target folder in [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) was changed from %ProgramFiles%&#92;KOswald to %ProgramFiles%&#92;VBScripting and the FolderCopier class was renamed to FolderSender and moved to the `class` folder. See [FolderSender class](#foldersender-class).
 
 ## StartupItems class moved
 
@@ -147,6 +156,7 @@ The second statement above typically will cause a modal message with the code `8
 |  13 |   D | Type mismatch                         |  
 |  17 |  11 | Can't perform the requested operation |  
 |  51 |  33 | Internal error                        |  
+|  70 |  46 | Permission denied                     |  
 | 449 | 1C1 | Argument not optional                 |  
 | 450 | 1C2 | Wrong number of arguments or invalid property assignment |  
 | 500 | 1F4 | Variable undefined                    |  

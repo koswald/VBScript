@@ -12,11 +12,11 @@ Class FolderSender
         Set fso = CreateObject( "Scripting.FileSystemObject" )
         Set sh = CreateObject( "WScript.Shell" )
         Set sa = CreateObject( "Shell.Application" )
+        elevateMsg = "Click OK to elevate privileges. The User Account Control dialog will appear and the script will restart."
         With CreateObject( "VBScripting.Includer")
             Execute .Read( "VBSApp" )
         End With
         Set app = New VBSApp
-        elevateMsg = "Click OK to elevate privileges. The User Account Control dialog will appear and the script will restart."
     End Sub
 
     'Method Copy
@@ -122,18 +122,30 @@ Class FolderSender
             m = m & elevateMsg
             j = vbInformation + vbSystemModal
             j = j + vbOkCancel + vbDefaultButton2
-            s = app.GetFileName
+            If IsEmpty( app ) Then
+                s = ""
+            Else s = app.GetFileName
+            End If
             If vbCancel = MsgBox(m, j, s) Then
-                app.Quit
+                On Error Resume Next
+                    WScript.Quit
+                    Self.Close
+                On Error Goto 0
             End If
 
-            'elevate privileges:
-            'restart the calling script/hta,
-            'retaining command-line arguments
-            With app
-                .SetUserInteractive False
-                .RestartUsing .GetExe, .DoExit, .DoElevate
-            End With
+            'elevate privileges
+            If IsEmpty( app ) Then
+                'before the project Setup.vbs has been run, the VBSApp object is not available: assume that the calling script is not an .hta; restart the calling script with elevated privileges without retaining command-line arguments
+                sa.ShellExecute "wscript", """" & WScript.ScriptFullName & """",, "runas"
+                WScript.Quit
+            Else
+                'restart the calling script/hta,
+                'retaining command-line arguments
+                With app
+                    .SetUserInteractive False
+                    .RestartUsing .GetExe, .DoExit, .DoElevate
+                End With
+            End If
         End If
         
         'set return value
