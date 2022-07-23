@@ -1,4 +1,3 @@
-
 // Progress bar for VBScript
 
 using System.Windows.Forms;
@@ -17,6 +16,7 @@ namespace VBScripting
     {
         private Form form;
         private System.Windows.Forms.ProgressBar pbar;
+        private int _style = 0;
         private int pctX = -1; // percentage of avail. screen
         private int pctY = -1;
 
@@ -25,13 +25,9 @@ namespace VBScripting
         {
             this.form = new System.Windows.Forms.Form();
             this.pbar = new System.Windows.Forms.ProgressBar();
-            this.SuspendLayout();
             this.form.Controls.Add(this.pbar);
-            this.ResumeLayout(false);
             this.Debug = false;
-            this.Minimum = 0;
-            this.Maximum = 100;
-
+            Application.EnableVisualStyles();
         }
 
         /// <summary> Gets or sets the progress bar's visibility.  </summary>
@@ -113,7 +109,7 @@ namespace VBScripting
             }
         }
 
-        /// <summary> Gets or sets the increment between steps. </summary>
+        /// <summary> Integer. Gets or sets the increment between steps. </summary>
         public int Step
         {
             get { return this.pbar.Step; }
@@ -241,6 +237,18 @@ namespace VBScripting
         {
             get { return new FormBorderStyleT(); }
             private set { }
+        }
+
+        /// <summary> Sets the style of the progress bar.  </summary>
+        /// <remarks> Use 1 for continuous, and 2 for marquee. </remarks>
+        public int Style
+        {
+            set
+            {
+                _style = value;
+                this.pbar.Style = (ProgressBarStyle) value;
+            }
+            get { return _style; }
         }
 
         /// <summary> Sets the style of the window border. </summary>
@@ -422,6 +430,10 @@ namespace VBScripting
         /// <summary> </summary>
         [DispId(21)]
         void Dispose();
+
+        /// <summary> </summary>
+        [DispId(22)]
+        int Style { get; set; }
     }
 
 }

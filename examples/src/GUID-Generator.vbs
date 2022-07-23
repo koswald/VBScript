@@ -1,4 +1,4 @@
-'script for "guid generator.hta"
+'Script for "GUID-Generator.hta"
 
 Option Explicit
 Dim generator 'GUIDGenerator object

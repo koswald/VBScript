@@ -176,10 +176,11 @@
 | Minimum | Gets or sets the value at which there is no apparent progress. An integer. The default is 0. |  |  | Property | ProgressBar | VBScripting |
 | Maximum | Gets or sets the value at which the progress appears to be complete. An integer. The default is 100. |  |  | Property | ProgressBar | VBScripting |
 | Value | Gets or sets the apparent progress. An integer. Should be at or above the minimum and at or below the maximum. |  |  | Property | ProgressBar | VBScripting |
-| Step | Gets or sets the increment between steps.  |  |  | Property | ProgressBar | VBScripting |
+| Step | Integer. Gets or sets the increment between steps.  |  |  | Property | ProgressBar | VBScripting |
 | Caption | Gets or sets the window title-bar text.  |  |  | Property | ProgressBar | VBScripting |
 | Debug | Gets or sets whether the type is under development. Affects the behavior of two methods, SetIconByIcoFile and SetIconByDllFile, if exceptions are thrown: when debugging, a message box is shown. Default is False. |  |  | Property | ProgressBar | VBScripting |
 | BorderStyle | Provides an object useful in VBScript for setting FormBorderStyle.  | a FormBorderStyleT |  | Property | ProgressBar | VBScripting |
+| Style | Sets the style of the progress bar. Use 1 for continuous, and 2 for marquee. |  |  | Property | ProgressBar | VBScripting |
 | FormBorderStyle | Sets the style of the window border. An integer. One of the BorderStyle property return values can be used: Fixed3D, FixedDialog, FixedSingle, FixedToolWindow, None, Sizable (default), or SizableToolWindow. VBScript example: <pre> pb.FormBorderStyle = pb.BorderStyle.Fixed3D </pre> |  |  | Property | ProgressBar | VBScripting |
 | FormBorderStyleT | Enumeration of border styles. This class is available to VBScript via the <code>ProgressBar.BorderStyle</code> property. |  |  | Type | | VBScripting |
 | Fixed3D |   | 1 |  | Property | FormBorderStyleT | VBScripting |
@@ -225,7 +226,7 @@
 | Start | Starts or restarts the timer.  |  |  | Method | Timer | VBScripting |
 | Stop | Stops the timer.  |  |  | Method | Timer | VBScripting |
 | Dispose | Disposes of the timer's resources.  |  |  | Method | Timer | VBScripting |
-| Interval | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 100. Max is 2,147,483,647 milliseconds, or 24 days 20 hours 31 minutes 23.647 seconds.  |  |  | Property | Timer | VBScripting |
+| Interval | Gets or sets the number of milliseconds between when the Start method is called and when the callback is invoked. Default is 60,000. Max is 2,147,483,647 milliseconds, or 24 days 20 hours 31 minutes 23.647 seconds.  |  |  | Property | Timer | VBScripting |
 | Callback | Gets or sets a reference to the VBScript Sub that is called when the interval has elapsed.  |  |  | Property | Timer | VBScripting |
 | AutoReset | Gets or sets a boolean determining whether to repeatedly invoke the callback. Default is False. If False, the callback is invoked only once, until the timer is restarted with the Start method.  |  |  | Property | Timer | VBScripting |
 | IntervalInHours | Gets or sets the interval in hours.  |  |  | Property | Timer | VBScripting |

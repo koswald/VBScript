@@ -1,5 +1,5 @@
 :: compile ProgressBar.cs as a 32-bit library
-:: and register ProgressBar.dll fir 64-bit and 32-bit apps
+:: and register ProgressBar.dll for 64-bit and 32-bit apps
 @echo off
 call ..\config\exeLocations.bat
 

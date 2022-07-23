@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+        <hta:application
+            applicationName="HTML escape codes"
+            synopsis="Builds the html escape code for a specified character."
+            example="When the character \ is keyed into the input box, and the Enter key is pressed or the button is clicked, the html escape code &#92; is shown in the output."
+            icon="ActionCenterCPL.dll"
+            scroll="No"
+            innerBorder="No"/>
+        <title> HTML escape codes </title>
+
+        <!-- The placeholder attribute for the input tag requires Internet Explorer version 10. This renders the icon inoperative. -->
+        <meta
+            http-equiv="x-ua-compatible"
+            content="ie=10">
+
+        <script language="VBScript">
+            Self.ResizeTo 350, 200
+            Self.MoveTo 400, 300
+        </script>
+    </head>
+
+    <body
+        onload="BodyOnLoad()"
+        onkeyup="BodyOnKeyUp()">
+
+        <script language="VBScript"
+            src="src/HTML_EscapeCodes.vbs">
+        </script>
+
+        <input
+            id=input
+            type=text
+            placeholder="Enter a character"
+            onchange="resultButton.focus" />
+        <input
+            id=resultButton
+            type=button
+            onclick="ShowResult()"
+            value="Show the html" />
+
+        <p id=output></p>
+        <p id=errors></p>
+
+        <style>
+            body, input {
+                background-color: #334;
+                color: #eee;
+            }
+            p {
+                font-family: sans-serif;
+                /* font-weight: bold; */
+            }
+            #errors {
+                color: #f00;
+            }
+        </style>
+    </body>
+</html>

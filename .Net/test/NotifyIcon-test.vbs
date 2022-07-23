@@ -1,7 +1,29 @@
+'Manual integration test for the VBScripting.NotifyIcon object and .dll
 
-'test NotifyIcon.dll
+Option Explicit
+Dim ni 'the VBScripting.NotifyIcon object to be tested
+Dim sh 'WScript.Shell object
+Dim fso 'Scripting.FileSystemObject
+Dim testCaseMessage 'wscript process object/Exec method return value: shows a MsgBox with test instructions.
+Dim format 'VBScripting.StringFormatter object
+Const closedByTester = 1 'testCaseMessage status
+Const largeIcon = True, smallIcon = False
+Dim icons '1-based array: specifies a collection of icons: includes for each icon a filespec, index, size (boolean), and description.
+Dim iconIndex 'integer
+Dim shell32_dll 'filespec
 
-Option Explicit : Initialize
+Set sh = CreateObject( "WScript.Shell" )
+Set fso = CreateObject( "Scripting.FileSystemObject" )
+Set format = CreateObject( "VBScripting.StringFormatter")
+sh.CurrentDirectory = fso.GetParentFolderName( WScript.ScriptFullName )
+Set testCaseMessage = sh.Exec("wscript fixture\NotifyIcon-test-case.vbs")
+shell32_dll = "%SystemRoot%\System32\shell32.dll"
+icons = Array("" _
+    , shell32_dll, 77, smallIcon, "exclamation" _
+    , shell32_dll, 43, smallIcon, "gold star" _
+    , shell32_dll, 15, smallIcon, "computer" _
+)
+iconIndex = 1
 
 'Create the object
 Set ni = CreateObject( "VBScripting.NotifyIcon" )
@@ -33,7 +55,7 @@ ListenForCallbacks
 
 'Keep the script running in order to listen for callbacks,
 'events triggered by the NotifyIcon object.
-'This approach should be omitted in an .hta file.
+'This approach should not be used in an .hta file.
 Sub ListenForCallbacks
     While True
         WScript.Sleep 200
@@ -73,28 +95,3 @@ Sub CloseAndExit
     Set fso = Nothing
     WScript.Quit
 End Sub
-
-Dim ni, sh, fso, testCaseMessage, format
-Const closedByTester = 1
-Const largeIcon = True, smallIcon = False
-Dim icons, iconIndex, shell32_dll
-
-Sub Initialize
-    Set sh = CreateObject( "WScript.Shell" )
-    Set fso = CreateObject( "Scripting.FileSystemObject" )
-    shell32_dll = "%SystemRoot%\System32\shell32.dll"
-    With CreateObject( "VBScripting.Includer" )
-        Execute .Read( "StringFormatter" )
-    End With
-    Set format = New StringFormatter
-    'show the test-case message
-    Set testCaseMessage = sh.Exec("wscript fixture\NotifyIcon-test-case.vbs")
-    Dim shel32dllInterestingIcons : shel32dllInterestingIcons = Array("" _
-        , shell32_dll, 77, smallIcon, "exclamation" _
-        , shell32_dll, 43, smallIcon, "gold star" _
-        , shell32_dll, 15, smallIcon, "computer" _
-    )
-    iconIndex = 1
-    icons = shel32dllInterestingIcons
-End Sub
-

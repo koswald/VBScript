@@ -1,91 +1,21 @@
+'Script for AnyFolder.hta, a SendTo drop target
 
-'script for AnyFolder.hta, a SendTo drop target
+'A UI will be presented, showing the items to be copied or moved, read from the command line. The Copy and Move buttons are enabled after the user selects the target folder.
 
 Option Explicit
-
-Const width = 350, height = 250 'window size: pixels
-Const xPos = 80, yPos = 80 'window position: percent of screen
-
-Sub Copy
-    Transfer copyMode
-    Cancel 'quit
-End Sub
-
-Sub Move
-    Transfer moveMode
-    Cancel 'quit
-End Sub
-
-Sub Transfer(mode)
-    Dim i
-    For i = 0 To UBound(items)
-        TransferItem items(i), mode
-    Next
-End Sub
-
-'copy or move a single file or folder
-Sub TransferItem(sourceItem, mode)
-    Dim targetItem : targetItem = targetFolder & "\" & fso.GetFileName(sourceItem)
-    If sourceItem = targetItem Then Exit Sub 'if source and target are the same, don't transfer and especially don't delete!
-    On Error Resume Next
-        sa.Namespace(targetFolder).CopyHere sourceItem
-        If Err Then
-            msg = "Error : " & vbTab & Err.Description & vbLf & _
-                  "Err # : " & vbTab & Err.Number & vbLf & vbLf & _
-                  "Failed to copy '" & sourceItem & "' to '" & targetFolder & "'"
-            If vbCancel = MsgBox(msg, vbInformation + vbOKCancel, app.GetFileName) Then
-                app.Quit
-            Else Exit Sub ' attempt to transfer the next item, if any
-            End If
-        End If
-    On Error Goto 0
-    If moveMode = mode Then
-        DeleteSourceItem sourceItem, targetItem
-    End If
-    Dim msg
-End Sub
-
-'delete the source file or folder,
-'as long as the copy was successful
-Sub DeleteSourceItem(sourceItem, targetItem)
-    If fso.FolderExists(targetItem) Then
-        fso.DeleteFolder(sourceItem)
-    ElseIf fso.FileExists(targetItem) Then
-        fso.DeleteFile(sourceItem)
-    End If
-End Sub
-
-'exit the html application
-Sub Cancel
-    app.Quit
-End Sub
-
-'event handler
-Sub Document_OnKeyUp
-    If EscKey = window.event.keyCode Then
-        Cancel
-    ElseIf MKey = window.event.keyCode Then
-        Move
-    ElseIf CKey = window.event.keyCode Then
-        Copy
-    End If
-End Sub
-
-'disable or enable the buttons
-Sub DisableCopyAndMoveButtons(newValue)
-    btnCopy.disabled = newValue
-    btnMove.disabled = newValue
-End Sub
-
 Const copyMode = 0, moveMode = 1
 Const EscKey = 27 'window.event.keyCode for the Esc key
 Const CKey = 67
 Const MKey = 77
-Dim sh, fso, sa 'native Windows objects
-Dim app, hta, choose 'project objects
+Const width = 350, height = 250 'window size: pixels
+Const xPos = 80, yPos = 80 'window position: percent of screen
+
+Dim sh, fso, sa, hta 'native Windows objects
+Dim app, choose 'project objects
 Dim btnCopy, btnMove 'buttons
-Dim targetFolder
-Dim items 'array of files and/or folders
+Dim divText 'html element
+Dim targetFolder 'string: folder path
+Dim items 'array of strings: filespecs and/or folder paths
 
 Sub Window_OnLoad
     InitializeWindow
@@ -104,6 +34,7 @@ Sub InitializeWindow
             (.availWidth - width) * xPos * .01, _
             (.availHeight - height) * yPos * .01
     End With
+
     document.title = hta.applicationName 'title bar
     document.body.style.whitespace = "nowrap"
 End Sub
@@ -119,14 +50,13 @@ Sub InstantiateObjects
     End With
     Set choose = CreateObject( "VBScripting.FolderChooser" )
     choose.Title = hta.applicationName & ":" & vbLf & " Browse to the target folder"
-    choose.InitialDirectory = "%UserProfile%\z.{679F85CB-0220-4080-B29B-5540CC05AAB6}" 'see settings\+\Quick access folder.txt
+    choose.InitialDirectory = "%UserProfile%"
 End Sub
 
 'create the HTML elements
-Dim divText
 Sub CreateHtmlElements
 
-    'create the Copy button
+    'create the Cop]y button
     Set btnCopy = document.createElement( "input" )
     With btnCopy
         .type = "button"
@@ -165,7 +95,7 @@ Sub ValidateArgs
     'require at least one argument
     If -1 = UBound(items) Then
         MsgBox "Argument(s) required.", vbExclamation, hta.applicationName
-        Cancel
+        Self.Close
     End If
 
     'require all arguments to be an existing file or folder
@@ -177,7 +107,7 @@ Sub ValidateArgs
             s = s & "<br />" & "Folder: "
         Else
             MsgBox """" & items(i) & """ is not an existing file or folder.", vbExclamation, hta.applicationName
-            Cancel
+            Self.Close
         End If
         s = s & items(i)
     Next
@@ -188,8 +118,65 @@ End Sub
 Sub BrowseForFolder
     DisableCopyAndMoveButtons True
     targetFolder = choose.FolderName
-    If Not fso.FolderExists(targetFolder) Then Cancel
+    If Not fso.FolderExists(targetFolder) Then 
+        Self.Close 'user cancelled
+    End If
     DisableCopyAndMoveButtons False
     btnMove.focus
     divText.innerHtml = divText.innerHtml & "<br /><strong> To: </strong><br />" & targetFolder
+End Sub
+
+Sub Copy
+    Transfer copyMode
+    Self.Close 'quit
+End Sub
+
+Sub Move
+    Transfer moveMode
+    Self.Close 'quit
+End Sub
+
+Sub Transfer(mode)
+    Dim i
+    For i = 0 To UBound(items)
+        TransferItem items(i), mode
+    Next
+End Sub
+
+'copy or move a single file or folder
+Sub TransferItem(sourceItem, mode)
+    Dim targetItem
+    targetItem = targetFolder & "\" & fso.GetFileName(sourceItem)
+    If LCase(sourceItem) = LCase(targetItem) Then 
+        'if source and target are the same, don't transfer
+        Exit Sub
+    End If
+    If Not fso.FolderExists(sourceItem) _
+    And Not fso.FileExists(sourceItem) Then
+        'Most likely, the command-line couldn't hold all of the desired arguments, and the current item was cut off. Attempt to continue anyway, with the next file/command-line argument. Only valid items will be transferred.
+        Exit Sub
+    End If
+    If copyMode = mode Then
+        sa.Namespace(targetFolder).CopyHere sourceItem
+    ElseIf moveMode = mode Then
+        sa.Namespace(targetFolder).MoveHere sourceItem
+    Else Err.Raise 5,, "Mode specified incorrectly:  it must be either copyMode or moveMode."
+    End If
+End Sub
+
+'event handler
+Sub Document_OnKeyUp
+    If EscKey = window.event.keyCode Then
+        Self.Close
+    ElseIf MKey = window.event.keyCode Then
+        Move
+    ElseIf CKey = window.event.keyCode Then
+        Copy
+    End If
+End Sub
+
+'disable or enable the buttons
+Sub DisableCopyAndMoveButtons(newValue)
+    btnCopy.disabled = newValue
+    btnMove.disabled = newValue
 End Sub

@@ -100,6 +100,8 @@ After a major Windows 10 version update, rerunning [Setup.vbs] may be required i
 
 ## References  
 
+Links to the official online documentation:
+
 - [VBScript Fundamentals](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/0ad0dkea(v=vs.84))  
 - [VBScript Language Reference](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/d1wf56tt(v=vs.84))  
 - [FileSystemObject](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/6kxy1a51(v=vs.84))  

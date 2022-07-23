@@ -1,7 +1,6 @@
-' script for BatteryStatus.hta
+'Script for BatteryStatus.hta
 
 Option Explicit
-
 Dim batteryMonitor
 
 Sub Window_OnLoad

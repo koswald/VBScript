@@ -1,0 +1,3 @@
+# Configuration file for "GUID-Generator.hta"
+
+case, lower # upper or lower

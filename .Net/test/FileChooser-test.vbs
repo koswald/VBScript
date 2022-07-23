@@ -1,19 +1,35 @@
-
-'test that FileChooser.cs compiled correctly and
-'that FileChooser.dll registered correctly
+'Manual test for FileChooser.dll
 
 'expected outcome:
 '  see fixture\FileChooser-test-case.vbs
 
-Option Explicit : Initialize
+Option Explicit
+Dim fc 'VBScripting.FileChooser object to be tested
+Dim sh 'WScript.Shell object
+Dim testCaseMessage 'a wscript process object: MsgBox shows expected outcomes
+Dim mode, caption, msg 'MsgBox arguments
+Dim s 'string
+Dim i 'integer
+
+Set fc = CreateObject( "VBScripting.FileChooser" )
+Set sh = CreateObject( "WScript.Shell" )
+With CreateObject( "Scripting.FileSystemObject" )
+    sh.CurrentDirectory = .GetParentFolderName( WScript.ScriptFullName )
+End With
+Set testCaseMessage = _
+        sh.Exec("wscript fixture\FileChooser-test-case.vbs")
+mode = vbInformation + vbSystemModal + vbOKCancel
+caption = WScript.ScriptName
 
 'access some properties to verify that they exist
+
 s = "Title: "  & fc.Title
 s = "Multiselect: " & fc.Multiselect
 s = "DereferenceLinks: " & fc.DereferenceLinks
 s = "DefaultExt: " & fc.DefaultExt
 
 'general settings
+
 fc.Filter = "RTF files | *.rtf | All files | *.*"
 fc.FilterIndex = 2
 
@@ -48,22 +64,6 @@ mode = mode - vbOKCancel + vbOKOnly
 MsgBox "Multi files:" & s, mode, caption
 
 Quit
-
-Dim fc
-Dim sh
-Dim testCaseMessage
-Dim mode
-Dim caption
-Dim msg, s, i
-
-Sub Initialize
-    Set fc = CreateObject( "VBScripting.FileChooser" )
-    Set sh = CreateObject( "WScript.Shell" )
-    Set testCaseMessage = _
-            sh.Exec("wscript fixture\FileChooser-test-case.vbs")
-    mode = vbInformation + vbSystemModal + vbOKCancel
-    caption = WScript.ScriptName
-End Sub
 
 Sub Quit
     Set fc = Nothing

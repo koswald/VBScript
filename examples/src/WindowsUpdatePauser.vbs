@@ -1,4 +1,4 @@
-'script for "Windows Updates Pauser.hta"
+'script for "WindowsUpdatePauser.hta"
 
 Sub PauseUpdates
     wup.PauseUpdates
@@ -31,14 +31,28 @@ Sub OpenConfigFile
     SelfClose
 End Sub
 
-Function GetInput(i) : Set GetInput = document.getElementsByTagName( "input" )(i) : End Function
-Sub Enable(i) : GetInput(i).disabled = False : End Sub
-Sub Disable(i) : GetInput(i).disabled = True : End Sub
-Sub SetTitle(i, title) : GetInput(i).title = title : End Sub
-Sub SetClass(i, name) : GetInput(i).className = name : End Sub
-Sub SelfClose : self.close : End Sub
+'Return the html input element/object specified
+Function GetInput(i)
+    Set GetInput = document.getElementsByTagName( "input" )(i)
+End Function
+Sub Enable(i)
+    GetInput(i).disabled = False
+End Sub
+Sub Disable(i)
+    GetInput(i).disabled = True
+End Sub
+'Set the tooltip that appears when the mouse hovers over the specified button
+Sub SetTitle(i, title)
+    GetInput(i).title = title
+End Sub
+Sub SetClass(i, name)
+    GetInput(i).className = name
+End Sub
+Sub SelfClose
+    self.close
+End Sub
 
-Dim wup 'WindowsUpdatesPauser
+Dim wup 'WindowsUpdatesPauser object
 Const iPause = 0, iResume = 1, iConfig = 2, iClose = 3 'button index numbers
 
 Sub Window_OnLoad

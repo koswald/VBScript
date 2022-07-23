@@ -6,20 +6,15 @@ may be used to launch this file. For example, a
 shortcut to AnyFolder.wsf can be placed in the
 SendTo folder instead of a shortcut to this file. -->
 
-<html>
-    <head>
-        <hta:application
-            applicationName="Send to any folder"
-            icon="occache.dll"
-            innerborder="No"
-            scroll="Yes"
-            maximizeButton="No"
-            singleInstance="No" />
-        <script
-            language="VBScript"
-            src="src/AnyFolder.vbs">
-        </script>
-    </head>
-    <body />
-    </style>
-</html>
+<hta:application
+    applicationName="Send to any folder"
+    icon="occache.dll"
+    innerborder="No"
+    scroll="Yes"
+    maximizeButton="No"
+    singleInstance="No" >
+    <script
+        language="VBScript"
+        src="src/AnyFolder.vbs">
+    </script>
+</hta:application>

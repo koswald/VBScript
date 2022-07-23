@@ -1,10 +1,25 @@
 # Version information
 
-- [Version 1.4.4 (the latest version)](#version-144)  
+- [Version 1.4.5 (the latest version)](#version-145)  
+- [Version 1.4.4](#version-144)  
 - [Version 1.4.3](#version-143)  
 - [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
+
+# Version 1.4.5
+
+- Updated ProgressBar.cs to show the familiar "glow" animation and also the marquee style.  
+
+  These styles are selected by using the new [Style property](./docs/CSharpClasses.md#progressbar) of the VBScripting.ProgressBar object. The relevant changes to [ProgressBar.cs](./.Net/ProgressBar.cs) were the addition of the Style property and calling the EnableVisualStyles method of the Application class in the constructor. For a demo, run [ProgressBar-test.vbs](./.Net/test/ProgressBar-test.vbs) or [IconExtractor.hta](./examples/IconExtractor.hta).
+
+![Continuous style image](./docs/img/ProgressBar-Continuous.png "Continuous style")  
+
+![Marquee style image](./docs/img/ProgressBar-Marquee.png "Marquee style")  
+
+- With selected .hta and .wsf files in the `examples` folder, VBScript code was moved to separate files in the `src` folder, for more appropriate syntax highlighting in github.com.
+
+- Changes to code comments, code styling, and documentation.  
 
 # Version 1.4.4
 
@@ -28,7 +43,7 @@
 
 ## PushPrep.hta updated
 
-Moved the main script to a separate file so that the VBScript code would appear correctly in github.com.
+Moved the main script to a separate file for improved VBScript syntax highlighting in github.com.
 
 ## ShellSpecialFolders class added
 
@@ -59,7 +74,7 @@ Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | 
 - The project path includes a space, as when the project is installed in C:\Program Files\VBScripting.  
 - A script/hta restart method is being called, either the RestartWith method of the VBSHoster class or the RestartUsing method of the VBSApp class, as when the TestingFramework class is instantiated but cscript.exe is not the host.  
 - The restart method is configured to use PowerShell or Windows PowerShell as the shell.  
-- The restart method is called/configured so that a script/hta restart will be attempted. If the desired state is already present, then the restart method will not attempt to restart the script/hta. Desired and current states are compared for 1) privileges, whether they are elevated, and 2) the scripting host, whether cscript.exe or wscript.exe or mshta.exe is hosting the script.  
+- The restart method is called and configured so that a script/hta restart will be attempted. That is, the current state must be different from the desired state with respect to either 1) privileges, whether they are elevated, or 2) the scripting host, whether cscript.exe or wscript.exe or mshta.exe is hosting the script.  
 
 **Resolution:** This issue was fixed by surrounding the script filespec with single quotes in the powershell command--this is in addition to the double quotes that were already in use. Regression tests were incorporated into VBSHoster.spec.wsf and VBSApp.spec.vbs. 
 
@@ -176,5 +191,8 @@ Many files were refactored:
 - Many lines-ending spaces were removed in multiple files. Double-spaces at the end of lines in lists in `.md` files--this line for example--were intentionally retained.  
 
 ## Change log added
+
+The change log (this file) was added.
+Change log added
 
 The change log (this file) was added.

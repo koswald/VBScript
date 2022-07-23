@@ -31,10 +31,12 @@ When you select the *32 bit* radio button, Fixer.hta changes the `System32` in t
 
 ## Fixing the fixer
 
-One situation where you might have to jump start this process is when .hta files are configured to open with the 32-bit mshta.exe. In this case, the radio buttons have no effect: the command stays at `...\SysWow64\...`. One way to force Fixer.hta to open with the 64-bit mshta.exe, is
+One situation where you might have to jump start this process is when .hta files are configured to open with the 32-bit mshta.exe. **In this case, the radio buttons have no effect:** the command stays at `...\SysWow64\...`. One way to force Fixer.hta--and other .hta files--to open with the 64-bit mshta.exe, is
 
-- Open a cmd.exe console window at %SystemRoot%\System32
-- Type `mshta.exe "<project folder>\examples\Fixer.hta"`
+- Open a console window at %SystemRoot%\System32
+- Type `mshta.exe "<full path to the project folder>\examples\Fixer.hta"`
+- Elevate privileges when prompted. 
+- When Fixer.hta opens, check the Enable hta box and select 64-bit in the htafile open-command field.
 
 [Overview]: #overview  
 [Background]: #background  

@@ -1,27 +1,4 @@
-
-'script for SpeechSynthesis.hta
-
-'convert text to sound
-Sub Speak
-    synthesizer.SpeakAsync words.value
-    words.select 'select all; prepare to overwrite the previous words
-End Sub
-
-'event handler
-Sub KeyUp
-    If EnterKey = window.event.keyCode Then
-        Speak
-    End If
-End Sub
-
-'event handler
-Sub ChangeVoice
-    voiceIndex = voiceIndex + 1
-    If voiceIndex > UBound(voices) Then voiceIndex = 0
-    synthesizer.Voice = voices(voiceIndex)
-    voiceButton.Title = "Current voice: " & voices(voiceIndex)
-    words.select
-End Sub
+'Script for SpeechSynthesis.hta
 
 Const width = 30, height = 30 'window size in percent of screen
 Const xPos = 50, yPos = 50 'window position in percent of screen
@@ -123,6 +100,28 @@ Sub Window_OnLoad
 
     'put focus on the text area; prepare to type some words
     words.focus
+End Sub
+
+'convert text to sound
+Sub Speak
+    synthesizer.SpeakAsync words.value
+    words.select 'select all; prepare to overwrite the previous words
+End Sub
+
+'event handler
+Sub KeyUp
+    If EnterKey = window.event.keyCode Then
+        Speak
+    End If
+End Sub
+
+'event handler
+Sub ChangeVoice
+    voiceIndex = voiceIndex + 1
+    If voiceIndex > UBound(voices) Then voiceIndex = 0
+    synthesizer.Voice = voices(voiceIndex)
+    voiceButton.Title = "Current voice: " & voices(voiceIndex)
+    words.select
 End Sub
 
 Sub Window_OnUnload

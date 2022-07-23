@@ -1,0 +1,116 @@
+<html>
+<head>
+    <hta:application
+        applicationName="Extract icons from .dll or .exe files"
+        icon="msctfui.dll"
+        innerBorder="No"
+        scroll="No" />
+    <script language="VBScript">
+        Self.ResizeTo 600, 400
+    </script>
+</head>
+<body>
+    <script language="VBScript"
+        src="src/IconExtractor.vbs">
+    </script>
+
+    <p class="label"> Source folder
+        <input
+            type="checkbox"
+            id="subfoldersChkBox"
+            class="spaceLeft" /> and all subfolders
+    </p>
+    <input
+        type="text"
+        class="textInput"
+        id="sourceDirTxtBox" />
+    <input
+        type="button"
+        id="sourceBrowserBtn"
+        class="narrowButton"
+        title="Browse for source folder"
+        value="..." /><br />
+    <p class="label"> File name(s) </p>
+    <input
+        type="text"
+        id="sourceFileTxtBox"
+        class="textInput" /><br />
+    <p class="label"> Target folder </p>
+    <input
+        type="text"
+        id="targetDirTxtBox"
+        class="textInput" />
+    <input
+        type="button"
+        id="targetBrowserBtn"
+        title="Browse for target folder"
+        class="narrowButton"
+        value="..." /><br />
+    <input
+        type="checkbox"
+        id="largeIconsChkBox"
+        class="spaceTop"
+        checked /> <span class="label"> Large icons</span><br />
+    <input
+        type="checkbox"
+        id="smallIconsChkBox"
+                /> <span class="label"> Small icons</span><br />
+    <input
+        type="checkbox"
+        id="zeroIndexesOnlyChkBox"
+        checked /> <span class="label"> Zero indexes only</span><br />
+    <input
+        type="button"
+        value="Extract icons"
+        class="spaceTop"
+        id="extractIconsBtn" />
+    <input
+        type="button"
+        value="Stop"
+        class="spaceLeft spaceTop"
+        id="stopBtn" />
+    <input
+        type="button"
+        value="Elevate"
+        class="spaceLeft spaceTop"
+        id="elevateBtn" /><br />
+    <div
+        id="inProgressDiv"
+        class="spaceTop wide">
+    </div>
+    <div
+        id="feedbackDiv"
+        class="spaceTop" />
+    </div>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: buttonface;
+            font-size: smaller;
+            cursor: default;
+        }
+        .label {
+            margin-bottom: 0px;
+        }
+        .textInput {
+            width: 94%;
+        }
+        .spaceTop, .label {
+            margin-top: 10px;
+        }
+        .narrowButton {
+            padding: 0px;
+        }
+        #feedbackDiv {
+            color: darkred;
+        }
+        .spaceLeft {
+            margin-left: 10px;
+        }
+        .wide {
+            width: 97%;
+            border-width: 0px;
+        }
+    </style>
+</body>
+</html>

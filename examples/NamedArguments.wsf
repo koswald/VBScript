@@ -40,8 +40,12 @@
 
         ' Show the results
 
-        MsgBox "Expected outcome: " & expectedOutcome & vbLf & vbLf & _
-            fileList, vbInformation + vbSystemModal, WScript.ScriptName
+        If vbCancel = MsgBox( _
+            "Expected outcome: " & expectedOutcome & vbLf & vbLf & _
+            fileList, vbInformation + vbSystemModal + vbOKCancel, _
+            WScript.ScriptName) Then
+                WScript.Quit
+        End If
         Set fso = Nothing
     </script>
 </job>

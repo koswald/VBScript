@@ -18,8 +18,9 @@ The location of these `.exe` files is configurable in [exeLocations.bat].
 
 By default, the compiler doesn't sign the output files, as recommended by Microsoft, so (ignorable) warnings will be generated when files are compiled and registered.
 
-In order to sign the output files,  - Download Visual Studio.
+In order to sign the output files,
 
+- Download Visual Studio.  
 - Right click the Developer Command Prompt for VS in the Start Menu.
 - Select Run as adminstrator.
 - Generate your keypair file by running a command similar to  

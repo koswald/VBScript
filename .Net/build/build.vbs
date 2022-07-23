@@ -1,5 +1,7 @@
-'Run all the batch (.bat) files in this folder, which compiles the .cs files and registers the resulting .dll files. Alternatively, one or more of the batch files can be dragged and dropped onto this file or entered from the command line:
-'PS C:\VBScripting\.Net\build> build.vbs Admin.bat FileChooser.bat
+'Run all the batch (.bat) files in this folder, which compiles the .cs files and registers the resulting .dll files.
+
+'Alternatively, one or more of the batch files can be dragged and dropped onto this file or entered from the command line:
+'PS C:\VBScripting\.Net\build> .\build.vbs Admin.bat FileChooser.bat
 
 'The User Account Control dialog will open for permission to elevate privileges, if privileges are not already elevated.
 
