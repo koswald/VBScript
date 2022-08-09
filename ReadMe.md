@@ -13,7 +13,7 @@
 - [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
 - [Integration tests](spec/ReadMe.md) use an ultralight TestingFramework class ( [code](class/TestingFramework.vbs) | [doc](docs/VBScriptClasses.md#testingframework) ) written in VBScript.
 - A VBScript statement [interpreter]/console.  
-- A dependency manager ( [code](class/Includer.vbs) | [doc](docs/VBScriptClasses.md#includer) ).  
+- A dependency manager ( [code](class/Includer.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#includer) ).  
 - A Configurer class ( [code](class/Configurer.vbs) | [doc](docs/VBScriptClasses.md#configurer) )
 - A logger class ( [code](class/VBSLogger.vbs) | [doc](docs/VBScriptClasses.md#vbslogger) ).  
 - A [registry classes] manager UI.  
