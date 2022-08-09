@@ -174,7 +174,8 @@ Example:
  End With
 ```
   
-<code> # Test1.configure (located in the same folder as Test1.vbs)<br /> command1, wt powershell # requires Windows Terminal</code>  
+<code> # Test1.configure (located in the same folder as Test1.vbs)</code>  
+<code> command1, wt powershell # requires Windows Terminal</code>  
   
 ```vb
  'Test2.vbs (located in the "class" folder)
@@ -193,7 +194,8 @@ Example:
  End Class
 ```
   
-<code> # Test2.configure (also located in the "class" folder)<br /> command2, pwsh # requires PowerShell 6 or higher</code>  
+<code> # Test2.configure (also located in the "class" folder)</code>  
+<code> command2, pwsh # requires PowerShell 6 or higher</code>  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -213,7 +215,7 @@ Example:
 | Property | LibraryPath | None | a path | Gets or sets the location, i.e. the parent folder, of the class file and/or its associated configuration file. See the LoadClassConfig and LoadFile methods. Obscure. For an example, see the integration test Configurer.spec.wsf. |
 | Property | ToArray | a string | an array | Converts a string to an array. Uses the delimiter set by the Delimiter property, a vertical bar ( &#124; ) by default. Excess spaces on the left and right of each element are trimmed off. |
 | Property | PowerShell | None | a string | Returns a string useful for starting a PowerShell process. If PowerShell 6 or 7 is installed, then the return value is the expanded filespec of the first "pwsh candidates" executable found that is listed in the file <code>.configure</code> in the project's root folder. If the cross-platform PowerShell is not found, returns the string <code>powershell</code>, which may be used to start a Windows PowerShell process. Since the return value may contain spaces, the string may need to be surrounded by quotes, depending on how it is used. For example, if the return value is used as the first argument of the Shell.Appliction object's ShellExecute method, then quotes are not recommended. But if the return value is used in the first argument of the WScript.Shell object's Run method, then quotes are recommended. |
-| Property | WT | None | a string | Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if not Windows Terminal is not installed or not found. |
+| Property | WT | None | a string | Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if Windows Terminal is not installed or not found. |
 | Property | Delimiter | None | a character | Gets or sets the delimiter used in converting strings to arrays. Default is a vertical bar ( &#124; ). |
 | Property | PsFallback | None | a string | Returns a ten-character string suitable for starting a Windows PowerShell process: <code>powershell</code>. This becomes the default PowerShell when the newer cross-platform PowerShell is not installed or not found. |
 | Property | Init | an object | an object self-reference | Initializes the Configurer object so that it can find the name of the calling script. The parameter is the WScript object, for .vbs or .wsf files, or the 'Document' object for .hta files. Required if the Configurer object was instantiated with the <a href="#includer"> VBScripting.Includer</a> object's experimental LoadObject method. Example: <pre> With CreateObject( "VBScripting.Includer" )<br />     Set c = .LoadObject( "Configurer" ).Init( WScript )<br /> End With</pre> |
@@ -242,8 +244,8 @@ Example of well-formed comments before a Sub statement
   
 ```vb
 'Method: SubName
-'Parameters: varName, varType
-'Remark: Details about the parameters.
+'Parameters: param1Name, param2Name
+'Remark: Details about the method and parameters.
 ```
 Example of well-formed comments before a Property or Function statement.  
 Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.  
@@ -251,25 +253,25 @@ Note: A Returns (or Return or Returns: or Return:) is required with a Property o
 ```vb
 'Property: PropertyName
 'Returns: a string
-'Remark: A remark is not required for a Property or Function.
+'Remark: A remark is not required for a Property or Function, but usually is a good idea.
 ```
 Notes for the comment syntax at the beginning of a script  
 Use a single quote ( ' ) for general comments <br />  
 - use a single quote by itself for an empty line <br />  
 - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
-- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />  
+- Wrap other code with <code> code</code> tags, with each line surrounded with <code> code</code> tags.  
   
 Use three single quotes for remarks that should not appear in the documentation <br />  
   
 Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.  
   
 For some characters to render correctly, they may need to be replaced by escape codes, even when used within &#60;code&#62; or &#60;pre&#62; tags:  
- for &#124; use &#38;#124; (vertical bar)  
- for &#60; use &#38;#60; (less than)  
- for &#62; use &#38;#62; (greater than)  
- for &#92; use &#38;#92; (backslash)  
- for &#38; use &#38;#38; (ampersand)  
-For other characters,  <code>examples\HTML Escape Codes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.  
+ - For &#124; use &#38;#124; (vertical bar)  
+ - For &#60; use &#38;#60; (less than)  
+ - For &#62; use &#38;#62; (greater than)  
+ - For &#92; use &#38;#92; (backslash)  
+ - For &#38; use &#38;#38; (ampersand)  
+ - For other characters,  <code>examples\HTML_EscapeCodes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.  
   
 Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.  
   
@@ -1244,7 +1246,7 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 | Method | ResumeUpdates | None | N/A | Resumes Windows Updates. |
 | Property | GetStatus | None | a string | Returns Metered or Unmetered. If Metered, then Windows Updates has paused to save money, incidentally not soaking up so much bandwidth. If TypeName(GetStatus) = "Empty", then the status could not be determined, possibly due to a bad network name (internal name: profileName). |
 | Property | GetAppName | None | a string | Returns the base name of the calling script |
-| Property | GetProfileName | None | a string | Returns the name of the network. The name is set by editing WindowsUpdatesPauser.config |
+| Property | GetProfileName | None | a string | Returns the name of the network. The name is set by editing the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta. |
 | Property | GetServiceType | None | a string | Returns the service type |
 | Method | OpenConfigFile | None | N/A | Opens the .config file for editing. |
 

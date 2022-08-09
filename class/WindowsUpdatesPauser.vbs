@@ -57,7 +57,7 @@ Class WindowsUpdatesPauser
 
     'Function GetProfileName
     'Returns a string
-    'Remark: Returns the name of the network. The name is set by editing WindowsUpdatesPauser.config
+    'Remark: Returns the name of the network. The name is set by editing the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.
     Property Get GetProfileName : GetProfileName = profileName : End Property
 
     'Function GetServiceType

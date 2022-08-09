@@ -9,4 +9,4 @@ The corresponding `.html` and `.md` output files should appear in this folder.
 
 [Generate-the-VBScript-docs.vbs]: ../examples/Generate-the-VBScript-docs.vbs
 [Generate-the-CSharp-docs.vbs]: ../examples/Generate-the-CSharp-docs.vbs
-[build-folder ReadMe]: ../.NET/build/ReadMe.md
+[build-folder ReadMe]: ../.Net/build/ReadMe.md

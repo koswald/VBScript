@@ -170,11 +170,13 @@
             <p></p>
             <pre> 'Test1.vbs (located anywhere)<br /> With CreateObject( "VBScripting.Includer" )<br />     Execute .Read( "Configurer" )<br /> End With<br /> With New Configurer<br />     If .Exists( "command1" ) Then<br />         MsgBox "command1: " & .Item( "command1" )<br />     Else MsgBox "command1 key not found."<br />     End If<br /> End With</pre>
             <p></p>
-            <code> # Test1.configure (located in the same folder as Test1.vbs)<br /> command1, wt powershell # requires Windows Terminal</code>
+            <code> # Test1.configure (located in the same folder as Test1.vbs)</code>
+            <code> command1, wt powershell # requires Windows Terminal</code>
             <p></p>
             <pre> 'Test2.vbs (located in the "class" folder)<br /> Class Test2<br />     Sub Class_Initialize<br />         With CreateObject( "VBScripting.Includer" )<br />             Execute .Read( "Configurer" )<br />         End With<br />         With New Configurer<br />             .LoadClassConfig me<br />             If .Exists( "command2" ) Then<br />                 MsgBox .Item( "command2" )<br />             End If<br />         End With<br />     End Sub<br /> End Class</pre>
             <p></p>
-            <code> # Test2.configure (also located in the "class" folder)<br /> command2, pwsh # requires PowerShell 6 or higher</code>
+            <code> # Test2.configure (also located in the "class" folder)</code>
+            <code> command2, pwsh # requires PowerShell 6 or higher</code>
             <p></p>
             <table>
                <tr>
@@ -301,7 +303,7 @@
                   <td>WT</td>
                   <td>None</td>
                   <td>a string</td>
-                  <td>Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if not Windows Terminal is not installed or not found.</td>
+                  <td>Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if Windows Terminal is not installed or not found.</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -339,28 +341,28 @@
             <p>Example of well-formed comments before a Sub statement</p>
             <p> Note: A remark is required for Methods (Subs).</p>
             <p></p>
-            <pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
+            <pre>'Method: SubName<br />'Parameters: param1Name, param2Name<br />'Remark: Details about the method and parameters.</pre>
             <p>Example of well-formed comments before a Property or Function statement.</p>
             <p>Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.</p>
             <p></p>
-            <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
+            <pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function, but usually is a good idea.</pre>
             <p>Notes for the comment syntax at the beginning of a script</p>
             Use a single quote ( ' ) for general comments <br />
             - use a single quote by itself for an empty line <br />
             - Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
-            - Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+            - Wrap other code with <code> code</code> tags, with each line surrounded with <code> code</code> tags.
             <p></p>
             Use three single quotes for remarks that should not appear in the documentation <br />
             <p></p>
             <p>Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.</p>
             <p></p>
             <p>For some characters to render correctly, they may need to be replaced by escape codes, even when used within &#60;code&#62; or &#60;pre&#62; tags:</p>
-            <p> for &#124; use &#38;#124; (vertical bar)</p>
-            <p> for &#60; use &#38;#60; (less than)</p>
-            <p> for &#62; use &#38;#62; (greater than)</p>
-            <p> for &#92; use &#38;#92; (backslash)</p>
-            <p> for &#38; use &#38;#38; (ampersand)</p>
-            For other characters,  <code>examples\HTML Escape Codes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.
+            <p> - For &#124; use &#38;#124; (vertical bar)</p>
+            <p> - For &#60; use &#38;#60; (less than)</p>
+            <p> - For &#62; use &#38;#62; (greater than)</p>
+            <p> - For &#92; use &#38;#92; (backslash)</p>
+            <p> - For &#38; use &#38;#38; (ampersand)</p>
+             - For other characters,  <code>examples\HTML_EscapeCodes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.
             <p></p>
             <p>Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.</p>
             <p></p>
@@ -3837,7 +3839,7 @@
                   <td>GetProfileName</td>
                   <td>None</td>
                   <td>a string</td>
-                  <td>Returns the name of the network. The name is set by editing WindowsUpdatesPauser.config</td>
+                  <td>Returns the name of the network. The name is set by editing the .config file in %AppData%\VBScripting that has the same base name as the calling script/hta.</td>
                </tr>
                <tr>
                   <td>Property</td>

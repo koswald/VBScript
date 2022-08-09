@@ -15,11 +15,13 @@
 '
 '<pre> 'Test1.vbs (located anywhere)<br /> With CreateObject( "VBScripting.Includer" )<br />     Execute .Read( "Configurer" )<br /> End With<br /> With New Configurer<br />     If .Exists( "command1" ) Then<br />         MsgBox "command1: " & .Item( "command1" )<br />     Else MsgBox "command1 key not found."<br />     End If<br /> End With</pre>
 '
-'<code> # Test1.configure (located in the same folder as Test1.vbs)<br /> command1, wt powershell # requires Windows Terminal</code>
+'<code> # Test1.configure (located in the same folder as Test1.vbs)</code>
+'<code> command1, wt powershell # requires Windows Terminal</code>
 '
 '<pre> 'Test2.vbs (located in the "class" folder)<br /> Class Test2<br />     Sub Class_Initialize<br />         With CreateObject( "VBScripting.Includer" )<br />             Execute .Read( "Configurer" )<br />         End With<br />         With New Configurer<br />             .LoadClassConfig me<br />             If .Exists( "command2" ) Then<br />                 MsgBox .Item( "command2" )<br />             End If<br />         End With<br />     End Sub<br /> End Class</pre>
 '
-'<code> # Test2.configure (also located in the "class" folder)<br /> command2, pwsh # requires PowerShell 6 or higher</code>
+'<code> # Test2.configure (also located in the "class" folder)</code>
+'<code> command2, pwsh # requires PowerShell 6 or higher</code>
 '
 Class Configurer
 
@@ -319,7 +321,7 @@ Class Configurer
 
     'Property WT
     'Returns a string
-    'Remarks: Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if not Windows Terminal is not installed or not found.
+    'Remarks: Returns the filespec of a Windows Terminal executable, if installed and listed in <code>.configure</code> in the project folder. Returns <code>Empty</code> if Windows Terminal is not installed or not found.
     Property Get WT
         Dim candidate 'string
         If Not IsEmpty( wt_ ) Then

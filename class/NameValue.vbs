@@ -30,7 +30,7 @@ Class NameValue
     'Parameters: name, value
     'Returns an object self reference
     'Remarks: Initializes the object. The Init property returns an object self reference, so an object may be instantiated and initialized in the same statement. See the example. See the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/class/NameValue.vbs"> code</a>.
-    Property Get Init(n, v)
+    Public Default Property Get Init(n, v)
         Name = n
         Value = v
         Set Init = me

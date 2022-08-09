@@ -6,31 +6,31 @@
 'Example of well-formed comments before a Sub statement
 ' Note: A remark is required for Methods (Subs).
 '
-'<pre>'Method: SubName<br />'Parameters: varName, varType<br />'Remark: Details about the parameters.</pre>
+'<pre>'Method: SubName<br />'Parameters: param1Name, param2Name<br />'Remark: Details about the method and parameters.</pre>
 
 'Example of well-formed comments before a Property or Function statement.
 'Note: A Returns (or Return or Returns: or Return:) is required with a Property or Function.
 '
-'<pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function.</pre>
+'<pre>'Property: PropertyName<br />'Returns: a string<br />'Remark: A remark is not required for a Property or Function, but usually is a good idea.</pre>
 
 'Notes for the comment syntax at the beginning of a script
 
 'Use a single quote ( ' ) for general comments <br />
 '- use a single quote by itself for an empty line <br />
 '- Wrap VBScript code with <code>pre</code> tags, separating multiple lines with &lt;br /&gt;. <br />
-'- Wrap other code with <code> code</code> tags, separating multiple lines with &lt;br /&gt;. <br />
+'- Wrap other code with <code> code</code> tags, with each line surrounded with <code> code</code> tags.
 '
 'Use three single quotes for remarks that should not appear in the documentation <br />
 '
 'Use four single quotes ( '''' ), if the script doesn't contain a class statement, to separate the general comments at the beginning of the file from the rest of the file.
 '
 'For some characters to render correctly, they may need to be replaced by escape codes, even when used within &#60;code&#62; or &#60;pre&#62; tags:
-' for &#124; use &#38;#124; (vertical bar)
-' for &#60; use &#38;#60; (less than)
-' for &#62; use &#38;#62; (greater than)
-' for &#92; use &#38;#92; (backslash)
-' for &#38; use &#38;#38; (ampersand)
-'For other characters,  <code>examples\HTML Escape Codes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.
+' - For &#124; use &#38;#124; (vertical bar)
+' - For &#60; use &#38;#60; (less than)
+' - For &#62; use &#38;#62; (greater than)
+' - For &#92; use &#38;#92; (backslash)
+' - For &#38; use &#38;#38; (ampersand)
+' - For other characters,  <code>examples\HTML_EscapeCodes.hta</code> can be used to generate an escape code that works with both of the generated files: Markdown and HTML. The numerical portion of the escape code is returned by the VBScript function Asc.
 '
 'Visual Studio and VS Code extensions may render Markdown files differently than Git-Flavored Markdown.
 '

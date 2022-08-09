@@ -55,7 +55,6 @@ Const gitFound = 1, gitLost = 0
 Sub Window_OnLoad
     Dim app 'HTML application object reference
     Dim defaultSuiteFolder, defaultSuiteFilter, defaultDocGens, defaultGits, defaultDocs, defaultEditor 'strings
-    Dim candidate 'a pwsh.exe filespec
 
     Set sh = CreateObject( "WScript.Shell" )
     Set fso = CreateObject( "Scripting.FileSystemObject" )

@@ -1,17 +1,28 @@
 # Version information
 
-- [Version 1.4.5 (the latest version)](#version-145)  
+- [Version 1.4.6 (the latest version)](#version-146)  
+- [Version 1.4.5](#version-145)  
 - [Version 1.4.4](#version-144)  
 - [Version 1.4.3](#version-143)  
 - [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
 
+# Version 1.4.6
+
+- Fixed a broken link in docs/ReadMe.md.  
+
+- Fixed several broken links in the project ReadMe.md and in this ChangeLog.md, to anchors in separate .md files, that required the full path to be hardcoded.  
+
+- Made improvements to code comments and documentation.  
+
+- Minor changes to code with no runtime effect.
+
 # Version 1.4.5
 
 - Updated ProgressBar.cs to show the familiar "glow" animation and also the marquee style.  
 
-  These styles are selected by using the new [Style property](./docs/CSharpClasses.md#progressbar) of the VBScripting.ProgressBar object. The relevant changes to [ProgressBar.cs](./.Net/ProgressBar.cs) were the addition of the Style property and calling the EnableVisualStyles method of the Application class in the constructor. For a demo, run [ProgressBar-test.vbs](./.Net/test/ProgressBar-test.vbs) or [IconExtractor.hta](./examples/IconExtractor.hta).
+  These styles are selected by using the new [Style property](https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#progressbar) of the VBScripting.ProgressBar object. The relevant changes to [ProgressBar.cs](./.Net/ProgressBar.cs) were the addition of the Style property and calling the EnableVisualStyles method of the Application class in the constructor. For a demo, run [ProgressBar-test.vbs](./.Net/test/ProgressBar-test.vbs) or [IconExtractor.hta](./examples/IconExtractor.hta).
 
 ![Continuous style image](./docs/img/ProgressBar-Continuous.png "Continuous style")  
 
@@ -23,7 +34,7 @@
 
 # Version 1.4.4
 
-- Modified [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) and [FolderSender.vbs](class/FolderSender.vbs) so that they work properly together even before Setup.vbs is run, which was supposed to have been a feature of CopyToProgramFiles.vbs as stated in the [ReadMe](./ReadMe.md#install).  
+- Modified [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) and [FolderSender.vbs](class/FolderSender.vbs) so that they work properly together even before Setup.vbs is run, which was supposed to have been a feature of CopyToProgramFiles.vbs as stated in the [ReadMe](https://github.com/koswald/VBScript/blob/master/ReadMe.md#install).  
 
 - See [Issues with v1.4.2](#issues-with-v142).  
 
@@ -47,13 +58,13 @@ Moved the main script to a separate file for improved VBScript syntax highlighti
 
 ## ShellSpecialFolders class added
 
-Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | [docs](docs/VBScriptClasses.md#shellspecialfolders) | [spec](spec/ShellSpecialFolders.spec.vbs) ).  
+Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | [docs](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#shellspecialfolders) | [spec](spec/ShellSpecialFolders.spec.vbs) ).  
 
 ## Issues with v1.4.2
 
 - [Incomplete Setup exit with PushPrep.hta](#incomplete-setup-exit-with-pushprephta)  
 
-- See [general project issues](ReadMe.md#issues).  
+- See [general project issues](https://github.com/koswald/VBScript/blob/master/ReadMe.md#issues).  
 
 ### Incomplete Setup exit with PushPrep.hta
 
@@ -92,13 +103,13 @@ Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | 
 
 ## WMIUtility class links added
 
-Improved the [code comments](class/WMIUtility.vbs) and the [docs](docs/VBScriptClasses.md#wmiutility) for the WMIUtiltiy class: added links to specific [Computer System Hardware Classes](https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes).  
+Improved the [code comments](class/WMIUtility.vbs) and the [docs](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#wmiutility) for the WMIUtiltiy class: added links to specific [Computer System Hardware Classes](https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes).  
 
 ## ReadMe links added, corrected
 
-- Added [reference links](./ReadMe.md#references) to ReadMe.md.  
+- Added [reference links](https://github.com/koswald/VBScript/blob/master/ReadMe.md#references) to ReadMe.md.  
 
-- Corrected [link](./ReadMe.md#installation) to [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs) (formerly CopyToProgramFiles.wsf).  
+- Corrected [link](https://github.com/koswald/VBScript/blob/master/ReadMe.md#installation) to [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs) (formerly CopyToProgramFiles.wsf).  
 
 ## RegisterWsc.wsf updated
 
@@ -119,33 +130,33 @@ Corrected comment syntax in [RegisterWsc.wsf](examples/RegisterWsc.wsf), which h
 
 ## Configurer class added
 
-An improved configuration scheme was implemented with the Configurer class ( [code](class/Configurer.vbs) | [doc](docs/VBScriptClasses.md#configurer) ), using files with the `configure` filename extension. The old scheme uses the `config` filename extension and is still functional.  
+An improved configuration scheme was implemented with the Configurer class ( [code](class/Configurer.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#configurer) ), using files with the `configure` filename extension. The old scheme uses the `config` filename extension and is still functional.  
 
 The Configurer class uses comma-delimited key/value pairs in the `.configure` files, which are created manually.  Configuration files can be associated with class files, script files, the entire project, or a particular user. Configuration files associated with a class or script or hta take the same base name of the file with which they are associated, and reside in the same folder.
 
 ## CommandParser class breaking change
 
-The CommandParser class ( [code](class/CommandParser.vbs) | [doc](docs/VBScriptClasses.md#commandparser) ) has been completely reworked for simplicity and testability. This is a breaking change. None of the previous pubic members still work, but the overall functionality is similar.
+The CommandParser class ( [code](class/CommandParser.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#commandparser) ) has been completely reworked for simplicity and testability. This is a breaking change. None of the previous pubic members still work, but the overall functionality is similar.
 
 ## FolderSender class added
 
-A FolderSender class ( [code](class/FolderSender.vbs) | [doc](docs/VBScriptClasses.md#foldersender) ) was added, leveraging a rich and familiar Windows-native graphical interface, thanks to the <code> Shell.Application</code> object's CopyHere and MoveHere methods. The class was formerly located in CopyToProgramFiles.vbs and was named FolderCopier.
+A FolderSender class ( [code](class/FolderSender.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#foldersender) ) was added, leveraging a rich and familiar Windows-native graphical interface, thanks to the <code> Shell.Application</code> object's CopyHere and MoveHere methods. The class was formerly located in CopyToProgramFiles.vbs and was named FolderCopier.
 
 ## CopyToProgramFiles.vbs updated
 
-The target folder in [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) was changed from %ProgramFiles%&#92;KOswald to %ProgramFiles%&#92;VBScripting and the FolderCopier class was renamed to FolderSender and moved to the `class` folder. See [FolderSender class](#foldersender-class).
+The target folder in [CopyToProgramFiles.vbs](CopyToProgramFiles.vbs) was changed from %ProgramFiles%&#92;KOswald to %ProgramFiles%&#92;VBScripting and the FolderCopier class was renamed to FolderSender and moved to the `class` folder. See [FolderSender class added](#foldersender-class-added).
 
 ## StartupItems class moved
 
-The StartupItems class ( [code](class/StartupItems.vbs) | [doc](docs/VBScriptClasses.md#startupitems) ) was moved out of StartItems.hta ( [code](examples/StartItems.hta) ) and into the class folder.
+The StartupItems class ( [code](class/StartupItems.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#startupitems) ) was moved out of StartItems.hta ( [code](examples/StartItems.hta) ) and into the class folder.
 
 ## ArrayOfObjects class added
 
-The ArrayOfObjects class  ( [code](class/ArrayOfObjects.vbs) | [doc](docs/VBScriptClasses.md#arrayofobjects) ) was moved out of StartItems.hta ( [code](examples/StartItems.hta) ) and into the class folder.
+The ArrayOfObjects class  ( [code](class/ArrayOfObjects.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#arrayofobjects) ) was moved out of StartItems.hta ( [code](examples/StartItems.hta) ) and into the class folder.
 
 ## LoadObject method added
 
-An experimental method LoadObject has been added to the [VBScripting.Includer](docs/VBScriptClasses.md#includer) object. LoadObject doesn't work with all project classes and it doesn't work within a class block. LoadObject is the default member of its class.  
+An experimental method LoadObject has been added to the [VBScripting.Includer](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#includer) object. LoadObject doesn't work with all project classes and it doesn't work within a class block. LoadObject is the default member of its class.  
 
 ## Error numbers updated
 
@@ -188,11 +199,8 @@ Many files were refactored:
 
 - The CommandParser class was refactored. See [above](#commandparser-class).  
 
-- Many lines-ending spaces were removed in multiple files. Double-spaces at the end of lines in lists in `.md` files--this line for example--were intentionally retained.  
+- Many line-ending spaces were removed in multiple files. Double-spaces at the end of lines in lists in `.md` files--this line for example--were intentionally retained.  
 
 ## Change log added
-
-The change log (this file) was added.
-Change log added
 
 The change log (this file) was added.

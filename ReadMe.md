@@ -9,13 +9,13 @@
 
 ## Features
 
-- [VBScript utility classes] and [documentation](docs/VBScriptClasses.md).  
-- [C# classes] for extending VBScript and [documentation](docs/CSharpClasses.md).  
-- [Integration tests](spec/ReadMe.md) use an ultralight TestingFramework class ( [code](class/TestingFramework.vbs) | [doc](docs/VBScriptClasses.md#testingframework) ) written in VBScript.
+- [VBScript utility classes] and [documentation](./docs/VBScriptClasses.md).  
+- [C# classes] for extending VBScript and [documentation](./docs/CSharpClasses.md).  
+- [Integration tests](./spec/ReadMe.md) use an ultralight TestingFramework class ( [code](./class/TestingFramework.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#testingframework) ) written in VBScript.
 - A VBScript statement [interpreter]/console.  
-- A dependency manager ( [code](class/Includer.vbs) | [doc](docs/VBScriptClasses.md#includer) ).  
-- A Configurer class ( [code](class/Configurer.vbs) | [doc](docs/VBScriptClasses.md#configurer) )
-- A logger class ( [code](class/VBSLogger.vbs) | [doc](docs/VBScriptClasses.md#vbslogger) ).  
+- A dependency manager ( [code](./class/Includer.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#includer) ).  
+- A Configurer class ( [code](./class/Configurer.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#configurer) )
+- A logger class ( [code](./class/VBSLogger.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#vbslogger) ).
 - A [registry classes] manager UI.  
 - An [icon extractor] UI.  
 - A [startup items] editor UI.  
@@ -24,7 +24,7 @@
 - A [progress bar] proof of concept.
 - A script for keeping the computer awake while
   giving a [presentation], with a system tray icon.  
-- A doc generator for the C# classes ( [example code](examples/Generate-the-CSharp-docs.vbs) | [class code](class/DocGeneratorCS.vbs) | [doc](docs/VBScriptClasses.md#docgeneratorcs) ) and a doc generator for the VBScript classes ( [example code](examples/Generate-the-VBScript-docs.vbs) | [class code](class/DocGenerator.vbs) | [doc](docs/VBScriptClasses.md#docgenerator) ), both based on code comments.  
+- A doc generator for the C# classes ( [example code](./examples/Generate-the-CSharp-docs.vbs) | [class code](./class/DocGeneratorCS.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#docgeneratorcs) ) and a doc generator for the VBScript classes ( [example code](./examples/Generate-the-VBScript-docs.vbs) | [class code](./class/DocGenerator.vbs) | [doc](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#docgenerator) ), both based on code comments.  
 - More [examples] of .vbs and .hta scripts.
 - [Windows Script Component files].
 
@@ -129,22 +129,22 @@ Links to the official online documentation:
 
 
 
-[VBScript utility classes]: class
-[C# classes]: .Net
-[testing framework]: docs/VBScriptClasses.md#testingframework
+[VBScript utility classes]: ./class
+[C# classes]: ./.Net
+[testing framework]: ./docs/VBScriptClasses.md#testingframework
 [dependency manager]: docs/VBScriptClasses.md#includer
-[logger]: docs/VBScriptClasses.md#vbslogger
-[examples]: examples
-[Setup.vbs]: Setup.vbs
-[Windows Script Component files]: class/wsc/ReadMe.md#the-wsc-folder
-[VBScript extensions]: .Net
-[registry classes]: examples/RegistryClasses.hta
-[icon extractor]: examples/icon-extractor.hta
-[startup items]: examples/StartItems.hta
-[speech synthesis]: examples/SpeechSynthesis.hta
-[speech synthesis]: examples/SpeechSynthesis.hta
-[presentation]: examples/Presentation.vbs
-[interpreter]: examples/VBSInterpreter.hta
-[system tray icon]: .Net/test/NotifyIcon-test.vbs
-[progress bar]: .Net/test/ProgressBar-test.vbs
+[logger]: ./docs/VBScriptClasses.md#vbslogger
+[examples]: ./examples
+[Setup.vbs]: ./Setup.vbs
+[Windows Script Component files]: ./class/wsc/ReadMe.md#the-wsc-folder
+[VBScript extensions]: ./.Net
+[registry classes]: ./examples/RegistryClasses.hta
+[icon extractor]: ./examples/icon-extractor.hta
+[startup items]: ./examples/StartItems.hta
+[speech synthesis]: ./examples/SpeechSynthesis.hta
+[speech synthesis]: ./examples/SpeechSynthesis.hta
+[presentation]: ./examples/Presentation.vbs
+[interpreter]: ./examples/VBSInterpreter.hta
+[system tray icon]: ./.Net/test/NotifyIcon-test.vbs
+[progress bar]: ./.Net/test/ProgressBar-test.vbs
 [Scripting links]: https://docs.microsoft.com/en-us/previous-versions/cc498722(v=msdn.10)
