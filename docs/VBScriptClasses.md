@@ -100,7 +100,7 @@ Example
 
 Get a folder or file chosen by the user  
   
-<strong> Deprecated</strong> in favor of the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/ReadMe.md#overview"> .NET extensions</a> VBScripting.FolderChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FolderChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#folderchooser"> doc</a> ) and VBScripting.FileChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FileChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#filechooser"> doc</a> ), which are more versatile and user friendly.  
+<strong> Deprecated</strong> in favor of the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/ReadMe.md#overview"> .NET extensions</a> VBScripting.FolderChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FolderChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#folderchooser"> doc</a> ) and VBScripting.FileChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FileChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-filechooser"> doc</a> ), which are more versatile and user friendly.  
   
 Usage example  
   
@@ -427,7 +427,7 @@ Although Windows Script Component (.wsc) files must be registered--unless used w
   
 <code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>  
   
-<a target="_blank" href="http://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#registration">Alternate registration method</a>.  
+<a target="_blank" href="http://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#user-content-registration">Alternate registration method</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |

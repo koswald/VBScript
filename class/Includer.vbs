@@ -18,7 +18,7 @@
 '
 '<code>     %SystemRoot%\System32\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code> <br /> <code>     %SystemRoot%\SysWow64\regsvr32.exe &lt;absolute-path-to&gt;\Includer.wsc </code>
 '
-'<a target="_blank" href="http://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#registration">Alternate registration method</a>.
+'<a target="_blank" href="http://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#user-content-registration">Alternate registration method</a>.
 '
 Class Includer
 
