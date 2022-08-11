@@ -1,6 +1,7 @@
 # Version information
 
-- [Version 1.4.7 (the latest version)](#version-147)  
+- [Version 1.4.8 (the latest version)](#version-148)  
+- [Version 1.4.7](#version-147)  
 - [Version 1.4.6](#version-146)  
 - [Version 1.4.5](#version-145)  
 - [Version 1.4.4](#version-144)  
@@ -9,9 +10,13 @@
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
 
+# Version 1.4.8
+
+Changes to documentation: Fix a couple more broken links.  
+
 # Version 1.4.7
 
-Another attempted workaround to fix links in ChangeLog.md (this file) and ReadMe.md, linking to other .md files. This involves adding the prefix `user-content-` to header links, a.k.a. hashes. 
+Workaround to fix links in ChangeLog.md (this file) and ReadMe.md that link to a header in another .md file. This involves adding the prefix `user-content-` to the header/hash portion of the link. 
 
 For example,
 
@@ -24,7 +29,7 @@ becomes
 [link](https://github.com/koswald/VBScript/blob/master/ReadMe.md#user-content-installation)
 ```
 
-For discussion and rationale for github adding the prefixes, see links at https://github.com/Flet/markdown-it-github-headings#user-content-why-should-i-prefix-heading-ids.  
+For discussion of the rationale for GitHub adding the prefixes, see links at https://github.com/Flet/markdown-it-github-headings#user-content-why-should-i-prefix-heading-ids.  
 
 # Version 1.4.6
 
@@ -40,7 +45,7 @@ For discussion and rationale for github adding the prefixes, see links at https:
 
 - Updated ProgressBar.cs to show the familiar "glow" animation and also the marquee style.  
 
-  These styles are selected by using the new [Style property](https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-user-content-progressbar) of the VBScripting.ProgressBar object. The relevant changes to [ProgressBar.cs](./.Net/ProgressBar.cs) were the addition of the Style property and calling the EnableVisualStyles method of the Application class in the constructor. For a demo, run [ProgressBar-test.vbs](./.Net/test/ProgressBar-test.vbs) or [IconExtractor.hta](./examples/IconExtractor.hta).
+  These styles are selected by using the new [Style property](https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-progressbar) of the VBScripting.ProgressBar object. The relevant changes to [ProgressBar.cs](./.Net/ProgressBar.cs) were the addition of the Style property and calling the EnableVisualStyles method of the Application class in the constructor. For a demo, run [ProgressBar-test.vbs](./.Net/test/ProgressBar-test.vbs) or [IconExtractor.hta](./examples/IconExtractor.hta).
 
 ![Continuous style image](./docs/img/ProgressBar-Continuous.png "Continuous style")  
 

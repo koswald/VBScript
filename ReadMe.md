@@ -136,7 +136,7 @@ Links to the official online documentation:
 [Windows Script Component files]: https://github.com/koswald/VBScript/blob/master/class/wsc/ReadMe.md#user-content-overview
 [VBScript extensions]: ./.Net
 [registry classes]: ./examples/RegistryClasses.hta
-[icon extractor]: ./examples/icon-extractor.hta
+[icon extractor]: ./examples/IconExtractor.hta
 [startup items]: ./examples/StartItems.hta
 [speech synthesis]: ./examples/SpeechSynthesis.hta
 [speech synthesis]: ./examples/SpeechSynthesis.hta

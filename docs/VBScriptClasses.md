@@ -100,7 +100,7 @@ Example
 
 Get a folder or file chosen by the user  
   
-<strong> Deprecated</strong> in favor of the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/ReadMe.md#overview"> .NET extensions</a> VBScripting.FolderChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FolderChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#folderchooser"> doc</a> ) and VBScripting.FileChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FileChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-filechooser"> doc</a> ), which are more versatile and user friendly.  
+<strong> Deprecated</strong> in favor of the <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/ReadMe.md#user-content-overview"> .NET extensions</a> VBScripting.FolderChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FolderChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-folderchooser"> doc</a> ) and VBScripting.FileChooser ( <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/.Net/FileChooser.cs"> code</a> &#124; <a target="_blank" href="https://github.com/koswald/VBScript/blob/master/docs/CSharpClasses.md#user-content-filechooser"> doc</a> ), which are more versatile and user friendly.  
   
 Usage example  
   

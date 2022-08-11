@@ -1,8 +1,8 @@
 Class ProjectInfo
     Property Get MajorVersion : MajorVersion = 1 : End Property
     Property Get MinorVersion : MinorVersion = 4 : End Property
-    Property Get MicroVersion : MicroVersion = 7 : End Property
+    Property Get MicroVersion : MicroVersion = 8 : End Property
     Property Get Namespace
-        Namespace="VBScripting"
+        Namespace = "VBScripting"
     End Property
 End Class
