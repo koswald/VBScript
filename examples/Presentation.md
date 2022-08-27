@@ -30,7 +30,7 @@ Specifically, you may want to increase the value that controls when the followin
 
 ## References  
 
-[Watcher.cs documentation](../docs/CSharpClasses.md#watcher "github.com\koswald\VBScript")  
+[Watcher.cs documentation](../docs/CSharpClasses.md#user-content-watcher "github.com\koswald\VBScript")  
 [How to change Lock screen timeout before display turn off on Windows 10]  
 [Does Your Windows Computer Display Turn Off Every 15 Minutes?]  
 [Canonical Names of Control Panel Items]  

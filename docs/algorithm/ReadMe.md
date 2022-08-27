@@ -29,7 +29,7 @@ in the unlikely event that the .hta has a meta tag like
 
 The return value consists of the full path of the .hta file, wrapped in double quotes, followed by two spaces and then the command line arguments, wrapped in double quotes and separated by single spaces.
 
-[HTAApp class]: ../VBScriptClasses.md#htaapp
+[HTAApp class]: ../VBScriptClasses.md#user-content-htaapp
 
 ### ParseArgs property requirements
 

@@ -1,11 +1,11 @@
 # Configure PushPrep.hta
 
 suite folder, spec\suite
-suite filter, TestLauncher
-editor, code # examples: code or notepad or %ProgramFiles%\Windows NT\Accessories\wordpad.exe
+suite filter, TestLauncher # filename filter
+editor, code # examples: code, notepad, %ProgramFiles%\Windows NT\Accessories\wordpad.exe
 
 doc generators, examples\Generate-the-CSharp-docs.vbs | examples\Generate-the-VBScript-docs.vbs
 
 gits, %ProgramFiles%\Git\cmd\git-gui.exe | %ProgramFiles%\Git\git-bash.exe | %LocalAppData%\Programs\Git\cmd\git-gui.exe | %LocalAppData%\Programs\Git\git-bash.exe
 
-push docs, ChangeLog.md | ReadMe.md | class\VBSHoster.configure | ProjectInfo.vbs | class\Includer.vbs
+push docs, ChangeLog.md | ProjectInfo.vbs

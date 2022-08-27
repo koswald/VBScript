@@ -32,7 +32,7 @@ In order to sign the output files,
 
 [exeLocations.bat]: ../config/exeLocations.bat "../config/exeLocations.bat"
 [_common.rsp]: ../rsp/_common.rsp
-[config folder ReadMe]: ../config/ReadMe.md#recommended-git-configuration
+[config folder ReadMe]: ../config/ReadMe.md#user-content-recommended-git-configuration
 
 ## Links
 

@@ -13,7 +13,7 @@ The `wsc` folder contains Windows Script Component files that make use of like-n
 Set formatter = CreateObject( "VBScripting.StringFormatter" )
 ```
 
-which is more concise than [using VBScripting\.Includer](../../docs/VBScriptClasses.md#includer).
+which is more concise than [using VBScripting\.Includer](../../docs/VBScriptClasses.md#user-content-includer).
 
 ## Registration
 

@@ -19,7 +19,6 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 scr = WScript.ScriptFullName
 sourceFolder = fso.GetParentFolderName( scr )
 Set sa = CreateObject("Shell.Application")
-failedToDeleteTarget = False
 
 With CreateObject( "WScript.Shell" )
     .CurrentDirectory = sourceFolder
@@ -28,6 +27,7 @@ With CreateObject( "WScript.Shell" )
 End With
 
 With WScript.Arguments.Named
+    failedToDeleteTarget = False
     If .Exists( "DeleteTarget" ) _
     And fso.FolderExists( targetFolder ) Then
         On Error Resume Next
@@ -40,7 +40,6 @@ With WScript.Arguments.Named
         On Error Goto 0
     End If
 End With
-
 If failedToDeleteTarget Then
     msg = "Retry with elevated privileges?"
     msg = "Error attempting to delete the target folder" & _
@@ -63,7 +62,6 @@ With fso.OpenTextFile("class\FolderSender.vbs")
     Execute .ReadAll
     .Close
 End With
-
 On Error Resume Next
 With New FolderSender
     On Error Goto 0

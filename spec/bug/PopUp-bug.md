@@ -7,7 +7,7 @@
 
 ## Overview
 
-**The bug described below is no longer present** as of project [version 1.4.0](../../ChangeLog.md#version-140). This can be verified by running [PopUp.spec.sk.vbs](./PopUp.spec.sk.vbs): The specs that begin with `exhibits` fail when the bug is not present.
+**The bug described below is no longer present** as of project [version 1.4.0](../../ChangeLog.md#user-content-version-140). This can be verified by running [PopUp.spec.sk.vbs](./PopUp.spec.sk.vbs): The specs that begin with `exhibits` fail when the bug is not present.
 
 ## Description
 

@@ -1,6 +1,7 @@
 # Version information
 
-- [Version 1.4.8 (the latest version)](#version-148)  
+- [Version 1.4.9 (the latest version)](#version-149)  
+- [Version 1.4.8](#version-148)  
 - [Version 1.4.7](#version-147)  
 - [Version 1.4.6](#version-146)  
 - [Version 1.4.5](#version-145)  
@@ -10,13 +11,17 @@
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
 
+# Version 1.4.9
+
+Added `user-content-` to more links in .md files that link to headers in other .md files: [./.Net/build/ReadMe.md](./.Net/build/ReadMe.md), [./class/wsc/ReadMe.md](./class/wsc/ReadMe.md), [./docs/algorithm/ReadMe.md](./docs/algorithm/ReadMe.md), [./docs/img/ReadMe.md](./docs/img/ReadMe.md), [./examples/Presentation.md](./examples/Presentation.md), and [./spec/bug/PopUp-bug.md](./spec/bug/PopUp-bug.md). See [version 1.4.7](#version-147) comments.  
+
 # Version 1.4.8
 
-Changes to documentation: Fix a couple more broken links.  
+Changes to documentation: Fixed a couple of broken links.  
 
 # Version 1.4.7
 
-Workaround to fix links in ChangeLog.md (this file) and ReadMe.md that link to a header in another .md file. This involves adding the prefix `user-content-` to the header/hash portion of the link. 
+Workaround for broken links in ChangeLog.md (this file) and ReadMe.md that link to a header in another .md file. This involves adding the prefix `user-content-` to the header/hash portion of the link. 
 
 For example,
 
@@ -29,13 +34,13 @@ becomes
 [link](https://github.com/koswald/VBScript/blob/master/ReadMe.md#user-content-installation)
 ```
 
-For discussion of the rationale for GitHub adding the prefixes, see links at https://github.com/Flet/markdown-it-github-headings#user-content-why-should-i-prefix-heading-ids.  
+For discussions of the rationale for GitHub adding the prefixes, see links at https://github.com/Flet/markdown-it-github-headings#user-content-why-should-i-prefix-heading-ids.  
 
 # Version 1.4.6
 
 - Fixed a broken link in docs/ReadMe.md.  
 
-- Fixed several broken links in the project ReadMe.md and in this ChangeLog.md, to anchors in separate .md files, that required the full path to be hardcoded. **Including the full path did not have the expected effect:** The browser navigates to the correct .md file, but does not go to the desired anchor/header, until F5 is pressed.  
+- <del> Fixed</del> <ins>Modified</ins> several broken links in the project ReadMe.md and in this ChangeLog.md linking to headers in separate .md files <del> that required the full path to be hardcoded</del>. The attempted fix involved including the full path but this did not have the desired effect: The browser navigates to the correct .md file, but does not scroll to the desired anchor/header until F5 is pressed. See [Version 1.4.7](#version-147) for the actual fix/workaround.  
 
 - Made improvements to code comments and documentation.  
 
