@@ -37,6 +37,7 @@ End Sub
 Class VBSBatteryMonitor
 
     Sub Monitor
+        Dim chargeMsg 'string describing percent of battery charge
         On Error Resume Next
             extractor.SetImageFormatPng
             If Err Then sh.PopUp "Error setting image format to PNG.", 3, app.GetFileName, vbInformation + vbSystemModal
@@ -49,15 +50,21 @@ Class VBSBatteryMonitor
 
         Set messageDiv = document.createElement( "div" )
         textContainer.insertBefore messageDiv
+        If Not IsNull(Charge) Then
+            chargeMsg = "Battery charge " & Charge & "% <br />"
+        Else chargeMsg = ""
+        End If
         messageDiv.innerHTML = format(Array( _
-            "Battery charge %s% <br /> %s", _
-            Charge, Status _
+            "%s %s", _
+            chargeMsg, Status _
         ))
     End Sub
 
     Property Get IconIndex
         Dim percent : percent = Charge
-        If percent < 11 Then
+        If IsNull(percent) Then
+            IconIndex = 14
+        ElseIf percent < 11 Then
             IconIndex = 9
         ElseIf percent < 31 Then
             IconIndex = 10

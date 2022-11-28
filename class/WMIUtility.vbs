@@ -1,6 +1,6 @@
 'Examples of the Windows Management Instrumentation object.
 '
-' See <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.
+' See <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.
 '
 Class WMIUtility
 
@@ -126,7 +126,7 @@ Class WMIUtility
 
     'Function partitions
     'Returns a collection
-    'Remarks: Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status.
+    'Remarks: Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status.
     Function partitions
         Set partitions = GetResults(select_ & all & from & Win32_DiskPartition)
     End Function
@@ -134,7 +134,7 @@ Class WMIUtility
 
     'Function disks
     'Returns a collection
-    'Remark: Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID.
+    'Remark: Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID.
     Function disks
         Set disks = GetResults(select_ & all & from & Win32_LogicalDisk)
     End Function
@@ -142,7 +142,7 @@ Class WMIUtility
 
     'Function cpu
     'Returns an object
-    'Remark: Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description.
+    'Remark: Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description.
     Function cpu
         Dim processor, q
         q = select_ & all & from & Win32_Processor
@@ -152,7 +152,7 @@ Class WMIUtility
     End Function
     'Function CPUs
     'Returns a collection
-    'Remark: Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description
+    'Remark: Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description
     Function CPUs
         Set CPUs = GetResults(select_ & all & from & Win32_Processor)
     End Function
@@ -160,7 +160,7 @@ Class WMIUtility
 
     'Function os
     'Returns an object
-    'Remark: Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles.
+    'Remark: Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles.
     Function os
         Dim process
         For Each process in GetResults(select_ & all & from & Win32_OperatingSystem)
@@ -171,7 +171,7 @@ Class WMIUtility
 
     'Function pc
     'Returns an object
-    'Remark: Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory.
+    'Remark: Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory.
     Function pc
         Dim process
         For Each process in GetResults(select_ & all & from & Win32_ComputerSystem)
@@ -182,7 +182,7 @@ Class WMIUtility
 
     'Function Bios
     'Returns an object
-    'Remark: Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others.
+    'Remark: Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others.
     Function Bios
         Dim process
         For Each process in GetResults(select_ & all & from & Win32_Bios)
@@ -193,7 +193,7 @@ Class WMIUtility
 
     'Function Battery
     'Returns an object
-    'Remark: Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining.
+    'Remark: Returns a <a target="_blank" href="https://learn.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining.
     Function Battery
         Dim bat
         For Each bat in GetResults(select_ & all & from & Win32_Battery)

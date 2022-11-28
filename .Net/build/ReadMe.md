@@ -36,7 +36,7 @@ In order to sign the output files,
 
 ## Links
 
-[Working with the C# 2.0 Command Line Compiler](https://docs.microsoft.com/en-us/previous-versions/ms379563(v=vs.80) "From docs.microsoft.com. Dated but still very useful")  
-[Compiling a .dll from the command line](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe "docs.microsoft.com")  
+[Working with the C# 2.0 Command Line Compiler](https://learn.microsoft.com/en-us/previous-versions/ms379563(v=vs.80) "From learn.microsoft.com. Dated but still very useful")  
+[Compiling a .dll from the command line](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/command-line-building-with-csc-exe "learn.microsoft.com")  
 [Registering a .dll with RegAsm](http://stackoverflow.com/questions/13931337/register-comdlg32-dll-gets-regsvr32-dllregisterserver-entry-point-was-not-found "stackoverflow.com")  
 [.NET Module vs Assembly](https://stackoverflow.com/questions/9271805/net-module-vs-assembly "stackoverflow.com")  

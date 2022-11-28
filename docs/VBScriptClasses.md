@@ -202,7 +202,7 @@ Example:
 | Property | Item | a key (string) | a value (string) | Returns the value of the key/value pair for the specified key. Returns Empty if the key is not found. |
 | Property | Count | None | an integer | Gets the number of key/value pairs in the Configurer dictionary. |
 | Property | Exists | a string (key) | a boolean | Gets whether a given key/value pair exists in the Configurer dictionary. Parameter is the key. |
-| Property | Dictionary | None | an object reference | Returns a reference to the Configurer object's dictionary object. Properties: CompareMode, Item, Key. Methods: Add, Exists, Items, Keys, Remove, RemoveAll. See the <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84)"> online docs</a> for the Dictionary object. |
+| Property | Dictionary | None | an object reference | Returns a reference to the Configurer object's dictionary object. Properties: CompareMode, Item, Key. Methods: Add, Exists, Items, Keys, Remove, RemoveAll. See the <a target="_blank" href="https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84)"> online docs</a> for the Dictionary object. |
 | Method | LoadFile | a filespec | N/A | Loads the specified configuration file's key/value pairs into the object's dictionary. See Item property. See also the LoadClassConfig and LoadScriptConfig methods. |
 | Method | LoadScriptConfig | None | N/A | Loads the configuration file associated with the calling script. The configuration file's key/value pairs are added to the Configurer object's dictionary object, or if the key exists already, the value is updated. |
 | Property | ScriptConfigFile | None | a filespec | Returns the filespec of the configuration file associated with the script that is using the Configurer object, the calling script or .hta. The file doesn't have to exist. |
@@ -449,7 +449,7 @@ The KeyDeleter class provides a method for deleting a registry key and all of it
 | Property | HKLM | None | &H80000002 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKU | None | &H80000003 | Provides a value suitable for the first parameter of the DeleteKey method. |
 | Property | HKCC | None | &H80000005 | Provides a value suitable for the first parameter of the DeleteKey method. |
-| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>. |
+| Property | Result | None | an integer | Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://learn.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>. |
 | Property | Delete | a boolean | a boolean | Gets or sets the boolean that controls whether the key is actually deleted. Default is True. Used for testing. |
 
 ## MathConstants
@@ -468,7 +468,7 @@ The MathFunctions class provides math functions not native to VBScript.
 These functions are derived from functions that are native to VBScript: Sin, Cos, Tan, Atn, and Log.  
   
 Log is base <em> e</em>. Angles are in radians. Convert from degrees to radians by multiplying by pi/180.  
-Adapted from <a href=https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/derived-math-functions> Derived Math Functions (Visual Basic)</a>. See also the <a target =_blank href=#mathconstants> MathConstants</a> class.  
+Adapted from <a href=https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/derived-math-functions> Derived Math Functions (Visual Basic)</a>. See also the <a target =_blank href=#mathconstants> MathConstants</a> class.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -588,7 +588,7 @@ Usage example
   
 Set valueName to vbEmpty or "" (two double quotes) to specify a key's default value.  
   
-StdRegProv docs <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
+StdRegProv docs <a target="_blank" href="https://learn.microsoft.com/en-us/previous-versions/windows/desktop/regprov/stdregprov"> online</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -648,7 +648,7 @@ Constants for use with WScript.Shell.Run
 
  ShellSpecialFolders class  
   
- Adapted from <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.  
+ Adapted from <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -664,9 +664,9 @@ Constants for use with WScript.Shell.Run
 | Property | ssfSTARTUP | None | &h7 | None |
 | Property | ssfRECENT | None | &h8 | None |
 | Property | ssfSENDTO | None | &h9 | None |
-| Property | ssfBITBUCKET | None | &ha | According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin." |
+| Property | ssfBITBUCKET | None | &ha | According to the <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin." |
 | Property | ssfSTARTMENU | None | &hb | None |
-| Property | ssfDESKTOPDIRECTORY | None | &h10 | According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop. |
+| Property | ssfDESKTOPDIRECTORY | None | &h10 | According to the <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop. |
 | Property | ssfDRIVES | None | &h11 | My Computer—the virtual folder that contains everything on the local computer: storage devices, printers, and Control Panel. This folder can also contain mapped network drives. |
 | Property | ssfNETWORK | None | &h12 | Network Neighborhood—the virtual folder that represents the root of the network namespace hierarchy. |
 | Property | ssfNETHOOD | None | &h13 | A file system folder that contains any link objects in the My Network Places virtual folder. It is not the same as ssfNETWORK, which represents the network namespace root. A typical path is C:\Users&#92;<em>username</em>\AppData\Roaming\Microsoft\Windows\Network Shortcuts. |
@@ -819,7 +819,7 @@ Usage example
      End With 
 ```
   
- When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior.  
+ When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may be changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior. Alternatively, a script-specific .configure file can be added; see the <a href="#configurer"> Configurer class docs</a>.   
   
  See also <a href="#vbstestrunner"> VBSTestRunner</a> and <a href="#vbshoster"> VBSHoster</a>.  
   
@@ -1167,7 +1167,7 @@ Power functions: shutdown, restart, logoff, sleep, and hibernate.
 | Property | Shutdown | None | a boolean | Shuts down the computer. Returns True if the operation completes with no errors. |
 | Property | Restart | None | a boolean | Restarts the computer. Returns True if the operation completes with no errors. |
 | Property | Logoff | None | a boolean | Logs off the computer. Returns True if the operation completes with no errors. |
-| Method | Sleep | None | N/A | Puts the computer to sleep. Requires <a target="_blank" href="https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power. |
+| Method | Sleep | None | N/A | Puts the computer to sleep. Requires <a target="_blank" href="https://learn.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power. |
 | Method | Hibernate | None | N/A | Puts the computer into hibernation. Will not work if hibernate is disabled in the Control Panel, in which case the EnableHibernation method may be used to reenable hibernation. Hibernate is more power-efficient than sleep, but recovery is slower. If the computer wakes after pressing a key or moving the mouse, then it was sleeping, not in hibernation. Recovery from hibernation typically requires pressing the power button. |
 | Method | EnableHibernation | None | N/A | Enables hibernation. The User Account Control dialog will open to request elevated privileges. |
 | Method | DisableHibernation | None | N/A | Disables hibernation. The User Account Control dialog will open to request elevated privileges. |
@@ -1254,7 +1254,7 @@ For configuration settings, see the .config file in %AppData%\VBScripting that h
 
 Examples of the Windows Management Instrumentation object.  
   
- See <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.  
+ See <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes > Computer System Hardware Classes</a>.  
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
@@ -1264,14 +1264,14 @@ Examples of the Windows Management Instrumentation object.
 | Property | GetProcessIDsByName | a process name | a boolean | Returns an array of the process ids of all processes that have the specified name. The process name is what would appear in the Task Manager's Details tab. <br /> E.g. <code> notepad.exe</code>. |
 | Property | GetProcessesWithNamesLike | a string like jav% | an array of process names | None |
 | Property | IsRunning | a process name | a boolean | Returns a boolean indicating whether at least one instance of the specified process is running. <br /> E.g. <code> wmi.IsRunning( "notepad.exe" ) 'True or False</code>. |
-| Property | partitions | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status. |
-| Property | disks | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID. |
-| Property | cpu | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description. |
-| Property | CPUs | None | a collection | Returns a collection of <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description |
-| Property | os | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles. |
-| Property | pc | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory. |
-| Property | Bios | None | an object | Returns a <a href=https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others. |
-| Property | Battery | None | an object | Returns a <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining. |
+| Property | partitions | None | a collection | Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-diskpartition> Win32_DiskPartition</a> objects, each having these properties, among others: Caption, Name, DiskIndex, Index, PrimaryPartition, Bootable, BootPartition, Description, Type, Size, StartingOffset, BlockSize, DeviceID, Access, Availability, ErrorMethodology, HiddenSectors, Purpose, Status. |
+| Property | disks | None | a collection | Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk> Win32_LogicalDisk</a> objects, each having these properties, among others: FileSystem, DeviceID. |
+| Property | cpu | None | an object | Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> object that has these properties, among others: Architecture, Description. |
+| Property | CPUs | None | a collection | Returns a collection of <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor> Win32_Processor</a> objects, each of which has these properties, among others: Architecture, Description |
+| Property | os | None | an object | Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem> Win32_OperatingSystem</a> object having these properties, among others: Name, Version, Manufacturer, WindowsDirectory, Locale, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory, SizeStoredInPagingFiles. |
+| Property | pc | None | an object | Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystem> Win32_ComputerSystem</a> object which has these properties, among others: Name, Manufacturer, Model, CurrentTimeZone, TotalPhysicalMemory. |
+| Property | Bios | None | an object | Returns a <a href=https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-bios> Win32_BIOS</a> object which has a Version property, among others. |
+| Property | Battery | None | an object | Returns a <a target="_blank" href="https://learn.microsoft.com/en-us/windows/desktop/CIMWin32Prov/win32-battery"> Win32_Battery</a> object, which has these properties, among others: BatteryStatus, EstimatedChargeRemaining. |
 
 ## WoWChecker
 

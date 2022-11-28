@@ -62,7 +62,7 @@ Open PowerShell at any folder
 
 ## References
 
-[Extending Shortcut Menus](https://docs.microsoft.com/en-us/windows/desktop/shell/context "docs.microsoft.com")  
+[Extending Shortcut Menus](https://learn.microsoft.com/en-us/windows/desktop/shell/context "learn.microsoft.com")  
 [Use JavaScript to place cursor at end of text in text input element
 ](https://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element#26900921 "stackoverflow.com")
 

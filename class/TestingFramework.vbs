@@ -3,7 +3,7 @@
 'Usage example
 ' <pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSValidator" ) <br />         Execute .Read( "TestingFramework" ) <br />     End With <br />     With New TestingFramework <br />         .Describe "VBSValidator class" <br />             Dim val : Set val = New VBSValidator 'class under test <br />         .It "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean( "sdfjke" ), False <br />         .It "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description<br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
 '
-' When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior.
+' When a test file such as <code>spec\Configurer.spec.wsf</code> is double-clicked in Windows Explorer, the default Windows behavior is to open the script with wscript.exe, but the test requires cscript.exe, so the file is automatically restarted with cscript.exe. By default, the test opens with PowerShell in Windows Terminal, if installed. This behavior may be changed by adding a "shell" key/value pair to <code>class\VBSHoster.configure</code>, overriding the default behavior. Alternatively, a script-specific .configure file can be added; see the <a href="#configurer"> Configurer class docs</a>. 
 '
 ' See also <a href="#vbstestrunner"> VBSTestRunner</a> and <a href="#vbshoster"> VBSHoster</a>.
 '
@@ -12,10 +12,10 @@ Class TestingFramework
     Private unit 'string: description of the unit under test
     Private spec 'string: description of a specification or test or expectation
     Private T 'a string of spaces (tab)
-    Private explanation 'reason for test failure
-    Private pass 'literal: Pass
-    Private fail 'literal: Fail
-    Private result 'Pass or Fail
+    Private explanation 'string: reason for test failure
+    Private pass 'string literal: "Pass"
+    Private fail 'string literal: "Fail"
+    Private result '"Pass" or "Fail"
     Private resultPending 'boolean
     Private sh 'WScript.Shell object
     Private fso 'Scripting.FileSystemObject object

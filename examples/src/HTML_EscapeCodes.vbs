@@ -45,7 +45,7 @@ Sub BodyOnKeyUp
         Self.Close
     ElseIf F1 = window.event.KeyCode Then
         prompt = "Do you want to open the online docs for the VBScript function Asc?"
-        link = "https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/xfw01fx4(v=vs.84)"
+        link = "https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/xfw01fx4(v=vs.84)"
         If vbCancel = MsgBox( prompt, vbOKCancel, document.Title ) Then
             Exit Sub
         End If

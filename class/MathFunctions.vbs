@@ -4,7 +4,7 @@
 '
 'Log is base <em> e</em>. Angles are in radians. Convert from degrees to radians by multiplying by pi/180.
 
-'Adapted from <a href=https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/derived-math-functions> Derived Math Functions (Visual Basic)</a>. See also the <a target =_blank href=#mathconstants> MathConstants</a> class.
+'Adapted from <a href=https://learn.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/derived-math-functions> Derived Math Functions (Visual Basic)</a>. See also the <a target =_blank href=#mathconstants> MathConstants</a> class.
 '
 Class MathFunctions
 

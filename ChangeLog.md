@@ -1,6 +1,7 @@
 # Version information
 
-- [Version 1.4.9 (the latest version)](#version-149)  
+- [Version 1.4.10 (the latest version)](#version-1410)  
+- [Version 1.4.9](#version-149)  
 - [Version 1.4.8](#version-148)  
 - [Version 1.4.7](#version-147)  
 - [Version 1.4.6](#version-146)  
@@ -10,6 +11,18 @@
 - [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
+
+# Version 1.4.10
+
+Links referencing docs.microsoft.com were updated to point to learn.microsoft.com.  
+
+Improved error handling for IconExtractor.hta.  
+
+Added Null check for battery charge to BatteryStatus.hta.  
+
+Minor changes to PresentationSettings.hta: added onhover/title text to show in advance what commands are executed for selected buttons.  
+
+Improved code comments for the TestingFramework class.  
 
 # Version 1.4.9
 
@@ -131,7 +144,7 @@ Added a new class ShellSpecialFolders ( [code](class/ShellSpecialFolders.vbs) | 
 
 ## WMIUtility class links added
 
-Improved the [code comments](class/WMIUtility.vbs) and the [docs](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#user-content-wmiutility) for the WMIUtiltiy class: added links to specific [Computer System Hardware Classes](https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes).  
+Improved the [code comments](class/WMIUtility.vbs) and the [docs](https://github.com/koswald/VBScript/blob/master/docs/VBScriptClasses.md#user-content-wmiutility) for the WMIUtiltiy class: added links to specific [Computer System Hardware Classes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/computer-system-hardware-classes).  
 
 ## ReadMe links added, corrected
 
@@ -202,7 +215,7 @@ becomes
 Err.Raise 449,, "Command-line argument required: a filespec for the file to open."
 ```
 
-The second statement above typically will cause a modal message with the code `800A01C1`. Hexadecimal 1C1 can be converted to decimal 449, and then the generic run-time error description can be looked up [online](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/5ta518cw(v=vs.84)) or in the following table.
+The second statement above typically will cause a modal message with the code `800A01C1`. Hexadecimal 1C1 can be converted to decimal 449, and then the generic run-time error description can be looked up [online](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/5ta518cw(v=vs.84)) or in the following table.
 
 | Dec | Hex | Err.Description                           |  
 | --: | --: | ------------------------------------- |  

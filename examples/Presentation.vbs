@@ -4,7 +4,7 @@ purpose = "Show a notification area icon with a menu option to prevent the compu
 helpMessage = "When presentation mode is on, the computer and monitor are typically prevented from going into a suspend (sleep) state or hibernation. The computer may still be put to sleep by other applications or by user actions such as closing a laptop lid or pressing a sleep button or power button." & vbLf & vbLf & "Phone charger mode is the same as presentation mode except that the workstation is locked, initially."
 
 requires = "Sleep (menu item) functionality requires psshutdown from " & link1
-Const link1 = "https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"
+Const link1 = "https://learn.microsoft.com/en-us/sysinternals/downloads/psshutdown"
 
 Setup
 csTimer.IntervalInHours = 3.1 'default

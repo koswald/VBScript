@@ -220,7 +220,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| Timer | Wraps the <a target="_blank" href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript.  |  |  | Type | | VBScripting |
+| Timer | Wraps the <a target="_blank" href="https://learn.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="learn.microsoft.com"> System.Timers.Timer class</a> for VBScript.  |  |  | Type | | VBScripting |
 | ITimer | COM interface for VBScripting.Timer  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor  |  |  | Method | Timer | VBScripting |
 | Start | Starts or restarts the timer.  |  |  | Method | Timer | VBScripting |
@@ -235,7 +235,7 @@
 
 | Member name | Remarks | Returns | Parameters | Kind | Member of | Namespace |
 | :---------- | :------ | :------ | :--------- | :--- | :-------- | :-------- |
-| Watcher | Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a target="_blank" href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a target="_blank" href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
+| Watcher | Provides something like presentation mode for Windows 10 Home systems, which don't have a PresentationSettings.exe: A way to temporarily keep the computer from going to sleep. Uses <a target="_blank" href="https://learn.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-setthreadexecutionstate"> SetThreadExecutionState</a>. Adapted from <a target="_blank" href="https://stackoverflow.com/questions/6302185/how-to-prevent-windows-from-entering-idle-state"> stackoverflow.com</a> and <a target="_blank" href="http://www.pinvoke.net/default.aspx/kernel32.setthreadexecutionstate"> pinvoke.net</a> posts. |  |  | Type | | VBScripting |
 | IWatcher | The COM interface for VBScripting.Watcher  |  |  | Type | | VBScripting |
 | (Constructor) | Constructor. Starts a private timer that periodically resets the system idle timer with the desired state.  |  |  | Method | Watcher | VBScripting |
 | Dispose | Disposes of the object's resources.  |  |  | Method | Watcher | VBScripting |

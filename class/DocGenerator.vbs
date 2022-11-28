@@ -555,7 +555,7 @@ Class DocGenerator
     End Sub
 
     Private Sub WriteBottomSection
-        WriteLine "<p> <em> See also the <a target=""_blank"" href=""https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)""> VBScript docs </a> </em> </p>"
+        WriteLine "<p> <em> See also the <a target=""_blank"" href=""https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/t0aew7h6(v=vs.84)""> VBScript docs </a> </em> </p>"
         WriteLine "<span class=""debugOutput""></span>"
         WriteLine "<script type=""text/javascript"" src=""lib/docScript.js""></script>"
         IndentDecrease

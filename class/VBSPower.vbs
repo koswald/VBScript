@@ -45,7 +45,7 @@ Class VBSPower
     Property Get ACTION_SHUTDOWN : ACTION_SHUTDOWN = 8 : End Property
 
     'Method Sleep
-    'Remark: Puts the computer to sleep. Requires <a target="_blank" href="https://docs.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power.
+    'Remark: Puts the computer to sleep. Requires <a target="_blank" href="https://learn.microsoft.com/en-us/sysinternals/downloads/psshutdown"> PsTools</a> download and PsShutdown.exe to be located somewhere on your %Path%. Recovery from sleep is faster than from hibernation, but uses more power.
     Sub Sleep
         If debug Then Exit Sub
         sh.Run "psshutdown -d -t 0"

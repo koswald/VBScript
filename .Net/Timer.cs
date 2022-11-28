@@ -4,7 +4,7 @@ using System;
 
 namespace VBScripting
 {
-    /// <summary> Wraps the <a target="_blank" href="https://docs.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="docs.microsoft.com"> System.Timers.Timer class</a> for VBScript. </summary>
+    /// <summary> Wraps the <a target="_blank" href="https://learn.microsoft.com/en-us/dotnet/api/system.timers.timer?view=netframework-4.7.1" title="learn.microsoft.com"> System.Timers.Timer class</a> for VBScript. </summary>
     [ProgId( "VBScripting.Timer" ),
         ClassInterface(ClassInterfaceType.None),
         Guid("2650C2AB-C020-495F-AB4D-6C61BD463EA4")]

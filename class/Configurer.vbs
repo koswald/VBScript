@@ -97,7 +97,7 @@ Class Configurer
 
     'Property Dictionary
     'Returns an object reference
-    'Remark: Returns a reference to the Configurer object's dictionary object. Properties: CompareMode, Item, Key. Methods: Add, Exists, Items, Keys, Remove, RemoveAll. See the <a target="_blank" href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84)"> online docs</a> for the Dictionary object.
+    'Remark: Returns a reference to the Configurer object's dictionary object. Properties: CompareMode, Item, Key. Methods: Add, Exists, Items, Keys, Remove, RemoveAll. See the <a target="_blank" href="https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/scripting-articles/x4k5wbx4(v=vs.84)"> online docs</a> for the Dictionary object.
     Property Get Dictionary
         Set Dictionary = d
     End Property

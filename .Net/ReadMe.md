@@ -41,19 +41,19 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 
 ## Links and References
 
-[Interoperability (C# Programming Guide)](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/ "docs.microsoft.com")  
-[Example COM Class](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/example-com-class "docs.microsoft.com")  
+[Interoperability (C# Programming Guide)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/ "learn.microsoft.com")  
+[Example COM Class](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interop/example-com-class "learn.microsoft.com")  
 [Exposing .NET components to COM](http://www.codeproject.com/Articles/3511/Exposing-NET-Components-to-COM "www.codeproject.com")  
 [Calling back to VBScript from C#](https://stackoverflow.com/questions/1044872/calling-back-to-vbscript-from-c-sharp#45927249 "stackoverflow.com")  
 [Extracting an icon from a .dll file](https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project#6873026 "stackoverflow.com")  
 [Invoking the NotifyIcon context menu](https://stackoverflow.com/questions/2208690/invoke-notifyicons-context-menu#2208910 "stackoverflow.com")  
 [Browse for a directory in C#](https://stackoverflow.com/questions/11767/browse-for-a-directory-in-c-sharp#33817043 "stackoverflow.com")  
 [Show detailed browser from a property grid](https://stackoverflow.com/questions/15368771/show-detailed-folder-browser-from-a-propertygrid#15386992 "stackoverflow.com")  
-[Component Object Model (COM)](https://docs.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal?redirectedfrom=MSDN "docs.microsoft.com")
+[Component Object Model (COM)](https://learn.microsoft.com/en-us/windows/win32/com/component-object-model--com--portal?redirectedfrom=MSDN "learn.microsoft.com")
 
 ### Compiler-supported code comments
 
-[XML Documentation Comments (C# Programming Guide)](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/)  
+[XML Documentation Comments (C# Programming Guide)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/)  
 
 [Overview]: #overview
 [Compiling and registering]: #compiling-and-registering
@@ -73,7 +73,7 @@ Most thoroughly tested on Windows 10, the libraries are all expected to work on 
 [FileChooser.cs]: FileChooser.cs
 [FolderChooser.cs]: FolderChooser.cs
 [FolderChooser2.cs]: FolderChooser2.cs
-[Reflection]: https://docs.microsoft.com/en-us/dotnet/api/system.reflection?view=netframework-4.7.1 "docs.microsoft.com"
+[Reflection]: https://learn.microsoft.com/en-us/dotnet/api/system.reflection?view=netframework-4.7.1 "learn.microsoft.com"
 [Setup.vbs]: ../Setup.vbs
 [Manual tests]: test
 [Automated integration tests]: ../spec/dll

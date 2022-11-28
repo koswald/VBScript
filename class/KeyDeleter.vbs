@@ -118,7 +118,7 @@ Class KeyDeleter
 
     'Property Result
     'Returns: an integer
-    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://docs.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://docs.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>.
+    'Remark: Returns a code indicating the result of the most recent DeleteKey call. Codes can be looked up in <a target="_blank" href="https://learn.microsoft.com/en-us/windows/desktop/api/wbemdisp/ne-wbemdisp-wbemerrorenum">WbemErrEnum</a> or <a target="_blank" href="https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-error-constants">WMI Error Constants</a>.
     Public Property Get Result : Result = result_ : End Property
     Private result_
 

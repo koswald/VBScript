@@ -1,6 +1,6 @@
 ' ShellSpecialFolders class
 '
-' Adapted from <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.
+' Adapted from <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> ShellSpecialFolderConstants enumeration (shldisp.h)</a>: Specifies unique, system-independent values that identify special folders. These folders are frequently used by applications but which may not have the same name or location on any given system. For example, the system folder can be "C:\Windows" on one system and "C:\Winnt" on another.
 '
 Class ShellSpecialFolders
 
@@ -149,7 +149,7 @@ Class ShellSpecialFolders
 
     'Property ssfBITBUCKET
     'Returns &ha
-    'Remarks: According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin."
+    'Remarks: According to the <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "Virtual folder that contains the objects in the user's Recycle Bin."
     Public Property Get ssfBITBUCKET : ssfBITBUCKET = &ha : End Property
 
     'Property ssfSTARTMENU
@@ -158,7 +158,7 @@ Class ShellSpecialFolders
 
     'Property ssfDESKTOPDIRECTORY
     'Returns &h10
-    'Remarks: According to the <a href="https://docs.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop.
+    'Remarks: According to the <a href="https://learn.microsoft.com/en-us/windows/win32/api/shldisp/ne-shldisp-shellspecialfolderconstants"> docs</a>: "File system directory used to physically store the file objects that are displayed on the desktop. It is not to be confused with the desktop folder itself, which is a virtual folder." A typical path is C:\Users&#92;<em>username</em>\Desktop.
     Public Property Get ssfDESKTOPDIRECTORY : ssfDESKTOPDIRECTORY = &h10 : End Property
 
     'Property ssfDRIVES

@@ -16,45 +16,56 @@ Dim pbar 'VBScripting.ProgressBar
 Dim sh 'WScript.Shell object
 Dim fso 'Scripting.FileSystemObject
 Dim regex 'RegExp object
-Dim fileDict 'Scripting.Dictionary object for storing filespecs
 Dim application 'HTML application element (HTA application)
 
-'other
-Dim timeoutId 'saved integer for cancelling a setTimeout instance
-Dim fileKeys 'array of filespecs
 Dim iconIndex 'index of an icon within a .dll or .exe file
-Dim fileIndex 'array index for the fileKeys array
+Dim fileIndex 'number of files searched for icons
 Dim targetFolder 'string: a folder path
 Dim ms 'integer: milliseconds; for setTimeout 
-Dim iconsExtracted 'integer: number of icons extracted
+Dim iconsExtracted 'integer: total number of icons extracted since the Extract button was pressed
 Dim CheckingMsg 'string: partial progress message
 Dim eStop 'boolean: flag for stopping the extration
 Dim iconCount 'integer: the supposed number of icons in a file
 Dim configFile 'string: filespec of configuration file
+Dim errors 'textarea element for storing errors
+Dim candidateListPath 'filespec of the text file that contains the list of filespecs for the candidate files: files to search for icons to extract
+Dim listOut 'text stream object for writing the candidate file list
+Dim listIn 'text stream object for reading the candidate file list
+Dim fileCount 'integer: the number of files added to the file list
+Dim editors 'array of strings: editors
+Dim editorsIndex 'integer: index specifying a particular element in the editors array: the current editor
+Dim editor 'string: one of the strings in the editors array: a filespec or a filename or a command suitable for starting a code editor
 
 Const F1 = 112 'window.event.KeyCode
 Const F6 = 117
 Const F7 = 118
 Const F8 = 119
 Const F9 = 120
+Const F10 = 121
 Const Esc = 27
 Const Enter = 13
 Const ForWriting = 2, CreateNew = True 'for OpenTextFile
 Const ListingFiles = "Listing filles"
 Const ExtractingFiles = "Extracting files"
 Const ShowingResults = "Showing results"
+Const notepad = "notepad"
 Const WordPad = "%ProgramFiles%\Windows NT\Accessories\wordpad.exe"
+Const code = "code"
+Const VBScript = "VBScript" 'for setTimeout
 
 Sub Window_OnLoad
     Dim sourceFileValue
     Dim sourceDirValue
     Dim targetDirValue
     Dim configStream
+    On Error Resume Next
+        pbar.Visible = False
+        Set pbar = Nothing
+    On Error Goto 0
     InitializeObjects
 
     'populate fields from the config file,
     'and/or create the config file
-    
     configFile = format(Array( _
         "%s\VBScripting\%s.configure", _
         Expand("%AppData%"), _
@@ -90,6 +101,14 @@ Sub Window_OnLoad
     CheckingMsg = "Checking for icons in<br />"
     Disable stopBtn
     ms = 0 'milliseconds; for setTimeout
+    editors = Array( notepad, WordPad, code )
+    editorsIndex = 0
+    editor = editors(editorsIndex)
+    Set errors = document.createElement("textarea")
+    errors.style.width = "100%"
+    errors.style.height = "50%"
+    errors.style.display = "none"
+    document.body.insertBefore errors
 End Sub
 
 Sub InitializeObjects
@@ -108,7 +127,6 @@ Sub InitializeObjects
     Set log = New VBSLogger
     Set browser = CreateObject( "VBScripting.FolderChooser" )
     Set admin = CreateObject( "VBScripting.Admin" )
-    Set fileDict = CreateObject( "Scripting.Dictionary" )
     Set pbar = CreateObject( "VBScripting.ProgressBar" )
     pbar.SetIconByDllFile "%SystemRoot%\System32\msctfui.dll", 0
     pbar.FormLocationByPercentage 100, 100
@@ -122,7 +140,7 @@ End Sub
 
 Sub extractIconsBtn_OnClick
     InProgressMsg "Getting the file list..."
-    window.setTimeout "PrepStatesFor ListingFiles", ms, "VBScript"
+    window.setTimeout "PrepStatesFor ListingFiles", ms, VBScript
 End Sub
 
 Function PrepStatesFor(status)
@@ -132,9 +150,20 @@ Function PrepStatesFor(status)
     ClearFeedback
     Disable extractIconsBtn
     inProgressDiv.style.display = "block"
-    fileDict.RemoveAll
+    errors.value = ""
+    errors.style.display = "none"
     iconsExtracted = 0
     eStop = False
+    CreateFolder targetDirTxtBox.value
+    candidateListPath = format( Array( _
+        "%s\IconSourceCandidates.txt", _
+        Expand( targetDirTxtBox.value ) _
+    ))
+    Set listOut = fso.OpenTextFile( _
+        candidateListPath, ForWriting, CreateNew)
+    fileCount = 0
+    Enable stopBtn
+    stopBtn.focus
     Disable subfoldersChkBox
     Disable sourceDirTxtBox
     Disable sourceBrowserBtn
@@ -144,13 +173,13 @@ Function PrepStatesFor(status)
     Disable largeIconsChkBox
     Disable smallIconsChkBox
     Disable zeroIndexesOnlyChkBox
-    Disable stopBtn
     Disable elevateBtn
-    window.setTimeout "ListFiles", ms, "VBScript"
+    window.setTimeout "ListFiles", ms, VBScript
 
     Case ExtractingFiles
-    fileKeys = fileDict.Keys
-    If -1 = UBound(fileKeys) Then
+    listOut.Close
+    Set listIn = fso.OpenTextFile(candidateListPath)
+    If listIn.AtEndOfStream Then
         Feedback "No files found"
         PrepStatesFor = False
         PrepStatesFor ShowingResults
@@ -158,7 +187,6 @@ Function PrepStatesFor(status)
     End If
     iconIndex = 0
     fileIndex = 0
-    InProgressMsg CheckingMsg & fileKeys(0)
     targetFolder = Expand(targetDirTxtBox.value)
     Enable stopBtn
     stopBtn.focus
@@ -169,7 +197,6 @@ Function PrepStatesFor(status)
     inProgressDiv.style.display = "none"
     pbar.Visible = False
     Enable extractIconsBtn
-    Enable stopBtn
     Enable subfoldersChkBox
     Enable sourceDirTxtBox
     Enable sourceBrowserBtn
@@ -180,9 +207,11 @@ Function PrepStatesFor(status)
     Enable smallIconsChkBox
     Enable zeroIndexesOnlyChkBox
     Disable stopBtn
-    Enable elevateBtn
-    End Select
+    If Not admin.PrivilegesAreElevated Then
+        Enable elevateBtn
+    End If
 
+    End Select
     PrepStatesFor = True
 End Function
 
@@ -215,38 +244,74 @@ Sub ListFiles
     If Not PrepStatesFor(ExtractingFiles) Then
         Exit Sub
     End If
-    pbar.Maximum = UBound(fileKeys) + 1
+    pbar.Maximum = fileCount + 1
     On Error Resume Next 'prevents an error if the progress bar was previously closed by the user
         pbar.Visible = True
     On Error Goto 0
-    window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
+    window.setTimeout "ExtractTheNextIcon", ms, VBScript
 End Sub
 
 Sub ClearEStop
     eStop = False
+    pbar.Visible = False
 End Sub
 
 Sub ListFilesBySubfolder(folder)
     Dim subfolder
-    For Each subfolder In fso.GetFolder(Expand(folder)).SubFolders
-        ListFilesBySubfolder subfolder 'recurse
-    Next
+    If eStop Then Exit Sub
+    InProgressMsg "Searching " & folder
+    On Error Resume Next
+        For Each subfolder In fso.GetFolder(Expand(folder)).SubFolders : Do
+            If eStop Then Exit Sub
+            If Err Then
+                errors.style.display = "block"
+                errors.value = errors.value & _
+                    "Error accessing folder " & vbLf & _
+                    folder & vbLf & _
+                    "Err.Description: " & Err.Description & vbLf & _
+                    "Hex(Err.Number): " & Hex(Err.Number) & vbLf & vbLf
+                Err.Clear
+                Exit Do 'next subfolder
+            End If
+            On Error Goto 0
+                ListFilesBySubfolder subfolder 'recurse
+                Exit Do 'next subfolder
+            On Error Resume Next
+        Loop : Next
+    On Error Goto 0
     ListFilesByWildcard folder
 End Sub
 
 Sub ListFilesByWildcard(sourceDir)
     Dim file
     regex.Pattern = rf.Pattern(sourceFileTxtBox.value)
-    For Each file In fso.GetFolder(Expand(sourceDir)).Files
-        If regex.Test(file.Name) Then
-            ListFile sourceDir, file.Name
-        End If
-    Next
+    On Error Resume Next
+        For Each file In fso.GetFolder(Expand(sourceDir)).Files
+            If Err Then
+                errors.style.display = "block"
+                errors.value = errors.value & _
+                    "Error accessing file in the folder " & vbLf & _
+                    sourceDir & vbLf & _
+                    "Err.Description: " & Err.Description & vbLf & _
+                    "Hex(Err.Number): " & Hex(Err.Number) & vbLf & _
+                    "The remainder of the folder will be skipped." & vbLf & vbLf
+                Exit Sub
+            End If
+            On Error Goto 0
+                If regex.Test(file.Name) Then
+                    ListFile sourceDir, file.Name
+                End If
+            On Error Resume Next
+        Next
+    On Error Goto 0
 End Sub
 
-'Add a file to the dictionary object. Just the key is used, not the value.
+'Add a file to the file list
 Sub ListFile(sourceDir, sourceFile)
-    fileDict.Add format(Array("%s\%s", sourceDir, sourceFile)), ""
+    listOut.WriteLine format(Array( _
+        "%s\%s", sourceDir, sourceFile _
+    ))
+    fileCount = fileCount + 1
 End Sub
 
 Sub ExtractTheNextIcon
@@ -256,13 +321,14 @@ Sub ExtractTheNextIcon
     Dim largeTarget 'generated filespec for saving a large icon
     Dim smallTarget 'generated filespec for saving a small icon
     Dim suspect 'flespec of potentially-zero-size icon file
-    Dim msg 'string: partial progress message
-    If eStop Or fileIndex > UBound(fileKeys) Then
+    Dim msg 'string: partial progress
+    If listIn.AtEndOfStream _
+    Or eStop Then
         ShowResults
         Exit Sub
     End If
     pbar.Value = fileIndex
-    file = fileKeys(fileIndex)
+    file = listIn.ReadLine
     If iconIndex = 0 Then
         iconCount = extractor.IconCount(file)
     End If
@@ -270,7 +336,7 @@ Sub ExtractTheNextIcon
     Or iconIndex >= iconCount Then
         iconIndex = 0
         fileIndex = fileIndex + 1
-        window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
+        window.setTimeout "ExtractTheNextIcon", ms, VBScript
         Exit Sub
     End If
     base = fso.GetBaseName(file)
@@ -298,20 +364,20 @@ Sub ExtractTheNextIcon
         msg = CheckingMsg
     Else msg = format(Array("Extracting icon %s from<br />", iconIndex))
     End If
-    InProgressMsg msg & fileKeys(fileIndex)
-    If fileIndex > UBound(fileKeys) Then
+    InProgressMsg msg & file
+    If listIn.AtEndOfStream Then
         ShowResults
         Exit Sub
     Else iconIndex = iconIndex + 1
     End If
-    window.setTimeout "ExtractTheNextIcon", ms, "VBScript"
+    window.setTimeout "ExtractTheNextIcon", ms, VBScript
 End Sub
 
 Sub ShowResults
     PrepStatesFor ShowingResults
     Feedback "Icons extracted: " & iconsExtracted
     Feedback "Files processed: " & fileIndex
-    window.setTimeout "ClearEStop", ms + 200, "VBScript"
+    window.setTimeout "ClearEStop", ms + 200, VBScript
 End Sub
 
 Sub RemoveIfZeroSize(filespec)
@@ -360,20 +426,83 @@ Sub elevateBtn_OnClick
 End Sub
 
 Sub Document_OnKeyUp
-    If F6 = window.event.keyCode Then
+    Dim s 'a string
+    Dim parent 'string: path to .hta parent folder
+    Dim relPath 'this script's relative path
+    Dim response, msg, i, title 'for MsgBox
+
+    'show a help message
+    If F1 = window.event.keyCode Then
+        MsgBox _
+            "F1 : Show this help message" & vbLf & _
+            "F6 : Edit the .hta" & vbLf & _
+            "F7 : Edit the .vbs" & vbLf & _
+            "F8 : Edit or view another file" & vbLf & _
+            "F9 : Toggle the editor" & vbLf & _
+            "F10 : Open the target folder" & vbLf & _
+            "Esc : Stop the current operation" & vbLf & vbLf & _
+            "Example for the File name(s) field: " & _
+            "*.dll | *.exe", _
+            vbInformation, application.applicationName
+    'edit the .hta
+    ElseIf F6 = window.event.keyCode Then
         sh.Run format(Array( _
             """%s"" %s", _
-            Expand(WordPad), _
+            editor, _
             application.commandLine ))
+    'edit this script
+    ElseIf F7 = window.event.keyCode Then
+        relPath = document.getElementsByTagName("script")(1).src
+        s = document.location.href
+        s = Replace(s, "file:///", "") 'remove file:///
+        s = Replace (s, "/", "\") 'slash => hack
+        s = Replace(s, "%20", " ") 'replace %20 with a space
+        parent = fso.GetParentFolderName(s)
+        sh.Run """" & editor & """ """ & parent & "\" & relPath & """"
+    'edit or view another file
+    ElseIf F8 = window.event.keyCode Then
+        i = vbYesNoCancel + vbInformation
+        title = application.applicationName
+        msg = "View the .config file?"
+        response = MsgBox(msg, i, title)
+        If vbYes = response Then
+            sh.Run format( Array( _
+                """%s"" ""%s""", _
+                editor, configFile _
+            ))
+        ElseIf vbCancel = response Then
+            Exit Sub
+        End If
+        msg = "View the icon source candidate list?"
+        response = MsgBox(msg, i, title)
+        If vbYes = response Then
+            sh.Run format( Array( _
+                """%s"" ""%s""", _
+                editor, candidateListPath _
+            ))
+       ElseIf vbCancel = response Then
+            Exit Sub
+        End If
+    'toggle editor
     ElseIf F9 = window.event.keyCode Then
-        sh.Run "notepad """ & configFile & """"
-    ElseIf Enter = window.event.keyCode _
-    And Not eStop _
-    And Not extractIconsBtn.disabled Then
-        window.setTimeout _
-            "extractIconsBtn_OnClick", ms, "VBScript"
+        editorsIndex = editorsIndex + 1
+        If editorsIndex > UBound(editors) Then
+            editorsIndex = 0
+        End If
+        editor = editors(editorsIndex)
+        MsgBox "Current editor: " & editor, _
+            vbInformation, application.applicationName
+    'open the target folder
+    ElseIf F10 = window.event.keyCode Then
+        If fso.FolderExists(Expand(targetDirTxtBox.value)) Then
+            sh.Run "explorer """ & targetDirTxtBox.value & """"
+        Else MsgBox _
+            "Couldn't find the folder " & targetDirTxtBox.value, vbInformation, _
+            application.applicationName
+        End If
+    'stop extracting or getting the file list
     ElseIf Esc = window.event.keyCode Then
-        Self.Close
+        stopBtn_OnClick
     End If
 End Sub
 
@@ -392,8 +521,9 @@ Sub CheckIconChoices
     End If
 End Sub
 
-Sub CreateFolder(newDir)
+Sub CreateFolder(byVal newDir)
     Dim parentDir
+    newDir = Expand(newDir)
     parentDir = fso.GetParentFolderName(newDir)
     If Not fso.FolderExists(parentDir) Then
         CreateFolder parentDir
@@ -413,8 +543,6 @@ End Sub
 
 Sub Feedback(msg)
     feedbackDiv.innerHTML = msg & "<br />" & feedbackDiv.innerHTML
-    window.clearTimeout timeoutId
-    timeoutId = window.setTimeout("ClearFeedback", 20000, "VBScript")
 End Sub
 
 Sub ClearFeedback
@@ -433,9 +561,11 @@ Sub ReleaseObjects
     Set log = Nothing
     Set browser = Nothing
     Set admin = Nothing
-    Set fileDict = Nothing
 End Sub
 
 Sub Window_OnUnload
     ReleaseObjects
 End Sub
+
+
+
