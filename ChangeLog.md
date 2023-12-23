@@ -1,6 +1,9 @@
 # Version information
 
-- [Version 1.4.10 (the latest version)](#version-1410)  
+Version information for the [VBScripting](https://github.com/koswald/VBScript "github.com") project.
+
+- [Version 1.4.11 (the latest version)](#version-1411)  
+- [Version 1.4.10](#version-1410)  
 - [Version 1.4.9](#version-149)  
 - [Version 1.4.8](#version-148)  
 - [Version 1.4.7](#version-147)  
@@ -11,6 +14,20 @@
 - [Version 1.4.2](#version-142)  
 - [Version 1.4.1](#version-141)  
 - [Version 1.4.0](#version-140)  
+
+# Version 1.4.11
+
+Modified [CopyToProgramFiles.vbs](./CopyToProgramFiles.vbs):
+
+- Does not require Setup.vbs to have been run.
+- Creates the target folder if necessary.
+- Improved error handling.
+
+Modified the [TestingFramework](./class/TestingFramework.vbs) class:
+
+- Added the OnFailString property, an optional string written the console when a spec fails, intended to show likely causes for the failure. The OnFailString property is used in the Configurer class [integration test](spec\Configurer.spec.wsf).
+
+Refactored [RegistryClasses.vbs](./examples/src/RegistryClasses.vbs).
 
 # Version 1.4.10
 

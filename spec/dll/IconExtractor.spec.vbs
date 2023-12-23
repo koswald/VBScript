@@ -6,7 +6,7 @@ With New TestingFramework
         Set extractor = CreateObject( "VBScripting.IconExtractor" )
 
     .It "should get the number of icons in " & resFile
-        .AssertEqual extractor.IconCount(resFile), 334
+        .AssertEqual extractor.IconCount(resFile), 335
 
     .It "should extract an icon and save it"
         extractor.Save resFile, 289, icoFile, True

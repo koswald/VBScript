@@ -1,7 +1,7 @@
 'Script for StartItems.hta
 
 Option Explicit
-Dim si 'StartItems object
+Dim si 'StartupItems object
 Dim enableWowForHKCU 'boolean. See StartItems.configure for explanation
 Dim privilegesAreElevated 'boolean
 Dim hiveSelector, keySelector 'select elements
@@ -12,6 +12,7 @@ Dim application 'application element
 Dim OsIs64Bit 'boolean
 Dim elButton 'Elevate Privileges button
 Dim tmButton 'Open Task Manager button
+Dim suButton 'Open Settings|Apps|Startup button
 
 Sub Window_OnLoad
     Dim includer 'VBScripting.Includer object
@@ -218,11 +219,23 @@ Sub DrawTableDiv
     tmButton.value = "Open Task Manager"
     Set tmButton.onclick = GetRef( "OpenTaskMgr" )
     tableDiv.insertBefore tmButton
+    tableDiv.insertBefore document.createTextNode("  ")
+    Set suButton = document.createElement( "input" )
+    suButton.type = "button"
+    suButton.value = "Open Settings | Apps | Startup"
+    Set suButton.onclick = GetRef( "OpenStartupAppsSettings")
+    tableDiv.insertBefore suButton
     CheckPrivileges
 End Sub
 
 Sub OpenTaskMgr
     si.OpenTaskMgr
+End Sub
+
+Sub OpenStartupAppsSettings
+    With CreateObject( "WScript.Shell" )
+        .Run "ms-settings:startupapps"
+    End With
 End Sub
 
 Sub Elevate

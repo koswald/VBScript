@@ -24,7 +24,7 @@ Class StartupItems
 
     'Property Items
     'Returns a collection
-    'Remarks: Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collecttions may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch).
+    'Remarks: Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collections may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch).
     Property Get Items
         Dim i 'integer: iterator
         Dim item_ 'NameValue object
@@ -201,3 +201,4 @@ Class StartupItems
     End Sub
 
 End Class
+

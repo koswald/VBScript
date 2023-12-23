@@ -1,6 +1,7 @@
 'Main script included by PushPrep.hta
 
 'If this .vbs file is started independently of the .hta, then launch the .hta
+
 If IsEmpty( document ) Then
     Set sh = CreateObject( "WScript.Shell" )
     Set fso = CreateObject( "Scripting.FileSystemObject" )
@@ -11,13 +12,15 @@ If IsEmpty( document ) Then
     WScript.Quit
 End If
 
+' Show a warning and then close, if Setup.vbs has not been run
+
 s = "Run Setup.vbs before launching PushPrep.hta."
 On Error Resume Next
     Set incl = CreateObject("VBScripting.Includer")
     If Err Then
         MsgBox _
             "Err.Description: " & vbTab & Err.Description & vbLf & _
-            "Hex(Err.Number): " & vbTab & Err.Number & _
+            "Hex(Err.Number): " & vbTab & Hex(Err.Number) & _
             vbLf & vbLf & s, _
             vbInformation, "PushPrep.hta"
         Self.Close

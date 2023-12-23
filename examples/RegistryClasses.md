@@ -19,8 +19,9 @@ regedit.exe, such as
 Create a new file type, .nft
 
 - In the *File type* field, enter `nft`.
+- Click in the ProgId field and type `nftFile`.
 - Click the *New verb* button.
-- Enter `Open .nft with Notepad` in the *Verb name* field and click the *Save* button.
+- Enter `Open .nft with Notepad` in the *Verb name* field and click the *OK* button.
 - In the *Command* field, enter  
     `notepad "%1"`.
 - Create a new .nft file, right click it, and you should see a menu item for opening the file in Notepad.

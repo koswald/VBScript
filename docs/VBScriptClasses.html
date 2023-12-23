@@ -2113,7 +2113,7 @@
                   <td>Items</td>
                   <td>None</td>
                   <td>a collection</td>
-                  <td>Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collecttions may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch).</td>
+                  <td>Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collections may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch).</td>
                </tr>
                <tr>
                   <td>Property</td>
@@ -2269,7 +2269,7 @@
          <a id="testingframework"></a>
          <h2 class="heading" id=25>TestingFramework</h2>
          <div class="detail">
-            <p>A lightweight testing framework</p>
+            <p>An ultralight framework for integration tests</p>
             <p>Usage example</p>
              <pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSValidator" ) <br />         Execute .Read( "TestingFramework" ) <br />     End With <br />     With New TestingFramework <br />         .Describe "VBSValidator class" <br />             Dim val : Set val = New VBSValidator 'class under test <br />         .It "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean( "sdfjke" ), False <br />         .It "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description<br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
             <p></p>
@@ -2311,7 +2311,7 @@
                   <td>ShowPendingResult</td>
                   <td>None</td>
                   <td>N/A</td>
-                  <td>Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.</td>
+                  <td>Flushes any pending results. That is, displays the results of the previous spec. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.</td>
                </tr>
                <tr>
                   <td>Method</td>
@@ -2375,6 +2375,13 @@
                   <td>None</td>
                   <td>N/A</td>
                   <td>Closes the SendKeys warning. Note: SendKeys-related features are deprecated.</td>
+               </tr>
+               <tr>
+                  <td>Property</td>
+                  <td>OnFailString</td>
+                  <td>a string</td>
+                  <td>a string</td>
+                  <td>Optional string that displays when a spec fails. Intended for showing possible causes of the failure.</td>
                </tr>
             </table>
          </div>

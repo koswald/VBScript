@@ -165,6 +165,9 @@ With New TestingFramework
             "%s\.configure", _
             fso.GetAbsolutePathName( ".." ) _
         ))
+        .OnFailString = "This spec (""" & .GetSpec & """) is expected to fail when" & vbLf & _
+            "1) there are two or more copies/instances/locations of the repository files and" & vbLf & _
+            "2) tests are being run from a different location than where Setup.vbs was run."
         .AssertEqual actual, expected  
   
     .It "should load ""pwsh candidates"""

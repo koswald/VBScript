@@ -1,4 +1,4 @@
-'A lightweight testing framework
+'An ultralight framework for integration tests
 
 'Usage example
 ' <pre>     With CreateObject( "VBScripting.Includer" ) <br />         Execute .Read( "VBSValidator" ) <br />         Execute .Read( "TestingFramework" ) <br />     End With <br />     With New TestingFramework <br />         .Describe "VBSValidator class" <br />             Dim val : Set val = New VBSValidator 'class under test <br />         .It "should return False when IsBoolean is given a string" <br />             .AssertEqual val.IsBoolean( "sdfjke" ), False <br />         .It "should raise an error when EnsureBoolean is given a string" <br />             Dim nonBool : nonBool = "a string" <br />             On Error Resume Next <br />                 val.EnsureBoolean(nonBool) <br />                 .AssertErrorRaised <br />                 Dim errDescr : errDescr = Err.Description<br />                 Dim errSrc : errSrc = Err.Source <br />             On Error Goto 0 <br />     End With </pre>
@@ -64,28 +64,33 @@ Class TestingFramework
     Property Get GetSpec : GetSpec = spec : End Property
 
     'Method ShowPendingResult
-    'Remark: Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.
+    'Remark: Flushes any pending results. That is, displays the results of the previous spec. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place.
     Sub ShowPendingResult
         If Not resultPending Then Exit Sub
+        If Not IsEmpty(OnFailString) Then
+            explanation = explanation & vbCrLf & OnFailString
+        End If
         WriteLine result & T & spec
-        If fail = result Then
-            If Len(explanation) Then WriteLine "========> " & explanation
+        If fail = result _
+        And Len(explanation) Then
+            WriteLine "========> " & explanation
         End If
         SetResultPending False
+        OnFailString = Empty
     End Sub
 
     'Method AssertEqual
     'Parameters: actual, expected
     'Remark: Asserts that the specified two variants, of any subtype, are equal.
-    Sub AssertEqual(var1, var2)
+    Sub AssertEqual(actual, expected)
         ShowPendingResult
-        If var1 = var2 Then
+        If actual = expected Then
             SetResult pass
         Else SetResult fail
             explanation = _
-                "Expected: " & var2 & vbCrLf & _
+                "Expected : " & expected & vbCrLf & _
                 "========> " & _
-                "Actual  : " & var1
+                "Actual   : " & actual
         End If
         SetResultPending True
     End Sub
@@ -96,8 +101,7 @@ Class TestingFramework
         ShowPendingResult
         If Err Then
             SetResult pass
-        Else
-            SetResult fail
+        Else SetResult fail
             explanation = "Expected error to be raised. Actual: no error"
         End If
         SetResultPending True
@@ -186,6 +190,18 @@ Class TestingFramework
     Sub CloseSendKeysWarning
         sendKeysWarning.Terminate
     End Sub
+
+    'Property OnFailString
+    'Parameter: a string
+    'Returns: a string
+    'Remark: Optional string that displays when a spec fails. Intended for showing possible causes of the failure.
+    Public Property Let OnFailString ( newOnFailString )
+        onFailString_ = newOnFailString
+    End Property
+    Public Property Get OnFailString
+        OnFailString = onFailString_
+    End Property
+    Private onFailString_
 
     Sub Class_Terminate
         ShowPendingResult

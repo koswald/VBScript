@@ -7,7 +7,7 @@ requires = "Sleep (menu item) functionality requires psshutdown from " & link1
 Const link1 = "https://learn.microsoft.com/en-us/sysinternals/downloads/psshutdown"
 
 Setup
-csTimer.IntervalInHours = 3.1 'default
+csTimer.IntervalInHours = 1 'default presentation mode timeout
 icon = Split( icon3, "|" )
 NormalMode
 ListenForCallbacks

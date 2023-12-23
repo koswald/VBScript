@@ -1,6 +1,120 @@
-'Script for RegistryClasses.hta body element
+'Script for RegistryClasses.hta
 
-Option Explicit
+Const HKCU = &H80000001
+Const HKLM = &H80000002
+Const uneditablePids = "Folder"
+Const undeletableVerbs = "open opennew print explore find openas properties printto runas runasuser" 'cannonical verbs
+Const Esc = 27
+Const F1 = 112
+Const F6 = 117
+Const F7 = 118
+Const F8 = 119
+Const Expanded = 0 'REG_EXPAND_SZ
+Const NotExpanded = 1 'REG_SZ
+Const NotFound = 2
+Const noVerbsFound = -1 'UBound return value for zero-length array.
+
+Dim fso 'Windows-native Scripting.FileSystemObject
+Dim sh 'Windows-native WScriptShell object
+Dim sa 'Windows-native Shell.Application object
+Dim includer 'VBScripting.Includer object
+Dim format 'VBScripting.StringFormatter object
+Dim admin 'VBScripting.Admin object
+Dim browser 'VBScripting.FileChooser object
+Dim initialVerb 'string: an empty string or the currently selected verb
+Dim focusOnThis 'an html element preselected/intended to get the focus
+Dim reg 'RegistryUtility object
+Dim regProv 'StdRegProv object
+Dim deleter 'KeyDeleter object
+Dim invalidChrs 'array of invalid filename chars
+Dim application 'HTML Application element/object
+Dim timeoutID 'integer: setTimeout return value. Can be used with the clearTimeout method to cancel/reset the timer.
+Dim descr 'RegString object
+Dim icon 'RegString object
+Dim iconKey 'string: registry path
+Dim template 'RegString object
+Dim templateKey 'string: registry path
+Dim commandType 'integer: a registry string type, either Expanded or NotExpanded.
+Dim commandKey 'string: a registry path for reading/retrieving a verb command.
+Dim verbs 'array of strings
+Dim root 'long: registry hive specified by the user via the select element hiveSelector: either HKCU (&H80000001) or HKLM (&H80000002)
+Dim pid 'string: pid may be may be * for all file types, or else it equals progId.Value or is read from the registry. Examples: txtFile, VBSFile, Word.Document.6. Note: progId is the html input element, a text box.
+Dim typeKey 'string: a registry path. Example: Software\Classes\.txt
+Dim pidKey 'string: a registry path. Example: Software\Classes\txtfile
+Dim verbKey 'string: a registry path. Example: Software\Classes\txtfile\shell
+Dim pidIsFromRegistry 'boolean
+Dim baseWidth, baseHeight 'size in pixels of the main window
+Dim NewVerbItemsHeight, ConfigureClassItemsHeight 'size of expanded portions of the window
+
+Sub Window_OnLoad
+    Dim optionHKCU, optionHKLM 'option elements
+
+    baseWidth = 444
+    baseHeight = 400
+    NewVerbItemsHeight = 100
+    ConfigureClassItemsHeight = 330
+    Self.ResizeTo baseWidth, baseHeight
+    Self.MoveTo 800, 000
+
+    Set sh = CreateObject( "WScript.Shell" )
+    Set fso = CreateObject( "Scripting.FileSystemObject" )
+    Set sa = CreateObject( "Shell.Application" )
+    Set includer = CreateObject( "VBScripting.Includer" )
+    Set format = CreateObject( "VBScripting.StringFormatter" )
+    Set admin = CreateObject( "VBScripting.Admin" )
+    Set browser = CreateObject( "VBscripting.FileChooser" )
+    
+    Execute includer.Read( "RegistryUtility" )
+    Set reg = New RegistryUtility
+    Set regProv = reg.Reg
+    ExecuteGlobal includer.Read( "ValidFileName" )
+    invalidChrs = InvalidWindowsFilenameChars
+    Execute includer.Read( "KeyDeleter" )
+    Set deleter = New KeyDeleter
+
+    Set application = document.getElementsByTagName( "application" )(0)
+    document.Title = application.applicationName
+    Set optionHKCU = document.createElement( "option" )
+    optionHKCU.value = HKCU
+    optionHKCU.innerHTML = "HKEY_CURRENT_USER"
+    hiveSelector.insertBefore optionHKCU
+    Set optionHKLM = document.createElement( "option" )
+    optionHKLM.value = HKLM
+    optionHKLM.innerHTML = "HKEY_LOCAL_MACHINE"
+    hiveSelector.insertBefore optionHKLM
+
+    Feedback "WARNING: Backup the registry before modifying it!"
+
+    fileType.value = ""
+    progId.value = ""
+    hiveSelector.selectedIndex = 0
+    initialVerb = ""
+    Set focusOnThis = fileType
+
+    RefreshFields
+End Sub
+
+Sub Window_OnUnload
+    Set fso = Nothing
+    Set sh = Nothing
+    Set sa = Nothing
+    Set includer = Nothing
+    Set format = Nothing
+    Set admin = Nothing
+    Set browser = Nothing
+End Sub
+
+Class RegString
+    Public Value 'string
+    Public StringType 'integer
+    Public Exists 'boolean
+    Function Init(newValue, newType, newExists)
+        Value = newValue
+        StringType = newType
+        Exists = newExists
+        Set Init = me
+    End Function
+End Class
 
 Sub RefreshFields
     DeriveKeys
@@ -8,14 +122,10 @@ Sub RefreshFields
     RefreshHtmlElements
 End Sub
 
-Dim root 'long: registry hive specified by the user via the select element hiveSelector: either HKCU (&H80000001) or HKLM (&H80000002)
-Dim pid 'string: pid may be may be * for all file types, or else it equals progId.Value or is read from the registry. Examples: txtFile, VBSFile, Word.Document.6. Note: progId is the html input element, a text box.
-Dim typeKey 'string: a registry path. Example: Software\Classes\.txt
-Dim pidKey 'string: a registry path. Example: Software\Classes\txtfile
-Dim verbKey 'string: a registry path. Example: Software\Classes\txtfile\shell
-Dim pidIsFromRegistry 'boolean
-
 'Generate the registry keys typeKey, pidKey, and verbKey.
+'Software\Classes\.txt
+'Software\Classes\txtfile
+'Software\Classes\txtfile\shell
 Sub DeriveKeys
     Dim pidString 'RegString object. See Class RegString in this file.
 
@@ -71,8 +181,6 @@ Sub DeriveKeys
     newVerbLegend.innerHTML = format(Array("New verb at %s\%s", GetRootString(root), verbKey))
 End Sub
 
-Dim verbs
-
 'Read the verbs for the registry keys just generated, and populate the verbSelector with options.
 Sub DeriveVerbs
     regProv.EnumKey root, verbKey, verbs
@@ -94,10 +202,6 @@ Sub DeriveVerbs
     Next
     Set verb = Nothing
 End Sub
-
-Dim commandType 'integer: a registry string type, either Expanded or NotExpanded.
-Dim commandKey 'string: a registry path for reading/retrieving a verb command.
-Const noVerbsFound = -1 'UBound return value for zero-length array.
 
 Sub RefreshHtmlElements
     Dim i 'integer
@@ -137,10 +241,6 @@ Sub RefreshHtmlElements
     FocusOnPreselectedElement
 End Sub
 
-Const Expanded = 0 'REG_EXPAND_SZ
-Const NotExpanded = 1 'REG_SZ
-Const NotFound = 2
-
 'Attempts to read a registry string value. Returns an object with three properties. Value, StringType, and Exists. StringType is an integer, either Expanded, NotExpanded, or NotFound.
 Function GetRegString(root, key, valueName)
     Dim value 'string
@@ -164,7 +264,7 @@ End Function
 
 Sub TryDeletingKey(root, key)
     Const success = 0
-    Dim response 
+    Dim response
     response = MsgBox(format(Array( _
         "Do you really want to delete the registry key %s\%s?", _
         GetRootString(root), key _
@@ -493,12 +593,6 @@ Sub browse4TemplateButton_OnClick
     End If
 End Sub
 
-Dim descr 'RegString object
-Dim icon 'RegString object
-Dim iconKey 'string: registry path
-Dim template 'RegString object
-Dim templateKey 'string: registry path
-
 Sub configureClassButton_OnClick
     If "" = typeKey Then Exit Sub
     If classSubfields.style.display = "none" Then
@@ -553,11 +647,6 @@ Sub cancelClassButton_OnClick
     Hide classSubfields
 End Sub
 
-Const Esc = 27
-Const F1 = 112
-Const F6 = 117
-Const F7 = 118
-Const F8 = 119
 Sub Document_OnKeyUp
     If Esc = window.event.keyCode Then
         self.Close
@@ -633,10 +722,6 @@ Function ProgIdIsDeletable
     ProgIdIsDeletable = True
 End Function
 
-Const uneditablePids = "Folder"
-
-Const undeletableVerbs = "open opennew print explore find openas properties printto runas runasuser"
-
 Function VerbIsDeletable
     Dim i, donts, verb : donts = Split(LCase(undeletableVerbs))
     verb = verbSelector.options(verbSelector.selectedIndex).value
@@ -656,8 +741,6 @@ Function ProgIdHasUndeletableVerb
     ProgIdHasUndeletableVerb = False
 End Function
 
-Dim timeoutID 'integer: setTimeout return value. Can be used with the clearTimeout method to cancel/reset the timer.
-
 Sub Feedback(newFeedback)
     feedbackDiv.innerHTML = newFeedback & "<br />" & feedbackDiv.innerHTML
     window.clearTimeout(timeoutID)
@@ -667,97 +750,3 @@ End Sub
 Sub ClearFeedback
     feedbackDiv.innerHTML = ""
 End Sub
-
-Const HKCU = &H80000001
-Const HKLM = &H80000002
-Dim application 'HTML Application element/object
-
-Sub InitializeHtmlElements
-    Dim optionHKCU, optionHKLM 'option elements
-    Set application = document.getElementsByTagName( "application" )(0)
-    document.Title = application.applicationName
-    Set optionHKCU = document.createElement( "option" )
-    optionHKCU.value = HKCU
-    optionHKCU.innerHTML = "HKEY_CURRENT_USER"
-    hiveSelector.insertBefore optionHKCU
-    Set optionHKLM = document.createElement( "option" )
-    optionHKLM.value = HKLM
-    optionHKLM.innerHTML = "HKEY_LOCAL_MACHINE"
-    hiveSelector.insertBefore optionHKLM
-End Sub
-
-Dim reg 'RegistryUtility object
-Dim regProv 'StdRegProv object
-Dim deleter 'KeyDeleter object
-Dim invalidChrs 'array of invalid filename chars
-
-Sub ReadObjects
-    Execute includer.Read( "RegistryUtility" )
-    Set reg = New RegistryUtility
-    Set regProv = reg.Reg
-    ExecuteGlobal includer.Read( "ValidFileName" )
-    invalidChrs = InvalidWindowsFilenameChars
-    Execute includer.Read( "KeyDeleter" )
-    Set deleter = New KeyDeleter
-End Sub
-
-'Windows-native objects
-Dim fso 'Scripting.FileSystemObject
-Dim sh 'WScriptShell object
-Dim sa 'Shell.Application object
-
-'project objects
-Dim includer 'VBScripting.Includer
-Dim format 'VBScripting.StringFormatter
-Dim admin 'VBScripting.Admin
-Dim browser 'VBScripting.FileChooser
-
-Sub CreateObjects
-    Set sh = CreateObject( "WScript.Shell" )
-    Set fso = CreateObject( "Scripting.FileSystemObject" )
-    Set sa = CreateObject( "Shell.Application" )
-    Set includer = CreateObject( "VBScripting.Includer" )
-    Set format = CreateObject( "VBScripting.StringFormatter" )
-    Set admin = CreateObject( "VBScripting.Admin" )
-    Set browser = CreateObject( "VBscripting.FileChooser" )
-End Sub
-
-Dim initialVerb 'string: an empty string or the currently selected verb
-Dim focusOnThis 'an html element preselected/intended to get the focus
-
-Sub Window_OnLoad
-    CreateObjects
-    ReadObjects
-    InitializeHtmlElements
-    Feedback "WARNING: Backup the registry before modifying it!"
-
-    fileType.value = ""
-    progId.value = ""
-    hiveSelector.selectedIndex = 0
-    initialVerb = ""
-    Set focusOnThis = fileType
-
-    RefreshFields
-End Sub
-
-Sub Window_OnUnload
-    Set fso = Nothing
-    Set sh = Nothing
-    Set sa = Nothing
-    Set includer = Nothing
-    Set format = Nothing
-    Set admin = Nothing
-    Set browser = Nothing
-End Sub
-
-Class RegString
-    Public Value 'string
-    Public StringType 'integer
-    Public Exists 'boolean
-    Function Init(newValue, newType, newExists)
-        Value = newValue
-        StringType = newType
-        Exists = newExists
-        Set Init = me
-    End Function
-End Class

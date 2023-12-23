@@ -175,11 +175,13 @@ Class VBSAppClassTester
                     actualSleep = stream.ReadLine * 1000
                     actual = actualSleep >= minTime
                     expected = True
+                    .OnFailString = "The actual sleep time was " & actualSleep & " ms"
                     .AssertEqual actual, expected
 
                 .It "should sleep for at most the max. time (" & maxTime & " ms)"
                     actual = actualSleep <= maxTime
                     expected = True
+                    .OnFailString = "The actual sleep time was " & actualSleep & " ms"
                     .AssertEqual actual, expected
 
             Next

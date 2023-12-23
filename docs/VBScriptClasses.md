@@ -737,7 +737,7 @@ Creating, updating, and deleting operations that affect all users must be perfor
   
 | Member type | Name | Parameter | Returns | Comment |
 | :---------- | :--- | :-------- | :------ | :------ |
-| Property | Items | None | a collection | Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collecttions may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch). |
+| Property | Items | None | a collection | Returns a collection of startup item objects, each object having a Name and a Value property: The Value property is the Windows command that starts the program that is identified by the Name property. For 64-bit systems, one of four possible collections may be returned, depending on the values of the Root and Key properties: two of the four collections are for the current user (Root = HKCU, the default) and two are for the local machine or all users (Root = HKLM). There are separate collections for 64-bit programs (Key = StandardBranch, the default) and for 32-bit programs (Key = WowBranch). |
 | Property | Item | name | an object | Returns a startup item object corresponding to the specified name. Return value depends on the values of the Root and Key properties. See comments for those properties and for the Items property. |
 | Method | CreateItem | name, command | N/A | Creates a new startup item in the registry with the specified name and command. For Root = HKLM, an error will occur if privileges are not elevated. The Root and Key properties both affect where in the registry the item will be created. For 32-bit apps on a 64-bit system, use Key = WowBranch. See comments for the Items property.  |
 | Method | UpdateItem | name, command | N/A | Same as the CreateItem method. |
@@ -796,7 +796,7 @@ Usage examples:
 
 ## TestingFramework
 
-A lightweight testing framework  
+An ultralight framework for integration tests  
 Usage example  
  ```vb
      With CreateObject( "VBScripting.Includer" ) 
@@ -828,7 +828,7 @@ Usage example
 | Method | Describe | unit description | N/A | Sets the description for the unit under test. E.g. .describe "DocGenerator class" |
 | Method | It | an expectation | N/A | Sets the specification, a.k.a. spec, which is a description of some expectation to be met by the unit under test. E.g. .it "should return an integer" |
 | Property | GetSpec | None | a string | Returns the specification string for the current spec. |
-| Method | ShowPendingResult | None | N/A | Flushes any pending results. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place. |
+| Method | ShowPendingResult | None | N/A | Flushes any pending results. That is, displays the results of the previous spec. Generally for internal use, but may occasionally be helpful prior to an ad hoc StdOut comment, so that the comment shows up in the output in its proper place. |
 | Method | AssertEqual | actual, expected | N/A | Asserts that the specified two variants, of any subtype, are equal. |
 | Method | AssertErrorRaised | None | N/A | Asserts that an error should be raised by one or more of the preceeding statements. The statement(s), together with the AssertErrorRaised statement, should be wrapped with an <br /> <pre style='white-space: nowrap;'> On Error Resume Next <br /> On Error Goto 0 </pre> block. |
 | Method | DeleteFile | a filespec | N/A | Deletes the specified file. Relative paths and environment variables are allowed. |
@@ -838,6 +838,7 @@ Usage example
 | Property | MessageAppeared | caption, seconds, keys | a boolean | Waits for the specified maximum time (seconds) for a dialog with the specified title-bar text (caption). If the dialog appears, acknowleges it with the specified keystrokes (keys) and returns True. If the time elapses without the dialog appearing, returns False. Note: SendKeys-related features are deprecated. |
 | Method | ShowSendKeysWarning | None | N/A | Shows a SendKeys warning: a warning message to not make mouse clicks or key presses. Note: SendKeys-related features are deprecated. |
 | Method | CloseSendKeysWarning | None | N/A | Closes the SendKeys warning. Note: SendKeys-related features are deprecated. |
+| Property | OnFailString | a string | a string | Optional string that displays when a spec fails. Intended for showing possible causes of the failure. |
 
 ## TextStreamer
 

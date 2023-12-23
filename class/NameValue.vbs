@@ -7,8 +7,8 @@ Class NameValue
     'Property Name
     'Returns: a variant
     'Parameter: a variant
-    Property Let Name(newValue)
-        name_ = newValue
+    Property Let Name(newName)
+        name_ = newName
     End Property
     Property Get Name
         Name = name_
